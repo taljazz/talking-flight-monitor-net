@@ -11,10 +11,10 @@ using System.Windows.Forms;
 using System.Diagnostics;
 namespace tfm
 {
-    public partial class TFMMain : Form
+    public partial class TemplateForm : Form
     {
         public Instrumentation inst = new Instrumentation();
-        public TFMMain()
+        public TemplateForm()
         {
             InitializeComponent();
             configureForm();

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -9,19 +10,30 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using NHotkey;
+using NHotkey.WindowsForms;
+using DavyKager;
+
 namespace tfm
 {
     public partial class frmMain : Form
     {
         public Instrumentation inst = new Instrumentation();
+        private static readonly Keys FlapsKey = Properties.Hotkeys.Default.ToggleFlapsAnnouncement;
+
         public frmMain()
         {
             InitializeComponent();
             configureForm();
+            HotkeyManager.Current.AddOrReplace("flaps", FlapsKey, onFlaps);
             // Start the connection timer to look for a flight sim
             this.timerConnection.Start();
         }
+        private void onFlaps(object sender, HotkeyEventArgs e)
+        {
+            Tolk.Output("bang");
 
+        }
         // This method is called every 1 second by the connection timer.
         private void timerConnection_Tick(object sender, EventArgs e)
         {

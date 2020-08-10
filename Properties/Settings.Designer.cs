@@ -22,5 +22,29 @@ namespace tfm.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public string geonames_user {
+            get {
+                return ((string)(this["geonames_user"]));
+            }
+            set {
+                this["geonames_user"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public ushort flight_following {
+            get {
+                return ((ushort)(this["flight_following"]));
+            }
+            set {
+                this["flight_following"] = value;
+            }
+        }
     }
 }

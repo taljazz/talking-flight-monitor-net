@@ -33,17 +33,17 @@
             this.timerConnection = new System.Windows.Forms.Timer(this.components);
             this.TFMMainMenu = new System.Windows.Forms.MenuStrip();
             this.PlanMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolsMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenPlanMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.SavePlanMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SavePlanAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.QuitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.QuitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.A2AManagerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AircraftMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ReportIssueMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -92,36 +92,6 @@
             this.PlanMenu.Text = "&Plan";
             this.PlanMenu.ToolTipText = "Load and save flight plans.";
             // 
-            // ToolsMenu
-            // 
-            this.ToolsMenu.AccessibleDescription = "Flight tools";
-            this.ToolsMenu.AccessibleName = "Tools menu";
-            this.ToolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.A2AManagerMenuItem,
-            this.AircraftMenuItem,
-            this.SettingsMenuItem});
-            this.ToolsMenu.Name = "ToolsMenu";
-            this.ToolsMenu.ShortcutKeyDisplayString = "ALT+T";
-            this.ToolsMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.T)));
-            this.ToolsMenu.Size = new System.Drawing.Size(67, 29);
-            this.ToolsMenu.Text = "&Tools";
-            this.ToolsMenu.ToolTipText = "Flight management tools.";
-            // 
-            // HelpMenu
-            // 
-            this.HelpMenu.AccessibleDescription = "Menu containing help resources";
-            this.HelpMenu.AccessibleName = "Help";
-            this.HelpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.WebsiteMenuItem,
-            this.ReportIssueMenuItem,
-            this.AboutMenuItem});
-            this.HelpMenu.Name = "HelpMenu";
-            this.HelpMenu.ShortcutKeyDisplayString = "ALT+H";
-            this.HelpMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.H)));
-            this.HelpMenu.Size = new System.Drawing.Size(63, 29);
-            this.HelpMenu.Text = "Help";
-            this.HelpMenu.ToolTipText = "Opbain help here.";
-            // 
             // OpenPlanMenuItem
             // 
             this.OpenPlanMenuItem.AccessibleDescription = "Open a flight plan";
@@ -133,6 +103,11 @@
             this.OpenPlanMenuItem.Size = new System.Drawing.Size(296, 26);
             this.OpenPlanMenuItem.Text = "&Open...";
             this.OpenPlanMenuItem.ToolTipText = "Open a flight plan here.";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(293, 6);
             // 
             // SavePlanMenuItem
             // 
@@ -158,6 +133,11 @@
             this.SavePlanAsMenuItem.Size = new System.Drawing.Size(296, 26);
             this.SavePlanAsMenuItem.Text = "&Save as...";
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(293, 6);
+            // 
             // QuitMenuItem
             // 
             this.QuitMenuItem.AccessibleDescription = "Quit\'s the program.";
@@ -169,16 +149,22 @@
             this.QuitMenuItem.Size = new System.Drawing.Size(296, 26);
             this.QuitMenuItem.Text = "&Quit";
             this.QuitMenuItem.ToolTipText = "Closes the program.";
+            this.QuitMenuItem.Click += new System.EventHandler(this.QuitMenuItem_Click);
             // 
-            // toolStripSeparator1
+            // ToolsMenu
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(293, 6);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(293, 6);
+            this.ToolsMenu.AccessibleDescription = "Flight tools";
+            this.ToolsMenu.AccessibleName = "Tools menu";
+            this.ToolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.A2AManagerMenuItem,
+            this.AircraftMenuItem,
+            this.SettingsMenuItem});
+            this.ToolsMenu.Name = "ToolsMenu";
+            this.ToolsMenu.ShortcutKeyDisplayString = "ALT+T";
+            this.ToolsMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.T)));
+            this.ToolsMenu.Size = new System.Drawing.Size(67, 29);
+            this.ToolsMenu.Text = "&Tools";
+            this.ToolsMenu.ToolTipText = "Flight management tools.";
             // 
             // A2AManagerMenuItem
             // 
@@ -215,6 +201,21 @@
             this.SettingsMenuItem.Size = new System.Drawing.Size(337, 26);
             this.SettingsMenuItem.Text = "&Settings...";
             this.SettingsMenuItem.ToolTipText = "Change settings here.";
+            // 
+            // HelpMenu
+            // 
+            this.HelpMenu.AccessibleDescription = "Menu containing help resources";
+            this.HelpMenu.AccessibleName = "Help";
+            this.HelpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.WebsiteMenuItem,
+            this.ReportIssueMenuItem,
+            this.AboutMenuItem});
+            this.HelpMenu.Name = "HelpMenu";
+            this.HelpMenu.ShortcutKeyDisplayString = "ALT+H";
+            this.HelpMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.H)));
+            this.HelpMenu.Size = new System.Drawing.Size(63, 29);
+            this.HelpMenu.Text = "Help";
+            this.HelpMenu.ToolTipText = "Opbain help here.";
             // 
             // WebsiteMenuItem
             // 
@@ -258,6 +259,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
+            this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(717, 512);
             this.Controls.Add(this.TFMMainMenu);
             this.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -265,7 +268,6 @@
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "TFMMain";
             this.Text = "Talking flight moniter";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.TFMMainMenu.ResumeLayout(false);
             this.TFMMainMenu.PerformLayout();

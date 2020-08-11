@@ -77,5 +77,10 @@ namespace tfm
             this.timerMain.Stop();
             FSUIPCConnection.Close();
         }
+
+        private void QuitMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
     }
 }

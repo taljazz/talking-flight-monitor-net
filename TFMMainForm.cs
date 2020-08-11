@@ -22,6 +22,7 @@ namespace tfm
         public TFMMain()
         {
             InitializeComponent();
+            Aircraft.InitOffsets();
             // Start the connection timer to look for a flight sim
             this.timerConnection.Start();
         }

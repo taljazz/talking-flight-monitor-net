@@ -154,9 +154,10 @@ namespace tfm
         public static  Offset<byte> OilQuantity = new Offset<byte>(0x66c9);
         public static  Offset<string> AircraftName = new Offset<string>(0x3d00, 255);
         public static  TextMenu textMenu = new TextMenu();
-        // location classes
-        public static FsLatitude latitude;
-        public static FsLongitude longitude;
+        public static void InitOffsets()
+        {
+            // forces static fields to be initialised.
+        }
 
     }
 }

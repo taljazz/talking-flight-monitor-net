@@ -37,10 +37,10 @@ namespace tfm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("OEMCloseBrackets")]
-        public string command {
+        [global::System.Configuration.DefaultSettingValueAttribute("Oem6")]
+        public global::System.Windows.Forms.Keys command {
             get {
-                return ((string)(this["command"]));
+                return ((global::System.Windows.Forms.Keys)(this["command"]));
             }
             set {
                 this["command"] = value;
@@ -260,18 +260,6 @@ namespace tfm.Properties {
             }
             set {
                 this["ToggleFlapsAnnouncement"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("R")]
-        public global::System.Windows.Forms.Keys ReadLastSimconnectMessage {
-            get {
-                return ((global::System.Windows.Forms.Keys)(this["ReadLastSimconnectMessage"]));
-            }
-            set {
-                this["ReadLastSimconnectMessage"] = value;
             }
         }
         

@@ -51,7 +51,7 @@
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(717, 512);
             this.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "TFMMain";
             this.Text = "Talking flight moniter";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

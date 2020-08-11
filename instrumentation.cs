@@ -2,7 +2,8 @@
 using FSUIPC;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-
+using NHotkey;
+using NHotkey.WindowsForms;
 using NLog;
 using NLog.Config;
 using System;
@@ -27,8 +28,8 @@ namespace tfm
     {
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
         
-        // initialize command mode sound
-        // CachedSound cmdSound = new CachedSound(@"sounds\command.wav");
+         // initialize command mode sound
+         CachedSound cmdSound = new CachedSound(@"sounds\command.wav");
 
         List<string> hotkeys = new List<string>();
         static bool FirstRun = true;
@@ -48,7 +49,8 @@ namespace tfm
         public bool flightFollowingOnline { get; private set; }
         public double CurrentHeading;   
 
-        //public ReverseGeoCode<ExtendedGeoName> r = new ReverseGeoCode<ExtendedGeoName>(GeoFileReader.ReadExtendedGeoNames(@".\cities1000.txt"));
+        public ReverseGeoCode<ExtendedGeoName> r = new ReverseGeoCode<ExtendedGeoName>(GeoFileReader.ReadExtendedGeoNames(@".\data\cities1000.txt"));
+        
         public Instrumentation()
         {
             // set up logging
@@ -64,7 +66,7 @@ namespace tfm
             Tolk.Load();
             Tolk.DetectScreenReader();
             Tolk.Output("TFM dot net started!");
-            // HotkeyManager.Current.AddOrReplace("command", Key.OemCloseBrackets, modifiers.None, commandMode);
+            HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
         }
 
         public void ReadAircraftState()
@@ -284,25 +286,68 @@ namespace tfm
             return (double)Math.Round(finalNumber * calcScale) / calcScale;
         }
 
-        /* private void commandMode(object sender, HotkeyEventArgs e)
+        private void commandMode(object sender, HotkeyEventArgs e)
         {
-            // play the command sound
-            AudioPlaybackEngine.Instance.PlaySound(cmdSound);
-            KeyDataCollection keyCol = cfgfile.data["hotkeys"  ];
-            foreach (KeyData k in keyCol)
+            // Check to see if we are connected to the sim
+            if (FSUIPCConnection.IsOpen())
             {
-                if (k.KeyName == "command_key") continue;
-                hotkeys.Add(k.KeyName);
-                string[] hkey = k.Value.Split(',');
-                string mod = hkey[0];
-                string keycode = hkey[1];
+                // play the command sound
+                AudioPlaybackEngine.Instance.PlaySound(cmdSound);
+                // populate a list of hotkeys, so we can clear them later.
+                foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
+                {
+                    if (s.Name == "command") continue;
+                    hotkeys.Add(s.Name);
+                }
+                // hotkey definitions
+                HotkeyManager.Current.AddOrReplace("agl", (Keys)Properties.Hotkeys.Default.agl, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("asl", (Keys)Properties.Hotkeys.Default.asl, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("heading", (Keys)Properties.Hotkeys.Default.heading, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("IndicatedAirspeed", (Keys)Properties.Hotkeys.Default.IndicatedAirspeed, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("TrueAirspeed", (Keys)Properties.Hotkeys.Default.TrueAirspeed, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("MachSpeed", (Keys)Properties.Hotkeys.Default.MachSpeed, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("VerticalSpeed", (Keys)Properties.Hotkeys.Default.VerticalSpeed, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("AirTemperature", (Keys)Properties.Hotkeys.Default.AirTemperature, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("ToggleTrim", (Keys)Properties.Hotkeys.Default.ToggleTrim, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("MuteSimconnect", (Keys)Properties.Hotkeys.Default.MuteSimconnect, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("FlightFollowing", (Keys)Properties.Hotkeys.Default.FlightFollowing, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("NextWaypoint", (Keys)Properties.Hotkeys.Default.NextWaypoint, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("DestinationInfo", (Keys)Properties.Hotkeys.Default.DestinationInfo, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("AttitudeMode", (Keys)Properties.Hotkeys.Default.AttitudeMode, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("SpeakAttitude", (Keys)Properties.Hotkeys.Default.SpeakAttitude, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("SpeakAutopilot", (Keys)Properties.Hotkeys.Default.SpeakAutopilot, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("ToggleGPWS", (Keys)Properties.Hotkeys.Default.ToggleGPWS, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("ToggleILS", (Keys)Properties.Hotkeys.Default.ToggleILS, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("ToggleFlapsAnnouncement", (Keys)Properties.Hotkeys.Default.ToggleFlapsAnnouncement, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("ReadWind", (Keys)Properties.Hotkeys.Default.ReadWind, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("RunwayGuidance", (Keys)Properties.Hotkeys.Default.RunwayGuidance, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("FuelReport", (Keys)Properties.Hotkeys.Default.FuelReport, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("FuelFlow", (Keys)Properties.Hotkeys.Default.FuelFlow, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("FuelTank1", (Keys)Properties.Hotkeys.Default.FuelTank1, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("FuelTank2", (Keys)Properties.Hotkeys.Default.FuelTank2, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("FuelTank3", (Keys)Properties.Hotkeys.Default.FuelTank3, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("FuelTank4", (Keys)Properties.Hotkeys.Default.FuelTank4, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("FuelTank5", (Keys)Properties.Hotkeys.Default.FuelTank5, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("FuelTank6", (Keys)Properties.Hotkeys.Default.FuelTank6, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("FuelTank7", (Keys)Properties.Hotkeys.Default.FuelTank7, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("FuelTank8", (Keys)Properties.Hotkeys.Default.FuelTank8, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("FuelTank9", (Keys)Properties.Hotkeys.Default.FuelTank9, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("FuelTank10", (Keys)Properties.Hotkeys.Default.FuelTank10, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("NearbyAirborn", (Keys)Properties.Hotkeys.Default.NearbyAirborn, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("NearbyGround", (Keys)Properties.Hotkeys.Default.NearbyGround, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("Engine1Info", (Keys)Properties.Hotkeys.Default.Engine1Info, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("Engine2Info", (Keys)Properties.Hotkeys.Default.Engine2Info, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("Engine3Info", (Keys)Properties.Hotkeys.Default.Engine3Info, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("Engine4Info", (Keys)Properties.Hotkeys.Default.Engine4Info, onKeyPressed);
 
-                // convert to integer, then to enum
-                modifiers modkeys = (modifiers)Enum.ToObject(typeof(modifiers), int.Parse(mod));
-                Key key = (Key)Enum.ToObject(typeof(Key), int.Parse(keycode));
-                HotkeyManager.Current.AddOrReplace(k.KeyName, key, modkeys, onKeyPressed);
+
             }
-            
+            else
+            {
+                Tolk.Output("not connected to simulator");
+                
+            }
+
         }
 
          private void onKeyPressed(object sender, HotkeyEventArgs e)
@@ -311,133 +356,129 @@ namespace tfm
             e.Handled = true;
             switch (e.Name)
             {
-                case "asl_key":
+                case "asl":
                     onASLKey();
                     break;
-                case "agl_key":
+                case "agl":
                     onAGLKey();
                     break;
-                case "heading_key":
+                case "heading":
                     onHeadingKey();
                     break;
-                case "ias_key":
+                case "IndicatedAirspeed":
                     onIASKey();
                     break;
-                case "tas_key":
+                case "TrueAirspeed":
                     onTASKey();
                     break;
-                case "mach_key":
+                case "MachSpeed":
                     onMachKey();
                     break;
-                case "vspeed_key":
+                case "VerticalSpeed":
                     onVSpeedKey();
                     break;
-                case "airtemp_key":
+                case "AirTemperature":
                     onAirtempKey();
                     break;
-                case "trim_key":
+                case "ToggleTrim":
                     onTrimKey();
                     break;
-                case "mute_simconnect_key":
+                case "MuteSimconnect":
                     onMuteSimconnectKey();
                     break;
-                case "city_key":
+                case "FlightFollowing":
                     onCityKey();
                     break;
-                case "waypoint_key":
+                case "NextWaypoint":
                     onWaypointKey();
                     break;
-                case "dest_key":
+                case "DestinationInfo":
                     onDestKey();
                     break;
-                case "attitude_key":
+                case "AttitudeMode":
                     onAttitudeKey();
                     break;
-                case "manual_key":
+                case "SpeakAttitude":
                     onManualKey();
                     break;
-                case "autopilot_key":
+                case "SpeakAutopilot":
                     onAutopilotKey();
                     break;
-                case "director_key":
-                    onDirectorKey();
-                    break;
-                case "toggle_gpws_key":
+                case "ToggleGPWS":
                     onGPWSKey();
                     break;
-                case "toggle_ils_key":
+                case "ToggleILS":
                     onToggleILSKey();
                     break;
-                case "toggle_flaps_key":
+                case "ToggleFlaps":
                     onToggleFlapsKey();
                     break;
-                case "message_key":
+                case "ReadLastSimconnectMessage":
                     onMessageKey();
                     break;
-                case "wind_key":
+                case "ReadWind":
                     onWindKey();
                     break;
-                case "runway_guidance_key":
+                case "RunwayGuidance":
                     onRunwayGuidanceKey();
                     break;
-                case "fuel_report_key":
+                case "FuelReport":
                     onFuelReportKey();
                     break;
-                case "fuel_flow_key":
+                case "FuelFlow":
                     onFuelFlowKey();
                     break;
-                case "tank1_key":
+                case "FuelTank1":
                     onFuelTankKey(1);
                     break;
-                case "tank2_key":
+                case "FuelTank2":
                     onFuelTankKey(2);
                     break;
-                case "tank3_key":
+                case "FuelTank3":
                     onFuelTankKey(3);
                     break;
-                case "tank4_key":
+                case "FuelTank4":
                     onFuelTankKey(4);
                     break;
-                case "tank5_key":
+                case "FuelTank5":
                     onFuelTankKey(5);
                     break;
-                case "tank6_key":
+                case "FuelTank6":
                     onFuelTankKey(6);
                     break;
-                case "tank7_key":
+                case "FuelTank7":
                     onFuelTankKey(7);
                     break;
-                case "tank8_key":
+                case "FuelTank8":
                     onFuelTankKey(8);
                     break;
-                case "tank9_key":
+                case "FuelTank9":
                     onFuelTankKey(9);
                     break;
-                case "tank10_key":
+                case "FuelTank10":
                     onFuelTankKey(10);
                     break;
-                case "tcas_air_key":
+                case "NearbyAirborn":
                     onTCASAir();
                     break;
-                case "tcas_ground_key":
+                case "NearbyGround":
                     onTCASGround();
                     break;
-                case "eng1_key":
+                case "Engine1Info":
                     onEng1Key();
                     break;
-                case "eng2_key":
+                case "Engine2Info":
                     onEng2Key();
                     break;
-                case "eng3_key":
+                case "Engine3Info":
                     onEng3Key();
                     break;
-                case "eng4_key":
+                case "Engine4Info":
                     onEng4Key();
                     break;
 
             }
         }
-        */
         private void onWindKey()
         {
             Tolk.Output("not yet implemented.");
@@ -543,45 +584,46 @@ namespace tfm
             Tolk.Output("not yet implemented.");
         }
 
-        //private void onCityKey()
-        //{
-        //    double lat = aircraftLat.Value.DecimalDegrees;
-        //    double lon = aircraftLon.Value.DecimalDegrees;
-        //    // double lat = -48.876667;
-        //    //double lon = -123.393333;
-        //    flightFollowingOnline = true;
-        //    if (!flightFollowingOnline)
-        //    {
-        //        var pos = r.CreateFromLatLong(lat, lon);
-        //        var results = r.NearestNeighbourSearch(pos, 1);
-        //        foreach (var res in results)
-        //        {
-        //            Tolk.Output(res.Name);
-        //            Tolk.Output(res.Admincodes[1]);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        var xml = XElement.Load($"http://api.geonames.org/findNearbyPlaceName?style=long&lat={lat}&lng={lon}&username=jfayre&cities=cities5000&radius=200");
-        //        var locations = xml.Descendants("geoname").Select(g => new {
-        //            Name = g.Element("name").Value,
-        //            Lat = g.Element("lat").Value,
-        //            Long = g.Element("lng").Value,
-        //            admin1 = g.Element("adminName1").Value
-        //        });
-                
-        //        if (locations.Count() > 0)
-        //        {
-        //            var location = locations.First();
+        private void onCityKey()
+        {
+            double lat = Aircraft.aircraftLat.Value.DecimalDegrees;
+            double lon = Aircraft.aircraftLon.Value.DecimalDegrees;
+            // double lat = -48.876667;
+            //double lon = -123.393333;
+            flightFollowingOnline = true;
+            if (!flightFollowingOnline)
+            {
+                var pos = r.CreateFromLatLong(lat, lon);
+                var results = r.NearestNeighbourSearch(pos, 1);
+                foreach (var res in results)
+                {
+                    Tolk.Output(res.Name);
+                    Tolk.Output(res.Admincodes[1]);
+                }
+            }
+            else
+            {
+                var xml = XElement.Load($"http://api.geonames.org/findNearbyPlaceName?style=long&lat={lat}&lng={lon}&username=jfayre&cities=cities5000&radius=200");
+                var locations = xml.Descendants("geoname").Select(g => new
+                {
+                    Name = g.Element("name").Value,
+                    Lat = g.Element("lat").Value,
+                    Long = g.Element("lng").Value,
+                    admin1 = g.Element("adminName1").Value
+                });
 
-        //            Tolk.Output($"closest city: {location.Name} {location.admin1}.");
-        //        }
-        //        else
-        //        {
-        //            Tolk.Output("no locations in range.");
-        //        }
-        //    }
-        //}
+                if (locations.Count() > 0)
+                {
+                    var location = locations.First();
+
+                    Tolk.Output($"closest city: {location.Name} {location.admin1}.");
+                }
+                else
+                {
+                    Tolk.Output("no locations in range.");
+                }
+            }
+        }
         private void onMuteSimconnectKey()
         {
             if (muteSimconnect)
@@ -612,19 +654,20 @@ namespace tfm
             ResetHotkeys();
         }
 
-        //private void onAirtempKey()
-        //{
-        //    double tempC = (double)Aircraft.AirTemp.Value / 256d;
-        //    double tempF = 9.0 / 5.0 * tempC + 32;
-        //    if (cfgfile.data["config"]["use_metric"] == "True")
-        //    {
-        //        Tolk.Output("outside temperature: " + tempC.ToString("f0"));
-        //    }
-        //    else
-        //    {
-        //        Tolk.Output("outside temperature: " + tempF.ToString("f0") + " degrees F");
-        //    }
-        //}
+        private void onAirtempKey()
+        {
+            bool metric = true;
+            double tempC = (double)Aircraft.AirTemp.Value / 256d;
+            double tempF = 9.0 / 5.0 * tempC + 32;
+            if (metric)
+            {
+                Tolk.Output("outside temperature: " + tempC.ToString("f0"));
+            }
+            else
+            {
+                Tolk.Output("outside temperature: " + tempF.ToString("f0") + " degrees F");
+            }
+        }
 
         private void onVSpeedKey()
         {
@@ -672,12 +715,11 @@ namespace tfm
 
         private void ResetHotkeys()
         {
-            Tolk.Output("not implimented");            
-            //    foreach (string k in hotkeys)
-        //    {
-        //        HotkeyManager.Current.Remove(k);
-        //    }
-        //    HotkeyManager.Current.AddOrReplace("command", Key.OemCloseBrackets, modifiers.None, commandMode);
+            foreach (string k in hotkeys)
+            {
+                HotkeyManager.Current.Remove(k);
+            }
+            HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
         }
 
         

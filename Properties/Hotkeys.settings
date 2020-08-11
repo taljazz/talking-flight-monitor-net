@@ -5,8 +5,8 @@
     <Setting Name="agl" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">G</Value>
     </Setting>
-    <Setting Name="command" Type="System.String" Scope="User">
-      <Value Profile="(Default)">OEMCloseBrackets</Value>
+    <Setting Name="command" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Oem6</Value>
     </Setting>
     <Setting Name="asl" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">A</Value>
@@ -61,9 +61,6 @@
     </Setting>
     <Setting Name="ToggleFlapsAnnouncement" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+F</Value>
-    </Setting>
-    <Setting Name="ReadLastSimconnectMessage" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">R</Value>
     </Setting>
     <Setting Name="ReadWind" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">I</Value>

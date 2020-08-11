@@ -30,8 +30,12 @@ namespace tfm
         
          // initialize command mode sound
          CachedSound cmdSound = new CachedSound(@"sounds\command.wav");
-
+// list to store registered hotkey identifiers
         List<string> hotkeys = new List<string>();
+        FsFuelTanksCollection FuelTanks = null;
+        // list to store fuel tanks present on the aircraft
+        List<FsFuelTank> ActiveTanks = new List<FsFuelTank>();
+
         static bool FirstRun = true;
         // flags for tfm features   
         bool FlightFollowingEnabled;
@@ -289,7 +293,7 @@ namespace tfm
         private void commandMode(object sender, HotkeyEventArgs e)
         {
             // Check to see if we are connected to the sim
-            if (FSUIPCConnection.IsOpen())
+            if (FSUIPCConnection.IsOpen)
             {
                 // play the command sound
                 AudioPlaybackEngine.Instance.PlaySound(cmdSound);

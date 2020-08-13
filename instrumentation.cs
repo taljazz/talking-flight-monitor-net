@@ -87,6 +87,7 @@ namespace tfm
                     Tolk.Output("Current aircraft: " + Aircraft.AircraftName.Value);
                 }
 
+                #region Toggles
                 // read any instruments that are toggles
                 ReadToggle(Aircraft.AvionicsMaster, Aircraft.AvionicsMaster.Value > 0, "avionics master", "active", "off");
                 ReadToggle(Aircraft.PitotHeat, Aircraft.PitotHeat.Value > 0, "Pitot Heat", "on", "off");
@@ -127,6 +128,7 @@ namespace tfm
                 ReadToggle(Aircraft.Eng3FuelValve, Aircraft.Eng3FuelValve.Value > 0, "number 3 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.Eng4FuelValve, Aircraft.Eng4FuelValve.Value > 0, "number 4 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.FuelPump, Aircraft.FuelPump.Value > 0, "Fuel pump", "active", "off");
+                #endregion
                 ReadFlaps();
                 ReadAutopilotInstruments();
                 ReadSimConnectMessages();
@@ -134,6 +136,7 @@ namespace tfm
                 ReadComRadios();
                 ReadAutoBrake();
                 ReadSpoilers();
+                ReadTrim();
                 ReadNextWaypoint();
 
 
@@ -146,7 +149,9 @@ namespace tfm
                 FirstRun = false;
             }
         }
-       private void DetectFuelTanks()
+
+        
+        private void DetectFuelTanks()
         {
             FSUIPCConnection.PayloadServices.RefreshData();
             // Assign the fuel tanks to our class level variable for easier access
@@ -161,6 +166,35 @@ namespace tfm
             }
 
         }
+        private void ReadTrim()
+        {
+            // Elevator trim
+            double elevator = (double)Aircraft.ConvertRadiansToDegrees(Aircraft.ElevatorTrim.Value);
+            double aileron = (double)Aircraft.ConvertRadiansToDegrees(Aircraft.AileronTrim.Value);
+            if (Aircraft.ElevatorTrim.ValueChanged && Aircraft.ApMaster.Value != 1 && TrimEnabled)
+            {
+                if (elevator < 0)
+                {
+                    Tolk.Output($"Trim down {Math.Abs(Math.Round(elevator, 2)):F2}. ");
+                }
+                else
+                {
+                    Tolk.Output($"Trim up: {Math.Round(elevator, 2):F2}");
+                }
+
+            }
+            if (Aircraft.AileronTrim.ValueChanged && Aircraft.ApMaster.Value != 1 && TrimEnabled)
+            {
+                if (aileron < 0)
+                {
+                    Tolk.Output($"Trim left {Math.Abs(Math.Round(aileron, 2))}. ");
+                }
+                else
+                {
+                    Tolk.Output($"Trim right {Math.Round(aileron, 2)}");
+                }
+            }
+        }
 
 
 
@@ -168,7 +202,7 @@ namespace tfm
 
 
 
-        private void ReadAutoBrake()
+                private void ReadAutoBrake()
         {
             string AbState = null;
             if (Aircraft.AutoBrake.ValueChanged)
@@ -265,6 +299,7 @@ namespace tfm
                 }
             }
         }
+        
         private void ReadFlaps()
         {
             if (Aircraft.Flaps.ValueChanged)
@@ -808,5 +843,6 @@ namespace tfm
             Tolk.Output(asl.ToString() + " feet ASL");
             ResetHotkeys();
         }
+
     }
 }

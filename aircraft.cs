@@ -160,6 +160,10 @@ namespace tfm
         {
             // forces static fields to be initialised.
         }
-
+        public static double ConvertRadiansToDegrees(double radians)
+        {
+            double degrees = (180 / Math.PI) * radians;
+            return (degrees);
+        }
     }
 }

@@ -47,7 +47,12 @@
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ReportIssueMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.HeadingGroupBox = new System.Windows.Forms.GroupBox();
+            this.APHeadingCheckBox = new System.Windows.Forms.CheckBox();
+            this.HeadingTextBox = new System.Windows.Forms.TextBox();
+            this.HeadingLabel = new System.Windows.Forms.Label();
             this.TFMMainMenu.SuspendLayout();
+            this.HeadingGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerMain
@@ -252,6 +257,54 @@
             this.AboutMenuItem.Text = "&About...";
             this.AboutMenuItem.ToolTipText = "The program\'s about box.";
             // 
+            // HeadingGroupBox
+            // 
+            this.HeadingGroupBox.AccessibleDescription = "";
+            this.HeadingGroupBox.AccessibleName = "Heading controls";
+            this.HeadingGroupBox.AutoSize = true;
+            this.HeadingGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.HeadingGroupBox.Controls.Add(this.APHeadingCheckBox);
+            this.HeadingGroupBox.Controls.Add(this.HeadingTextBox);
+            this.HeadingGroupBox.Controls.Add(this.HeadingLabel);
+            this.HeadingGroupBox.Location = new System.Drawing.Point(10, 678);
+            this.HeadingGroupBox.Name = "HeadingGroupBox";
+            this.HeadingGroupBox.Size = new System.Drawing.Size(323, 82);
+            this.HeadingGroupBox.TabIndex = 1;
+            this.HeadingGroupBox.TabStop = false;
+            this.HeadingGroupBox.Text = "Heading";
+            // 
+            // APHeadingCheckBox
+            // 
+            this.APHeadingCheckBox.AccessibleDescription = "";
+            this.APHeadingCheckBox.AccessibleName = "Heading (AP)";
+            this.APHeadingCheckBox.AutoSize = true;
+            this.APHeadingCheckBox.Location = new System.Drawing.Point(186, 25);
+            this.APHeadingCheckBox.Name = "APHeadingCheckBox";
+            this.APHeadingCheckBox.Size = new System.Drawing.Size(131, 25);
+            this.APHeadingCheckBox.TabIndex = 2;
+            this.APHeadingCheckBox.Text = "H&eading (AP)";
+            this.APHeadingCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // HeadingTextBox
+            // 
+            this.HeadingTextBox.AccessibleDescription = "";
+            this.HeadingTextBox.AccessibleName = "Enter heading";
+            this.HeadingTextBox.Location = new System.Drawing.Point(80, 25);
+            this.HeadingTextBox.Name = "HeadingTextBox";
+            this.HeadingTextBox.Size = new System.Drawing.Size(100, 29);
+            this.HeadingTextBox.TabIndex = 1;
+            this.HeadingTextBox.WordWrap = false;
+            // 
+            // HeadingLabel
+            // 
+            this.HeadingLabel.AccessibleName = "Heading";
+            this.HeadingLabel.AutoSize = true;
+            this.HeadingLabel.Location = new System.Drawing.Point(3, 25);
+            this.HeadingLabel.Name = "HeadingLabel";
+            this.HeadingLabel.Size = new System.Drawing.Size(71, 21);
+            this.HeadingLabel.TabIndex = 0;
+            this.HeadingLabel.Text = "&Heading";
+            // 
             // TFMMain
             // 
             this.AccessibleDescription = "Talking Flight Moniter\'s main screen.";
@@ -262,6 +315,7 @@
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(717, 512);
+            this.Controls.Add(this.HeadingGroupBox);
             this.Controls.Add(this.TFMMainMenu);
             this.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MainMenuStrip = this.TFMMainMenu;
@@ -271,6 +325,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.TFMMainMenu.ResumeLayout(false);
             this.TFMMainMenu.PerformLayout();
+            this.HeadingGroupBox.ResumeLayout(false);
+            this.HeadingGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -295,6 +351,10 @@
         private System.Windows.Forms.ToolStripMenuItem WebsiteMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ReportIssueMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AboutMenuItem;
+        private System.Windows.Forms.GroupBox HeadingGroupBox;
+        private System.Windows.Forms.TextBox HeadingTextBox;
+        private System.Windows.Forms.Label HeadingLabel;
+        private System.Windows.Forms.CheckBox APHeadingCheckBox;
     }
 }
 

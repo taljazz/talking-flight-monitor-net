@@ -54,7 +54,8 @@ namespace tfm
         public double CurrentHeading;   
 
         public ReverseGeoCode<ExtendedGeoName> r = new ReverseGeoCode<ExtendedGeoName>(GeoFileReader.ReadExtendedGeoNames(@".\data\cities1000.txt"));
-        
+        private int OldSpoilersValue;
+
         public Instrumentation()
         {
             // set up logging
@@ -71,6 +72,7 @@ namespace tfm
             Tolk.DetectScreenReader();
             Tolk.Output("TFM dot net started!");
             HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
+            
         }
 
         public void ReadAircraftState()
@@ -84,6 +86,7 @@ namespace tfm
                 {
                     Tolk.Output("Current aircraft: " + Aircraft.AircraftName.Value);
                 }
+
                 // read any instruments that are toggles
                 ReadToggle(Aircraft.AvionicsMaster, Aircraft.AvionicsMaster.Value > 0, "avionics master", "active", "off");
                 ReadToggle(Aircraft.PitotHeat, Aircraft.PitotHeat.Value > 0, "Pitot Heat", "on", "off");
@@ -130,23 +133,40 @@ namespace tfm
                 ReadTransponder();
                 ReadComRadios();
                 ReadAutoBrake();
-
+                ReadSpoilers();
+                ReadNextWaypoint();
 
 
                 // TODO: engine select and lights
             }
             else
             {
+                Tolk.Output(Aircraft.AircraftName.Value);
+                DetectFuelTanks();
                 FirstRun = false;
             }
         }
+       private void DetectFuelTanks()
+        {
+            FSUIPCConnection.PayloadServices.RefreshData();
+            // Assign the fuel tanks to our class level variable for easier access
+            FuelTanks = FSUIPCConnection.PayloadServices.FuelTanks;
+            foreach (FsFuelTank tank in FuelTanks)
+            {
+                if (tank.IsPresent)
+                {
+                    ActiveTanks.Add(tank);
+                    Logger.Debug("found " + tank.Tank.ToString());
+                }
+            }
 
-                    
+        }
 
 
 
 
-            
+
+
 
         private void ReadAutoBrake()
         {
@@ -203,7 +223,48 @@ namespace tfm
             }
 
         }
+        private void ReadNextWaypoint(bool TriggeredByHotkey = false)
+        {
+            if (Aircraft.NextWPName.ValueChanged || TriggeredByHotkey)
+            {
+                string name = Aircraft.NextWPName.Value;
+                // convert distance to nautical miles
+                double dist = Aircraft.NextWPDistance.Value * 0.00053995D;
+                string strDist = dist.ToString("F0");
+                TimeSpan TimeEnroute = TimeSpan.FromSeconds(Aircraft.NextWPETE.Value);
+                double baring = (double)Aircraft.NextWPBaring.Value;
+                string strBaring = baring.ToString("F0");
+                Tolk.Output($"Next waypoint: {name}. ");
+                Tolk.Output($"Distance: {strDist}.");
+                Tolk.Output($"Baring: {strBaring} nautical miles");
+                string strTime = string.Format("{0:D2} hours, {1:D2} minutes, {2:D2} seconds.",
+                TimeEnroute.Hours,
+                TimeEnroute.Minutes,
+                TimeEnroute.Seconds);
+                Tolk.Output(strTime);
+            }
+        }
+        private void ReadSpoilers()
+        {
+            if (Aircraft.Spoilers.ValueChanged)
+            {
+                uint sp = Aircraft.Spoilers.Value;
+                if (sp == 4800) Tolk.Output("Spoilers armed. ");
+                else if (sp == 16384) Tolk.Output("Spoilers deployed. ");
+                else if (sp == 0)
+                {
+                    if (OldSpoilersValue == 4800)
+                    {
+                        Tolk.Output("arm spoilers off. ");
+                    }
+                    else
+                    {
+                        Tolk.Output("spoilers retracted. ");
+                    }
 
+                }
+            }
+        }
         private void ReadFlaps()
         {
             if (Aircraft.Flaps.ValueChanged)
@@ -358,6 +419,7 @@ namespace tfm
         {
 
             e.Handled = true;
+            ResetHotkeys();
             switch (e.Name)
             {
                 case "asl":
@@ -520,12 +582,25 @@ namespace tfm
 
         private void onFuelTankKey(int tank)
         {
-            Tolk.Output("not yet implemented.");
+            if (tank > ActiveTanks.Count)
+            {
+                Tolk.Output("tank not available");
+            }
+            else
+            {
+                tank = tank - 1;
+                string name = ActiveTanks[tank].Tank.ToString();
+                string pct = ActiveTanks[tank].LevelPercentage.ToString("F0");
+                string weight = ActiveTanks[tank].WeightLbs.ToString("F0");
+                string gal = ActiveTanks[tank].LevelUSGallons.ToString("F0");
+                Tolk.Output($"{name}.  {pct} percent, {weight} pounds, {gal} gallons.");
+            }
         }
 
         private void onFuelFlowKey()
         {
-            Tolk.Output("not yet implemented.");
+            int NumEngines = Aircraft.num_engines.Value;
+
         }
 
         private void onFuelReportKey()
@@ -585,7 +660,7 @@ namespace tfm
 
         private void onWaypointKey()
         {
-            Tolk.Output("not yet implemented.");
+            ReadNextWaypoint(true);
         }
 
         private void onCityKey()

@@ -54,6 +54,7 @@ namespace tfm
         public static  Offset<ushort> Transponder = new Offset<ushort>(0x0354);
         public static  Offset<double> CompassHeading = new Offset<double>(0x2b00);
         public static  Offset<double> NextWPDistance = new Offset<double>(0x6048);
+        public static Offset<string> NextWPName = new Offset<string>(0x60a4, 6);
         public static  Offset<uint> NextWPETE = new Offset<uint>(0x60e4);
         public static  Offset<byte> AutoBrake = new Offset<byte>(0x2f80);
         public static  Offset<uint> AirspeedTrue = new Offset<uint>(0x02b8);
@@ -154,6 +155,7 @@ namespace tfm
         public static  Offset<byte> OilQuantity = new Offset<byte>(0x66c9);
         public static  Offset<string> AircraftName = new Offset<string>(0x3d00, 255);
         public static  TextMenu textMenu = new TextMenu();
+        
         public static void InitOffsets()
         {
             // forces static fields to be initialised.

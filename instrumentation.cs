@@ -137,6 +137,7 @@ namespace tfm
                 ReadAutoBrake();
                 ReadSpoilers();
                 ReadTrim();
+                ReadAltimeter();
                 ReadNextWaypoint();
 
 
@@ -196,13 +197,22 @@ namespace tfm
             }
         }
 
+        private void ReadAltimeter()
+        {
+            if (Aircraft.Altimeter.ValueChanged)
+            {
+                double AltQNH = (double)Aircraft.Altimeter.Value / 16d;
+                double AltHPA = Math.Floor(AltQNH + 0.5);
+                double AltInches = Math.Floor(((100 * AltQNH * 29.92) / 1013.2) + 0.5);
+                Tolk.Output($"Altimeter: {AltHPA}, {AltInches / 100} inches. ");
+            }
+
+
+        }
 
 
 
-
-
-
-                private void ReadAutoBrake()
+        private void ReadAutoBrake()
         {
             string AbState = null;
             if (Aircraft.AutoBrake.ValueChanged)

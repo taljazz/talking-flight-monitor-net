@@ -16,7 +16,7 @@ namespace tfm
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new TFMMain());
+            Application.Run(new TFMMainForm());
         }
     }
 }

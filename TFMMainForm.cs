@@ -16,10 +16,10 @@ using DavyKager;
 
 namespace tfm
 {
-    public partial class TFMMain : Form
+    public partial class TFMMainForm : Form
     {
         public Instrumentation inst = new Instrumentation();
-        public TFMMain()
+        public TFMMainForm()
         {
             InitializeComponent();
             Aircraft.InitOffsets();

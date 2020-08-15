@@ -52,17 +52,19 @@
             this.FlightPlanTabPage = new System.Windows.Forms.TabPage();
             this.ProceduresTabPage = new System.Windows.Forms.TabPage();
             this.FindTabPage = new System.Windows.Forms.TabPage();
+            this.AvionicsLayoutTable = new System.Windows.Forms.TableLayoutPanel();
             this.HeadingGroupBox = new System.Windows.Forms.GroupBox();
             this.APHeadingCheckBox = new System.Windows.Forms.CheckBox();
             this.HeadingTextBox = new System.Windows.Forms.TextBox();
             this.HeadingLabel = new System.Windows.Forms.Label();
             this.AltitudeGroupBox = new System.Windows.Forms.GroupBox();
-            this.AltitudeLabel = new System.Windows.Forms.Label();
-            this.AltitudeTextBox = new System.Windows.Forms.TextBox();
             this.APAltitudeCheckBox = new System.Windows.Forms.CheckBox();
+            this.AltitudeTextBox = new System.Windows.Forms.TextBox();
+            this.AltitudeLabel = new System.Windows.Forms.Label();
             this.TFMMainMenu.SuspendLayout();
             this.TFMTabControl.SuspendLayout();
             this.AvionicsTabPage.SuspendLayout();
+            this.AvionicsLayoutTable.SuspendLayout();
             this.HeadingGroupBox.SuspendLayout();
             this.AltitudeGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -275,8 +277,7 @@
             // AvionicsTabPage
             // 
             this.AvionicsTabPage.AccessibleName = "Avionics";
-            this.AvionicsTabPage.Controls.Add(this.AltitudeGroupBox);
-            this.AvionicsTabPage.Controls.Add(this.HeadingGroupBox);
+            this.AvionicsTabPage.Controls.Add(this.AvionicsLayoutTable);
             this.AvionicsTabPage.Location = new System.Drawing.Point(4, 30);
             this.AvionicsTabPage.Name = "AvionicsTabPage";
             this.AvionicsTabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -316,6 +317,29 @@
             this.FindTabPage.Text = "Find";
             this.FindTabPage.UseVisualStyleBackColor = true;
             // 
+            // AvionicsLayoutTable
+            // 
+            this.AvionicsLayoutTable.AutoSize = true;
+            this.AvionicsLayoutTable.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.AvionicsLayoutTable.ColumnCount = 2;
+            this.AvionicsLayoutTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.AvionicsLayoutTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.AvionicsLayoutTable.Controls.Add(this.AltitudeGroupBox, 0, 1);
+            this.AvionicsLayoutTable.Controls.Add(this.HeadingGroupBox, 0, 0);
+            this.AvionicsLayoutTable.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AvionicsLayoutTable.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
+            this.AvionicsLayoutTable.Location = new System.Drawing.Point(3, 3);
+            this.AvionicsLayoutTable.Name = "AvionicsLayoutTable";
+            this.AvionicsLayoutTable.RowCount = 6;
+            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.AvionicsLayoutTable.Size = new System.Drawing.Size(703, 439);
+            this.AvionicsLayoutTable.TabIndex = 3;
+            // 
             // HeadingGroupBox
             // 
             this.HeadingGroupBox.AccessibleName = "Heading group";
@@ -324,10 +348,10 @@
             this.HeadingGroupBox.Controls.Add(this.APHeadingCheckBox);
             this.HeadingGroupBox.Controls.Add(this.HeadingTextBox);
             this.HeadingGroupBox.Controls.Add(this.HeadingLabel);
-            this.HeadingGroupBox.Location = new System.Drawing.Point(10, 10);
+            this.HeadingGroupBox.Location = new System.Drawing.Point(3, 3);
             this.HeadingGroupBox.Name = "HeadingGroupBox";
-            this.HeadingGroupBox.Size = new System.Drawing.Size(327, 82);
-            this.HeadingGroupBox.TabIndex = 1;
+            this.HeadingGroupBox.Size = new System.Drawing.Size(327, 67);
+            this.HeadingGroupBox.TabIndex = 2;
             this.HeadingGroupBox.TabStop = false;
             this.HeadingGroupBox.Text = "Heading";
             // 
@@ -369,31 +393,12 @@
             this.AltitudeGroupBox.Controls.Add(this.APAltitudeCheckBox);
             this.AltitudeGroupBox.Controls.Add(this.AltitudeTextBox);
             this.AltitudeGroupBox.Controls.Add(this.AltitudeLabel);
-            this.AltitudeGroupBox.Location = new System.Drawing.Point(347, 10);
+            this.AltitudeGroupBox.Location = new System.Drawing.Point(3, 76);
             this.AltitudeGroupBox.Name = "AltitudeGroupBox";
-            this.AltitudeGroupBox.Size = new System.Drawing.Size(321, 82);
-            this.AltitudeGroupBox.TabIndex = 2;
+            this.AltitudeGroupBox.Size = new System.Drawing.Size(321, 67);
+            this.AltitudeGroupBox.TabIndex = 3;
             this.AltitudeGroupBox.TabStop = false;
             this.AltitudeGroupBox.Text = "Altitude";
-            // 
-            // AltitudeLabel
-            // 
-            this.AltitudeLabel.AccessibleName = "Altitude:";
-            this.AltitudeLabel.AutoSize = true;
-            this.AltitudeLabel.Location = new System.Drawing.Point(3, 25);
-            this.AltitudeLabel.Name = "AltitudeLabel";
-            this.AltitudeLabel.Size = new System.Drawing.Size(72, 21);
-            this.AltitudeLabel.TabIndex = 0;
-            this.AltitudeLabel.Text = "&Altitude:";
-            // 
-            // AltitudeTextBox
-            // 
-            this.AltitudeTextBox.AccessibleName = "Enter altitude";
-            this.AltitudeTextBox.Location = new System.Drawing.Point(81, 25);
-            this.AltitudeTextBox.Name = "AltitudeTextBox";
-            this.AltitudeTextBox.Size = new System.Drawing.Size(100, 29);
-            this.AltitudeTextBox.TabIndex = 1;
-            this.AltitudeTextBox.WordWrap = false;
             // 
             // APAltitudeCheckBox
             // 
@@ -405,6 +410,25 @@
             this.APAltitudeCheckBox.TabIndex = 2;
             this.APAltitudeCheckBox.Text = "A&ltitude (AP)";
             this.APAltitudeCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // AltitudeTextBox
+            // 
+            this.AltitudeTextBox.AccessibleName = "Enter altitude";
+            this.AltitudeTextBox.Location = new System.Drawing.Point(81, 25);
+            this.AltitudeTextBox.Name = "AltitudeTextBox";
+            this.AltitudeTextBox.Size = new System.Drawing.Size(100, 29);
+            this.AltitudeTextBox.TabIndex = 1;
+            this.AltitudeTextBox.WordWrap = false;
+            // 
+            // AltitudeLabel
+            // 
+            this.AltitudeLabel.AccessibleName = "Altitude:";
+            this.AltitudeLabel.AutoSize = true;
+            this.AltitudeLabel.Location = new System.Drawing.Point(3, 25);
+            this.AltitudeLabel.Name = "AltitudeLabel";
+            this.AltitudeLabel.Size = new System.Drawing.Size(72, 21);
+            this.AltitudeLabel.TabIndex = 0;
+            this.AltitudeLabel.Text = "&Altitude:";
             // 
             // TFMMainForm
             // 
@@ -429,6 +453,8 @@
             this.TFMTabControl.ResumeLayout(false);
             this.AvionicsTabPage.ResumeLayout(false);
             this.AvionicsTabPage.PerformLayout();
+            this.AvionicsLayoutTable.ResumeLayout(false);
+            this.AvionicsLayoutTable.PerformLayout();
             this.HeadingGroupBox.ResumeLayout(false);
             this.HeadingGroupBox.PerformLayout();
             this.AltitudeGroupBox.ResumeLayout(false);
@@ -462,14 +488,15 @@
         private System.Windows.Forms.TabPage FlightPlanTabPage;
         private System.Windows.Forms.TabPage ProceduresTabPage;
         private System.Windows.Forms.TabPage FindTabPage;
-        private System.Windows.Forms.GroupBox HeadingGroupBox;
-        private System.Windows.Forms.CheckBox APHeadingCheckBox;
-        private System.Windows.Forms.TextBox HeadingTextBox;
-        private System.Windows.Forms.Label HeadingLabel;
+        private System.Windows.Forms.TableLayoutPanel AvionicsLayoutTable;
         private System.Windows.Forms.GroupBox AltitudeGroupBox;
         private System.Windows.Forms.CheckBox APAltitudeCheckBox;
         private System.Windows.Forms.TextBox AltitudeTextBox;
         private System.Windows.Forms.Label AltitudeLabel;
+        private System.Windows.Forms.GroupBox HeadingGroupBox;
+        private System.Windows.Forms.CheckBox APHeadingCheckBox;
+        private System.Windows.Forms.TextBox HeadingTextBox;
+        private System.Windows.Forms.Label HeadingLabel;
     }
 }
 

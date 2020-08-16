@@ -915,7 +915,7 @@ namespace tfm
 
         private void onHeadingKey()
         {
-            Tolk.Output("heading: "+ Aircraft.CompassHeading.Value);
+            Tolk.Output("heading: "+ Math.Round(Aircraft.CompassHeading.Value));
             ResetHotkeys();
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace tfm
 {
-    partial class TFMMain
+    partial class TFMMainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -47,12 +47,32 @@
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ReportIssueMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TFMTabControl = new System.Windows.Forms.TabControl();
+            this.AvionicsTabPage = new System.Windows.Forms.TabPage();
+            this.AvionicsLayoutTable = new System.Windows.Forms.TableLayoutPanel();
+            this.AltitudeGroupBox = new System.Windows.Forms.GroupBox();
+            this.APAltitudeCheckBox = new System.Windows.Forms.CheckBox();
+            this.AltitudeTextBox = new System.Windows.Forms.TextBox();
+            this.AltitudeLabel = new System.Windows.Forms.Label();
             this.HeadingGroupBox = new System.Windows.Forms.GroupBox();
             this.APHeadingCheckBox = new System.Windows.Forms.CheckBox();
             this.HeadingTextBox = new System.Windows.Forms.TextBox();
             this.HeadingLabel = new System.Windows.Forms.Label();
+            this.FlightPlanTabPage = new System.Windows.Forms.TabPage();
+            this.ProceduresTabPage = new System.Windows.Forms.TabPage();
+            this.FindTabPage = new System.Windows.Forms.TabPage();
+            this.AirSpeedGroupBox = new System.Windows.Forms.GroupBox();
+            this.AirSpeedLabel = new System.Windows.Forms.Label();
+            this.AirSpeedTextBox = new System.Windows.Forms.TextBox();
+            this.AirSpeedCheckBox = new System.Windows.Forms.CheckBox();
+            this.MachGroupBox = new System.Windows.Forms.GroupBox();
             this.TFMMainMenu.SuspendLayout();
+            this.TFMTabControl.SuspendLayout();
+            this.AvionicsTabPage.SuspendLayout();
+            this.AvionicsLayoutTable.SuspendLayout();
+            this.AltitudeGroupBox.SuspendLayout();
             this.HeadingGroupBox.SuspendLayout();
+            this.AirSpeedGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerMain
@@ -81,8 +101,8 @@
             // 
             // PlanMenu
             // 
-            this.PlanMenu.AccessibleDescription = "Flight planning menu";
-            this.PlanMenu.AccessibleName = "Flight planning";
+            this.PlanMenu.AccessibleDescription = "";
+            this.PlanMenu.AccessibleName = "Plan";
             this.PlanMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenPlanMenuItem,
             this.toolStripSeparator1,
@@ -99,15 +119,14 @@
             // 
             // OpenPlanMenuItem
             // 
-            this.OpenPlanMenuItem.AccessibleDescription = "Open a flight plan";
-            this.OpenPlanMenuItem.AccessibleName = "Open flight plan";
+            this.OpenPlanMenuItem.AccessibleDescription = "";
+            this.OpenPlanMenuItem.AccessibleName = "Open...";
             this.OpenPlanMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.OpenPlanMenuItem.Name = "OpenPlanMenuItem";
             this.OpenPlanMenuItem.ShortcutKeyDisplayString = "CONTROL+O";
             this.OpenPlanMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.OpenPlanMenuItem.Size = new System.Drawing.Size(296, 26);
             this.OpenPlanMenuItem.Text = "&Open...";
-            this.OpenPlanMenuItem.ToolTipText = "Open a flight plan here.";
             // 
             // toolStripSeparator1
             // 
@@ -116,20 +135,19 @@
             // 
             // SavePlanMenuItem
             // 
-            this.SavePlanMenuItem.AccessibleDescription = "Save a flight plan";
-            this.SavePlanMenuItem.AccessibleName = "Save flight plan";
+            this.SavePlanMenuItem.AccessibleDescription = "";
+            this.SavePlanMenuItem.AccessibleName = "Save...";
             this.SavePlanMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SavePlanMenuItem.Name = "SavePlanMenuItem";
             this.SavePlanMenuItem.ShortcutKeyDisplayString = "CONTROL+S";
             this.SavePlanMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.SavePlanMenuItem.Size = new System.Drawing.Size(296, 26);
-            this.SavePlanMenuItem.Text = "&Save";
-            this.SavePlanMenuItem.ToolTipText = "Save a flight plan here.";
+            this.SavePlanMenuItem.Text = "&Save...";
             // 
             // SavePlanAsMenuItem
             // 
-            this.SavePlanAsMenuItem.AccessibleDescription = "Save a flight plan with a new name";
-            this.SavePlanAsMenuItem.AccessibleName = "Save flight plan as...";
+            this.SavePlanAsMenuItem.AccessibleDescription = "";
+            this.SavePlanAsMenuItem.AccessibleName = "Save as...";
             this.SavePlanAsMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SavePlanAsMenuItem.Name = "SavePlanAsMenuItem";
             this.SavePlanAsMenuItem.ShortcutKeyDisplayString = "CONTROL+SHIFT+S";
@@ -145,21 +163,20 @@
             // 
             // QuitMenuItem
             // 
-            this.QuitMenuItem.AccessibleDescription = "Quit\'s the program.";
-            this.QuitMenuItem.AccessibleName = "Quit the program";
+            this.QuitMenuItem.AccessibleDescription = "";
+            this.QuitMenuItem.AccessibleName = "Quit";
             this.QuitMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.QuitMenuItem.Name = "QuitMenuItem";
             this.QuitMenuItem.ShortcutKeyDisplayString = "ALT+F4";
             this.QuitMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.QuitMenuItem.Size = new System.Drawing.Size(296, 26);
             this.QuitMenuItem.Text = "&Quit";
-            this.QuitMenuItem.ToolTipText = "Closes the program.";
             this.QuitMenuItem.Click += new System.EventHandler(this.QuitMenuItem_Click);
             // 
             // ToolsMenu
             // 
-            this.ToolsMenu.AccessibleDescription = "Flight tools";
-            this.ToolsMenu.AccessibleName = "Tools menu";
+            this.ToolsMenu.AccessibleDescription = "";
+            this.ToolsMenu.AccessibleName = "Tools";
             this.ToolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.A2AManagerMenuItem,
             this.AircraftMenuItem,
@@ -169,11 +186,10 @@
             this.ToolsMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.T)));
             this.ToolsMenu.Size = new System.Drawing.Size(67, 29);
             this.ToolsMenu.Text = "&Tools";
-            this.ToolsMenu.ToolTipText = "Flight management tools.";
             // 
             // A2AManagerMenuItem
             // 
-            this.A2AManagerMenuItem.AccessibleDescription = "A2A fuel/payload manager";
+            this.A2AManagerMenuItem.AccessibleDescription = "";
             this.A2AManagerMenuItem.AccessibleName = "A2A aircraft manager";
             this.A2AManagerMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.A2AManagerMenuItem.Name = "A2AManagerMenuItem";
@@ -181,11 +197,10 @@
             this.A2AManagerMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
             this.A2AManagerMenuItem.Size = new System.Drawing.Size(337, 26);
             this.A2AManagerMenuItem.Text = "A2A aircraft &manager";
-            this.A2AManagerMenuItem.ToolTipText = "Manage A2A aircraft fule and payload here.";
             // 
             // AircraftMenuItem
             // 
-            this.AircraftMenuItem.AccessibleDescription = "Manage aircraft profiles";
+            this.AircraftMenuItem.AccessibleDescription = "";
             this.AircraftMenuItem.AccessibleName = "Aircraft profiles...";
             this.AircraftMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AircraftMenuItem.Name = "AircraftMenuItem";
@@ -193,11 +208,10 @@
             this.AircraftMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
             this.AircraftMenuItem.Size = new System.Drawing.Size(337, 26);
             this.AircraftMenuItem.Text = "A&ircraft...";
-            this.AircraftMenuItem.ToolTipText = "Manage aircraft profiles here.";
             // 
             // SettingsMenuItem
             // 
-            this.SettingsMenuItem.AccessibleDescription = "Opens settings";
+            this.SettingsMenuItem.AccessibleDescription = "";
             this.SettingsMenuItem.AccessibleName = "Settings...";
             this.SettingsMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SettingsMenuItem.Name = "SettingsMenuItem";
@@ -205,11 +219,10 @@
             this.SettingsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemcomma)));
             this.SettingsMenuItem.Size = new System.Drawing.Size(337, 26);
             this.SettingsMenuItem.Text = "&Settings...";
-            this.SettingsMenuItem.ToolTipText = "Change settings here.";
             // 
             // HelpMenu
             // 
-            this.HelpMenu.AccessibleDescription = "Menu containing help resources";
+            this.HelpMenu.AccessibleDescription = "";
             this.HelpMenu.AccessibleName = "Help";
             this.HelpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.WebsiteMenuItem,
@@ -220,65 +233,155 @@
             this.HelpMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.H)));
             this.HelpMenu.Size = new System.Drawing.Size(63, 29);
             this.HelpMenu.Text = "Help";
-            this.HelpMenu.ToolTipText = "Opbain help here.";
             // 
             // WebsiteMenuItem
             // 
-            this.WebsiteMenuItem.AccessibleDescription = "Visit the website";
+            this.WebsiteMenuItem.AccessibleDescription = "";
             this.WebsiteMenuItem.AccessibleName = "Visit website";
             this.WebsiteMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WebsiteMenuItem.Name = "WebsiteMenuItem";
             this.WebsiteMenuItem.ShortcutKeyDisplayString = "CONTROL+W";
             this.WebsiteMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.WebsiteMenuItem.Size = new System.Drawing.Size(316, 26);
+            this.WebsiteMenuItem.Size = new System.Drawing.Size(337, 26);
             this.WebsiteMenuItem.Text = "Visit &website";
-            this.WebsiteMenuItem.ToolTipText = "Visit the website in the default browser.";
             // 
             // ReportIssueMenuItem
             // 
-            this.ReportIssueMenuItem.AccessibleDescription = "Report an issue";
-            this.ReportIssueMenuItem.AccessibleName = "Report issue";
+            this.ReportIssueMenuItem.AccessibleDescription = "";
+            this.ReportIssueMenuItem.AccessibleName = "Report an issue";
             this.ReportIssueMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ReportIssueMenuItem.Name = "ReportIssueMenuItem";
             this.ReportIssueMenuItem.ShortcutKeyDisplayString = "CONTROL+SHIFT+I";
             this.ReportIssueMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.I)));
-            this.ReportIssueMenuItem.Size = new System.Drawing.Size(316, 26);
-            this.ReportIssueMenuItem.Text = "Report &issue";
-            this.ReportIssueMenuItem.ToolTipText = "Report a bug or feature request here.";
+            this.ReportIssueMenuItem.Size = new System.Drawing.Size(337, 26);
+            this.ReportIssueMenuItem.Text = "Report an &issue";
             // 
             // AboutMenuItem
             // 
-            this.AboutMenuItem.AccessibleDescription = "About box";
+            this.AboutMenuItem.AccessibleDescription = "";
             this.AboutMenuItem.AccessibleName = "About...";
             this.AboutMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AboutMenuItem.Name = "AboutMenuItem";
-            this.AboutMenuItem.Size = new System.Drawing.Size(316, 26);
+            this.AboutMenuItem.Size = new System.Drawing.Size(337, 26);
             this.AboutMenuItem.Text = "&About...";
-            this.AboutMenuItem.ToolTipText = "The program\'s about box.";
+            // 
+            // TFMTabControl
+            // 
+            this.TFMTabControl.AccessibleName = "Primary tabs";
+            this.TFMTabControl.Controls.Add(this.AvionicsTabPage);
+            this.TFMTabControl.Controls.Add(this.FlightPlanTabPage);
+            this.TFMTabControl.Controls.Add(this.ProceduresTabPage);
+            this.TFMTabControl.Controls.Add(this.FindTabPage);
+            this.TFMTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TFMTabControl.Location = new System.Drawing.Point(0, 33);
+            this.TFMTabControl.Name = "TFMTabControl";
+            this.TFMTabControl.SelectedIndex = 0;
+            this.TFMTabControl.Size = new System.Drawing.Size(717, 479);
+            this.TFMTabControl.TabIndex = 1;
+            // 
+            // AvionicsTabPage
+            // 
+            this.AvionicsTabPage.AccessibleName = "Avionics";
+            this.AvionicsTabPage.Controls.Add(this.AvionicsLayoutTable);
+            this.AvionicsTabPage.Location = new System.Drawing.Point(4, 30);
+            this.AvionicsTabPage.Name = "AvionicsTabPage";
+            this.AvionicsTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.AvionicsTabPage.Size = new System.Drawing.Size(709, 445);
+            this.AvionicsTabPage.TabIndex = 0;
+            this.AvionicsTabPage.Text = "Avionics";
+            this.AvionicsTabPage.UseVisualStyleBackColor = true;
+            // 
+            // AvionicsLayoutTable
+            // 
+            this.AvionicsLayoutTable.AutoSize = true;
+            this.AvionicsLayoutTable.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.AvionicsLayoutTable.ColumnCount = 2;
+            this.AvionicsLayoutTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.AvionicsLayoutTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.AvionicsLayoutTable.Controls.Add(this.AltitudeGroupBox, 0, 1);
+            this.AvionicsLayoutTable.Controls.Add(this.HeadingGroupBox, 0, 0);
+            this.AvionicsLayoutTable.Controls.Add(this.AirSpeedGroupBox, 0, 2);
+            this.AvionicsLayoutTable.Controls.Add(this.MachGroupBox, 0, 3);
+            this.AvionicsLayoutTable.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AvionicsLayoutTable.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
+            this.AvionicsLayoutTable.Location = new System.Drawing.Point(3, 3);
+            this.AvionicsLayoutTable.Name = "AvionicsLayoutTable";
+            this.AvionicsLayoutTable.RowCount = 6;
+            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.AvionicsLayoutTable.Size = new System.Drawing.Size(703, 439);
+            this.AvionicsLayoutTable.TabIndex = 3;
+            // 
+            // AltitudeGroupBox
+            // 
+            this.AltitudeGroupBox.AccessibleName = "Altitude group";
+            this.AltitudeGroupBox.AutoSize = true;
+            this.AltitudeGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.AltitudeGroupBox.Controls.Add(this.APAltitudeCheckBox);
+            this.AltitudeGroupBox.Controls.Add(this.AltitudeTextBox);
+            this.AltitudeGroupBox.Controls.Add(this.AltitudeLabel);
+            this.AltitudeGroupBox.Location = new System.Drawing.Point(3, 76);
+            this.AltitudeGroupBox.Name = "AltitudeGroupBox";
+            this.AltitudeGroupBox.Size = new System.Drawing.Size(321, 67);
+            this.AltitudeGroupBox.TabIndex = 3;
+            this.AltitudeGroupBox.TabStop = false;
+            this.AltitudeGroupBox.Text = "Altitude";
+            // 
+            // APAltitudeCheckBox
+            // 
+            this.APAltitudeCheckBox.AccessibleName = "Give altitude to autopilot";
+            this.APAltitudeCheckBox.AutoSize = true;
+            this.APAltitudeCheckBox.Location = new System.Drawing.Point(187, 25);
+            this.APAltitudeCheckBox.Name = "APAltitudeCheckBox";
+            this.APAltitudeCheckBox.Size = new System.Drawing.Size(128, 25);
+            this.APAltitudeCheckBox.TabIndex = 2;
+            this.APAltitudeCheckBox.Text = "A&ltitude (AP)";
+            this.APAltitudeCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // AltitudeTextBox
+            // 
+            this.AltitudeTextBox.AccessibleName = "Enter altitude";
+            this.AltitudeTextBox.Location = new System.Drawing.Point(81, 25);
+            this.AltitudeTextBox.Name = "AltitudeTextBox";
+            this.AltitudeTextBox.Size = new System.Drawing.Size(100, 29);
+            this.AltitudeTextBox.TabIndex = 1;
+            this.AltitudeTextBox.WordWrap = false;
+            // 
+            // AltitudeLabel
+            // 
+            this.AltitudeLabel.AccessibleName = "Altitude:";
+            this.AltitudeLabel.AutoSize = true;
+            this.AltitudeLabel.Location = new System.Drawing.Point(3, 25);
+            this.AltitudeLabel.Name = "AltitudeLabel";
+            this.AltitudeLabel.Size = new System.Drawing.Size(72, 21);
+            this.AltitudeLabel.TabIndex = 0;
+            this.AltitudeLabel.Text = "&Altitude:";
             // 
             // HeadingGroupBox
             // 
-            this.HeadingGroupBox.AccessibleDescription = "";
-            this.HeadingGroupBox.AccessibleName = "Heading controls";
+            this.HeadingGroupBox.AccessibleName = "Heading group";
             this.HeadingGroupBox.AutoSize = true;
             this.HeadingGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.HeadingGroupBox.Controls.Add(this.APHeadingCheckBox);
             this.HeadingGroupBox.Controls.Add(this.HeadingTextBox);
             this.HeadingGroupBox.Controls.Add(this.HeadingLabel);
-            this.HeadingGroupBox.Location = new System.Drawing.Point(10, 678);
+            this.HeadingGroupBox.Location = new System.Drawing.Point(3, 3);
             this.HeadingGroupBox.Name = "HeadingGroupBox";
-            this.HeadingGroupBox.Size = new System.Drawing.Size(323, 82);
-            this.HeadingGroupBox.TabIndex = 1;
+            this.HeadingGroupBox.Size = new System.Drawing.Size(327, 67);
+            this.HeadingGroupBox.TabIndex = 2;
             this.HeadingGroupBox.TabStop = false;
             this.HeadingGroupBox.Text = "Heading";
             // 
             // APHeadingCheckBox
             // 
-            this.APHeadingCheckBox.AccessibleDescription = "";
-            this.APHeadingCheckBox.AccessibleName = "Heading (AP)";
+            this.APHeadingCheckBox.AccessibleName = "Give heading to autopilot";
             this.APHeadingCheckBox.AutoSize = true;
-            this.APHeadingCheckBox.Location = new System.Drawing.Point(186, 25);
+            this.APHeadingCheckBox.Location = new System.Drawing.Point(190, 25);
             this.APHeadingCheckBox.Name = "APHeadingCheckBox";
             this.APHeadingCheckBox.Size = new System.Drawing.Size(131, 25);
             this.APHeadingCheckBox.TabIndex = 2;
@@ -287,9 +390,8 @@
             // 
             // HeadingTextBox
             // 
-            this.HeadingTextBox.AccessibleDescription = "";
             this.HeadingTextBox.AccessibleName = "Enter heading";
-            this.HeadingTextBox.Location = new System.Drawing.Point(80, 25);
+            this.HeadingTextBox.Location = new System.Drawing.Point(84, 25);
             this.HeadingTextBox.Name = "HeadingTextBox";
             this.HeadingTextBox.Size = new System.Drawing.Size(100, 29);
             this.HeadingTextBox.TabIndex = 1;
@@ -297,36 +399,133 @@
             // 
             // HeadingLabel
             // 
-            this.HeadingLabel.AccessibleName = "Heading";
+            this.HeadingLabel.AccessibleName = "Heading:";
             this.HeadingLabel.AutoSize = true;
             this.HeadingLabel.Location = new System.Drawing.Point(3, 25);
             this.HeadingLabel.Name = "HeadingLabel";
-            this.HeadingLabel.Size = new System.Drawing.Size(71, 21);
+            this.HeadingLabel.Size = new System.Drawing.Size(75, 21);
             this.HeadingLabel.TabIndex = 0;
-            this.HeadingLabel.Text = "&Heading";
+            this.HeadingLabel.Text = "Hea&ding:";
             // 
-            // TFMMain
+            // FlightPlanTabPage
             // 
-            this.AccessibleDescription = "Talking Flight Moniter\'s main screen.";
-            this.AccessibleName = "TFM main screen";
+            this.FlightPlanTabPage.AccessibleName = "Flight plan";
+            this.FlightPlanTabPage.Location = new System.Drawing.Point(4, 30);
+            this.FlightPlanTabPage.Name = "FlightPlanTabPage";
+            this.FlightPlanTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.FlightPlanTabPage.Size = new System.Drawing.Size(709, 445);
+            this.FlightPlanTabPage.TabIndex = 1;
+            this.FlightPlanTabPage.Text = "Flight plan";
+            this.FlightPlanTabPage.UseVisualStyleBackColor = true;
+            // 
+            // ProceduresTabPage
+            // 
+            this.ProceduresTabPage.AccessibleName = "Procedures";
+            this.ProceduresTabPage.Location = new System.Drawing.Point(4, 30);
+            this.ProceduresTabPage.Name = "ProceduresTabPage";
+            this.ProceduresTabPage.Size = new System.Drawing.Size(709, 445);
+            this.ProceduresTabPage.TabIndex = 2;
+            this.ProceduresTabPage.Text = "Procedures";
+            this.ProceduresTabPage.UseVisualStyleBackColor = true;
+            // 
+            // FindTabPage
+            // 
+            this.FindTabPage.AccessibleName = "Find";
+            this.FindTabPage.Location = new System.Drawing.Point(4, 30);
+            this.FindTabPage.Name = "FindTabPage";
+            this.FindTabPage.Size = new System.Drawing.Size(709, 445);
+            this.FindTabPage.TabIndex = 3;
+            this.FindTabPage.Text = "Find";
+            this.FindTabPage.UseVisualStyleBackColor = true;
+            // 
+            // AirSpeedGroupBox
+            // 
+            this.AirSpeedGroupBox.AccessibleName = "Air speed";
+            this.AirSpeedGroupBox.AutoSize = true;
+            this.AirSpeedGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.AirSpeedGroupBox.Controls.Add(this.AirSpeedCheckBox);
+            this.AirSpeedGroupBox.Controls.Add(this.AirSpeedTextBox);
+            this.AirSpeedGroupBox.Controls.Add(this.AirSpeedLabel);
+            this.AirSpeedGroupBox.Location = new System.Drawing.Point(3, 149);
+            this.AirSpeedGroupBox.Name = "AirSpeedGroupBox";
+            this.AirSpeedGroupBox.Size = new System.Drawing.Size(344, 67);
+            this.AirSpeedGroupBox.TabIndex = 4;
+            this.AirSpeedGroupBox.TabStop = false;
+            this.AirSpeedGroupBox.Text = "Air speed";
+            // 
+            // AirSpeedLabel
+            // 
+            this.AirSpeedLabel.AccessibleName = "Air speed";
+            this.AirSpeedLabel.AutoSize = true;
+            this.AirSpeedLabel.Location = new System.Drawing.Point(3, 25);
+            this.AirSpeedLabel.Name = "AirSpeedLabel";
+            this.AirSpeedLabel.Size = new System.Drawing.Size(82, 21);
+            this.AirSpeedLabel.TabIndex = 0;
+            this.AirSpeedLabel.Text = "Air &speed";
+            // 
+            // AirSpeedTextBox
+            // 
+            this.AirSpeedTextBox.AccessibleName = "Enter air speed";
+            this.AirSpeedTextBox.Location = new System.Drawing.Point(90, 25);
+            this.AirSpeedTextBox.Name = "AirSpeedTextBox";
+            this.AirSpeedTextBox.Size = new System.Drawing.Size(100, 29);
+            this.AirSpeedTextBox.TabIndex = 1;
+            this.AirSpeedTextBox.WordWrap = false;
+            // 
+            // AirSpeedCheckBox
+            // 
+            this.AirSpeedCheckBox.AccessibleName = "Give air speed to autopilot";
+            this.AirSpeedCheckBox.AutoSize = true;
+            this.AirSpeedCheckBox.Location = new System.Drawing.Point(196, 25);
+            this.AirSpeedCheckBox.Name = "AirSpeedCheckBox";
+            this.AirSpeedCheckBox.Size = new System.Drawing.Size(142, 25);
+            this.AirSpeedCheckBox.TabIndex = 2;
+            this.AirSpeedCheckBox.Text = "Air s&peed (AP)";
+            this.AirSpeedCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // MachGroupBox
+            // 
+            this.MachGroupBox.AccessibleName = "Mach group";
+            this.MachGroupBox.AutoSize = true;
+            this.MachGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.MachGroupBox.Location = new System.Drawing.Point(3, 222);
+            this.MachGroupBox.Name = "MachGroupBox";
+            this.MachGroupBox.Size = new System.Drawing.Size(6, 5);
+            this.MachGroupBox.TabIndex = 5;
+            this.MachGroupBox.TabStop = false;
+            this.MachGroupBox.Text = "Mach";
+            // 
+            // TFMMainForm
+            // 
+            this.AccessibleDescription = "";
+            this.AccessibleName = "Talking flight moniter";
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(717, 512);
-            this.Controls.Add(this.HeadingGroupBox);
+            this.Controls.Add(this.TFMTabControl);
             this.Controls.Add(this.TFMMainMenu);
             this.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MainMenuStrip = this.TFMMainMenu;
             this.Margin = new System.Windows.Forms.Padding(5);
-            this.Name = "TFMMain";
+            this.Name = "TFMMainForm";
             this.Text = "Talking flight moniter";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.TFMMainMenu.ResumeLayout(false);
             this.TFMMainMenu.PerformLayout();
+            this.TFMTabControl.ResumeLayout(false);
+            this.AvionicsTabPage.ResumeLayout(false);
+            this.AvionicsTabPage.PerformLayout();
+            this.AvionicsLayoutTable.ResumeLayout(false);
+            this.AvionicsLayoutTable.PerformLayout();
+            this.AltitudeGroupBox.ResumeLayout(false);
+            this.AltitudeGroupBox.PerformLayout();
             this.HeadingGroupBox.ResumeLayout(false);
             this.HeadingGroupBox.PerformLayout();
+            this.AirSpeedGroupBox.ResumeLayout(false);
+            this.AirSpeedGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -351,10 +550,25 @@
         private System.Windows.Forms.ToolStripMenuItem WebsiteMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ReportIssueMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AboutMenuItem;
+        private System.Windows.Forms.TabControl TFMTabControl;
+        private System.Windows.Forms.TabPage AvionicsTabPage;
+        private System.Windows.Forms.TabPage FlightPlanTabPage;
+        private System.Windows.Forms.TabPage ProceduresTabPage;
+        private System.Windows.Forms.TabPage FindTabPage;
+        private System.Windows.Forms.TableLayoutPanel AvionicsLayoutTable;
+        private System.Windows.Forms.GroupBox AltitudeGroupBox;
+        private System.Windows.Forms.CheckBox APAltitudeCheckBox;
+        private System.Windows.Forms.TextBox AltitudeTextBox;
+        private System.Windows.Forms.Label AltitudeLabel;
         private System.Windows.Forms.GroupBox HeadingGroupBox;
+        private System.Windows.Forms.CheckBox APHeadingCheckBox;
         private System.Windows.Forms.TextBox HeadingTextBox;
         private System.Windows.Forms.Label HeadingLabel;
-        private System.Windows.Forms.CheckBox APHeadingCheckBox;
+        private System.Windows.Forms.GroupBox AirSpeedGroupBox;
+        private System.Windows.Forms.CheckBox AirSpeedCheckBox;
+        private System.Windows.Forms.TextBox AirSpeedTextBox;
+        private System.Windows.Forms.Label AirSpeedLabel;
+        private System.Windows.Forms.GroupBox MachGroupBox;
     }
 }
 

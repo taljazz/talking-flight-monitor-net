@@ -102,7 +102,6 @@ namespace tfm
                     Tolk.Output("Current aircraft: " + Aircraft.AircraftName.Value);
                 }
 
-                #region Toggles
                 // read any instruments that are toggles
                 ReadToggle(Aircraft.AvionicsMaster, Aircraft.AvionicsMaster.Value > 0, "avionics master", "active", "off");
                 ReadToggle(Aircraft.PitotHeat, Aircraft.PitotHeat.Value > 0, "Pitot Heat", "on", "off");
@@ -143,7 +142,6 @@ namespace tfm
                 ReadToggle(Aircraft.Eng3FuelValve, Aircraft.Eng3FuelValve.Value > 0, "number 3 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.Eng4FuelValve, Aircraft.Eng4FuelValve.Value > 0, "number 4 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.FuelPump, Aircraft.FuelPump.Value > 0, "Fuel pump", "active", "off");
-                #endregion
                 ReadFlaps();
                 ReadAutopilotInstruments();
                 ReadSimConnectMessages();

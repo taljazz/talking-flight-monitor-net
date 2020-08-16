@@ -152,6 +152,7 @@ namespace tfm
                 ReadTrim();
                 ReadAltimeter();
                 ReadNextWaypoint();
+                ReadLights();
 
 
                 // TODO: engine select and lights
@@ -300,6 +301,25 @@ namespace tfm
                 TimeEnroute.Seconds);
                 Tolk.Output(strTime);
             }
+        }
+        private void ReadLights()
+        {
+            // read when aircraft lights change
+            if (Aircraft.Lights.ValueChanged)
+            {
+                // loop through each bit and announce which values have changed.
+                FsBitArray lightBits = Aircraft.Lights.Value;
+                for (int i = 0; i < lightBits.Changed.Length; i++)
+                {
+                    if (lightBits.Changed[i])
+                    {
+                        string name = Enum.GetName(typeof(Aircraft.light), i);
+                        string state = (Aircraft.Lights.Value[i]) ? "off" : "on";
+                        Tolk.Output($"{name} {state}. ");
+                    }
+                }
+            }
+
         }
         private void ReadSpoilers()
         {

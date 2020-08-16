@@ -133,7 +133,7 @@ namespace tfm
         public static  Offset<uint> Eng3FuelValve = new Offset<uint>(0x3598);
         public static  Offset<uint> Eng4FuelValve = new Offset<uint>(0x359c);
         public static  Offset<byte> PitotHeat = new Offset<byte>(0x029c);
-        public static Offset<BitArray> Lights = new Offset<BitArray>(0x0d0c, 2);
+        public static Offset<FsBitArray> Lights = new Offset<FsBitArray>(0x0d0c, 2);
         public enum light
         {
             Navigation,

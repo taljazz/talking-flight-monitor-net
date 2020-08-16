@@ -1,5 +1,6 @@
 ﻿using FSUIPC;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -78,7 +79,19 @@ namespace tfm
         public static  Offset<short> VerticalSpeed = new Offset<short>(0x0842);
         public static  Offset<short> AirTemp = new Offset<short>(0x0e8c);
         public static  Offset<byte> Nav1GS = new Offset<byte>(0x0c4c);
-        public static  Offset<byte> Nav1Flags = new Offset<byte>(0x0c4d);
+        public static  Offset<BitArray> Nav1Flags = new Offset<BitArray>(0x0c4d, 1);
+        public enum NavFlag
+        {
+            DMEAvailable,
+            TACAN,
+            VoiceAvailable,
+            NoSignal,
+            DMEGSCoLocated,
+            NoBackCourse,
+            FSAvailable,
+            LocaliserVOR
+        }
+
         public static  Offset<uint> Nav1Signal = new Offset<uint>(0x0c52);
         public static  Offset<ushort> Altimeter = new Offset<ushort>(0x0330);
         public static  Offset<byte> Doors = new Offset<byte>(0x3367);
@@ -120,37 +133,41 @@ namespace tfm
         public static  Offset<uint> Eng3FuelValve = new Offset<uint>(0x3598);
         public static  Offset<uint> Eng4FuelValve = new Offset<uint>(0x359c);
         public static  Offset<byte> PitotHeat = new Offset<byte>(0x029c);
-        // public static  Offset<BitArray> Lights = new Offset<BitArray>(0x0d0c);
+        public static Offset<BitArray> Lights = new Offset<BitArray>(0x0d0c, 2);
+        public enum light
+        {
+            Navigation,
+            Beacon,
+            Landing,
+            Taxi,
+            Strobe,
+            Instruments,
+            Recognition,
+            Wing,
+            Logo,
+            Cabin
+        }
+
         public static  Offset<ushort> WindSpeed = new Offset<ushort>(0x0e90);
         public static  Offset<ushort> WindDirection = new Offset<ushort>(0x0e92);
         public static  Offset<ushort> WindGust = new Offset<ushort>(0x0e94);
         public static  Offset<uint> RadioAltimeter = new Offset<uint>(0x31e4);
         public static  Offset<byte> FuelPump = new Offset<byte>(0x3104);
-        public static  Offset<uint> lvl_center = new Offset<uint>(0x0b74);
-        public static  Offset<uint> cap_center = new Offset<uint>(0x0b78);
-        public static  Offset<uint> lvl_center2 = new Offset<uint>(0x1244);
-        public static  Offset<uint> cap_center2 = new Offset<uint>(0x1248);
-        public static  Offset<uint> lvl_center3 = new Offset<uint>(0x124c);
-        public static  Offset<uint> cap_center3 = new Offset<uint>(0x1250);
-        public static  Offset<uint> lvl_main_left = new Offset<uint>(0x0b7c);
-        public static  Offset<uint> cap_main_left = new Offset<uint>(0x0b80);
-        public static  Offset<uint> lvl_aux_left = new Offset<uint>(0x0b84);
-        public static  Offset<uint> cap_aux_left = new Offset<uint>(0x0b88);
-        public static  Offset<uint> lvl_tip_left = new Offset<uint>(0x0b8c);
-        public static  Offset<uint> cap_tip_left = new Offset<uint>(0x0b90);
-        public static  Offset<uint> lvl_main_right = new Offset<uint>(0x0b94);
-        public static  Offset<uint> cap_main_right = new Offset<uint>(0x0b98);
-        public static  Offset<uint> lvl_aux_right = new Offset<uint>(0x0b9c);
-        public static  Offset<uint> cap_aux_right = new Offset<uint>(0x0ba0);
-        public static  Offset<uint> lvl_tip_right = new Offset<uint>(0x0ba4);
-        public static  Offset<uint> cap_tip_right = new Offset<uint>(0x0ba8);
         public static  Offset<ushort> fuel_weight = new Offset<ushort>(0x0af4);
         public static  Offset<ushort> num_engines = new Offset<ushort>(0x0aec);
         public static  Offset<double> eng1_fuel_flow = new Offset<double>(0x0918);
         public static  Offset<double> eng2_fuel_flow = new Offset<double>(0x09b0);
         public static  Offset<double> eng3_fuel_flow = new Offset<double>(0x0a48);
         public static  Offset<double> eng4_fuel_flow = new Offset<double>(0x0ae0);
-        // public static  Offset<BitArray> EngineSelectFlags = new Offset<BitArray>(0x0888);
+        public static Offset<BitArray> EngineSelectFlags = new Offset<BitArray>(0x0888, 1);
+        public enum EngSelect
+        {
+            Eng1,
+            Eng2,
+            Eng3,
+            Eng4
+        }
+
         public static  Offset<double> GyroSuction = new Offset<double>(0x0b18);
         public static  Offset<byte> OilQuantity = new Offset<byte>(0x66c9);
         public static  Offset<string> AircraftName = new Offset<string>(0x3d00, 255);

@@ -27,9 +27,20 @@ namespace tfm
     public class Instrumentation
     {
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
-        
-         // initialize command mode sound
-         CachedSound cmdSound = new CachedSound(@"sounds\command.wav");
+        // timers
+        private static System.Timers.Timer RunwayGuidanceTimer;
+        private double HdgRight;
+        private double HdgLeft;
+
+        // Audio objects
+        IWavePlayer driverOut;
+        SignalGenerator wg;
+        PanningSampleProvider pan;
+        OffsetSampleProvider pulse;
+        MixingSampleProvider mixer;
+
+        // initialize command mode sound
+        CachedSound cmdSound = new CachedSound(@"sounds\command.wav");
 // list to store registered hotkey identifiers
         List<string> hotkeys = new List<string>();
         FsFuelTanksCollection FuelTanks = null;
@@ -51,10 +62,13 @@ namespace tfm
 
         public bool muteSimconnect { get; private set; }
         public bool flightFollowingOnline { get; private set; }
+        public bool RunwayGuidanceEnabled { get; private set; }
+
         public double CurrentHeading;   
 
         public ReverseGeoCode<ExtendedGeoName> r = new ReverseGeoCode<ExtendedGeoName>(GeoFileReader.ReadExtendedGeoNames(@".\data\cities1000.txt"));
         private int OldSpoilersValue;
+        private double RunwayGuidanceTrackedHeading;
 
         public Instrumentation()
         {
@@ -72,7 +86,8 @@ namespace tfm
             Tolk.DetectScreenReader();
             Tolk.Output("TFM dot net started!");
             HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
-            
+            RunwayGuidanceEnabled = false;
+
         }
 
         public void ReadAircraftState()
@@ -652,12 +667,88 @@ namespace tfm
         {
             Tolk.Output("not yet implemented.");
         }
-
         private void onRunwayGuidanceKey()
         {
-            Tolk.Output("not yet implemented.");
+            if (!RunwayGuidanceEnabled)
+            {
+                RunwayGuidanceEnabled = true;
+                // set up the timer
+                RunwayGuidanceTimer = new System.Timers.Timer(200); // 200 milliseconds
+                // Hook up the Elapsed event for the timer. 
+                RunwayGuidanceTimer.Elapsed += OnRunwayGuidanceTickEvent;
+                RunwayGuidanceTimer.AutoReset = true;
+                RunwayGuidanceTrackedHeading = (double)Math.Round(Aircraft.CompassHeading.Value);
+                Tolk.Output($"Runway guidance enabled. current heading: {RunwayGuidanceTrackedHeading}. ");
+                // play tones for 45 degrees on either side of the tracked heading
+                HdgRight = RunwayGuidanceTrackedHeading + 45;
+                HdgLeft = RunwayGuidanceTrackedHeading - 45;
+                if (HdgRight > 360)
+                {
+                    HdgRight = HdgRight - 360;
+                }
+                if (HdgLeft < 0)
+                {
+                    HdgLeft = HdgLeft + 360;
+                }
+                // start audio
+                driverOut = new WaveOutEvent();
+                mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+                mixer.ReadFully = true;
+                driverOut.Init(mixer);
+                // start the mixer. We can then add audio sources as needed.
+                driverOut.Play();
+                RunwayGuidanceTimer.Enabled = true;
+            }
+            else
+            {
+                driverOut.Stop();
+                RunwayGuidanceTimer.Stop();
+                RunwayGuidanceEnabled = false;
+                Tolk.Output("Runway Guidance disabled. ");
+            }
+
+
+
+
+
+
+
+        }
+        private void OnRunwayGuidanceTickEvent(Object source, ElapsedEventArgs e)
+        {
+            // signal generator for generating tones
+            wg = new SignalGenerator();
+            wg.Type = SignalGeneratorType.Square;
+            wg.Gain = 0.1;
+
+            pan = new PanningSampleProvider(wg.ToMono());
+            // we use an OffsetSampleProvider to allow playing beep tones
+            pulse = new OffsetSampleProvider(pan)
+            {
+                Take = TimeSpan.FromMilliseconds(50),
+            };
+            double hdg = (double)Math.Round(Aircraft.CompassHeading.Value);
+            if (hdg > RunwayGuidanceTrackedHeading && hdg < HdgRight)
+            {
+                double freq = mapOneRangeToAnother(hdg, RunwayGuidanceTrackedHeading, HdgRight, 400, 800, 0);
+                wg.Frequency = freq;
+                pan.Pan = 1;
+                mixer.AddMixerInput(pulse);
+            }
+            if (hdg < RunwayGuidanceTrackedHeading && hdg > HdgLeft)
+            {
+                double freq = mapOneRangeToAnother(hdg, HdgLeft, RunwayGuidanceTrackedHeading, 800, 400, 0);
+                wg.Frequency = freq;
+                pan.Pan = -1;
+                mixer.AddMixerInput(pulse);
+            }
+            if (hdg == RunwayGuidanceTrackedHeading)
+            {
+                mixer.RemoveAllMixerInputs();
+            }
         }
 
+        
         private void onMessageKey()
         {
             Tolk.Output("not yet implemented.");

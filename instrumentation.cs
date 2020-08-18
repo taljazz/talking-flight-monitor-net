@@ -63,6 +63,8 @@ namespace tfm
         public bool muteSimconnect { get; private set; }
         public bool flightFollowingOnline { get; private set; }
         public bool RunwayGuidanceEnabled { get; private set; }
+        public bool LocaliserDetected { get; private set; }
+        public bool ReadILSEnabled { get; private set; }
 
         public double CurrentHeading;   
 
@@ -94,12 +96,13 @@ namespace tfm
         {
             // If this is the first time through the loop, don't read instruments.
 
-            if (!FirstRun)
+            if (!FirstRun || InstrumentationEnabled)
             {
                 // Read when aircraft changes
                 if (Aircraft.AircraftName.ValueChanged)
                 {
                     Tolk.Output("Current aircraft: " + Aircraft.AircraftName.Value);
+                    DetectFuelTanks();
                 }
 
                 // read any instruments that are toggles
@@ -153,13 +156,13 @@ namespace tfm
                 ReadAltimeter();
                 ReadNextWaypoint();
                 ReadLights();
-
-
-                // TODO: engine select and lights
+                ReadDoors();
+                ReadILSInfo();
+                // TODO: engine select
             }
             else
             {
-                Tolk.Output(Aircraft.AircraftName.Value);
+                Tolk.Output("current aircraft: " + Aircraft.AircraftName.Value);
                 DetectFuelTanks();
                 FirstRun = false;
             }
@@ -168,6 +171,7 @@ namespace tfm
         
         private void DetectFuelTanks()
         {
+            // grab fuel tank data from the sim
             FSUIPCConnection.PayloadServices.RefreshData();
             // Assign the fuel tanks to our class level variable for easier access
             FuelTanks = FSUIPCConnection.PayloadServices.FuelTanks;
@@ -320,6 +324,36 @@ namespace tfm
                 }
             }
 
+        }
+        private void ReadDoors()
+        {
+            // read aircraft exit status
+            if (Aircraft.Doors.ValueChanged)
+            {
+                // loop through each bit and announce which values have changed.
+                FsBitArray DoorBits = Aircraft.Doors.Value;
+                for (int i = 0; i < DoorBits.Changed.Length; i++)
+                {
+                    if (DoorBits.Changed[i])
+                    {
+                        string state = (Aircraft.Doors.Value[i]) ? "closed" : "open";
+                        Tolk.Output($"door {i+1} {state}. ");
+                    }
+                }
+            }
+
+        }
+        private void ReadILSInfo()
+        {
+            if (ReadILSEnabled)
+            {
+                if (Aircraft.Nav1Signal.Value == 256 && LocaliserDetected == false && Aircraft.Nav1Flags.Value[7])
+                {
+                    Tolk.PreferSAPI(true);
+                    Tolk.Output("Localiser is alive. ");
+                    LocaliserDetected = true;
+                }
+            }
         }
         private void ReadSpoilers()
         {
@@ -609,45 +643,31 @@ namespace tfm
                     onTCASGround();
                     break;
                 case "Engine1Info":
-                    onEng1Key();
+                    onEngineInfoKey(1);
                     break;
                 case "Engine2Info":
-                    onEng2Key();
+                    onEngineInfoKey(2);
                     break;
                 case "Engine3Info":
-                    onEng3Key();
+                    onEngineInfoKey(3);
                     break;
                 case "Engine4Info":
-                    onEng4Key();
+                    onEngineInfoKey(4);
                     break;
 
             }
         }
         private void onWindKey()
         {
-            Tolk.Output("not yet implemented.");
+            double WindSpeed = (double)Aircraft.WindSpeed.Value;
+            double WindDirection = (double)Aircraft.WindDirection.Value * 360 / 65536;
+            WindDirection = Math.Round(WindDirection);
+            double WindGust = (double)Aircraft.WindGust.Value;
+            Tolk.Output($"Wind: {WindDirection} at {WindSpeed} knotts. Gusts at {WindGust} knotts.");
+
         }
 
-        private void onEng4Key()
-        {
-            Tolk.Output("not yet implemented.");
-        }
-
-        private void onEng3Key()
-        {
-            Tolk.Output("not yet implemented.");
-        }
-
-        private void onEng2Key()
-        {
-            Tolk.Output("not yet implemented.");
-        }
-
-        private void onEng1Key()
-        {
-            Tolk.Output("not yet implemented.");
-        }
-
+        
         private void onTCASAir()
         {
             Tolk.Output("not yet implemented.");
@@ -683,7 +703,27 @@ namespace tfm
 
         private void onFuelReportKey()
         {
-            Tolk.Output("not yet implemented.");
+            double TotalFuelWeight = 0;
+            double TotalFuelQuantity = 0;
+            // grab fuel tank data from the sim
+            FSUIPCConnection.PayloadServices.RefreshData();
+            // Assign the fuel tanks to our class level variable for easier access
+            FuelTanks = FSUIPCConnection.PayloadServices.FuelTanks;
+            foreach (FsFuelTank tank in FuelTanks)
+            {
+                if (tank.IsPresent)
+                {
+                    TotalFuelWeight += tank.WeightLbs;
+                    TotalFuelQuantity += tank.LevelUSGallons;
+                }
+            }
+            TotalFuelWeight = Math.Round(TotalFuelWeight);
+            TotalFuelQuantity = Math.Round(TotalFuelQuantity);
+            Tolk.Output($"total fuel: {TotalFuelWeight} pounds. ");
+            Tolk.Output($"{TotalFuelQuantity} gallons. ");
+            double TotalFuelFlow = (double)Aircraft.eng1_fuel_flow.Value + Aircraft.eng2_fuel_flow.Value + Aircraft.eng3_fuel_flow.Value + Aircraft.eng4_fuel_flow.Value;
+            TotalFuelFlow = Math.Round(TotalFuelFlow);
+            Tolk.Output($"Total fuel flow: {TotalFuelFlow}");
         }
         private void onRunwayGuidanceKey()
         {
@@ -963,5 +1003,35 @@ namespace tfm
             ResetHotkeys();
         }
 
+
+        private void onEngineInfoKey(int eng)
+        {
+            double N1 = 0;
+            double N2 = 0;
+            switch (eng)
+            {
+                case 1:
+                    N1 = (double)Aircraft.Eng1N1.Value;
+                    N2 = (double)Aircraft.Eng1N2.Value;
+                    break;
+                case 2:
+                    N1 = (double)Aircraft.Eng2N1.Value;
+                    N2 = (double)Aircraft.Eng2N2.Value;
+                    break;
+                case 3:
+                    N1 = (double)Aircraft.Eng3N1.Value;
+                    N2 = (double)Aircraft.Eng3N2.Value;
+                    break;
+                case 4:
+                    N1 = (double)Aircraft.Eng4N1.Value;
+                    N2 = (double)Aircraft.Eng4N2.Value;
+                    break;
+            }
+            Tolk.Output($"Engine {eng}. ");
+            Tolk.Output($"N1: {Math.Round(N1)}. ");
+            Tolk.Output($"N2: {Math.Round(N2)}. ");
+        }
+
+
+        }
     }
-}

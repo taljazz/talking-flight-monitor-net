@@ -79,6 +79,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="TimeZoneConverter, Version=3.2.0.0, Culture=neutral, PublicKeyToken=e20ab7d0d9479841, processorArchitecture=MSIL">
+      <HintPath>packages\TimeZoneConverter.3.2.0\lib\net471\TimeZoneConverter.dll</HintPath>
+    </Reference>
     <Reference Include="TolkDotNet">
       <HintPath>.\TolkDotNet.dll</HintPath>
     </Reference>

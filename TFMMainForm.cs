@@ -82,5 +82,71 @@ namespace tfm
         {
             this.Dispose();
         }
-    }
-}
+
+        private void TFMMainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Manually define keyboard shortcuts for the Gages list and the gage value textbox.
+            if ((e.Control && e.KeyCode == Keys.E))
+            {
+                GageValueTextBox.Focus();
+            }// End Gage textfield assignment.
+            if ((e.Control && e.KeyCode == Keys.G))
+            {
+                GageComboBox.Focus();
+            } //End Gage list assignment.
+            if ((e.Control && e.KeyCode == Keys.U))
+            {
+                AutoGageCheckBox.Focus();
+            } // End Auto gage assignment.
+            if ((e.Control && e.KeyCode == Keys.F))
+            {
+                FlyModeCheckBox.Focus();
+            } //End FlyMode assignment.
+            if ((e.Control && e.KeyCode == Keys.P))
+            {
+                AutopilotCheckBox.Focus();
+            } //End autopilot assignment.
+
+
+
+        } //End KeyDown event.
+
+        private void GageComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GageValueTextBox.AccessibleName = "Enter " + GageComboBox.SelectedItem.ToString();
+        }
+
+        private void AutoGageCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if(AutoGageCheckBox.Checked==true)
+            {
+                AutoGageCheckBox.ForeColor = Color.Green;
+            } else
+            {
+                AutoGageCheckBox.ForeColor = Color.Red;         
+            }//End color change.
+        } //End auto gage checked changed event.
+
+        private void FlyModeCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if(FlyModeCheckBox.Checked == true)
+            {
+                FlyModeCheckBox.ForeColor = Color.Green;
+            } else
+            {
+                FlyModeCheckBox.ForeColor = Color.Red;
+            } //End color change.
+        } // End FlyMode checked change event.
+
+        private void AutopilotCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if(AutopilotCheckBox.Checked == true)
+            {
+                AutopilotCheckBox.ForeColor = Color.Green;
+            } else
+            {
+                AutopilotCheckBox.ForeColor = Color.Red;
+            } //End color change.
+        } //End Autopilot checked changed event.
+    } //End TFMMainForm class.
+} //End TFM namespace.

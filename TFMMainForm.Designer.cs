@@ -49,30 +49,17 @@
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TFMTabControl = new System.Windows.Forms.TabControl();
             this.AvionicsTabPage = new System.Windows.Forms.TabPage();
-            this.AvionicsLayoutTable = new System.Windows.Forms.TableLayoutPanel();
-            this.AltitudeGroupBox = new System.Windows.Forms.GroupBox();
-            this.APAltitudeCheckBox = new System.Windows.Forms.CheckBox();
-            this.AltitudeTextBox = new System.Windows.Forms.TextBox();
-            this.AltitudeLabel = new System.Windows.Forms.Label();
-            this.HeadingGroupBox = new System.Windows.Forms.GroupBox();
-            this.APHeadingCheckBox = new System.Windows.Forms.CheckBox();
-            this.HeadingTextBox = new System.Windows.Forms.TextBox();
-            this.HeadingLabel = new System.Windows.Forms.Label();
+            this.AutopilotCheckBox = new System.Windows.Forms.CheckBox();
+            this.FlyModeCheckBox = new System.Windows.Forms.CheckBox();
+            this.AutoGageCheckBox = new System.Windows.Forms.CheckBox();
+            this.GageValueTextBox = new System.Windows.Forms.TextBox();
+            this.GageComboBox = new System.Windows.Forms.ComboBox();
             this.FlightPlanTabPage = new System.Windows.Forms.TabPage();
             this.ProceduresTabPage = new System.Windows.Forms.TabPage();
             this.FindTabPage = new System.Windows.Forms.TabPage();
-            this.AirSpeedGroupBox = new System.Windows.Forms.GroupBox();
-            this.AirSpeedLabel = new System.Windows.Forms.Label();
-            this.AirSpeedTextBox = new System.Windows.Forms.TextBox();
-            this.AirSpeedCheckBox = new System.Windows.Forms.CheckBox();
-            this.MachGroupBox = new System.Windows.Forms.GroupBox();
             this.TFMMainMenu.SuspendLayout();
             this.TFMTabControl.SuspendLayout();
             this.AvionicsTabPage.SuspendLayout();
-            this.AvionicsLayoutTable.SuspendLayout();
-            this.AltitudeGroupBox.SuspendLayout();
-            this.HeadingGroupBox.SuspendLayout();
-            this.AirSpeedGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerMain
@@ -95,7 +82,7 @@
             this.HelpMenu});
             this.TFMMainMenu.Location = new System.Drawing.Point(0, 0);
             this.TFMMainMenu.Name = "TFMMainMenu";
-            this.TFMMainMenu.Size = new System.Drawing.Size(717, 33);
+            this.TFMMainMenu.Size = new System.Drawing.Size(484, 33);
             this.TFMMainMenu.TabIndex = 0;
             this.TFMMainMenu.Text = "Main menu";
             // 
@@ -277,135 +264,100 @@
             this.TFMTabControl.Location = new System.Drawing.Point(0, 33);
             this.TFMTabControl.Name = "TFMTabControl";
             this.TFMTabControl.SelectedIndex = 0;
-            this.TFMTabControl.Size = new System.Drawing.Size(717, 479);
+            this.TFMTabControl.Size = new System.Drawing.Size(484, 228);
             this.TFMTabControl.TabIndex = 1;
             // 
             // AvionicsTabPage
             // 
             this.AvionicsTabPage.AccessibleName = "Avionics";
-            this.AvionicsTabPage.Controls.Add(this.AvionicsLayoutTable);
+            this.AvionicsTabPage.Controls.Add(this.AutopilotCheckBox);
+            this.AvionicsTabPage.Controls.Add(this.FlyModeCheckBox);
+            this.AvionicsTabPage.Controls.Add(this.AutoGageCheckBox);
+            this.AvionicsTabPage.Controls.Add(this.GageValueTextBox);
+            this.AvionicsTabPage.Controls.Add(this.GageComboBox);
             this.AvionicsTabPage.Location = new System.Drawing.Point(4, 30);
             this.AvionicsTabPage.Name = "AvionicsTabPage";
             this.AvionicsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.AvionicsTabPage.Size = new System.Drawing.Size(709, 445);
+            this.AvionicsTabPage.Size = new System.Drawing.Size(476, 194);
             this.AvionicsTabPage.TabIndex = 0;
             this.AvionicsTabPage.Text = "Avionics";
             this.AvionicsTabPage.UseVisualStyleBackColor = true;
             // 
-            // AvionicsLayoutTable
+            // AutopilotCheckBox
             // 
-            this.AvionicsLayoutTable.AutoSize = true;
-            this.AvionicsLayoutTable.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.AvionicsLayoutTable.ColumnCount = 2;
-            this.AvionicsLayoutTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.AvionicsLayoutTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.AvionicsLayoutTable.Controls.Add(this.AltitudeGroupBox, 0, 1);
-            this.AvionicsLayoutTable.Controls.Add(this.HeadingGroupBox, 0, 0);
-            this.AvionicsLayoutTable.Controls.Add(this.AirSpeedGroupBox, 0, 2);
-            this.AvionicsLayoutTable.Controls.Add(this.MachGroupBox, 0, 3);
-            this.AvionicsLayoutTable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AvionicsLayoutTable.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.AvionicsLayoutTable.Location = new System.Drawing.Point(3, 3);
-            this.AvionicsLayoutTable.Name = "AvionicsLayoutTable";
-            this.AvionicsLayoutTable.RowCount = 6;
-            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.AvionicsLayoutTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.AvionicsLayoutTable.Size = new System.Drawing.Size(703, 439);
-            this.AvionicsLayoutTable.TabIndex = 3;
+            this.AutopilotCheckBox.AccessibleName = "Autopilot";
+            this.AutopilotCheckBox.AccessibleRole = System.Windows.Forms.AccessibleRole.CheckButton;
+            this.AutopilotCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.AutopilotCheckBox.AutoSize = true;
+            this.AutopilotCheckBox.Location = new System.Drawing.Point(378, 180);
+            this.AutopilotCheckBox.Name = "AutopilotCheckBox";
+            this.AutopilotCheckBox.Size = new System.Drawing.Size(90, 31);
+            this.AutopilotCheckBox.TabIndex = 4;
+            this.AutopilotCheckBox.Text = "Autopilot";
+            this.AutopilotCheckBox.UseVisualStyleBackColor = true;
+            this.AutopilotCheckBox.CheckedChanged += new System.EventHandler(this.AutopilotCheckBox_CheckedChanged);
             // 
-            // AltitudeGroupBox
+            // FlyModeCheckBox
             // 
-            this.AltitudeGroupBox.AccessibleName = "Altitude group";
-            this.AltitudeGroupBox.AutoSize = true;
-            this.AltitudeGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.AltitudeGroupBox.Controls.Add(this.APAltitudeCheckBox);
-            this.AltitudeGroupBox.Controls.Add(this.AltitudeTextBox);
-            this.AltitudeGroupBox.Controls.Add(this.AltitudeLabel);
-            this.AltitudeGroupBox.Location = new System.Drawing.Point(3, 76);
-            this.AltitudeGroupBox.Name = "AltitudeGroupBox";
-            this.AltitudeGroupBox.Size = new System.Drawing.Size(321, 67);
-            this.AltitudeGroupBox.TabIndex = 3;
-            this.AltitudeGroupBox.TabStop = false;
-            this.AltitudeGroupBox.Text = "Altitude";
+            this.FlyModeCheckBox.AccessibleName = "Approach mode";
+            this.FlyModeCheckBox.AccessibleRole = System.Windows.Forms.AccessibleRole.CheckButton;
+            this.FlyModeCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.FlyModeCheckBox.AutoSize = true;
+            this.FlyModeCheckBox.Location = new System.Drawing.Point(20, 180);
+            this.FlyModeCheckBox.Name = "FlyModeCheckBox";
+            this.FlyModeCheckBox.Size = new System.Drawing.Size(142, 31);
+            this.FlyModeCheckBox.TabIndex = 3;
+            this.FlyModeCheckBox.Text = "Approach mode";
+            this.FlyModeCheckBox.UseVisualStyleBackColor = true;
+            this.FlyModeCheckBox.CheckedChanged += new System.EventHandler(this.FlyModeCheckBox_CheckedChanged);
             // 
-            // APAltitudeCheckBox
+            // AutoGageCheckBox
             // 
-            this.APAltitudeCheckBox.AccessibleName = "Give altitude to autopilot";
-            this.APAltitudeCheckBox.AutoSize = true;
-            this.APAltitudeCheckBox.Location = new System.Drawing.Point(187, 25);
-            this.APAltitudeCheckBox.Name = "APAltitudeCheckBox";
-            this.APAltitudeCheckBox.Size = new System.Drawing.Size(128, 25);
-            this.APAltitudeCheckBox.TabIndex = 2;
-            this.APAltitudeCheckBox.Text = "A&ltitude (AP)";
-            this.APAltitudeCheckBox.UseVisualStyleBackColor = true;
+            this.AutoGageCheckBox.AccessibleName = "Automatic gage";
+            this.AutoGageCheckBox.AccessibleRole = System.Windows.Forms.AccessibleRole.CheckButton;
+            this.AutoGageCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.AutoGageCheckBox.AutoSize = true;
+            this.AutoGageCheckBox.Location = new System.Drawing.Point(359, 85);
+            this.AutoGageCheckBox.Name = "AutoGageCheckBox";
+            this.AutoGageCheckBox.Size = new System.Drawing.Size(136, 31);
+            this.AutoGageCheckBox.TabIndex = 2;
+            this.AutoGageCheckBox.Text = "Automatic gage";
+            this.AutoGageCheckBox.UseVisualStyleBackColor = true;
+            this.AutoGageCheckBox.CheckedChanged += new System.EventHandler(this.AutoGageCheckBox_CheckedChanged);
             // 
-            // AltitudeTextBox
+            // GageValueTextBox
             // 
-            this.AltitudeTextBox.AccessibleName = "Enter altitude";
-            this.AltitudeTextBox.Location = new System.Drawing.Point(81, 25);
-            this.AltitudeTextBox.Name = "AltitudeTextBox";
-            this.AltitudeTextBox.Size = new System.Drawing.Size(100, 29);
-            this.AltitudeTextBox.TabIndex = 1;
-            this.AltitudeTextBox.WordWrap = false;
+            this.GageValueTextBox.Location = new System.Drawing.Point(249, 83);
+            this.GageValueTextBox.Name = "GageValueTextBox";
+            this.GageValueTextBox.Size = new System.Drawing.Size(100, 29);
+            this.GageValueTextBox.TabIndex = 1;
+            this.GageValueTextBox.WordWrap = false;
             // 
-            // AltitudeLabel
+            // GageComboBox
             // 
-            this.AltitudeLabel.AccessibleName = "Altitude:";
-            this.AltitudeLabel.AutoSize = true;
-            this.AltitudeLabel.Location = new System.Drawing.Point(3, 25);
-            this.AltitudeLabel.Name = "AltitudeLabel";
-            this.AltitudeLabel.Size = new System.Drawing.Size(72, 21);
-            this.AltitudeLabel.TabIndex = 0;
-            this.AltitudeLabel.Text = "&Altitude:";
-            // 
-            // HeadingGroupBox
-            // 
-            this.HeadingGroupBox.AccessibleName = "Heading group";
-            this.HeadingGroupBox.AutoSize = true;
-            this.HeadingGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.HeadingGroupBox.Controls.Add(this.APHeadingCheckBox);
-            this.HeadingGroupBox.Controls.Add(this.HeadingTextBox);
-            this.HeadingGroupBox.Controls.Add(this.HeadingLabel);
-            this.HeadingGroupBox.Location = new System.Drawing.Point(3, 3);
-            this.HeadingGroupBox.Name = "HeadingGroupBox";
-            this.HeadingGroupBox.Size = new System.Drawing.Size(327, 67);
-            this.HeadingGroupBox.TabIndex = 2;
-            this.HeadingGroupBox.TabStop = false;
-            this.HeadingGroupBox.Text = "Heading";
-            // 
-            // APHeadingCheckBox
-            // 
-            this.APHeadingCheckBox.AccessibleName = "Give heading to autopilot";
-            this.APHeadingCheckBox.AutoSize = true;
-            this.APHeadingCheckBox.Location = new System.Drawing.Point(190, 25);
-            this.APHeadingCheckBox.Name = "APHeadingCheckBox";
-            this.APHeadingCheckBox.Size = new System.Drawing.Size(131, 25);
-            this.APHeadingCheckBox.TabIndex = 2;
-            this.APHeadingCheckBox.Text = "H&eading (AP)";
-            this.APHeadingCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // HeadingTextBox
-            // 
-            this.HeadingTextBox.AccessibleName = "Enter heading";
-            this.HeadingTextBox.Location = new System.Drawing.Point(84, 25);
-            this.HeadingTextBox.Name = "HeadingTextBox";
-            this.HeadingTextBox.Size = new System.Drawing.Size(100, 29);
-            this.HeadingTextBox.TabIndex = 1;
-            this.HeadingTextBox.WordWrap = false;
-            // 
-            // HeadingLabel
-            // 
-            this.HeadingLabel.AccessibleName = "Heading:";
-            this.HeadingLabel.AutoSize = true;
-            this.HeadingLabel.Location = new System.Drawing.Point(3, 25);
-            this.HeadingLabel.Name = "HeadingLabel";
-            this.HeadingLabel.Size = new System.Drawing.Size(75, 21);
-            this.HeadingLabel.TabIndex = 0;
-            this.HeadingLabel.Text = "Hea&ding:";
+            this.GageComboBox.AccessibleName = "Gages";
+            this.GageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.GageComboBox.FormattingEnabled = true;
+            this.GageComboBox.Items.AddRange(new object[] {
+            "ADF",
+            "Air speed",
+            "Altimeter [inches]",
+            "Altimeter [QNH]",
+            "Altitude",
+            "Com 1",
+            "Com 2",
+            "Heading",
+            "Mach",
+            "Nav 1",
+            "Nav 2",
+            "Transponder",
+            "Vertical speed"});
+            this.GageComboBox.Location = new System.Drawing.Point(10, 83);
+            this.GageComboBox.Name = "GageComboBox";
+            this.GageComboBox.Size = new System.Drawing.Size(121, 29);
+            this.GageComboBox.Sorted = true;
+            this.GageComboBox.TabIndex = 0;
+            this.GageComboBox.SelectedIndexChanged += new System.EventHandler(this.GageComboBox_SelectedIndexChanged);
             // 
             // FlightPlanTabPage
             // 
@@ -413,7 +365,7 @@
             this.FlightPlanTabPage.Location = new System.Drawing.Point(4, 30);
             this.FlightPlanTabPage.Name = "FlightPlanTabPage";
             this.FlightPlanTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.FlightPlanTabPage.Size = new System.Drawing.Size(709, 445);
+            this.FlightPlanTabPage.Size = new System.Drawing.Size(476, 194);
             this.FlightPlanTabPage.TabIndex = 1;
             this.FlightPlanTabPage.Text = "Flight plan";
             this.FlightPlanTabPage.UseVisualStyleBackColor = true;
@@ -423,7 +375,7 @@
             this.ProceduresTabPage.AccessibleName = "Procedures";
             this.ProceduresTabPage.Location = new System.Drawing.Point(4, 30);
             this.ProceduresTabPage.Name = "ProceduresTabPage";
-            this.ProceduresTabPage.Size = new System.Drawing.Size(709, 445);
+            this.ProceduresTabPage.Size = new System.Drawing.Size(476, 194);
             this.ProceduresTabPage.TabIndex = 2;
             this.ProceduresTabPage.Text = "Procedures";
             this.ProceduresTabPage.UseVisualStyleBackColor = true;
@@ -433,67 +385,10 @@
             this.FindTabPage.AccessibleName = "Find";
             this.FindTabPage.Location = new System.Drawing.Point(4, 30);
             this.FindTabPage.Name = "FindTabPage";
-            this.FindTabPage.Size = new System.Drawing.Size(709, 445);
+            this.FindTabPage.Size = new System.Drawing.Size(476, 194);
             this.FindTabPage.TabIndex = 3;
             this.FindTabPage.Text = "Find";
             this.FindTabPage.UseVisualStyleBackColor = true;
-            // 
-            // AirSpeedGroupBox
-            // 
-            this.AirSpeedGroupBox.AccessibleName = "Air speed";
-            this.AirSpeedGroupBox.AutoSize = true;
-            this.AirSpeedGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.AirSpeedGroupBox.Controls.Add(this.AirSpeedCheckBox);
-            this.AirSpeedGroupBox.Controls.Add(this.AirSpeedTextBox);
-            this.AirSpeedGroupBox.Controls.Add(this.AirSpeedLabel);
-            this.AirSpeedGroupBox.Location = new System.Drawing.Point(3, 149);
-            this.AirSpeedGroupBox.Name = "AirSpeedGroupBox";
-            this.AirSpeedGroupBox.Size = new System.Drawing.Size(344, 67);
-            this.AirSpeedGroupBox.TabIndex = 4;
-            this.AirSpeedGroupBox.TabStop = false;
-            this.AirSpeedGroupBox.Text = "Air speed";
-            // 
-            // AirSpeedLabel
-            // 
-            this.AirSpeedLabel.AccessibleName = "Air speed";
-            this.AirSpeedLabel.AutoSize = true;
-            this.AirSpeedLabel.Location = new System.Drawing.Point(3, 25);
-            this.AirSpeedLabel.Name = "AirSpeedLabel";
-            this.AirSpeedLabel.Size = new System.Drawing.Size(82, 21);
-            this.AirSpeedLabel.TabIndex = 0;
-            this.AirSpeedLabel.Text = "Air &speed";
-            // 
-            // AirSpeedTextBox
-            // 
-            this.AirSpeedTextBox.AccessibleName = "Enter air speed";
-            this.AirSpeedTextBox.Location = new System.Drawing.Point(90, 25);
-            this.AirSpeedTextBox.Name = "AirSpeedTextBox";
-            this.AirSpeedTextBox.Size = new System.Drawing.Size(100, 29);
-            this.AirSpeedTextBox.TabIndex = 1;
-            this.AirSpeedTextBox.WordWrap = false;
-            // 
-            // AirSpeedCheckBox
-            // 
-            this.AirSpeedCheckBox.AccessibleName = "Give air speed to autopilot";
-            this.AirSpeedCheckBox.AutoSize = true;
-            this.AirSpeedCheckBox.Location = new System.Drawing.Point(196, 25);
-            this.AirSpeedCheckBox.Name = "AirSpeedCheckBox";
-            this.AirSpeedCheckBox.Size = new System.Drawing.Size(142, 25);
-            this.AirSpeedCheckBox.TabIndex = 2;
-            this.AirSpeedCheckBox.Text = "Air s&peed (AP)";
-            this.AirSpeedCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // MachGroupBox
-            // 
-            this.MachGroupBox.AccessibleName = "Mach group";
-            this.MachGroupBox.AutoSize = true;
-            this.MachGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.MachGroupBox.Location = new System.Drawing.Point(3, 222);
-            this.MachGroupBox.Name = "MachGroupBox";
-            this.MachGroupBox.Size = new System.Drawing.Size(6, 5);
-            this.MachGroupBox.TabIndex = 5;
-            this.MachGroupBox.TabStop = false;
-            this.MachGroupBox.Text = "Mach";
             // 
             // TFMMainForm
             // 
@@ -502,30 +397,26 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.CausesValidation = false;
-            this.ClientSize = new System.Drawing.Size(717, 512);
+            this.ClientSize = new System.Drawing.Size(484, 261);
             this.Controls.Add(this.TFMTabControl);
             this.Controls.Add(this.TFMMainMenu);
             this.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KeyPreview = true;
             this.MainMenuStrip = this.TFMMainMenu;
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "TFMMainForm";
             this.Text = "Talking flight moniter";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TFMMainForm_KeyDown);
             this.TFMMainMenu.ResumeLayout(false);
             this.TFMMainMenu.PerformLayout();
             this.TFMTabControl.ResumeLayout(false);
             this.AvionicsTabPage.ResumeLayout(false);
             this.AvionicsTabPage.PerformLayout();
-            this.AvionicsLayoutTable.ResumeLayout(false);
-            this.AvionicsLayoutTable.PerformLayout();
-            this.AltitudeGroupBox.ResumeLayout(false);
-            this.AltitudeGroupBox.PerformLayout();
-            this.HeadingGroupBox.ResumeLayout(false);
-            this.HeadingGroupBox.PerformLayout();
-            this.AirSpeedGroupBox.ResumeLayout(false);
-            this.AirSpeedGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -555,20 +446,11 @@
         private System.Windows.Forms.TabPage FlightPlanTabPage;
         private System.Windows.Forms.TabPage ProceduresTabPage;
         private System.Windows.Forms.TabPage FindTabPage;
-        private System.Windows.Forms.TableLayoutPanel AvionicsLayoutTable;
-        private System.Windows.Forms.GroupBox AltitudeGroupBox;
-        private System.Windows.Forms.CheckBox APAltitudeCheckBox;
-        private System.Windows.Forms.TextBox AltitudeTextBox;
-        private System.Windows.Forms.Label AltitudeLabel;
-        private System.Windows.Forms.GroupBox HeadingGroupBox;
-        private System.Windows.Forms.CheckBox APHeadingCheckBox;
-        private System.Windows.Forms.TextBox HeadingTextBox;
-        private System.Windows.Forms.Label HeadingLabel;
-        private System.Windows.Forms.GroupBox AirSpeedGroupBox;
-        private System.Windows.Forms.CheckBox AirSpeedCheckBox;
-        private System.Windows.Forms.TextBox AirSpeedTextBox;
-        private System.Windows.Forms.Label AirSpeedLabel;
-        private System.Windows.Forms.GroupBox MachGroupBox;
+        private System.Windows.Forms.ComboBox GageComboBox;
+        private System.Windows.Forms.CheckBox AutoGageCheckBox;
+        private System.Windows.Forms.TextBox GageValueTextBox;
+        private System.Windows.Forms.CheckBox AutopilotCheckBox;
+        private System.Windows.Forms.CheckBox FlyModeCheckBox;
     }
 }
 

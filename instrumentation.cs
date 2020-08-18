@@ -65,6 +65,7 @@ namespace tfm
         public bool RunwayGuidanceEnabled { get; private set; }
         public bool LocaliserDetected { get; private set; }
         public bool ReadILSEnabled { get; private set; }
+        public bool ReadAutopilot { get; private set; }
 
         public double CurrentHeading;   
 
@@ -146,7 +147,7 @@ namespace tfm
                 ReadToggle(Aircraft.Eng4FuelValve, Aircraft.Eng4FuelValve.Value > 0, "number 4 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.FuelPump, Aircraft.FuelPump.Value > 0, "Fuel pump", "active", "off");
                 ReadFlaps();
-                ReadAutopilotInstruments();
+                if (ReadAutopilot) ReadAutopilotInstruments();
                 ReadSimConnectMessages();
                 ReadTransponder();
                 ReadComRadios();
@@ -728,18 +729,18 @@ namespace tfm
             PayloadServices ps = FSUIPCConnection.PayloadServices;
             // Refresh the current payload data
             ps.RefreshData();
-            string GrossWeight = ps.GrossWeightLbs.ToString("F2");
-            string EmptyWeight = ps.EmptyWeightLbs.ToString("F2");
-            string FuelWeight = ps.FuelWeightLbs.ToString("F2");
-            string PayloadWeight = ps.PayloadWeightLbs.ToString("F2");
-            string MaxGrossWeight = ps.MaxGrossWeightLbs.ToString("F2");
+            string GrossWeight = ps.GrossWeightLbs.ToString("F0");
+            string EmptyWeight = ps.EmptyWeightLbs.ToString("F0");
+            string FuelWeight = ps.FuelWeightLbs.ToString("F0");
+            string PayloadWeight = ps.PayloadWeightLbs.ToString("F0");
+            string MaxGrossWeight = ps.MaxGrossWeightLbs.ToString("F0");
             if (ps.GrossWeightLbs > ps.MaxGrossWeightLbs)
             {
                 Tolk.Output("Overweight warning! ");
             }
-            Tolk.Output($"Fuel Weight: {FuelWeight}");
-            Tolk.Output($"Payload Weight: {PayloadWeight}");
-            Tolk.Output($"Gross Weight: {GrossWeight} of {MaxGrossWeight} maximum.");
+            Tolk.Output($"Fuel Weight: {FuelWeight} pounds");
+            Tolk.Output($"Payload Weight: {PayloadWeight} pounds. ");
+            Tolk.Output($"Gross Weight: {GrossWeight} of {MaxGrossWeight} pounds maximum.");
 
         }
         private void onRunwayGuidanceKey()
@@ -851,7 +852,16 @@ namespace tfm
 
         private void onAutopilotKey()
         {
-            Tolk.Output("not yet implemented.");
+            if (ReadAutopilot)
+            {
+                ReadAutopilot = false;
+                Tolk.Output("read autopilot instruments disabled");
+            }
+            else
+            {
+                ReadAutopilot = true;
+                Tolk.Output("Read autopilot instruments enabled. ");
+            }
         }
 
         private void onManualKey()

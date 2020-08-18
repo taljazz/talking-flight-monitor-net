@@ -122,5 +122,8 @@
     <Setting Name="Engine4Info" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+4</Value>
     </Setting>
+    <Setting Name="WeightReport" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+W</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

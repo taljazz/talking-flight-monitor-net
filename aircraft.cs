@@ -153,7 +153,6 @@ namespace tfm
         public static  Offset<ushort> WindGust = new Offset<ushort>(0x0e94);
         public static  Offset<uint> RadioAltimeter = new Offset<uint>(0x31e4);
         public static  Offset<byte> FuelPump = new Offset<byte>(0x3104);
-        public static  Offset<ushort> fuel_weight = new Offset<ushort>(0x0af4);
         public static  Offset<ushort> num_engines = new Offset<ushort>(0x0aec);
         public static  Offset<double> eng1_fuel_flow = new Offset<double>(0x0918);
         public static  Offset<double> eng2_fuel_flow = new Offset<double>(0x09b0);

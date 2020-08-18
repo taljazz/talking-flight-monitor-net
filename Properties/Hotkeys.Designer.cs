@@ -502,5 +502,17 @@ namespace tfm.Properties {
                 this["Engine4Info"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+W")]
+        public global::System.Windows.Forms.Keys WeightReport {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["WeightReport"]));
+            }
+            set {
+                this["WeightReport"] = value;
+            }
+        }
     }
 }

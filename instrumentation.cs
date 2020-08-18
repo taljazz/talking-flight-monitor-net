@@ -500,6 +500,7 @@ namespace tfm
                 HotkeyManager.Current.AddOrReplace("RunwayGuidance", (Keys)Properties.Hotkeys.Default.RunwayGuidance, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("FuelReport", (Keys)Properties.Hotkeys.Default.FuelReport, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("FuelFlow", (Keys)Properties.Hotkeys.Default.FuelFlow, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("WeightReport", (Keys)Properties.Hotkeys.Default.WeightReport, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("FuelTank1", (Keys)Properties.Hotkeys.Default.FuelTank1, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("FuelTank2", (Keys)Properties.Hotkeys.Default.FuelTank2, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("FuelTank3", (Keys)Properties.Hotkeys.Default.FuelTank3, onKeyPressed);
@@ -606,6 +607,10 @@ namespace tfm
                 case "FuelFlow":
                     onFuelFlowKey();
                     break;
+                case "WeightReport":
+                    onWeightReportKey();
+                    break;
+
                 case "FuelTank1":
                     onFuelTankKey(1);
                     break;
@@ -703,27 +708,39 @@ namespace tfm
 
         private void onFuelReportKey()
         {
-            double TotalFuelWeight = 0;
-            double TotalFuelQuantity = 0;
-            // grab fuel tank data from the sim
-            FSUIPCConnection.PayloadServices.RefreshData();
-            // Assign the fuel tanks to our class level variable for easier access
-            FuelTanks = FSUIPCConnection.PayloadServices.FuelTanks;
-            foreach (FsFuelTank tank in FuelTanks)
-            {
-                if (tank.IsPresent)
-                {
-                    TotalFuelWeight += tank.WeightLbs;
-                    TotalFuelQuantity += tank.LevelUSGallons;
-                }
-            }
-            TotalFuelWeight = Math.Round(TotalFuelWeight);
-            TotalFuelQuantity = Math.Round(TotalFuelQuantity);
+            // Make a variable to make accessing the payload services object quicker
+            // NOTE: The connection must already be open in order to access payload services
+            PayloadServices ps = FSUIPCConnection.PayloadServices;
+            // Refresh the current payload data
+            ps.RefreshData();
+            string TotalFuelWeight = ps.FuelWeightLbs.ToString("F1");
+            string TotalFuelQuantity = ps.FuelLevelUSGallons.ToString("F1");
             Tolk.Output($"total fuel: {TotalFuelWeight} pounds. ");
             Tolk.Output($"{TotalFuelQuantity} gallons. ");
             double TotalFuelFlow = (double)Aircraft.eng1_fuel_flow.Value + Aircraft.eng2_fuel_flow.Value + Aircraft.eng3_fuel_flow.Value + Aircraft.eng4_fuel_flow.Value;
             TotalFuelFlow = Math.Round(TotalFuelFlow);
             Tolk.Output($"Total fuel flow: {TotalFuelFlow}");
+        }
+        private void onWeightReportKey()
+        {
+            // Make a variable to make accessing the payload services object quicker
+            // NOTE: The connection must already be open in order to access payload services
+            PayloadServices ps = FSUIPCConnection.PayloadServices;
+            // Refresh the current payload data
+            ps.RefreshData();
+            string GrossWeight = ps.GrossWeightLbs.ToString("F2");
+            string EmptyWeight = ps.EmptyWeightLbs.ToString("F2");
+            string FuelWeight = ps.FuelWeightLbs.ToString("F2");
+            string PayloadWeight = ps.PayloadWeightLbs.ToString("F2");
+            string MaxGrossWeight = ps.MaxGrossWeightLbs.ToString("F2");
+            if (ps.GrossWeightLbs > ps.MaxGrossWeightLbs)
+            {
+                Tolk.Output("Overweight warning! ");
+            }
+            Tolk.Output($"Fuel Weight: {FuelWeight}");
+            Tolk.Output($"Payload Weight: {PayloadWeight}");
+            Tolk.Output($"Gross Weight: {GrossWeight} of {MaxGrossWeight} maximum.");
+
         }
         private void onRunwayGuidanceKey()
         {

@@ -38,7 +38,7 @@ namespace tfm
                 this.timerConnection.Stop();
                 this.timerMain.Start();
                 // Update the connection status
-                
+
             }
             catch
             {
@@ -70,7 +70,7 @@ namespace tfm
         }
 
         // This runs when the master avionics tick has been changed
-        
+
         // Form is closing so stop all the timers and close FSUIPC Connection
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -108,7 +108,7 @@ namespace tfm
                 AutopilotCheckBox.Focus();
             } //End autopilot assignment.
 
-if((e.Control && e.KeyCode == Keys.L))
+            if ((e.Control && e.KeyCode == Keys.L))
             {
                 OutputLogTextBox.Focus();
             } //End output log assignment.
@@ -118,24 +118,26 @@ if((e.Control && e.KeyCode == Keys.L))
         private void GageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             GageValueTextBox.AccessibleName = "Enter " + GageComboBox.SelectedItem.ToString();
-                                }
-                private void AutoGageCheckBox_CheckedChanged(object sender, EventArgs e)
+        } //End gages list selected index change event.
+        private void AutoGageCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if(AutoGageCheckBox.Checked==true)
+            if (AutoGageCheckBox.Checked == true)
             {
                 AutoGageCheckBox.ForeColor = Color.Green;
-            } else
+            }
+            else
             {
-                AutoGageCheckBox.ForeColor = Color.Red;         
+                AutoGageCheckBox.ForeColor = Color.Red;
             }//End color change.
         } //End auto gage checked changed event.
 
         private void FlyModeCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if(FlyModeCheckBox.Checked == true)
+            if (FlyModeCheckBox.Checked == true)
             {
                 FlyModeCheckBox.ForeColor = Color.Green;
-            } else
+            }
+            else
             {
                 FlyModeCheckBox.ForeColor = Color.Red;
             } //End color change.
@@ -143,13 +145,30 @@ if((e.Control && e.KeyCode == Keys.L))
 
         private void AutopilotCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if(AutopilotCheckBox.Checked == true)
+            if (AutopilotCheckBox.Checked == true)
             {
                 AutopilotCheckBox.ForeColor = Color.Green;
-            } else
+            }
+            else
             {
                 AutopilotCheckBox.ForeColor = Color.Red;
             } //End color change.
         } //End Autopilot checked changed event.
-    } //End TFMMainForm class.
+
+        // Force the Gages list to open when it receives focus.
+        // Forces NVDA to read the list as it should.
+        private void GageComboBox_Enter(object sender, EventArgs e)
+        {
+            ComboBox GagesList = (ComboBox)sender;
+            GagesList.DroppedDown = true;
+        } //End Gages list enter event.
+
+        //Force the Gages list to close when it looses keyboard focus.
+        private void GageComboBox_Leave(object sender, EventArgs e)
+        {
+            ComboBox GagesList = (ComboBox)sender;
+            GagesList.DroppedDown = false;
+            Tolk.Silence();
+        } //End Gages list leave event.
+    }//End TFMMainForm class.
 } //End TFM namespace.

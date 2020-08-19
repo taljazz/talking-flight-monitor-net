@@ -108,7 +108,10 @@ namespace tfm
                 AutopilotCheckBox.Focus();
             } //End autopilot assignment.
 
-
+if((e.Control && e.KeyCode == Keys.L))
+            {
+                OutputLogTextBox.Focus();
+            } //End output log assignment.
 
         } //End KeyDown event.
 

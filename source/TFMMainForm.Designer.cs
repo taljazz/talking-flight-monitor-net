@@ -49,6 +49,7 @@
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TFMTabControl = new System.Windows.Forms.TabControl();
             this.AvionicsTabPage = new System.Windows.Forms.TabPage();
+            this.OutputLogTextBox = new System.Windows.Forms.TextBox();
             this.AutopilotCheckBox = new System.Windows.Forms.CheckBox();
             this.FlyModeCheckBox = new System.Windows.Forms.CheckBox();
             this.AutoGageCheckBox = new System.Windows.Forms.CheckBox();
@@ -57,7 +58,6 @@
             this.FlightPlanTabPage = new System.Windows.Forms.TabPage();
             this.ProceduresTabPage = new System.Windows.Forms.TabPage();
             this.FindTabPage = new System.Windows.Forms.TabPage();
-            this.OutputLogTextBox = new System.Windows.Forms.TextBox();
             this.TFMMainMenu.SuspendLayout();
             this.TFMTabControl.SuspendLayout();
             this.AvionicsTabPage.SuspendLayout();
@@ -285,6 +285,16 @@
             this.AvionicsTabPage.Text = "Avionics";
             this.AvionicsTabPage.UseVisualStyleBackColor = true;
             // 
+            // OutputLogTextBox
+            // 
+            this.OutputLogTextBox.AccessibleName = "Speech log";
+            this.OutputLogTextBox.Location = new System.Drawing.Point(110, 132);
+            this.OutputLogTextBox.Multiline = true;
+            this.OutputLogTextBox.Name = "OutputLogTextBox";
+            this.OutputLogTextBox.ReadOnly = true;
+            this.OutputLogTextBox.Size = new System.Drawing.Size(160, 80);
+            this.OutputLogTextBox.TabIndex = 5;
+            // 
             // AutopilotCheckBox
             // 
             this.AutopilotCheckBox.AccessibleName = "Autopilot";
@@ -391,16 +401,6 @@
             this.FindTabPage.TabIndex = 3;
             this.FindTabPage.Text = "Find";
             this.FindTabPage.UseVisualStyleBackColor = true;
-            // 
-            // OutputLogTextBox
-            // 
-            this.OutputLogTextBox.AccessibleName = "Speech log";
-            this.OutputLogTextBox.Location = new System.Drawing.Point(20, 133);
-            this.OutputLogTextBox.Multiline = true;
-            this.OutputLogTextBox.Name = "OutputLogTextBox";
-            this.OutputLogTextBox.ReadOnly = true;
-            this.OutputLogTextBox.Size = new System.Drawing.Size(100, 20);
-            this.OutputLogTextBox.TabIndex = 5;
             // 
             // TFMMainForm
             // 

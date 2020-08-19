@@ -57,6 +57,7 @@
             this.FlightPlanTabPage = new System.Windows.Forms.TabPage();
             this.ProceduresTabPage = new System.Windows.Forms.TabPage();
             this.FindTabPage = new System.Windows.Forms.TabPage();
+            this.OutputLogTextBox = new System.Windows.Forms.TextBox();
             this.TFMMainMenu.SuspendLayout();
             this.TFMTabControl.SuspendLayout();
             this.AvionicsTabPage.SuspendLayout();
@@ -270,6 +271,7 @@
             // AvionicsTabPage
             // 
             this.AvionicsTabPage.AccessibleName = "Avionics";
+            this.AvionicsTabPage.Controls.Add(this.OutputLogTextBox);
             this.AvionicsTabPage.Controls.Add(this.AutopilotCheckBox);
             this.AvionicsTabPage.Controls.Add(this.FlyModeCheckBox);
             this.AvionicsTabPage.Controls.Add(this.AutoGageCheckBox);
@@ -289,7 +291,7 @@
             this.AutopilotCheckBox.AccessibleRole = System.Windows.Forms.AccessibleRole.CheckButton;
             this.AutopilotCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
             this.AutopilotCheckBox.AutoSize = true;
-            this.AutopilotCheckBox.Location = new System.Drawing.Point(378, 180);
+            this.AutopilotCheckBox.Location = new System.Drawing.Point(381, 180);
             this.AutopilotCheckBox.Name = "AutopilotCheckBox";
             this.AutopilotCheckBox.Size = new System.Drawing.Size(90, 31);
             this.AutopilotCheckBox.TabIndex = 4;
@@ -299,15 +301,15 @@
             // 
             // FlyModeCheckBox
             // 
-            this.FlyModeCheckBox.AccessibleName = "Approach mode";
+            this.FlyModeCheckBox.AccessibleName = "Fly approach";
             this.FlyModeCheckBox.AccessibleRole = System.Windows.Forms.AccessibleRole.CheckButton;
             this.FlyModeCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
             this.FlyModeCheckBox.AutoSize = true;
-            this.FlyModeCheckBox.Location = new System.Drawing.Point(20, 180);
+            this.FlyModeCheckBox.Location = new System.Drawing.Point(379, 139);
             this.FlyModeCheckBox.Name = "FlyModeCheckBox";
-            this.FlyModeCheckBox.Size = new System.Drawing.Size(142, 31);
+            this.FlyModeCheckBox.Size = new System.Drawing.Size(95, 31);
             this.FlyModeCheckBox.TabIndex = 3;
-            this.FlyModeCheckBox.Text = "Approach mode";
+            this.FlyModeCheckBox.Text = "Approach";
             this.FlyModeCheckBox.UseVisualStyleBackColor = true;
             this.FlyModeCheckBox.CheckedChanged += new System.EventHandler(this.FlyModeCheckBox_CheckedChanged);
             // 
@@ -390,6 +392,16 @@
             this.FindTabPage.Text = "Find";
             this.FindTabPage.UseVisualStyleBackColor = true;
             // 
+            // OutputLogTextBox
+            // 
+            this.OutputLogTextBox.AccessibleName = "Speech log";
+            this.OutputLogTextBox.Location = new System.Drawing.Point(20, 133);
+            this.OutputLogTextBox.Multiline = true;
+            this.OutputLogTextBox.Name = "OutputLogTextBox";
+            this.OutputLogTextBox.ReadOnly = true;
+            this.OutputLogTextBox.Size = new System.Drawing.Size(100, 20);
+            this.OutputLogTextBox.TabIndex = 5;
+            // 
             // TFMMainForm
             // 
             this.AccessibleDescription = "";
@@ -451,6 +463,7 @@
         private System.Windows.Forms.TextBox GageValueTextBox;
         private System.Windows.Forms.CheckBox AutopilotCheckBox;
         private System.Windows.Forms.CheckBox FlyModeCheckBox;
+        private System.Windows.Forms.TextBox OutputLogTextBox;
     }
 }
 

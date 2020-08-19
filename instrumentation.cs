@@ -298,8 +298,8 @@ namespace tfm
                 double baring = (double)Aircraft.NextWPBaring.Value;
                 string strBaring = baring.ToString("F0");
                 Tolk.Output($"Next waypoint: {name}. ");
-                Tolk.Output($"Distance: {strDist}.");
-                Tolk.Output($"Baring: {strBaring} nautical miles");
+                Tolk.Output($"Distance: {strDist} nautical miles.");
+                Tolk.Output($"Baring: {strBaring} degrees");
                 string strTime = string.Format("{0:D2} hours, {1:D2} minutes, {2:D2} seconds.",
                 TimeEnroute.Hours,
                 TimeEnroute.Minutes,
@@ -980,7 +980,7 @@ namespace tfm
         private void onMachKey()
         {
             double mach = (double)Aircraft.AirspeedMach.Value / 20480d;
-            Tolk.Output(mach.ToString("f0") + "knotts indicated. ");
+            Tolk.Output("mach " + mach.ToString("f2"));
 
         }
 

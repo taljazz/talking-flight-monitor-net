@@ -13,6 +13,7 @@ using System.Diagnostics;
 using NHotkey;
 using NHotkey.WindowsForms;
 using DavyKager;
+using System.Reflection;
 
 namespace tfm
 {
@@ -114,9 +115,8 @@ namespace tfm
         private void GageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             GageValueTextBox.AccessibleName = "Enter " + GageComboBox.SelectedItem.ToString();
-        }
-
-        private void AutoGageCheckBox_CheckedChanged(object sender, EventArgs e)
+                                }
+                private void AutoGageCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if(AutoGageCheckBox.Checked==true)
             {

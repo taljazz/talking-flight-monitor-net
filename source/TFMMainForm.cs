@@ -117,7 +117,13 @@ namespace tfm
 
         private void GageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GageValueTextBox.AccessibleName = "Enter " + GageComboBox.SelectedItem.ToString();
+            ComboBox GagesList = (ComboBox)sender;
+                        GageValueTextBox.AccessibleName = "Enter " + GagesList.SelectedItem.ToString();
+            var screenReader = Tolk.DetectScreenReader();
+            if(screenReader == "NVDA" && GagesList.DroppedDown == false)
+            {
+                Tolk.Output(GagesList.SelectedItem.ToString());
+            }
         } //End gages list selected index change event.
         private void AutoGageCheckBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -154,21 +160,5 @@ namespace tfm
                 AutopilotCheckBox.ForeColor = Color.Red;
             } //End color change.
         } //End Autopilot checked changed event.
-
-        // Force the Gages list to open when it receives focus.
-        // Forces NVDA to read the list as it should.
-        private void GageComboBox_Enter(object sender, EventArgs e)
-        {
-            ComboBox GagesList = (ComboBox)sender;
-            GagesList.DroppedDown = true;
-        } //End Gages list enter event.
-
-        //Force the Gages list to close when it looses keyboard focus.
-        private void GageComboBox_Leave(object sender, EventArgs e)
-        {
-            ComboBox GagesList = (ComboBox)sender;
-            GagesList.DroppedDown = false;
-            Tolk.Silence();
-        } //End Gages list leave event.
     }//End TFMMainForm class.
 } //End TFM namespace.

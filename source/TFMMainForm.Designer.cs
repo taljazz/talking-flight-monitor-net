@@ -370,9 +370,7 @@
             this.GageComboBox.Sorted = true;
             this.GageComboBox.TabIndex = 0;
             this.GageComboBox.SelectedIndexChanged += new System.EventHandler(this.GageComboBox_SelectedIndexChanged);
-            this.GageComboBox.Enter += new System.EventHandler(this.GageComboBox_Enter);
-            this.GageComboBox.Leave += new System.EventHandler(this.GageComboBox_Leave);
-            // 
+                                    // 
             // FlightPlanTabPage
             // 
             this.FlightPlanTabPage.AccessibleName = "Flight plan";

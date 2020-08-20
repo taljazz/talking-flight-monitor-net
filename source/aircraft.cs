@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -181,5 +182,116 @@ namespace tfm
             double degrees = (180 / Math.PI) * radians;
             return (degrees);
         }
+
+        public static void SetHeading(double hdg)
+        {
+            if (hdg >= 0 && hdg <= 360)
+            {
+                // convert the supplied heading into the proper FSUIPC format(degrees*65536/360)
+                hdg = hdg * 65536 / 360;
+                // send heading value to FSUIPC
+                ApHeading.Value = (ushort)hdg;
+            }
+            else
+            {
+                throw new ArgumentException("Heading must be between 0 and 360 degrees");
+            }
+        }
+
+        public static void SetAirspeed(double spd)
+        {
+            if (spd > 0)
+            {
+                // no processing necessary, just send the speed to FSUIPC
+                ApAirspeed.Value = (short)spd;
+            }
+            else
+            {
+                throw new ArgumentException("airspeed value must be greater than 0");
+            }
+        }
+        private static void SetAltitude(double alt)
+        {
+            if (alt > 0)
+            {
+                //convert the supplied altitude into the proper FSUIPC format.
+                // FSUIPC needs the altitude as metres*65536
+                alt = alt / 3.28084 * 65536;
+                ApAltitude.Value = (uint)alt;
+            }
+            else
+            {
+                throw new ArgumentException("Altitude must be greater than 0");
+            }
+        }
+
+        public static void SetMachSpeed(double mch)
+        {
+            if (mch > 0)
+            {
+                // FSUIPC needs the mach multiplied by 65536            }
+                mch = mch * 65536;
+                ApMach.Value = (uint)mch;
+            }
+            else
+            {
+                throw new ArgumentException("Mach must be greater than 0");
+            }
+        }
+
+        private static void SetVerticalSpeed(double vspd)
+        {
+            // no processing required, just send the vertical speed as entered
+            ApVerticalSpeed.Value = (short)vspd;
+        }
+
+        public static void SetTransponder(double squawk)
+        {
+            if (squawk > 0)
+            {
+                // 1. Create a new instance of the Transponder helper class using the integer that was entered
+                //    Note the number box always returns the value as a 'decimal' type. So we have to cast to Int32
+                FsTransponderCode txHelper = new FsTransponderCode((int)squawk);
+                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                Transponder.Value = txHelper.ToBCD();
+
+            }
+            else
+            {
+                throw new ArgumentException("Transponder values mush be greater than 0");
+            }
+        }
+
+        public static void SetCom1(double freq)
+        {
+            if (freq > 0)
+            {
+                // 1. Create a new instance of the COM helper class using the decimal value entered
+                FsFrequencyCOM com1Helper = new FsFrequencyCOM((ushort)freq);
+                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                Com1Freq.Value = com1Helper.ToBCD();
+
+            }
+            else
+            {
+                throw new ArgumentException("com 1 frequency must be greater than 0");
+            }
+        }
+        public static void SetCom2(double freq)
+        {
+            if (freq > 0)
+            {
+                // 1. Create a new instance of the COM helper class using the decimal value entered
+                FsFrequencyCOM com2Helper = new FsFrequencyCOM((ushort)freq);
+                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                Com2Freq.Value = com2Helper.ToBCD();
+
+            }
+            else
+            {
+                throw new ArgumentException("com 2 frequency must be greater than 0");
+            }
+        }
+
     }
 }

@@ -6,6 +6,12 @@ before_build:
 build:
   project: source\tfm.sln
   verbosity: minimal
+Artifacts:
+- path: source\bin\debug
+  name: tfm-pre0.{build}
+  type: zip
+  
+
 notifications:
 - provider: Email
   to:

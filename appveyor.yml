@@ -12,6 +12,14 @@ artifacts:
   name: tfm-pre0.{build}
   type: zip
   
+deploy:
+  provider: FTP
+  protocol: sftp
+  host: vps.fayre.me
+  username: bvipilots
+  password:
+    secure: gsDOGtodux/gAPPDTybI5w=
+  folder: /home/bvipilots/public_html/tfm-snapshots
 
 notifications:
 - provider: Email

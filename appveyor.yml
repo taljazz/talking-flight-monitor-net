@@ -6,21 +6,17 @@ before_build:
 build:
   project: source\tfm.sln
   verbosity: minimal
-
 artifacts:
 - path: source\bin\debug
-  name: tfm-pre0.{build}
-  type: zip
-  
+  name: tfm-$(APPVEYOR_BUILD_VERSION).zip
 deploy:
-  provider: FTP
-  protocol: sftp
+- provider: FTP
   host: vps.fayre.me
+  protocol: sftp
   username: bvipilots
   password:
-    secure: gsDOGtodux/gAPPDTybI5w=
+    secure: gsDOGtodux/gAPPDTybI5w==
   folder: /home/bvipilots/public_html/tfm-snapshots
-
 notifications:
 - provider: Email
   to:
@@ -28,3 +24,4 @@ notifications:
   subject: TFM build
   on_build_success: true
   on_build_failure: true
+  on_build_status_changed: true

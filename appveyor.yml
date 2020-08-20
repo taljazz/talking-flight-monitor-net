@@ -13,7 +13,7 @@ after_build:
     7z a ..\..\..\tfm-$(APPVEYOR_BUILD_VERSION).zip *
 artifacts:
 - path: tfm-$(APPVEYOR_BUILD_VERSION).zip
-  name: tfm-latest
+
 deploy:
 - provider: FTP
   host: vps.fayre.me

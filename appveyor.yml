@@ -11,8 +11,7 @@ after_build:
     cd source\bin\debug
 
     7z a ..\..\tfm-$(APPVEYOR_BUILD_VERSION).zip *
-artifacts:
-- path: tfm-$(APPVEYOR_BUILD_VERSION).zip
+Push-AppveyorArtifact ..\..\tfm-$(APPVEYOR_BUILD_VERSION).zip
 
 deploy:
 - provider: FTP

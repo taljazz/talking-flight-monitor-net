@@ -10,7 +10,7 @@ after_build:
 - cmd: >-
     cd source\bin\debug
 
-    7z a ..\..\..\tfm-$(APPVEYOR_BUILD_VERSION).zip *
+    7z a ..\..\tfm-$(APPVEYOR_BUILD_VERSION).zip *
 artifacts:
 - path: tfm-$(APPVEYOR_BUILD_VERSION).zip
 

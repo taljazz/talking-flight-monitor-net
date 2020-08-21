@@ -514,5 +514,17 @@ namespace tfm.Properties {
                 this["WeightReport"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("R")]
+        public global::System.Windows.Forms.Keys RepeatLastSimconnectMessage {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["RepeatLastSimconnectMessage"]));
+            }
+            set {
+                this["RepeatLastSimconnectMessage"] = value;
+            }
+        }
     }
 }

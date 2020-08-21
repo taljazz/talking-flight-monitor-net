@@ -125,5 +125,8 @@
     <Setting Name="WeightReport" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+W</Value>
     </Setting>
+    <Setting Name="RepeatLastSimconnectMessage" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">R</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

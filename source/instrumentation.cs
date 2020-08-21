@@ -72,6 +72,7 @@ namespace tfm
         public ReverseGeoCode<ExtendedGeoName> r = new ReverseGeoCode<ExtendedGeoName>(GeoFileReader.ReadExtendedGeoNames(@".\data\cities1000.txt"));
         private int OldSpoilersValue;
         private double RunwayGuidanceTrackedHeading;
+        private string OldSimConnectMessage;
 
         public Instrumentation()
         {
@@ -429,6 +430,7 @@ namespace tfm
                 {
                     Tolk.Output(Aircraft.textMenu.ToString());
                 }
+                OldSimConnectMessage = Aircraft.textMenu.ToString();
             }
         }
         // set autopilot heading
@@ -488,6 +490,7 @@ namespace tfm
                 HotkeyManager.Current.AddOrReplace("AirTemperature", (Keys)Properties.Hotkeys.Default.AirTemperature, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("ToggleTrim", (Keys)Properties.Hotkeys.Default.ToggleTrim, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("MuteSimconnect", (Keys)Properties.Hotkeys.Default.MuteSimconnect, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("RepeatLastSimconnectMessage", (Keys)Properties.Hotkeys.Default.RepeatLastSimconnectMessage, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("FlightFollowing", (Keys)Properties.Hotkeys.Default.FlightFollowing, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("NextWaypoint", (Keys)Properties.Hotkeys.Default.NextWaypoint, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("DestinationInfo", (Keys)Properties.Hotkeys.Default.DestinationInfo, onKeyPressed);
@@ -565,6 +568,9 @@ namespace tfm
                     break;
                 case "MuteSimconnect":
                     onMuteSimconnectKey();
+                    break;
+                case "RepeatLastSimconnectMessage":
+                    onRepeatLastSimconnectMessage();
                     break;
                 case "FlightFollowing":
                     onCityKey();
@@ -663,6 +669,20 @@ namespace tfm
 
             }
         }
+
+        private void onRepeatLastSimconnectMessage()
+        {
+            if (OldSimConnectMessage != null)
+            {
+                Tolk.Output(OldSimConnectMessage);
+            }
+            else
+            {
+                Tolk.Output("no recent message");
+            }
+
+        }
+
         private void onWindKey()
         {
             double WindSpeed = (double)Aircraft.WindSpeed.Value;
@@ -704,10 +724,28 @@ namespace tfm
         private void onFuelFlowKey()
         {
             int NumEngines = Aircraft.num_engines.Value;
+            double eng1 = Math.Round(Aircraft.eng1_fuel_flow.Value);
+            double eng2 = Math.Round(Aircraft.eng2_fuel_flow.Value);
+            double eng3 = Math.Round(Aircraft.eng3_fuel_flow.Value);
+            double eng4 = Math.Round(Aircraft.eng4_fuel_flow.Value);
+            Tolk.Output("Fuel flow (pounds per hour): ");
+            Tolk.Output($"Engine 1: {eng1}. ");
+            if (NumEngines >= 2)
+            {
+                Tolk.Output($"Engine 2: {eng2}. ");
+            }
+            if (NumEngines >= 3)
+            {
+                Tolk.Output($"Engine 3: {eng3}. ");
+            }
+            if (NumEngines >= 4)
+            {
+                Tolk.Output($"Engine 4: {eng4}. ");
+            }
 
         }
 
-        private void onFuelReportKey()
+        private void onFuelReportKey()  
         {
             // Make a variable to make accessing the payload services object quicker
             // NOTE: The connection must already be open in order to access payload services

@@ -1,0 +1,34 @@
+version: 0.{build}
+nuget:
+  project_feed: true
+before_build:
+- cmd: nuget restore source\tfm.sln
+build:
+  project: source\tfm.sln
+  verbosity: minimal
+after_build:
+- cmd: >-
+    cd source\bin\debug
+
+    7z a ..\..\tfm-$(APPVEYOR_BUILD_VERSION).zip *
+
+    appveyor PushArtifact ..\..\tfm-$(APPVEYOR_BUILD_VERSION).zip
+artifacts:
+- path: source\bin\debug
+  name: tfm-latest.zip
+deploy:
+- provider: FTP
+  host: vps.fayre.me
+  protocol: sftp
+  username: bvipilots
+  password:
+    secure: gsDOGtodux/gAPPDTybI5w==
+  folder: /public_html/tfm-snapshots
+notifications:
+- provider: Email
+  to:
+  - jfayre@gmail.com
+  subject: TFM build
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: true

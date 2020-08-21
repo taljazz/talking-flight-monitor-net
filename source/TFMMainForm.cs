@@ -97,11 +97,11 @@ namespace tfm
             } //End Gage list assignment.
             if ((e.Control && e.KeyCode == Keys.U))
             {
-                AutoGageCheckBox.Focus();
+                LockGageCheckBox.Focus();
             } // End Auto gage assignment.
             if ((e.Control && e.KeyCode == Keys.F))
             {
-                FlyModeCheckBox.Focus();
+                FlyModeComboBox.Focus();
             } //End FlyMode assignment.
             if ((e.Control && e.KeyCode == Keys.P))
             {
@@ -112,43 +112,51 @@ namespace tfm
             {
                 OutputLogTextBox.Focus();
             } //End output log assignment.
+            if((e.Control && e.KeyCode == Keys.D1))
+            {
+                TFMTabControl.SelectedTab = AvionicsTabPage;
+            } //End Avionics assignment.
 
-        } //End KeyDown event.
+            if((e.Control && e.KeyCode == Keys.D2)) {
+                TFMTabControl.SelectedTab = FlightPlanTabPage;
+            } //End FlightPlan assignment.
+
+            if((e.Control && e.KeyCode == Keys.D3))
+            {
+                TFMTabControl.SelectedTab = ProceduresTabPage;
+            } //End Procedures assignment.
+
+            if((e.Control && e.KeyCode == Keys.D4))
+            {
+                TFMTabControl.SelectedTab = FindTabPage;
+            } //End Find assignment.
+                    } //End KeyDown event.
 
         private void GageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox GagesList = (ComboBox)sender;
-                        GageValueTextBox.AccessibleName = "Enter " + GagesList.SelectedItem.ToString();
+            var item = GagesList.SelectedItem.ToString();
+                        GageValueTextBox.AccessibleName = "Enter " + item;
+            LockGageCheckBox.AccessibleName = item + " lock";
+            Tolk.Output(GageValueTextBox.Text);
             var screenReader = Tolk.DetectScreenReader();
             if(screenReader == "NVDA" && GagesList.DroppedDown == false)
             {
-                Tolk.Output(GagesList.SelectedItem.ToString());
+                Tolk.Output(item + ", " + GageValueTextBox.Text);
             }
         } //End gages list selected index change event.
         private void AutoGageCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (AutoGageCheckBox.Checked == true)
+            if (LockGageCheckBox.Checked == true)
             {
-                AutoGageCheckBox.ForeColor = Color.Green;
+                LockGageCheckBox.ForeColor = Color.Green;
             }
             else
             {
-                AutoGageCheckBox.ForeColor = Color.Red;
+                LockGageCheckBox.ForeColor = Color.Red;
             }//End color change.
         } //End auto gage checked changed event.
-
-        private void FlyModeCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (FlyModeCheckBox.Checked == true)
-            {
-                FlyModeCheckBox.ForeColor = Color.Green;
-            }
-            else
-            {
-                FlyModeCheckBox.ForeColor = Color.Red;
-            } //End color change.
-        } // End FlyMode checked change event.
-
+                
         private void AutopilotCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (AutopilotCheckBox.Checked == true)
@@ -160,5 +168,24 @@ namespace tfm
                 AutopilotCheckBox.ForeColor = Color.Red;
             } //End color change.
         } //End Autopilot checked changed event.
+
+        private void FlyModeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox FlyModes = (ComboBox)sender;
+            var ScreenReader = Tolk.DetectScreenReader();            
+
+            // Make sure NVDA can read the items without opening the dropDown.
+if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
+            {
+                Tolk.Output(FlyModes.SelectedItem.ToString());
+            } //End NVDA fix.
+        } //End FlyModes selected index change event.
+
+        private void TFMMainForm_Load(object sender, EventArgs e)
+        {
+            GageComboBox.SelectedIndex = 0;
+            FlyModeComboBox.SelectedIndex = 0;
+            GageComboBox.Focus();
+        }
     }//End TFMMainForm class.
 } //End TFM namespace.

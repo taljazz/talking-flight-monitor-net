@@ -49,10 +49,10 @@
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TFMTabControl = new System.Windows.Forms.TabControl();
             this.AvionicsTabPage = new System.Windows.Forms.TabPage();
+            this.FlyModeComboBox = new System.Windows.Forms.ComboBox();
             this.OutputLogTextBox = new System.Windows.Forms.TextBox();
             this.AutopilotCheckBox = new System.Windows.Forms.CheckBox();
-            this.FlyModeCheckBox = new System.Windows.Forms.CheckBox();
-            this.AutoGageCheckBox = new System.Windows.Forms.CheckBox();
+            this.LockGageCheckBox = new System.Windows.Forms.CheckBox();
             this.GageValueTextBox = new System.Windows.Forms.TextBox();
             this.GageComboBox = new System.Windows.Forms.ComboBox();
             this.FlightPlanTabPage = new System.Windows.Forms.TabPage();
@@ -271,10 +271,10 @@
             // AvionicsTabPage
             // 
             this.AvionicsTabPage.AccessibleName = "Avionics";
+            this.AvionicsTabPage.Controls.Add(this.FlyModeComboBox);
             this.AvionicsTabPage.Controls.Add(this.OutputLogTextBox);
             this.AvionicsTabPage.Controls.Add(this.AutopilotCheckBox);
-            this.AvionicsTabPage.Controls.Add(this.FlyModeCheckBox);
-            this.AvionicsTabPage.Controls.Add(this.AutoGageCheckBox);
+            this.AvionicsTabPage.Controls.Add(this.LockGageCheckBox);
             this.AvionicsTabPage.Controls.Add(this.GageValueTextBox);
             this.AvionicsTabPage.Controls.Add(this.GageComboBox);
             this.AvionicsTabPage.Location = new System.Drawing.Point(4, 30);
@@ -284,6 +284,20 @@
             this.AvionicsTabPage.TabIndex = 0;
             this.AvionicsTabPage.Text = "Avionics";
             this.AvionicsTabPage.UseVisualStyleBackColor = true;
+            // 
+            // FlyModeComboBox
+            // 
+            this.FlyModeComboBox.AccessibleName = "Fly mode";
+            this.FlyModeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.FlyModeComboBox.FormattingEnabled = true;
+            this.FlyModeComboBox.Items.AddRange(new object[] {
+            "Plan",
+            "Approach"});
+            this.FlyModeComboBox.Location = new System.Drawing.Point(381, 149);
+            this.FlyModeComboBox.Name = "FlyModeComboBox";
+            this.FlyModeComboBox.Size = new System.Drawing.Size(100, 21);
+            this.FlyModeComboBox.TabIndex = 3;
+            this.FlyModeComboBox.SelectedIndexChanged += new System.EventHandler(this.FlyModeComboBox_SelectedIndexChanged);
             // 
             // OutputLogTextBox
             // 
@@ -309,33 +323,19 @@
             this.AutopilotCheckBox.UseVisualStyleBackColor = true;
             this.AutopilotCheckBox.CheckedChanged += new System.EventHandler(this.AutopilotCheckBox_CheckedChanged);
             // 
-            // FlyModeCheckBox
+            // LockGageCheckBox
             // 
-            this.FlyModeCheckBox.AccessibleName = "Fly approach";
-            this.FlyModeCheckBox.AccessibleRole = System.Windows.Forms.AccessibleRole.CheckButton;
-            this.FlyModeCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
-            this.FlyModeCheckBox.AutoSize = true;
-            this.FlyModeCheckBox.Location = new System.Drawing.Point(379, 139);
-            this.FlyModeCheckBox.Name = "FlyModeCheckBox";
-            this.FlyModeCheckBox.Size = new System.Drawing.Size(95, 31);
-            this.FlyModeCheckBox.TabIndex = 3;
-            this.FlyModeCheckBox.Text = "Approach";
-            this.FlyModeCheckBox.UseVisualStyleBackColor = true;
-            this.FlyModeCheckBox.CheckedChanged += new System.EventHandler(this.FlyModeCheckBox_CheckedChanged);
-            // 
-            // AutoGageCheckBox
-            // 
-            this.AutoGageCheckBox.AccessibleName = "Automatic gage";
-            this.AutoGageCheckBox.AccessibleRole = System.Windows.Forms.AccessibleRole.CheckButton;
-            this.AutoGageCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
-            this.AutoGageCheckBox.AutoSize = true;
-            this.AutoGageCheckBox.Location = new System.Drawing.Point(359, 85);
-            this.AutoGageCheckBox.Name = "AutoGageCheckBox";
-            this.AutoGageCheckBox.Size = new System.Drawing.Size(136, 31);
-            this.AutoGageCheckBox.TabIndex = 2;
-            this.AutoGageCheckBox.Text = "Automatic gage";
-            this.AutoGageCheckBox.UseVisualStyleBackColor = true;
-            this.AutoGageCheckBox.CheckedChanged += new System.EventHandler(this.AutoGageCheckBox_CheckedChanged);
+            this.LockGageCheckBox.AccessibleName = "";
+            this.LockGageCheckBox.AccessibleRole = System.Windows.Forms.AccessibleRole.CheckButton;
+            this.LockGageCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.LockGageCheckBox.AutoSize = true;
+            this.LockGageCheckBox.Location = new System.Drawing.Point(381, 85);
+            this.LockGageCheckBox.Name = "LockGageCheckBox";
+            this.LockGageCheckBox.Size = new System.Drawing.Size(59, 31);
+            this.LockGageCheckBox.TabIndex = 2;
+            this.LockGageCheckBox.Text = "Lock";
+            this.LockGageCheckBox.UseVisualStyleBackColor = true;
+            this.LockGageCheckBox.CheckedChanged += new System.EventHandler(this.AutoGageCheckBox_CheckedChanged);
             // 
             // GageValueTextBox
             // 
@@ -370,7 +370,7 @@
             this.GageComboBox.Sorted = true;
             this.GageComboBox.TabIndex = 0;
             this.GageComboBox.SelectedIndexChanged += new System.EventHandler(this.GageComboBox_SelectedIndexChanged);
-                                    // 
+            // 
             // FlightPlanTabPage
             // 
             this.FlightPlanTabPage.AccessibleName = "Flight plan";
@@ -423,6 +423,7 @@
             this.Text = "Talking flight moniter";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
+            this.Load += new System.EventHandler(this.TFMMainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TFMMainForm_KeyDown);
             this.TFMMainMenu.ResumeLayout(false);
             this.TFMMainMenu.PerformLayout();
@@ -459,11 +460,11 @@
         private System.Windows.Forms.TabPage ProceduresTabPage;
         private System.Windows.Forms.TabPage FindTabPage;
         private System.Windows.Forms.ComboBox GageComboBox;
-        private System.Windows.Forms.CheckBox AutoGageCheckBox;
+        private System.Windows.Forms.CheckBox LockGageCheckBox;
         private System.Windows.Forms.TextBox GageValueTextBox;
         private System.Windows.Forms.CheckBox AutopilotCheckBox;
-        private System.Windows.Forms.CheckBox FlyModeCheckBox;
         private System.Windows.Forms.TextBox OutputLogTextBox;
+        private System.Windows.Forms.ComboBox FlyModeComboBox;
     }
 }
 

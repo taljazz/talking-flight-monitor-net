@@ -295,7 +295,7 @@ namespace tfm
                 double dist = Aircraft.NextWPDistance.Value * 0.00053995D;
                 string strDist = dist.ToString("F0");
                 TimeSpan TimeEnroute = TimeSpan.FromSeconds(Aircraft.NextWPETE.Value);
-                double baring = (double)Aircraft.NextWPBaring.Value;
+                double baring = Aircraft.ConvertRadiansToDegrees((double)Aircraft.NextWPBaring.Value);
                 string strBaring = baring.ToString("F0");
                 Tolk.Output($"Next waypoint: {name}. ");
                 Tolk.Output($"Distance: {strDist} nautical miles.");

@@ -13,9 +13,6 @@ after_build:
     7z a ..\..\tfm-$(APPVEYOR_BUILD_VERSION).zip *
 
     appveyor PushArtifact ..\..\tfm-$(APPVEYOR_BUILD_VERSION).zip
-artifacts:
-- path: source\bin\debug
-  name: tfm-latest.zip
 deploy:
 - provider: FTP
   host: vps.fayre.me

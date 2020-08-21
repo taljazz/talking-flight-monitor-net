@@ -10,9 +10,9 @@ after_build:
 - cmd: >-
     cd source\bin\debug
 
-    7z a ..\..\tfm-$(APPVEYOR_BUILD_VERSION).zip *
+    7z a ..\..\tfm-pre%APPVEYOR_BUILD_VERSION%.zip *
 
-    appveyor PushArtifact ..\..\tfm-$(APPVEYOR_BUILD_VERSION).zip
+    appveyor PushArtifact ..\..\tfm-pre%APPVEYOR_BUILD_VERSION%.zip
 deploy:
 - provider: FTP
   host: vps.fayre.me
@@ -28,4 +28,3 @@ notifications:
   subject: TFM build
   on_build_success: true
   on_build_failure: true
-  on_build_status_changed: true

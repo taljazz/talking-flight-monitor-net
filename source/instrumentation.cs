@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Timers;
 using System.Threading.Tasks;
@@ -40,8 +41,8 @@ namespace tfm
         MixingSampleProvider mixer;
 
         // initialize command mode sound
-        CachedSound cmdSound = new CachedSound(@"sounds\command.wav");
-// list to store registered hotkey identifiers
+        SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
+        // list to store registered hotkey identifiers
         List<string> hotkeys = new List<string>();
         FsFuelTanksCollection FuelTanks = null;
         // list to store fuel tanks present on the aircraft
@@ -472,7 +473,8 @@ namespace tfm
             if (FSUIPCConnection.IsOpen)
             {
                 // play the command sound
-                AudioPlaybackEngine.Instance.PlaySound(cmdSound);
+                // AudioPlaybackEngine.Instance.PlaySound(cmdSound);
+                cmdSound.Play();
                 // populate a list of hotkeys, so we can clear them later.
                 foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
                 {

@@ -187,5 +187,11 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             FlyModeComboBox.SelectedIndex = 0;
             GageComboBox.Focus();
         }
+
+        private void AboutMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox about = new AboutBox();
+            about.ShowDialog();
+        } //End About menu item.
     }//End TFMMainForm class.
 } //End TFM namespace.

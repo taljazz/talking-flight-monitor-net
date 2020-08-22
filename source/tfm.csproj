@@ -98,6 +98,8 @@
     <Compile Include="AutoDisposeFileReader.cs" />
     <Compile Include="CachedSound.cs" />
     <Compile Include="CachedSoundSampleProvider.cs" />
+    <Compile Include="Output.cs" />
+    <Compile Include="OutputEventArgs.cs" />
     <Compile Include="TemplateForm.cs">
       <SubType>Form</SubType>
     </Compile>

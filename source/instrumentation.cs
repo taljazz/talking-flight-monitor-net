@@ -28,6 +28,7 @@ namespace tfm
     public class Instrumentation
     {
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
+        private static Output Output = new Output();
         // timers
         private static System.Timers.Timer RunwayGuidanceTimer;
         private double HdgRight;
@@ -88,8 +89,7 @@ namespace tfm
             
             Logger.Debug("initializing screen reader driver");
             Tolk.Load();
-            Tolk.DetectScreenReader();
-            Tolk.Output("TFM dot net started!");
+            Output.Speak("TFM dot net started!");
             HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
             RunwayGuidanceEnabled = false;
 

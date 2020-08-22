@@ -14,12 +14,18 @@ using NHotkey;
 using NHotkey.WindowsForms;
 using DavyKager;
 using System.Reflection;
+using System.Net.Configuration;
 
 namespace tfm
 {
     public partial class TFMMainForm : Form
     {
         public Instrumentation inst = new Instrumentation();
+        private Output msg = new Output();
+        msg.OutputEvent += onOutput;
+        
+        
+        
         public TFMMainForm()
         {
             InitializeComponent();
@@ -68,8 +74,6 @@ namespace tfm
                 this.timerConnection.Start();
             }
         }
-
-        // This runs when the master avionics tick has been changed
 
         // Form is closing so stop all the timers and close FSUIPC Connection
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -193,5 +197,12 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             AboutBox about = new AboutBox();
             about.ShowDialog();
         } //End About menu item.
+        private void onOutput(object sender, OutputEventArgs e)
+        {
+            if (e.OutputText)
+            {
+                OutputLogTextBox.AppendText(e.msg);
+            }
+        }
     }//End TFMMainForm class.
 } //End TFM namespace.

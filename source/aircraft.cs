@@ -17,6 +17,12 @@ namespace tfm
         public static  Offset<ushort> Com1Freq = new Offset<ushort>(0x034e);
         public static  Offset<ushort> Com2Freq = new Offset<ushort>(0x3118);
         public static  Offset<byte> RadioActive = new Offset<byte>(0x3122);
+        public static Offset<ushort> Nav1Freq = new Offset<ushort>(0x0350);
+        public static Offset<ushort> Nav2Freq = new Offset<ushort>(0x0352);
+        // ADF frequencies are split over 2 offsets, the 'main' and 'extended'.
+        public static Offset<ushort> adf1Main = new Offset<ushort>(0x034C);
+        public static Offset<ushort> adf1Extended = new Offset<ushort>(0x0356);
+
         public static  Offset<FsLatitude> aircraftLat = new Offset<FsLatitude>(0x0560, 8);
         public static  Offset<FsLongitude> aircraftLon = new Offset<FsLongitude>(0x0568, 8);
         public static  Offset<short> Flaps = new Offset<short>(0x30f0);
@@ -292,6 +298,50 @@ namespace tfm
                 throw new ArgumentException("com 2 frequency must be greater than 0");
             }
         }
+        public static void SetNav1(double freq)
+        {
+            if (freq > 0)
+            {
+                // 1. Create a new instance of the nav helper class using the decimal value entered
+                FsFrequencyNAV nav1Helper = new FsFrequencyNAV((ushort)freq);
+                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                Nav1Freq.Value = nav1Helper.ToBCD();
 
+            }
+            else
+            {
+                throw new ArgumentException("nav 1 frequency must be greater than 0");
+            }
+        }
+        public static void SetNav2(double freq)
+        {
+            if (freq > 0)
+            {
+                // 1. Create a new instance of the nav helper class using the decimal value entered
+                FsFrequencyNAV nav2Helper = new FsFrequencyNAV((ushort)freq);
+                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                Nav2Freq.Value = nav2Helper.ToBCD();
+            }
+            else
+            {
+                throw new ArgumentException("nav 2 frequency must be greater than 0");
+            }
+        }
+        public static void SetADF1(double freq)
+        {
+            if (freq > 0)
+            {
+                // 1. Create a new instance of the ADF helper class using the decimal value entered
+                FsFrequencyADF adf1Helper = new FsFrequencyADF((ushort)freq);
+                // 2. Now use the helper class to get the two BCD values required by FSUIPC (main and extended)
+                //    Set the offsets to these new values
+                adf1Main.Value = adf1Helper.ToBCDMain();
+                adf1Extended.Value = adf1Helper.ToBCDExtended();
+            }
+            else
+            {
+                throw new ArgumentException("aDF frequency must be greater than 0");
+            }
+        }
     }
 }

@@ -1,10 +1,18 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace tfm
 {
     public class OutputEventArgs : EventArgs
     {
-        public string msg { get; set; }
-        public bool OutputText { get; set; }
+        public OutputEventArgs(string message, bool textOut)
+        {
+            Message = message;
+            TextOut = textOut;
+        }
+
+        public string Message { get; set; }
+        public bool TextOut { get; set; }
     }
 }
+

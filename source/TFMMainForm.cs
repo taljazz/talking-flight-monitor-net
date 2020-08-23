@@ -15,23 +15,25 @@ using NHotkey.WindowsForms;
 using DavyKager;
 using System.Reflection;
 using System.Net.Configuration;
+using System.Security.Policy;
 
 namespace tfm
 {
     public partial class TFMMainForm : Form
     {
         public Instrumentation inst = new Instrumentation();
-        private Output msg = new Output();
-        msg.OutputEvent += onOutput;
-        
-        
-        
+        Publisher pub = new Publisher();
         public TFMMainForm()
         {
             InitializeComponent();
             Aircraft.InitOffsets();
+            SubscribeOutputEvent(pub);
             // Start the connection timer to look for a flight sim
             this.timerConnection.Start();
+        }
+        void SubscribeOutputEvent(Publisher pub)
+        {
+            pub.RaiseOutputEvent += onOutputEvent;
         }
         // This method is called every 1 second by the connection timer.
         private void timerConnection_Tick(object sender, EventArgs e)
@@ -197,12 +199,10 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             AboutBox about = new AboutBox();
             about.ShowDialog();
         } //End About menu item.
-        private void onOutput(object sender, OutputEventArgs e)
+        void onOutputEvent(object sender, OutputEventArgs e)
         {
-            if (e.OutputText)
-            {
-                OutputLogTextBox.AppendText(e.msg);
-            }
+            OutputLogTextBox.AppendText(e.Message);
+            Tolk.Output(e.Message);
         }
     }//End TFMMainForm class.
 } //End TFM namespace.

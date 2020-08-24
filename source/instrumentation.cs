@@ -39,7 +39,6 @@ namespace tfm
         // Audio objects
         IWavePlayer driverOut;
         SignalGenerator wg;
-        SignalGenerator PitchWG;
         SignalGenerator BankWG;
         PanningSampleProvider pan;
         OffsetSampleProvider pulse;
@@ -74,6 +73,7 @@ namespace tfm
         public bool ReadILSEnabled { get; private set; }
         public bool ReadAutopilot { get; private set; }
         public bool AttitudePitchPlaying { get; private set; }
+        public bool AttitudeBankPlaying { get; private set; }
         public double ApHeading { get; private set; }
         public double ApAltitude { get; private set; }
         public double ApAirspeed { get; private set; }
@@ -303,7 +303,7 @@ namespace tfm
                 FsTransponderCode txHelper = new FsTransponderCode(Aircraft.Transponder.Value);
                 Tolk.Output("squawk " + txHelper.ToString());
             }
-
+    
         }
         private void ReadNextWaypoint(bool TriggeredByHotkey = false)
         {
@@ -827,6 +827,16 @@ namespace tfm
                     HdgLeft = HdgLeft + 360;
                 }
                 // start audio
+                wg = new SignalGenerator();
+                wg.Type = SignalGeneratorType.Square;
+                wg.Gain = 0.1;
+                // set up panning provider, with the signal generator as input
+                pan = new PanningSampleProvider(wg.ToMono());
+                // we use an OffsetSampleProvider to allow playing beep tones
+                pulse = new OffsetSampleProvider(pan)
+                {
+                    Take = TimeSpan.FromMilliseconds(50),
+                };
                 driverOut = new WaveOutEvent();
                 mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
                 mixer.ReadFully = true;
@@ -846,17 +856,6 @@ namespace tfm
         }
         private void OnRunwayGuidanceTickEvent(Object source, ElapsedEventArgs e)
         {
-            // signal generator for generating tones
-            wg = new SignalGenerator();
-            wg.Type = SignalGeneratorType.Square;
-            wg.Gain = 0.1;
-
-            pan = new PanningSampleProvider(wg.ToMono());
-            // we use an OffsetSampleProvider to allow playing beep tones
-            pulse = new OffsetSampleProvider(pan)
-            {
-                Take = TimeSpan.FromMilliseconds(50),
-            };
             double hdg = (double)Math.Round(Aircraft.CompassHeading.Value);
             if (hdg > RunwayGuidanceTrackedHeading && hdg < HdgRight)
             {
@@ -928,12 +927,22 @@ namespace tfm
             {
                 AttitudeModeEnabled = true;
                 // set up the timer
-                AttitudeTimer = new System.Timers.Timer(200); // 200 milliseconds
+                AttitudeTimer = new System.Timers.Timer(100); // 200 milliseconds
                 // Hook up the Elapsed event for the timer. 
                 AttitudeTimer.Elapsed += OnAttitudeModeTickEvent;
                 AttitudeTimer.AutoReset = true;
                 Tolk.Output("Attitude mode enabled. ");
                 // start audio
+                // signal generator for generating tones
+                BankWG = new SignalGenerator();
+                BankWG.Type = SignalGeneratorType.Square;
+                BankWG.Gain = 0.1;
+                pan = new PanningSampleProvider(BankWG.ToMono());
+                // we use an OffsetSampleProvider to allow playing beep tones
+                pulse = new OffsetSampleProvider(pan)
+                {
+                    Take = TimeSpan.FromMilliseconds(50),
+                };
                 driverOut = new WaveOutEvent();
                 mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
                 mixer.ReadFully = true;
@@ -953,18 +962,6 @@ namespace tfm
         }
         private void OnAttitudeModeTickEvent(Object source, ElapsedEventArgs e)
         {
-            // signal generator for generating tones
-            PitchWG = new SignalGenerator();
-            BankWG = new SignalGenerator();
-            BankWG.Type = SignalGeneratorType.Square;
-            BankWG.Gain = 0.1;
-            PitchWG.Gain = 0.1;
-            pan = new PanningSampleProvider(BankWG.ToMono());
-            // we use an OffsetSampleProvider to allow playing beep tones
-            pulse = new OffsetSampleProvider(pan)
-            {
-                Take = TimeSpan.FromMilliseconds(50),
-            };
             FSUIPCConnection.Process("attitude");
             double Pitch = Math.Round((double)Aircraft.AttitudePitch.Value * 360d / (65536d * 65536d));
             double Bank = Math.Round((double)Aircraft.AttitudeBank.Value * 360d / (65536d * 65536d));
@@ -990,11 +987,10 @@ namespace tfm
                 }
                 double freq = mapOneRangeToAnother(Pitch, -20, 0, 1000, 500, 0);
                 sineProvider.Frequency = freq;
-
-
-
-                }
             }
+            // bank left
+            //  if (Bank > 0 && Bank < 90)
+        }
 
 
         private void onDestKey()

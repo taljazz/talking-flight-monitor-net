@@ -21,7 +21,7 @@ namespace tfm
                 waveTable[index] = (float)Math.Sin(2 * Math.PI * (double)index / sampleRate);
             // For sawtooth instead of sine: waveTable[index] = (float)index / sampleRate;
             Frequency = 1000f;
-            Volume = 0.25f;
+            Volume = 0.1f;
             PortamentoTime = 0.2; // thought this was in seconds, but glide seems to take a bit longer
         }
 

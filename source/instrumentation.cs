@@ -27,15 +27,19 @@ namespace tfm
 {
     public class Instrumentation
     {
+        private SineWaveProvider sineProvider;
+
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
         // timers
         private static System.Timers.Timer RunwayGuidanceTimer;
+        private static System.Timers.Timer AttitudeTimer;
         private double HdgRight;
         private double HdgLeft;
 
         // Audio objects
         IWavePlayer driverOut;
         SignalGenerator wg;
+        SignalGenerator BankWG;
         PanningSampleProvider pan;
         OffsetSampleProvider pulse;
         MixingSampleProvider mixer;
@@ -64,9 +68,19 @@ namespace tfm
         public bool muteSimconnect { get; private set; }
         public bool flightFollowingOnline { get; private set; }
         public bool RunwayGuidanceEnabled { get; private set; }
+        public bool AttitudeModeEnabled { get; private set; }
         public bool LocaliserDetected { get; private set; }
         public bool ReadILSEnabled { get; private set; }
         public bool ReadAutopilot { get; private set; }
+        public bool AttitudePitchPlaying { get; private set; }
+        public bool AttitudeBankPlaying { get; private set; }
+        public double ApHeading { get; private set; }
+        public double ApAltitude { get; private set; }
+        public double ApAirspeed { get; private set; }
+        public double ApMachSpeed { get; private set; }
+        public double ApVerticalSpeed { get; private set; }
+        public decimal Com1Freq { get; private set; }
+        public decimal Com2Freq { get; private set; }
 
         public double CurrentHeading;   
 
@@ -149,7 +163,7 @@ namespace tfm
                 ReadToggle(Aircraft.Eng4FuelValve, Aircraft.Eng4FuelValve.Value > 0, "number 4 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.FuelPump, Aircraft.FuelPump.Value > 0, "Fuel pump", "active", "off");
                 ReadFlaps();
-                if (ReadAutopilot) ReadAutopilotInstruments();
+                ReadAutopilotInstruments();
                 ReadSimConnectMessages();
                 ReadTransponder();
                 ReadComRadios();
@@ -266,14 +280,17 @@ namespace tfm
 
         private void ReadComRadios()
         {
+            FsFrequencyCOM com1Helper = new FsFrequencyCOM(Aircraft.Com1Freq.Value);
+            FsFrequencyCOM com2Helper = new FsFrequencyCOM(Aircraft.Com2Freq.Value);
+            Com1Freq = com1Helper.ToDecimal();
+            Com2Freq = com2Helper.ToDecimal();
             if (Aircraft.Com1Freq.ValueChanged)
             {
-                FsFrequencyCOM com1Helper = new FsFrequencyCOM(Aircraft.Com1Freq.Value);
+                
                 Tolk.Output("Com1: " + com1Helper.ToString());
             }
             if (Aircraft.Com2Freq.ValueChanged)
             {
-                FsFrequencyCOM com2Helper = new FsFrequencyCOM(Aircraft.Com2Freq.Value);
                 Tolk.Output("Com1: " + com2Helper.ToString());
             }
 
@@ -286,7 +303,7 @@ namespace tfm
                 FsTransponderCode txHelper = new FsTransponderCode(Aircraft.Transponder.Value);
                 Tolk.Output("squawk " + txHelper.ToString());
             }
-
+    
         }
         private void ReadNextWaypoint(bool TriggeredByHotkey = false)
         {
@@ -400,22 +417,25 @@ namespace tfm
         // read autopilot settings
         public void ReadAutopilotInstruments()
         {
+            ApHeading = (double)Math.Round(Aircraft.ApHeading.Value / 65536d * 360d);
+            ApAltitude = Math.Round((double)Aircraft.ApAltitude.Value / 65536d * 3.28084d);
+            ApAirspeed = (double)Aircraft.ApAirspeed.Value;
+            ApMachSpeed = (double)Aircraft.ApMach.Value / 65536d;
+            ApVerticalSpeed = (double)Aircraft.ApVerticalSpeed.Value;
             // heading
             if (Aircraft.ApHeading.ValueChanged)
             {
-                CurrentHeading = (double)Math.Round(Aircraft.ApHeading.Value / 65536d * 360d);
-                Tolk.Output("Heading: " + CurrentHeading.ToString());
+                Tolk.Output("Heading: " + ApHeading.ToString());
             }
             // Altitude
             if (Aircraft.ApAltitude.ValueChanged)
             {
-                double curAlt = Math.Round((double)Aircraft.ApAltitude.Value / 65536d * 3.28084d);
-                Tolk.Output($"Altitude set to {curAlt} feet. ");
+                Tolk.Output($"Altitude set to {ApAltitude} feet. ");
             }
             // airspeed
             if (Aircraft.ApAirspeed.ValueChanged)
             {
-                Tolk.Output($"{Aircraft.ApAirspeed.Value} knotts.");  
+                Tolk.Output($"{ApAirspeed} knotts.");  
             }
         }
         public void ReadSimConnectMessages ()
@@ -807,6 +827,16 @@ namespace tfm
                     HdgLeft = HdgLeft + 360;
                 }
                 // start audio
+                wg = new SignalGenerator();
+                wg.Type = SignalGeneratorType.Square;
+                wg.Gain = 0.1;
+                // set up panning provider, with the signal generator as input
+                pan = new PanningSampleProvider(wg.ToMono());
+                // we use an OffsetSampleProvider to allow playing beep tones
+                pulse = new OffsetSampleProvider(pan)
+                {
+                    Take = TimeSpan.FromMilliseconds(50),
+                };
                 driverOut = new WaveOutEvent();
                 mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
                 mixer.ReadFully = true;
@@ -822,27 +852,10 @@ namespace tfm
                 RunwayGuidanceEnabled = false;
                 Tolk.Output("Runway Guidance disabled. ");
             }
-
-
-
-
-
-
-
+        
         }
         private void OnRunwayGuidanceTickEvent(Object source, ElapsedEventArgs e)
         {
-            // signal generator for generating tones
-            wg = new SignalGenerator();
-            wg.Type = SignalGeneratorType.Square;
-            wg.Gain = 0.1;
-
-            pan = new PanningSampleProvider(wg.ToMono());
-            // we use an OffsetSampleProvider to allow playing beep tones
-            pulse = new OffsetSampleProvider(pan)
-            {
-                Take = TimeSpan.FromMilliseconds(50),
-            };
             double hdg = (double)Math.Round(Aircraft.CompassHeading.Value);
             if (hdg > RunwayGuidanceTrackedHeading && hdg < HdgRight)
             {
@@ -908,11 +921,77 @@ namespace tfm
         {
             Tolk.Output("not yet implemented.");
         }
-
         private void onAttitudeKey()
         {
-            Tolk.Output("not yet implemented.");
+            if (!AttitudeModeEnabled)
+            {
+                AttitudeModeEnabled = true;
+                // set up the timer
+                AttitudeTimer = new System.Timers.Timer(100); // 200 milliseconds
+                // Hook up the Elapsed event for the timer. 
+                AttitudeTimer.Elapsed += OnAttitudeModeTickEvent;
+                AttitudeTimer.AutoReset = true;
+                Tolk.Output("Attitude mode enabled. ");
+                // start audio
+                // signal generator for generating tones
+                BankWG = new SignalGenerator();
+                BankWG.Type = SignalGeneratorType.Square;
+                BankWG.Gain = 0.1;
+                pan = new PanningSampleProvider(BankWG.ToMono());
+                // we use an OffsetSampleProvider to allow playing beep tones
+                pulse = new OffsetSampleProvider(pan)
+                {
+                    Take = TimeSpan.FromMilliseconds(50),
+                };
+                driverOut = new WaveOutEvent();
+                mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+                mixer.ReadFully = true;
+                driverOut.Init(mixer);
+                sineProvider = new SineWaveProvider();
+                // start the mixer. We can then add audio sources as needed.
+                driverOut.Play();
+                AttitudeTimer.Enabled = true;
+            }
+            else
+            {
+                driverOut.Stop();
+                AttitudeTimer.Stop();
+                AttitudeModeEnabled = false;
+                Tolk.Output("Attitude mode disabled. ");
+            }
         }
+        private void OnAttitudeModeTickEvent(Object source, ElapsedEventArgs e)
+        {
+            FSUIPCConnection.Process("attitude");
+            double Pitch = Math.Round((double)Aircraft.AttitudePitch.Value * 360d / (65536d * 65536d));
+            double Bank = Math.Round((double)Aircraft.AttitudeBank.Value * 360d / (65536d * 65536d));
+            // pitch down
+            if (Pitch > 0 && Pitch < 20)
+            {
+                double freq = mapOneRangeToAnother(Pitch, 0, 20, 800, 400, 0);
+                sineProvider.Frequency = freq;
+                if (!AttitudePitchPlaying)
+                {
+                    mixer.AddMixerInput(new SampleToWaveProvider(sineProvider));
+                    AttitudePitchPlaying = true;
+                }
+            }
+            // pitch up
+            if (Pitch < 0 && Pitch > -20)
+            {
+                if (!AttitudePitchPlaying)
+                {
+                    mixer.AddMixerInput(new SampleToWaveProvider(sineProvider.ToStereo()));
+                    Logger.Debug("pitch: " + Pitch);
+                    AttitudePitchPlaying = true;
+                }
+                double freq = mapOneRangeToAnother(Pitch, -20, 0, 1000, 500, 0);
+                sineProvider.Frequency = freq;
+            }
+            // bank left
+            //  if (Bank > 0 && Bank < 90)
+        }
+
 
         private void onDestKey()
         {

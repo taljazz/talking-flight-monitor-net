@@ -55,6 +55,7 @@ namespace tfm
             {
                 FSUIPCConnection.Process();
                 inst.ReadAircraftState();
+                
             }
 
 

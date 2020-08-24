@@ -177,6 +177,9 @@ namespace tfm
         public static  Offset<double> GyroSuction = new Offset<double>(0x0b18);
         public static  Offset<byte> OilQuantity = new Offset<byte>(0x66c9);
         public static  Offset<string> AircraftName = new Offset<string>(0x3d00, 255);
+        // atitude mode offsets
+        public static Offset<int> AttitudePitch = new Offset<int>("attitude", 0x0578);
+        public static Offset<int> AttitudeBank = new Offset<int>("attitude", 0x057c);
         public static  TextMenu textMenu = new TextMenu();
         
         public static void InitOffsets()

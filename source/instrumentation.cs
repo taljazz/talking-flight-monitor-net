@@ -81,6 +81,9 @@ namespace tfm
         public double ApVerticalSpeed { get; private set; }
         public decimal Com1Freq { get; private set; }
         public decimal Com2Freq { get; private set; }
+        public decimal Nav1Freq { get; private set; }
+        public int Transponder { get; private set; }
+        public decimal Nav2Freq { get; private set; }
 
         public double CurrentHeading;   
 
@@ -166,7 +169,7 @@ namespace tfm
                 ReadAutopilotInstruments();
                 ReadSimConnectMessages();
                 ReadTransponder();
-                ReadComRadios();
+                ReadRadios();
                 ReadAutoBrake();
                 ReadSpoilers();
                 ReadTrim();
@@ -278,31 +281,43 @@ namespace tfm
             }
         }
 
-        private void ReadComRadios()
+        private void ReadRadios()
         {
             FsFrequencyCOM com1Helper = new FsFrequencyCOM(Aircraft.Com1Freq.Value);
             FsFrequencyCOM com2Helper = new FsFrequencyCOM(Aircraft.Com2Freq.Value);
+            FsFrequencyNAV nav1Helper = new FsFrequencyNAV(Aircraft.Nav1Freq.Value);
+            FsFrequencyNAV nav2Helper = new FsFrequencyNAV(Aircraft.Nav2Freq.Value);
             Com1Freq = com1Helper.ToDecimal();
             Com2Freq = com2Helper.ToDecimal();
+            Nav1Freq = nav1Helper.ToDecimal();
+            Nav2Freq = nav2Helper.ToDecimal();
             if (Aircraft.Com1Freq.ValueChanged)
             {
-                
                 Tolk.Output("Com1: " + com1Helper.ToString());
             }
             if (Aircraft.Com2Freq.ValueChanged)
             {
                 Tolk.Output("Com1: " + com2Helper.ToString());
             }
+            if (Aircraft.Nav1Freq.ValueChanged)
+            {
+                Tolk.Output($"Nav 1: {nav1Helper.ToString()}");
+            }
+            if (Aircraft.Nav2Freq.ValueChanged)
+            {
+                Tolk.Output($"Nav 2: {nav2Helper.ToString()}");
+            }
 
         }
 
         private void ReadTransponder()
         {
+            FsTransponderCode txHelper = new FsTransponderCode(Aircraft.Transponder.Value);
             if (Aircraft.Transponder.ValueChanged)
             {
-                FsTransponderCode txHelper = new FsTransponderCode(Aircraft.Transponder.Value);
                 Tolk.Output("squawk " + txHelper.ToString());
             }
+            Transponder = txHelper.ToInteger();
     
         }
         private void ReadNextWaypoint(bool TriggeredByHotkey = false)

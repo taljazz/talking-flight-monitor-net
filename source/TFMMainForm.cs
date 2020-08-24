@@ -193,5 +193,15 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             AboutBox about = new AboutBox();
             about.ShowDialog();
         } //End About menu item.
+
+        private void WebsiteMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/jfayre/talking-flight-monitor-net");                       
+        }
+
+        private void ReportIssueMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/jfayre/talking-flight-monitor-net/issues");
+        }
     }//End TFMMainForm class.
 } //End TFM namespace.

@@ -138,11 +138,30 @@ namespace tfm
             var item = GagesList.SelectedItem.ToString();
                         GageValueTextBox.AccessibleName = "Enter " + item;
             LockGageCheckBox.AccessibleName = item + " lock";
-            Tolk.Output(GageValueTextBox.Text);
+            // Assign the airplane auto pilot gages to the gage value field.
+            // See related checked changed events for locks and apMaster switch.
+            //Check to see if FsUIPc is running.
+if(FSUIPCConnection.IsOpen == true)
+            {
+                switch(item)
+                {
+                    case "ADF":
+                        
+                        LockGageCheckBox.Visible = false;
+                        break;
+                }
+            } else
+            {
+                GageValueTextBox.Text = "Not connected.";
+            }
+            
             var screenReader = Tolk.DetectScreenReader();
             if(screenReader == "NVDA" && GagesList.DroppedDown == false)
             {
-                Tolk.Output(item + ", " + GageValueTextBox.Text);
+                Tolk.Output(GageValueTextBox.Text + ", " + GagesList.SelectedItem.ToString());
+            } else
+            {
+                Tolk.Output(GageValueTextBox.Text);
             }
         } //End gages list selected index change event.
         private void AutoGageCheckBox_CheckedChanged(object sender, EventArgs e)

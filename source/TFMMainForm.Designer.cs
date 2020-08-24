@@ -232,6 +232,7 @@
             this.WebsiteMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
             this.WebsiteMenuItem.Size = new System.Drawing.Size(337, 26);
             this.WebsiteMenuItem.Text = "Visit &website";
+            this.WebsiteMenuItem.Click += new System.EventHandler(this.WebsiteMenuItem_Click);
             // 
             // ReportIssueMenuItem
             // 
@@ -244,6 +245,7 @@
             | System.Windows.Forms.Keys.I)));
             this.ReportIssueMenuItem.Size = new System.Drawing.Size(337, 26);
             this.ReportIssueMenuItem.Text = "Report an &issue";
+            this.ReportIssueMenuItem.Click += new System.EventHandler(this.ReportIssueMenuItem_Click);
             // 
             // AboutMenuItem
             // 

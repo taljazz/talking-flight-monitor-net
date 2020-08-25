@@ -568,7 +568,7 @@ namespace tfm
             Tolk.DetectScreenReader();
             Tolk.Output("TFM dot net started!");
             HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
-            HotkeyManager.Current.AddOrReplace("test", Keys.OemOpenBrackets, OffsetTest);
+            // HotkeyManager.Current.AddOrReplace("test", Keys.OemOpenBrackets, OffsetTest);
             RunwayGuidanceEnabled = false;
 
         }

@@ -193,39 +193,5 @@ namespace tfm
         }
 
         
-        public static void SetTransponder(double squawk)
-        {
-            if (squawk > 0)
-            {
-                // 1. Create a new instance of the Transponder helper class using the integer that was entered
-                //    Note the number box always returns the value as a 'decimal' type. So we have to cast to Int32
-                FsTransponderCode txHelper = new FsTransponderCode((int)squawk);
-                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                Transponder.Value = txHelper.ToBCD();
-
-            }
-            else
-            {
-                throw new ArgumentException("Transponder values mush be greater than 0");
-            }
-
-        }
-
-        public static void SetADF1(double freq)
-        {
-            if (freq > 0)
-            {
-                // 1. Create a new instance of the ADF helper class using the decimal value entered
-                FsFrequencyADF adf1Helper = new FsFrequencyADF((ushort)freq);
-                // 2. Now use the helper class to get the two BCD values required by FSUIPC (main and extended)
-                //    Set the offsets to these new values
-                adf1Main.Value = adf1Helper.ToBCDMain();
-                adf1Extended.Value = adf1Helper.ToBCDExtended();
-            }
-            else
-            {
-                throw new ArgumentException("aDF frequency must be greater than 0");
-            }
-        }
     }
 }

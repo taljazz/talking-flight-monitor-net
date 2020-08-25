@@ -74,7 +74,81 @@ namespace tfm
         private bool ReadAutopilot;
         private bool AttitudePitchPlaying;
         private bool AttitudeBankPlaying;
-        
+        private bool apMaster;
+        [DisplayName("autopilot master switch")]
+        public bool ApMaster
+        {
+            get
+            {
+                apMaster = (Aircraft.ApMaster.Value == 0) ? false : true;
+                return apMaster;
+            }
+            set
+            {
+                Aircraft.ApMaster.Value = (value) ? (uint)1 : (uint)0;
+                apMaster = value;
+            }
+        }
+        private bool apNavLock;
+        [DisplayName("nav lock")]
+        public bool ApNavLock
+        {
+            get
+            {
+                apNavLock = (Aircraft.ApNavLock.Value == 0) ? false : true;
+                return apNavLock;
+            }
+            set
+            {
+                Aircraft.ApNavLock.Value = (value) ? (uint)1 : (uint)0;
+                apNavLock = value;
+            }
+        }
+        private bool apWingLeveler;
+        [DisplayName("Wing Leveler")]
+        public bool ApWingLeveler
+        {
+            get
+            {
+                apWingLeveler = (Aircraft.ApWingLeveler.Value == 0) ? false : true;
+                return apWingLeveler;
+            }
+            set
+            {
+                Aircraft.ApWingLeveler.Value = (value) ? (uint)1 : (uint)0;
+                apWingLeveler = value;
+            }
+        }
+        private bool apAttitudeHold;
+        [DisplayName("attitude hold")]
+        public bool ApAttitudeHold
+        {
+            get
+            {
+                apAttitudeHold = (Aircraft.ApAttitudeHold.Value == 0) ? false : true;
+                return apAttitudeHold;
+            }
+            set
+            {
+                Aircraft.ApAttitudeHold.Value = (value) ? (uint)1 : (uint)0;
+                apAttitudeHold = value;
+            }
+        }
+        private bool apApproachHold;
+        [DisplayName("Approach hold")]
+        public bool ApApproachHold
+        {
+            get
+            {
+                apApproachHold = (Aircraft.ApApproachHold.Value == 0) ? false : true;
+                return apApproachHold;
+            }
+            set
+            {
+                Aircraft.ApApproachHold.Value = (value) ? (uint)1 : (uint)0;
+                apApproachHold = value;
+            }
+        }
         [DisplayName("Heading")]
         public double ApHeading
         {
@@ -85,26 +159,72 @@ namespace tfm
             }
             set
             {
-                // convert the supplied heading into the proper FSUIPC format(degrees*65536/360)
-                Aircraft.ApHeading.Value = (ushort)(value * 65536 / 360);
-                apHeading = value;
+                if (value > 0 && value < 360)
+                {
+                    // convert the supplied heading into the proper FSUIPC format(degrees*65536/360)
+                    Aircraft.ApHeading.Value = (ushort)(value * 65536 / 360);
+                    apHeading = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Heading values must be between 0 and 360");
+                }
+            }
+        }
+        private bool apHeadingLock;
+        [DisplayName("heading lock")]
+        public bool ApHeadingLock
+        {
+            get
+            {
+                apHeadingLock = (Aircraft.ApHeadingLock.Value == 0) ? false : true;
+                return apHeadingLock;
+            }
+            set
+            {
+                Aircraft.ApHeadingLock.Value = (value) ? (uint)1 : (uint)0;
+                apHeadingLock = value;
             }
         }
         [DisplayName("Altitude")]
         public double ApAltitude
         {
-            get 
-            { 
+            get
+            {
                 apAltitude = Math.Round((double)Aircraft.ApAltitude.Value / 65536d * 3.28084d);
-                return apAltitude; 
+                return apAltitude;
             }
             set
             {
-                Aircraft.ApAltitude.Value= (uint)(value / 3.28084 * 65536);
-                apAltitude = value;
+                if (value > 0)
+                {
+                    Aircraft.ApAltitude.Value = (uint)(value / 3.28084 * 65536);
+                    apAltitude = value;
+                }
+                else
+                {
+                    throw new ArgumentException("altitude must be greter than 0");
+                }
             }
         }
+        private bool apAltitudeLock;
+        [DisplayName("altitude lock")]
+        public bool ApAltitudeLock
+        {
+            get
+            {
+                apAltitudeLock = (Aircraft.ApAltitudeLock.Value == 0) ? false : true;
+                return apAltitudeLock;
+            }
+            set
+            {
+                Aircraft.ApAltitudeLock.Value = (value) ? (uint)1 : (uint)0;
+                apAltitudeLock = value;
+            }
+        }
+
         private double apAirspeed;
+        [DisplayName("Airspeed")]
         public double ApAirspeed
         {
             get
@@ -114,11 +234,33 @@ namespace tfm
             }
             set
             {
-                Aircraft.ApAirspeed.Value = (short)value;
-                apAirspeed = value;
+                if (value > 0)
+                {
+                    Aircraft.ApAirspeed.Value = (short)value;
+                    apAirspeed = value;
+                }
+                else
+                {
+                    throw new ArgumentException("speed must be greater than 0");
+                }
             }
         }
-        
+        private bool apAirspeedHold;
+        [DisplayName("airspeed hold")]
+        public bool ApAirspeedHold
+        {
+            get
+            {
+                apAirspeedHold = (Aircraft.ApSpeedHold.Value == 0) ? false : true;
+                return apAirspeedHold;
+            }
+            set
+            {
+                Aircraft.ApSpeedHold.Value = (value) ? (uint)1 : (uint)0;
+                apAirspeedHold = value;
+            }
+        }
+
         private double apMachSpeed;
         [DisplayName("Mach")]
         public double ApMachSpeed
@@ -142,7 +284,23 @@ namespace tfm
                 }
             }
         }
-        
+        private bool apMachHold;
+        [DisplayName("mach hold")]
+        public bool ApMachHold
+        {
+            get
+            {
+                apMachHold = (Aircraft.ApMachHold.Value == 0) ? false : true;
+                return apMachHold;
+            }
+            set
+            {
+                Aircraft.ApMachHold.Value = (value) ? (uint)1 : (uint)0;
+                apMachHold = value;
+            }
+        }
+
+
         private double apVerticalSpeed;
         [DisplayName("Vertical speed")]
         public double ApVerticalSpeed
@@ -159,6 +317,23 @@ namespace tfm
 
             }
         }
+        private bool apVerticalSpeedHold;
+        [DisplayName("vertical speed hold")]
+        public bool ApVerticalSpeedHold
+        {
+            get
+            {
+                apVerticalSpeedHold = (Aircraft.ApVerticalSpeedHold.Value == 0) ? false : true;
+                return apVerticalSpeedHold;
+            }
+            set
+            {
+                Aircraft.ApVerticalSpeedHold.Value = (value) ? (uint)1 : (uint)0;
+                apVerticalSpeedHold = value;
+            }
+        }
+
+
         private double com1Freq;
         [DisplayName("com 1")]
         [Category("communications")]
@@ -186,7 +361,7 @@ namespace tfm
                 }
             }
         }
-        
+
         private double com2Freq;
         [DisplayName("com 1")]
         [Category("communications")]
@@ -239,6 +414,38 @@ namespace tfm
                 else
                 {
                     throw new ArgumentException("Transponder values mush be greater than 0");
+                }
+            }
+        }
+        private double adf1Freq;
+        [DisplayName("ADF frequency")]
+        [Category("navigation")]
+        public double Adf1Freq
+        {
+            get
+            {
+                // 1. Create a new instance of the helper ADF class using the values of the main AND extended offsets
+                //    This is taking in the BCD values sent from FSUIPC
+                FsFrequencyADF adf1Helper = new FsFrequencyADF(Aircraft.adf1Main.Value, Aircraft.adf1Extended.Value);
+                // 2. Now use the helper class to get the string representation and show it on the form
+                adf1Freq = (double)adf1Helper.ToDecimal();
+                return adf1Freq;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    // 1. Create a new instance of the ADF helper class using the decimal value entered
+                    FsFrequencyADF adf1Helper = new FsFrequencyADF((ushort)value);
+                    // 2. Now use the helper class to get the two BCD values required by FSUIPC (main and extended)
+                    //    Set the offsets to these new values
+                    Aircraft.adf1Main.Value = adf1Helper.ToBCDMain();
+                    Aircraft.adf1Extended.Value = adf1Helper.ToBCDExtended();
+                    adf1Freq = value;
+                }
+                else
+                {
+                    throw new ArgumentException("aDF frequency must be greater than 0");
                 }
             }
         }
@@ -331,6 +538,7 @@ namespace tfm
         private void OffsetTest(object sender, HotkeyEventArgs e)
         {
             ApHeading = 100;
+            ApHeadingLock = true;
 
 
         }
@@ -651,11 +859,6 @@ namespace tfm
         // read autopilot settings
         public void ReadAutopilotInstruments()
         {
-            ApHeading = (double)Math.Round(Aircraft.ApHeading.Value / 65536d * 360d);
-            ApAltitude = Math.Round((double)Aircraft.ApAltitude.Value / 65536d * 3.28084d);
-            ApAirspeed = (double)Aircraft.ApAirspeed.Value;
-            ApMachSpeed = (double)Aircraft.ApMach.Value / 65536d;
-            ApVerticalSpeed = (double)Aircraft.ApVerticalSpeed.Value;
             // heading
             if (Aircraft.ApHeading.ValueChanged)
             {

@@ -55,12 +55,15 @@
             this.LockGageCheckBox = new System.Windows.Forms.CheckBox();
             this.GageValueTextBox = new System.Windows.Forms.TextBox();
             this.GageComboBox = new System.Windows.Forms.ComboBox();
+            this.AvionicsExplorationTabPage = new System.Windows.Forms.TabPage();
             this.FlightPlanTabPage = new System.Windows.Forms.TabPage();
             this.ProceduresTabPage = new System.Windows.Forms.TabPage();
             this.FindTabPage = new System.Windows.Forms.TabPage();
+            this.AutopilotPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.TFMMainMenu.SuspendLayout();
             this.TFMTabControl.SuspendLayout();
             this.AvionicsTabPage.SuspendLayout();
+            this.AvionicsExplorationTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerMain
@@ -261,6 +264,7 @@
             // 
             this.TFMTabControl.AccessibleName = "Primary tabs";
             this.TFMTabControl.Controls.Add(this.AvionicsTabPage);
+            this.TFMTabControl.Controls.Add(this.AvionicsExplorationTabPage);
             this.TFMTabControl.Controls.Add(this.FlightPlanTabPage);
             this.TFMTabControl.Controls.Add(this.ProceduresTabPage);
             this.TFMTabControl.Controls.Add(this.FindTabPage);
@@ -374,6 +378,17 @@
             this.GageComboBox.TabIndex = 0;
             this.GageComboBox.SelectedIndexChanged += new System.EventHandler(this.GageComboBox_SelectedIndexChanged);
             // 
+            // AvionicsExplorationTabPage
+            // 
+            this.AvionicsExplorationTabPage.AccessibleName = "Avionics (exploration)";
+            this.AvionicsExplorationTabPage.Controls.Add(this.AutopilotPropertyGrid);
+            this.AvionicsExplorationTabPage.Location = new System.Drawing.Point(4, 30);
+            this.AvionicsExplorationTabPage.Name = "AvionicsExplorationTabPage";
+            this.AvionicsExplorationTabPage.Size = new System.Drawing.Size(476, 194);
+            this.AvionicsExplorationTabPage.TabIndex = 4;
+            this.AvionicsExplorationTabPage.Text = "Autopilot instrument panel";
+            this.AvionicsExplorationTabPage.UseVisualStyleBackColor = true;
+            // 
             // FlightPlanTabPage
             // 
             this.FlightPlanTabPage.AccessibleName = "Flight plan";
@@ -405,6 +420,16 @@
             this.FindTabPage.Text = "Find";
             this.FindTabPage.UseVisualStyleBackColor = true;
             // 
+            // AutopilotPropertyGrid
+            // 
+            this.AutopilotPropertyGrid.AccessibleName = "Autopilot instrument panel";
+            this.AutopilotPropertyGrid.Dock = System.Windows.Forms.DockStyle.Left;
+            this.AutopilotPropertyGrid.LargeButtons = true;
+            this.AutopilotPropertyGrid.Location = new System.Drawing.Point(0, 0);
+            this.AutopilotPropertyGrid.Name = "AutopilotPropertyGrid";
+            this.AutopilotPropertyGrid.Size = new System.Drawing.Size(130, 194);
+            this.AutopilotPropertyGrid.TabIndex = 2;
+            // 
             // TFMMainForm
             // 
             this.AccessibleDescription = "";
@@ -433,6 +458,7 @@
             this.TFMTabControl.ResumeLayout(false);
             this.AvionicsTabPage.ResumeLayout(false);
             this.AvionicsTabPage.PerformLayout();
+            this.AvionicsExplorationTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -468,6 +494,8 @@
         private System.Windows.Forms.CheckBox AutopilotCheckBox;
         private System.Windows.Forms.TextBox OutputLogTextBox;
         private System.Windows.Forms.ComboBox FlyModeComboBox;
+        private System.Windows.Forms.TabPage AvionicsExplorationTabPage;
+        private System.Windows.Forms.PropertyGrid AutopilotPropertyGrid;
     }
 }
 

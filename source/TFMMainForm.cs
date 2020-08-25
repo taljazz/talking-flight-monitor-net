@@ -206,6 +206,8 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             GageComboBox.SelectedIndex = 0;
             FlyModeComboBox.SelectedIndex = 0;
             GageComboBox.Focus();
+            //Following code is expiremental.
+            AutopilotPropertyGrid.SelectedObject = inst;
         }
 
         private void AboutMenuItem_Click(object sender, EventArgs e)

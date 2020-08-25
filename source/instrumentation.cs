@@ -267,7 +267,9 @@ namespace tfm
         {
             get
             {
-                apMachSpeed = (double)Aircraft.ApMach.Value / 65536d;
+                double mach = (double)Aircraft.ApMach.Value / 65536d;
+                string strMach = mach.ToString("F2");
+                apMachSpeed = double.Parse(strMach);
                 return apMachSpeed;
             }
             set

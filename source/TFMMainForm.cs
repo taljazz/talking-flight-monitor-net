@@ -210,7 +210,7 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             AutopilotPropertyGrid.SelectedObject = inst;
         }
 
-        private void AboutMenuItem_Click(object sender, EventArgs e)
+                        private void AboutMenuItem_Click(object sender, EventArgs e)
         {
             AboutBox about = new AboutBox();
             about.ShowDialog();

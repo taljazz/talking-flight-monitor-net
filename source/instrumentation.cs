@@ -334,15 +334,15 @@ namespace tfm
         }
 
 
-        private double com1Freq;
+        private decimal com1Freq;
         [DisplayName("com 1")]
         [Category("communications")]
-        public double Com1Freq
+        public decimal Com1Freq
         {
             get
             {
                 FsFrequencyCOM com1Helper = new FsFrequencyCOM(Aircraft.Com1Freq.Value);
-                com1Freq = (double)com1Helper.ToDecimal();
+                com1Freq = com1Helper.ToDecimal();
                 return com1Freq;
             }
             set
@@ -350,7 +350,7 @@ namespace tfm
                 if (value > 0)
                 {
                     // 1. Create a new instance of the COM helper class using the decimal value entered
-                    FsFrequencyCOM com1Helper = new FsFrequencyCOM((ushort)value);
+                    FsFrequencyCOM com1Helper = new FsFrequencyCOM(value);
                     // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
                     Aircraft.Com1Freq.Value = com1Helper.ToBCD();
                     com1Freq = value;
@@ -362,15 +362,15 @@ namespace tfm
             }
         }
 
-        private double com2Freq;
+        private decimal com2Freq;
         [DisplayName("com 2")]
         [Category("communications")]
-        public double Com2Freq
+        public decimal Com2Freq
         {
             get
             {
                 FsFrequencyCOM com2Helper = new FsFrequencyCOM(Aircraft.Com2Freq.Value);
-                com2Freq = (double)com2Helper.ToDecimal();
+                com2Freq = com2Helper.ToDecimal();
                 return com2Freq;
             }
             set
@@ -378,7 +378,7 @@ namespace tfm
                 if (value > 0)
                 {
                     // 1. Create a new instance of the COM helper class using the decimal value entered
-                    FsFrequencyCOM com2Helper = new FsFrequencyCOM((ushort)value);
+                    FsFrequencyCOM com2Helper = new FsFrequencyCOM(value);
                     // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
                     Aircraft.Com2Freq.Value = com2Helper.ToBCD();
                     com2Freq = value;
@@ -417,10 +417,10 @@ namespace tfm
                 }
             }
         }
-        private double adf1Freq;
+        private decimal adf1Freq;
         [DisplayName("ADF frequency")]
         [Category("navigation")]
-        public double Adf1Freq
+        public decimal Adf1Freq
         {
             get
             {
@@ -428,7 +428,7 @@ namespace tfm
                 //    This is taking in the BCD values sent from FSUIPC
                 FsFrequencyADF adf1Helper = new FsFrequencyADF(Aircraft.adf1Main.Value, Aircraft.adf1Extended.Value);
                 // 2. Now use the helper class to get the string representation and show it on the form
-                adf1Freq = (double)adf1Helper.ToDecimal();
+                adf1Freq = adf1Helper.ToDecimal();
                 return adf1Freq;
             }
             set
@@ -436,7 +436,7 @@ namespace tfm
                 if (value > 0)
                 {
                     // 1. Create a new instance of the ADF helper class using the decimal value entered
-                    FsFrequencyADF adf1Helper = new FsFrequencyADF((ushort)value);
+                    FsFrequencyADF adf1Helper = new FsFrequencyADF(value);
                     // 2. Now use the helper class to get the two BCD values required by FSUIPC (main and extended)
                     //    Set the offsets to these new values
                     Aircraft.adf1Main.Value = adf1Helper.ToBCDMain();
@@ -485,15 +485,15 @@ namespace tfm
             }
         }
 
-        private double nav1Freq;
+        private decimal nav1Freq;
         [DisplayName("nav 1")]
         [Category("navigation")]
-        public double Nav1Freq
+        public decimal Nav1Freq
         {
             get
             {
                 FsFrequencyNAV nav1Helper = new FsFrequencyNAV(Aircraft.Nav1Freq.Value);
-                nav1Freq = (double)nav1Helper.ToDecimal();
+                nav1Freq = nav1Helper.ToDecimal();
                 return nav1Freq;
             }
             set
@@ -501,7 +501,7 @@ namespace tfm
                 if (value > 0)
                 {
                     // 1. Create a new instance of the COM helper class using the decimal value entered
-                    FsFrequencyNAV nav1Helper = new FsFrequencyNAV((ushort)value);
+                    FsFrequencyNAV nav1Helper = new FsFrequencyNAV(value);
                     // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
                     Aircraft.Nav1Freq.Value = nav1Helper.ToBCD();
                     nav1Freq = value;
@@ -512,15 +512,15 @@ namespace tfm
                 }
             }
         }
-        private double nav2Freq;
+        private decimal nav2Freq;
         [DisplayName("nav 2")]
         [Category("navigation")]
-        public double Nav2Freq
+        public decimal Nav2Freq
         {
             get
             {
                 FsFrequencyNAV nav2Helper = new FsFrequencyNAV(Aircraft.Nav2Freq.Value);
-                nav2Freq = (double)nav2Helper.ToDecimal();
+                nav2Freq = nav2Helper.ToDecimal();
                 return nav2Freq;
             }
             set
@@ -528,7 +528,7 @@ namespace tfm
                 if (value > 0)
                 {
                     // 1. Create a new instance of the NAV helper class using the decimal value entered
-                    FsFrequencyNAV nav2Helper = new FsFrequencyNAV((ushort)value);
+                    FsFrequencyNAV nav2Helper = new FsFrequencyNAV(value);
                     // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
                     Aircraft.Nav2Freq.Value = nav2Helper.ToBCD();
                     nav2Freq = value;

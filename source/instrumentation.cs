@@ -15,6 +15,7 @@ using System.Linq;
 using System.Media;
 using System.Text;
 using System.Timers;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -27,7 +28,8 @@ namespace tfm
 {
     public class Instrumentation
     {
-        private SineWaveProvider sineProvider;
+        private SineWaveProvider pitchSineProvider;
+        private SineWaveProvider bankSineProvider;
 
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
         // timers
@@ -73,7 +75,7 @@ namespace tfm
         private bool ReadILSEnabled;
         private bool ReadAutopilot = false;
         private bool AttitudePitchPlaying;
-        private bool AttitudeBankPlaying;
+        private bool AttitudeBankLeftPlaying;
         private bool apMaster;
         [DisplayName("autopilot master switch")]
         public bool ApMaster
@@ -551,6 +553,7 @@ namespace tfm
         private string OldSimConnectMessage;
         private double apHeading;
         private double apAltitude;
+        private bool AttitudeBankRightPlaying;
 
         public Instrumentation()
         {
@@ -1411,7 +1414,7 @@ namespace tfm
             {
                 AttitudeModeEnabled = true;
                 // set up the timer
-                AttitudeTimer = new System.Timers.Timer(100); // 200 milliseconds
+                AttitudeTimer = new System.Timers.Timer(150); // 200 milliseconds
                 // Hook up the Elapsed event for the timer. 
                 AttitudeTimer.Elapsed += OnAttitudeModeTickEvent;
                 AttitudeTimer.AutoReset = true;
@@ -1422,7 +1425,8 @@ namespace tfm
                 mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
                 mixer.ReadFully = true;
                 driverOut.Init(mixer);
-                sineProvider = new SineWaveProvider();
+                pitchSineProvider = new SineWaveProvider();
+                bankSineProvider = new SineWaveProvider();
                 // start the mixer. We can then add audio sources as needed.
                 driverOut.Play();
                 AttitudeTimer.Enabled = true;
@@ -1430,6 +1434,10 @@ namespace tfm
             else
             {
                 driverOut.Stop();
+                mixer.RemoveAllMixerInputs();
+                AttitudePitchPlaying = false;
+                AttitudeBankLeftPlaying = false;
+                AttitudeBankRightPlaying = false;
                 AttitudeTimer.Stop();
                 AttitudeModeEnabled = false;
                 Tolk.Output("Attitude mode disabled. ");
@@ -1437,51 +1445,77 @@ namespace tfm
         }
         private void OnAttitudeModeTickEvent(Object source, ElapsedEventArgs e)
         {
-            BankWG = new SignalGenerator();
-            BankWG.Type = SignalGeneratorType.Square;
-            BankWG.Gain = 0.1;
-            pan = new PanningSampleProvider(BankWG.ToMono());
-            // we use an OffsetSampleProvider to allow playing beep tones
-            pulse = new OffsetSampleProvider(pan)
-            {
-                Take = TimeSpan.FromMilliseconds(50),
-            };
-
+            pan = new PanningSampleProvider(bankSineProvider);
             FSUIPCConnection.Process("attitude");
             double Pitch = Math.Round((double)Aircraft.AttitudePitch.Value * 360d / (65536d * 65536d));
             double Bank = Math.Round((double)Aircraft.AttitudeBank.Value * 360d / (65536d * 65536d));
             // pitch down
             if (Pitch > 0 && Pitch < 20)
             {
-                double freq = mapOneRangeToAnother(Pitch, 0, 20, 800, 400, 0);
-                sineProvider.Frequency = freq;
                 if (!AttitudePitchPlaying)
                 {
-                    mixer.AddMixerInput(new SampleToWaveProvider(sineProvider));
+                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
+                    Logger.Debug("pitch: " + Pitch);
                     AttitudePitchPlaying = true;
                 }
+
+                double freq = mapOneRangeToAnother(Pitch, 0, 20, 600, 200, 0);
+                pitchSineProvider.Frequency = freq;
             }
             // pitch up
             if (Pitch < 0 && Pitch > -20)
             {
                 if (!AttitudePitchPlaying)
                 {
-                    mixer.AddMixerInput(new SampleToWaveProvider(sineProvider.ToStereo()));
+                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
                     Logger.Debug("pitch: " + Pitch);
                     AttitudePitchPlaying = true;
                 }
-                double freq = mapOneRangeToAnother(Pitch, -20, 0, 1000, 500, 0);
-                sineProvider.Frequency = freq;
+                double freq = mapOneRangeToAnother(Pitch, -20, 0, 1200, 800, 0);
+                pitchSineProvider.Frequency = freq;
             }
             // bank left
             if (Bank > 0 && Bank < 90)
             {
                 double freq = mapOneRangeToAnother(Bank, 1, 90, 400, 800, 0);
-                BankWG.Frequency = freq;
-                if (!AttitudeBankPlaying)
+                bankSineProvider.Frequency = freq;
+                
+                if (!AttitudeBankLeftPlaying)
                 {
-                    mixer.AddMixerInput(pulse);
+                    mixer.RemoveAllMixerInputs();
+                    pan.Pan = -1;
+                    mixer.AddMixerInput(pan);
+                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                    AttitudeBankLeftPlaying = true;
+                    AttitudeBankRightPlaying = false;
                 }
+
+
+
+            }
+            // bank right
+            if (Bank < 0 && Bank > -90)
+            {
+                Bank = Math.Abs(Bank);
+                double freq = mapOneRangeToAnother(Bank, 1, 90, 400, 800, 0);
+                bankSineProvider.Frequency = freq;
+                if (!AttitudeBankRightPlaying)
+                {
+                    mixer.RemoveAllMixerInputs();
+                    pan.Pan = 1;
+                    mixer.AddMixerInput(pan);
+                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                    AttitudeBankLeftPlaying = false;
+                    AttitudeBankRightPlaying = true;                
+                }
+            }
+            if (Bank == 0)
+            {
+                mixer.RemoveAllMixerInputs();
+                mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                AttitudeBankLeftPlaying = false;
+                AttitudeBankRightPlaying = false;
+                AttitudePitchPlaying = true;
 
             }
 

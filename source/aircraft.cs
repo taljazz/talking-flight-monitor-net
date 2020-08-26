@@ -28,7 +28,7 @@ namespace tfm
         public static  Offset<short> Flaps = new Offset<short>(0x30f0);
         public static  Offset<short> OnGround = new Offset<short>(0x0366);
         public static  Offset<short> ParkingBrake = new Offset<short>(0x0bc8);
-        public static  Offset<uint> Gear = new Offset<uint>(0x0be8);
+        public static  Offset<uint> LandingGear = new Offset<uint>(0x0bec);
         public static  Offset<int> Altitude = new Offset<int>(0x3324);
         public static  Offset<uint> GroundAltitude = new Offset<uint>(0x0020);
         public static  Offset<uint> SpoilersArm = new Offset<uint>(0x0bcc);

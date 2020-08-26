@@ -45,7 +45,7 @@ namespace tfm
         MixingSampleProvider mixer;
 
         // initialize command mode sound
-        SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
+        readonly SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
         // list to store registered hotkey identifiers
         List<string> hotkeys = new List<string>();
         FsFuelTanksCollection FuelTanks = null;
@@ -80,7 +80,7 @@ namespace tfm
         {
             get
             {
-                apMaster = (Aircraft.ApMaster.Value == 0) ? false : true;
+                apMaster = Aircraft.ApMaster.Value != 0;
                 return apMaster;
             }
             set
@@ -635,6 +635,7 @@ namespace tfm
                 ReadToggle(Aircraft.Eng4FuelValve, Aircraft.Eng4FuelValve.Value > 0, "number 4 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.FuelPump, Aircraft.FuelPump.Value > 0, "Fuel pump", "active", "off");
                 ReadFlaps();
+                ReadLandingGear();
                 if (ReadAutopilot) ReadAutopilotInstruments();
                 ReadSimConnectMessages();
                 ReadTransponder();
@@ -892,6 +893,20 @@ namespace tfm
                     Tolk.Output("flaps " + FlapsAngle.ToString("f0"));
                 }
 
+            }
+        }
+        public void ReadLandingGear()
+        {
+            if (Aircraft.LandingGear.ValueChanged)
+            {
+                if (Aircraft.LandingGear.Value == 0)
+                {
+                    Tolk.Output("gear up. ");
+                }
+                if (Aircraft.LandingGear.Value == 16383)
+                {
+                    Tolk.Output("Gear down. ");
+                }
             }
         }
         // read autopilot settings

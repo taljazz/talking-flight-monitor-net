@@ -71,7 +71,7 @@ namespace tfm
         private bool AttitudeModeEnabled;
         private bool LocaliserDetected;
         private bool ReadILSEnabled;
-        private bool ReadAutopilot;
+        private bool ReadAutopilot = false;
         private bool AttitudePitchPlaying;
         private bool AttitudeBankPlaying;
         private bool apMaster;
@@ -635,7 +635,7 @@ namespace tfm
                 ReadToggle(Aircraft.Eng4FuelValve, Aircraft.Eng4FuelValve.Value > 0, "number 4 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.FuelPump, Aircraft.FuelPump.Value > 0, "Fuel pump", "active", "off");
                 ReadFlaps();
-                ReadAutopilotInstruments();
+                if (ReadAutopilot) ReadAutopilotInstruments();
                 ReadSimConnectMessages();
                 ReadTransponder();
                 ReadRadios();
@@ -929,13 +929,7 @@ namespace tfm
                 OldSimConnectMessage = Aircraft.textMenu.ToString();
             }
         }
-        // set autopilot heading
-        public static void SetHeading(string hdg)
-        {
-            Tolk.Output("not implemented yet");
-            Tolk.Output("heading: " + hdg);
-        }
-
+        
         private void ReadToggle(Offset instrument, bool toggleStateOn, string name, string OnMsg, string OffMsg)
         {
             if (instrument.ValueChanged)

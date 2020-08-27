@@ -547,7 +547,8 @@ namespace tfm
             }
         }
 
-        
+        public double oldBank { get; private set; }
+
         public double CurrentHeading;
 
         public ReverseGeoCode<ExtendedGeoName> r = new ReverseGeoCode<ExtendedGeoName>(GeoFileReader.ReadExtendedGeoNames(@".\data\cities1000.txt"));
@@ -559,6 +560,8 @@ namespace tfm
         private bool AttitudeBankRightPlaying;
         private bool readNavRadios;
         private double groundSpeed;
+        private int attitudeModeSelect;
+        private double oldPitch;
 
         public Instrumentation()
         {
@@ -1492,6 +1495,7 @@ namespace tfm
         }
         private void OnAttitudeModeTickEvent(Object source, ElapsedEventArgs e)
         {
+            attitudeModeSelect = 2;
             pan = new PanningSampleProvider(bankSineProvider);
             FSUIPCConnection.Process("attitude");
             double Pitch = Math.Round((double)Aircraft.AttitudePitch.Value * 360d / (65536d * 65536d));
@@ -1499,44 +1503,82 @@ namespace tfm
             // pitch down
             if (Pitch > 0 && Pitch < 20)
             {
-                if (!AttitudePitchPlaying)
+                if (attitudeModeSelect == 2 || attitudeModeSelect == 3)
                 {
-                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
-                    Logger.Debug("pitch: " + Pitch);
-                    AttitudePitchPlaying = true;
+                    if (Pitch != oldPitch)
+                    {
+                        Tolk.Output($"down {Pitch}", true);
+                        oldPitch = Pitch;
+                        if (attitudeModeSelect == 2) return;
+                    }
+                }
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    if (!AttitudePitchPlaying)
+                    {
+                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
+                        Logger.Debug("pitch: " + Pitch);
+                        AttitudePitchPlaying = true;
+                    }
+
+                    double freq = mapOneRangeToAnother(Pitch, 0, 20, 600, 200, 0);
+                    pitchSineProvider.Frequency = freq;
                 }
 
-                double freq = mapOneRangeToAnother(Pitch, 0, 20, 600, 200, 0);
-                pitchSineProvider.Frequency = freq;
-            }
+            }            
             // pitch up
             if (Pitch < 0 && Pitch > -20)
             {
-                if (!AttitudePitchPlaying)
+                if (attitudeModeSelect == 2 || attitudeModeSelect == 3)
                 {
-                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
-                    Logger.Debug("pitch: " + Pitch);
-                    AttitudePitchPlaying = true;
+                    if (Pitch != oldPitch)
+                    {
+                        Tolk.Output($"up {Math.Abs(Pitch)}", true);
+                        oldPitch = Pitch;
+                        if (attitudeModeSelect == 2) return;
+                    }
                 }
-                double freq = mapOneRangeToAnother(Pitch, -20, 0, 1200, 800, 0);
-                pitchSineProvider.Frequency = freq;
-            }
+
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    if (!AttitudePitchPlaying)
+                    {
+                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
+                        Logger.Debug("pitch: " + Pitch);
+                        AttitudePitchPlaying = true;
+                    }
+                    double freq = mapOneRangeToAnother(Pitch, -20, 0, 1200, 800, 0);
+                    pitchSineProvider.Frequency = freq;
+                }
+
+            }            
             // bank left
             if (Bank > 0 && Bank < 90)
             {
-                double freq = mapOneRangeToAnother(Bank, 1, 90, 400, 800, 0);
-                bankSineProvider.Frequency = freq;
-                
-                if (!AttitudeBankLeftPlaying)
+                if (attitudeModeSelect == 2 || attitudeModeSelect == 3)
                 {
-                    mixer.RemoveAllMixerInputs();
-                    pan.Pan = -1;
-                    mixer.AddMixerInput(pan);
-                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
-                    AttitudeBankLeftPlaying = true;
-                    AttitudeBankRightPlaying = false;
+                    if (Bank != oldBank)
+                    {
+                        Tolk.Output($"left {Bank}", true);
+                        oldBank = Bank;
+                        if (attitudeModeSelect == 2) return;
+                    }
                 }
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    double freq = mapOneRangeToAnother(Bank, 1, 90, 400, 800, 0);
+                    bankSineProvider.Frequency = freq;
+                    if (!AttitudeBankLeftPlaying)
+                    {
+                        mixer.RemoveAllMixerInputs();
+                        pan.Pan = -1;
+                        mixer.AddMixerInput(pan);
+                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                        AttitudeBankLeftPlaying = true;
+                        AttitudeBankRightPlaying = false;
+                    }
 
+                }
 
 
             }
@@ -1544,26 +1586,43 @@ namespace tfm
             if (Bank < 0 && Bank > -90)
             {
                 Bank = Math.Abs(Bank);
-                double freq = mapOneRangeToAnother(Bank, 1, 90, 400, 800, 0);
-                bankSineProvider.Frequency = freq;
-                if (!AttitudeBankRightPlaying)
+                if (attitudeModeSelect == 2 || attitudeModeSelect == 3)
                 {
-                    mixer.RemoveAllMixerInputs();
-                    pan.Pan = 1;
-                    mixer.AddMixerInput(pan);
-                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
-                    AttitudeBankLeftPlaying = false;
-                    AttitudeBankRightPlaying = true;                
+                    if (Bank != oldBank)
+                    {
+                        Tolk.Output($"right {Bank}", true);
+                        oldBank = Bank;
+                        if (attitudeModeSelect == 2) return;
+                    }
+                }
+
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    double freq = mapOneRangeToAnother(Bank, 1, 90, 400, 800, 0);
+                    bankSineProvider.Frequency = freq;
+                    if (!AttitudeBankRightPlaying)
+                    {
+                        mixer.RemoveAllMixerInputs();
+                        pan.Pan = 1;
+                        mixer.AddMixerInput(pan);
+                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                        AttitudeBankLeftPlaying = false;
+                        AttitudeBankRightPlaying = true;
+                    }
+
                 }
             }
             if (Bank == 0)
             {
-                mixer.RemoveAllMixerInputs();
-                mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
-                AttitudeBankLeftPlaying = false;
-                AttitudeBankRightPlaying = false;
-                AttitudePitchPlaying = true;
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    mixer.RemoveAllMixerInputs();
+                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                    AttitudeBankLeftPlaying = false;
+                    AttitudeBankRightPlaying = false;
+                    AttitudePitchPlaying = true;
 
+                }
             }
 
         }

@@ -34,6 +34,7 @@ namespace tfm
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
         // timers
         private static System.Timers.Timer RunwayGuidanceTimer;
+        private static System.Timers.Timer GroundSpeedTimer = new System.Timers.Timer(3000); // 3 seconds;
         private static System.Timers.Timer AttitudeTimer;
         private double HdgRight;
         private double HdgLeft;
@@ -59,23 +60,25 @@ namespace tfm
         private bool FlightFollowingEnabled;
         private bool InstrumentationEnabled;
         private bool SimConnectMessagesEnabled;
-        private bool CalloutsEnabled;
+        private bool calloutsEnabled;
         private bool ILSEnabled;
-        private bool GroundspeedEnabled;
+        private bool groundspeedEnabled = true;
+        private bool groundSpeedActive;
+        private bool onGround;
         private bool TrimEnabled = true;
         private bool FlapsMoving;
-        private bool MuteSimconnect;
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private bool muteSimconnect;
         private bool flightFollowingOnline;
-        private bool RunwayGuidanceEnabled;
-        private bool AttitudeModeEnabled;
-        private bool LocaliserDetected;
+        private bool runwayGuidanceEnabled;
+        private bool attitudeModeEnabled;
+        private bool localiserDetected;
         private bool ReadILSEnabled;
         private bool ReadAutopilot = false;
         private bool AttitudePitchPlaying;
         private bool AttitudeBankLeftPlaying;
+
         private bool apMaster;
         [DisplayName("autopilot master switch")]
         public bool ApMaster
@@ -544,7 +547,8 @@ namespace tfm
             }
         }
 
-        
+        public double oldBank { get; private set; }
+
         public double CurrentHeading;
 
         public ReverseGeoCode<ExtendedGeoName> r = new ReverseGeoCode<ExtendedGeoName>(GeoFileReader.ReadExtendedGeoNames(@".\data\cities1000.txt"));
@@ -554,6 +558,10 @@ namespace tfm
         private double apHeading;
         private double apAltitude;
         private bool AttitudeBankRightPlaying;
+        private bool readNavRadios;
+        private double groundSpeed;
+        private int attitudeModeSelect;
+        private double oldPitch;
 
         public Instrumentation()
         {
@@ -572,7 +580,9 @@ namespace tfm
             Tolk.Output("TFM dot net started!");
             HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
             // HotkeyManager.Current.AddOrReplace("test", Keys.OemOpenBrackets, OffsetTest);
-            RunwayGuidanceEnabled = false;
+            runwayGuidanceEnabled = false;
+            // hook up the event for the groundspeed timer so we can enable it later
+            GroundSpeedTimer.Elapsed += onGroundSpeedTimerTick;
 
         }
 
@@ -640,6 +650,8 @@ namespace tfm
                 ReadFlaps();
                 ReadLandingGear();
                 if (ReadAutopilot) ReadAutopilotInstruments();
+                if (groundspeedEnabled) ReadGroundSpeed();
+                
                 ReadSimConnectMessages();
                 ReadTransponder();
                 ReadRadios();
@@ -768,15 +780,18 @@ namespace tfm
             {
                 Tolk.Output("Com1: " + com2Helper.ToString());
             }
-            if (Aircraft.Nav1Freq.ValueChanged)
+            if (readNavRadios)
             {
-                Tolk.Output($"Nav 1: {nav1Helper.ToString()}");
-            }
-            if (Aircraft.Nav2Freq.ValueChanged)
-            {
-                Tolk.Output($"Nav 2: {nav2Helper.ToString()}");
-            }
+                if (Aircraft.Nav1Freq.ValueChanged)
+                {
+                    Tolk.Output($"Nav 1: {nav1Helper.ToString()}");
+                }
+                if (Aircraft.Nav2Freq.ValueChanged)
+                {
+                    Tolk.Output($"Nav 2: {nav2Helper.ToString()}");
+                }
 
+            }
         }
 
         private void ReadTransponder()
@@ -851,11 +866,11 @@ namespace tfm
         {
             if (ReadILSEnabled)
             {
-                if (Aircraft.Nav1Signal.Value == 256 && LocaliserDetected == false && Aircraft.Nav1Flags.Value[7])
+                if (Aircraft.Nav1Signal.Value == 256 && localiserDetected == false && Aircraft.Nav1Flags.Value[7])
                 {
                     Tolk.PreferSAPI(true);
                     Tolk.Output("Localiser is alive. ");
-                    LocaliserDetected = true;
+                    localiserDetected = true;
                 }
             }
         }
@@ -931,18 +946,60 @@ namespace tfm
                 Tolk.Output($"{ApAirspeed} knotts.");
             }
         }
+        public void ReadGroundSpeed()
+        {
+            // convert groundspeed from how it is stored in FSIPC
+            groundSpeed = (Aircraft.GroundSpeed.Value * 3600) / (65536 * 1852);
+            groundSpeed = Math.Round(groundSpeed);
+            if (!groundSpeedActive)
+            {
+                // only read if aircraft is on ground
+                if (Aircraft.OnGround.Value == 1)
+                {
+                    if (groundSpeed > 10)
+                    {
+                        groundSpeedActive = true;
+                        GroundSpeedTimer.AutoReset = true;
+                        GroundSpeedTimer.Enabled = true;
+                        
+                    }
+                    
+
+
+                }
+
+            }
+        }
+
+        private void onGroundSpeedTimerTick(object sender, ElapsedEventArgs e)
+        {
+            if (groundSpeed > 10)
+            {
+                Tolk.Output($"{groundSpeed} knotts. ");
+            }
+            if (groundSpeed < 10 || Aircraft.OnGround.Value == 0)
+            {
+                groundSpeedActive = false;
+                GroundSpeedTimer.Stop();
+            }
+        }
+
         public void ReadSimConnectMessages()
         {
             Aircraft.textMenu.RefreshData();
             if (Aircraft.textMenu.Changed) // Check if the text/menu is different from the last time we called RefreshData()
             {
-                if (Aircraft.textMenu.IsMenu) // Check if it's a menu (true) or a simple message (false)
+                if (!muteSimconnect)
                 {
-                    Tolk.Output(Aircraft.textMenu.ToString());
-                }
-                else
-                {
-                    Tolk.Output(Aircraft.textMenu.ToString());
+                    if (Aircraft.textMenu.IsMenu) // Check if it's a menu (true) or a simple message (false)
+                    {
+                        Tolk.Output(Aircraft.textMenu.ToString());
+                    }
+                    else
+                    {
+                        Tolk.Output(Aircraft.textMenu.ToString());
+                    }
+
                 }
                 OldSimConnectMessage = Aircraft.textMenu.ToString();
             }
@@ -1088,7 +1145,7 @@ namespace tfm
                     onWaypointKey();
                     break;
                 case "DestinationInfo":
-                    onDestKey();
+                    onDestinationKey();
                     break;
                 case "AttitudeMode":
                     onAttitudeKey();
@@ -1107,9 +1164,6 @@ namespace tfm
                     break;
                 case "ToggleFlaps":
                     onToggleFlapsKey();
-                    break;
-                case "ReadLastSimconnectMessage":
-                    onMessageKey();
                     break;
                 case "ReadWind":
                     onWindKey();
@@ -1292,9 +1346,9 @@ namespace tfm
         }
         private void onRunwayGuidanceKey()
         {
-            if (!RunwayGuidanceEnabled)
+            if (!runwayGuidanceEnabled)
             {
-                RunwayGuidanceEnabled = true;
+                runwayGuidanceEnabled = true;
                 // set up the timer
                 RunwayGuidanceTimer = new System.Timers.Timer(200); // 200 milliseconds
                 // Hook up the Elapsed event for the timer. 
@@ -1336,7 +1390,7 @@ namespace tfm
             {
                 driverOut.Stop();
                 RunwayGuidanceTimer.Stop();
-                RunwayGuidanceEnabled = false;
+                runwayGuidanceEnabled = false;
                 Tolk.Output("Runway Guidance disabled. ");
             }
 
@@ -1365,11 +1419,7 @@ namespace tfm
         }
 
 
-        private void onMessageKey()
-        {
-            Tolk.Output("not yet implemented.");
-        }
-
+        
         private void onToggleFlapsKey()
         {
             Tolk.Output("not yet implemented.");
@@ -1410,9 +1460,9 @@ namespace tfm
         }
         private void onAttitudeKey()
         {
-            if (!AttitudeModeEnabled)
+            if (!attitudeModeEnabled)
             {
-                AttitudeModeEnabled = true;
+                attitudeModeEnabled = true;
                 // set up the timer
                 AttitudeTimer = new System.Timers.Timer(150); // 200 milliseconds
                 // Hook up the Elapsed event for the timer. 
@@ -1439,12 +1489,13 @@ namespace tfm
                 AttitudeBankLeftPlaying = false;
                 AttitudeBankRightPlaying = false;
                 AttitudeTimer.Stop();
-                AttitudeModeEnabled = false;
+                attitudeModeEnabled = false;
                 Tolk.Output("Attitude mode disabled. ");
             }
         }
         private void OnAttitudeModeTickEvent(Object source, ElapsedEventArgs e)
         {
+            attitudeModeSelect = 2;
             pan = new PanningSampleProvider(bankSineProvider);
             FSUIPCConnection.Process("attitude");
             double Pitch = Math.Round((double)Aircraft.AttitudePitch.Value * 360d / (65536d * 65536d));
@@ -1452,44 +1503,82 @@ namespace tfm
             // pitch down
             if (Pitch > 0 && Pitch < 20)
             {
-                if (!AttitudePitchPlaying)
+                if (attitudeModeSelect == 2 || attitudeModeSelect == 3)
                 {
-                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
-                    Logger.Debug("pitch: " + Pitch);
-                    AttitudePitchPlaying = true;
+                    if (Pitch != oldPitch)
+                    {
+                        Tolk.Output($"down {Pitch}", true);
+                        oldPitch = Pitch;
+                        if (attitudeModeSelect == 2) return;
+                    }
+                }
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    if (!AttitudePitchPlaying)
+                    {
+                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
+                        Logger.Debug("pitch: " + Pitch);
+                        AttitudePitchPlaying = true;
+                    }
+
+                    double freq = mapOneRangeToAnother(Pitch, 0, 20, 600, 200, 0);
+                    pitchSineProvider.Frequency = freq;
                 }
 
-                double freq = mapOneRangeToAnother(Pitch, 0, 20, 600, 200, 0);
-                pitchSineProvider.Frequency = freq;
-            }
+            }            
             // pitch up
             if (Pitch < 0 && Pitch > -20)
             {
-                if (!AttitudePitchPlaying)
+                if (attitudeModeSelect == 2 || attitudeModeSelect == 3)
                 {
-                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
-                    Logger.Debug("pitch: " + Pitch);
-                    AttitudePitchPlaying = true;
+                    if (Pitch != oldPitch)
+                    {
+                        Tolk.Output($"up {Math.Abs(Pitch)}", true);
+                        oldPitch = Pitch;
+                        if (attitudeModeSelect == 2) return;
+                    }
                 }
-                double freq = mapOneRangeToAnother(Pitch, -20, 0, 1200, 800, 0);
-                pitchSineProvider.Frequency = freq;
-            }
+
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    if (!AttitudePitchPlaying)
+                    {
+                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
+                        Logger.Debug("pitch: " + Pitch);
+                        AttitudePitchPlaying = true;
+                    }
+                    double freq = mapOneRangeToAnother(Pitch, -20, 0, 1200, 800, 0);
+                    pitchSineProvider.Frequency = freq;
+                }
+
+            }            
             // bank left
             if (Bank > 0 && Bank < 90)
             {
-                double freq = mapOneRangeToAnother(Bank, 1, 90, 400, 800, 0);
-                bankSineProvider.Frequency = freq;
-                
-                if (!AttitudeBankLeftPlaying)
+                if (attitudeModeSelect == 2 || attitudeModeSelect == 3)
                 {
-                    mixer.RemoveAllMixerInputs();
-                    pan.Pan = -1;
-                    mixer.AddMixerInput(pan);
-                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
-                    AttitudeBankLeftPlaying = true;
-                    AttitudeBankRightPlaying = false;
+                    if (Bank != oldBank)
+                    {
+                        Tolk.Output($"left {Bank}", true);
+                        oldBank = Bank;
+                        if (attitudeModeSelect == 2) return;
+                    }
                 }
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    double freq = mapOneRangeToAnother(Bank, 1, 90, 400, 800, 0);
+                    bankSineProvider.Frequency = freq;
+                    if (!AttitudeBankLeftPlaying)
+                    {
+                        mixer.RemoveAllMixerInputs();
+                        pan.Pan = -1;
+                        mixer.AddMixerInput(pan);
+                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                        AttitudeBankLeftPlaying = true;
+                        AttitudeBankRightPlaying = false;
+                    }
 
+                }
 
 
             }
@@ -1497,34 +1586,59 @@ namespace tfm
             if (Bank < 0 && Bank > -90)
             {
                 Bank = Math.Abs(Bank);
-                double freq = mapOneRangeToAnother(Bank, 1, 90, 400, 800, 0);
-                bankSineProvider.Frequency = freq;
-                if (!AttitudeBankRightPlaying)
+                if (attitudeModeSelect == 2 || attitudeModeSelect == 3)
                 {
-                    mixer.RemoveAllMixerInputs();
-                    pan.Pan = 1;
-                    mixer.AddMixerInput(pan);
-                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
-                    AttitudeBankLeftPlaying = false;
-                    AttitudeBankRightPlaying = true;                
+                    if (Bank != oldBank)
+                    {
+                        Tolk.Output($"right {Bank}", true);
+                        oldBank = Bank;
+                        if (attitudeModeSelect == 2) return;
+                    }
+                }
+
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    double freq = mapOneRangeToAnother(Bank, 1, 90, 400, 800, 0);
+                    bankSineProvider.Frequency = freq;
+                    if (!AttitudeBankRightPlaying)
+                    {
+                        mixer.RemoveAllMixerInputs();
+                        pan.Pan = 1;
+                        mixer.AddMixerInput(pan);
+                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                        AttitudeBankLeftPlaying = false;
+                        AttitudeBankRightPlaying = true;
+                    }
+
                 }
             }
             if (Bank == 0)
             {
-                mixer.RemoveAllMixerInputs();
-                mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
-                AttitudeBankLeftPlaying = false;
-                AttitudeBankRightPlaying = false;
-                AttitudePitchPlaying = true;
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    mixer.RemoveAllMixerInputs();
+                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                    AttitudeBankLeftPlaying = false;
+                    AttitudeBankRightPlaying = false;
+                    AttitudePitchPlaying = true;
 
+                }
             }
 
         }
 
 
-        private void onDestKey()
+        private void onDestinationKey()
         {
-            Tolk.Output("not yet implemented.");
+            TimeSpan TimeEnroute = TimeSpan.FromSeconds(Aircraft.DestinationTimeEnroute.Value);
+            string icao = Aircraft.DestinationAirportID.Value;
+            string strTime = string.Format("{0:D2} hours, {1:D2} minutes, {2:D2} seconds.",
+                TimeEnroute.Hours.ToString().TrimStart(new Char[] { '0' }),
+                TimeEnroute.Minutes.ToString().TrimStart(new Char[] { '0' }),
+                TimeEnroute.Seconds.ToString().TrimStart(new Char[] { '0' }));
+            Tolk.Output($"Time enroute to {icao}, {strTime}. ");
+
+
         }
 
         private void onWaypointKey()
@@ -1576,12 +1690,12 @@ namespace tfm
         {
             if (muteSimconnect)
             {
-                MuteSimconnect = false;
+                muteSimconnect = false;
                 Tolk.Output("SimConnect messages unmuted. ");
             }
             else
             {
-                MuteSimconnect = true;
+                muteSimconnect = true;
                 Tolk.Output("SimConnect messages muted.");
             }
             ResetHotkeys();

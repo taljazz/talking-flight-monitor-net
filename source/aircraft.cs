@@ -75,8 +75,8 @@ namespace tfm
         public static  Offset<short> AirspeedMach = new Offset<short>(0x11c6);
         public static  Offset<uint> NextWPETA = new Offset<uint>(0x60e8);
         public static  Offset<double> NextWPBaring = new Offset<double>(0x6050);
-        public static  Offset<uint> DestETE = new Offset<uint>(0x6198);
-        public static  Offset<uint> DestETA = new Offset<uint>(0x619c);
+        public static Offset<string> DestinationAirportID = new Offset<string>(0x6137, 5);
+        public static  Offset<uint> DestinationTimeEnroute = new Offset<uint>(0x6198);
         public static  Offset<double> RouteDistance = new Offset<double>(0x61a0);
         public static  Offset<double> FuelBurn = new Offset<double>(0x61a8);
         public static  Offset<uint> FuelQuantity = new Offset<uint>(0x126c);

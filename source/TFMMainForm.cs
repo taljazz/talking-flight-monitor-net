@@ -141,22 +141,67 @@ namespace tfm
             LockGageCheckBox.AccessibleName = item + " lock";
             // Assign the airplane auto pilot gages to the gage value field.
             // See related checked changed events for locks and apMaster switch.
-            //Check to see if FsUIPc is running.
-if(FSUIPCConnection.IsOpen == true)
-            {
+
                 switch(item)
                 {
                     case "ADF":
-                        
+                    GageValueTextBox.Text = inst.Adf1Freq.ToString();
                         LockGageCheckBox.Visible = false;
                         break;
+                case "Air speed":
+                    GageValueTextBox.Text = inst.ApAirspeed.ToString();
+                    LockGageCheckBox.Checked = inst.ApAirspeedHold;
+                    break;
+                case "Vertical speed":
+                    GageValueTextBox.Text = inst.ApVerticalSpeed.ToString();
+                    LockGageCheckBox.Checked = inst.ApVerticalSpeedHold;
+                    break;
+                case "Mach":
+                    GageValueTextBox.Text = inst.ApMachSpeed.ToString();
+                    LockGageCheckBox.Checked = inst.ApMachHold;
+                    break;
+                case "Altitude":
+                    GageValueTextBox.Text = inst.ApAltitude.ToString();
+                    LockGageCheckBox.Checked = inst.ApAltitudeLock;
+                    break;
+                case "Heading":
+                    GageValueTextBox.Text = inst.ApHeading.ToString();
+                    LockGageCheckBox.Checked = inst.ApHeadingLock;
+                    break;
+                case "Com 1":
+                    GageValueTextBox.Text = inst.Com1Freq.ToString();
+                    LockGageCheckBox.Visible = false;
+                    break;
+                case "Com 2":
+                    GageValueTextBox.Text = inst.Com2Freq.ToString();
+                    LockGageCheckBox.Checked = false;
+                    break;
+                case "Transponder":
+                    GageValueTextBox.Text = inst.Transponder.ToString();
+                    LockGageCheckBox.Visible = false;
+                    break;
+                case "Altimeter [inches]":
+                    GageValueTextBox.Text = inst.AltimeterInches.ToString();
+                    LockGageCheckBox.Visible = false;
+                    break;
+                case "Altimeter [QNH]":
+                    GageValueTextBox.Text = inst.AltimeterQNH.ToString();
+                    LockGageCheckBox.Visible = false;
+                    break;
+                case "Nav 1":
+                    GageValueTextBox.Text = inst.Nav1Freq.ToString();
+                    LockGageCheckBox.Checked = inst.ApNavLock;
+                    break;
+                case "Nav 2":
+                    GageValueTextBox.Text = inst.Nav2Freq.ToString();
+                    LockGageCheckBox.Visible = false;
+                    break;
+                case "default":
+                    GageValueTextBox.Text = "That gage is not supported at this time.";
+                    break;
                 }
-            } else
-            {
-                GageValueTextBox.Text = "Not connected.";
-            }
-            
-            var screenReader = Tolk.DetectScreenReader();
+                                       
+                        var screenReader = Tolk.DetectScreenReader();
             if(screenReader == "NVDA" && GagesList.DroppedDown == false)
             {
                 Tolk.Output(GageValueTextBox.Text + ", " + GagesList.SelectedItem.ToString());
@@ -179,6 +224,7 @@ if(FSUIPCConnection.IsOpen == true)
                 
         private void AutopilotCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            inst.ApMaster = AutopilotCheckBox.Checked;
             if (AutopilotCheckBox.Checked == true)
             {
                 AutopilotCheckBox.ForeColor = Color.Green;
@@ -203,12 +249,14 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
 
         private void TFMMainForm_Load(object sender, EventArgs e)
         {
+            //Move to a configure function when implementing settings.
             GageComboBox.SelectedIndex = 0;
             FlyModeComboBox.SelectedIndex = 0;
             GageComboBox.Focus();
+            AutopilotCheckBox.Checked = inst.ApMaster;
             //Following code is expiremental.
             AutopilotPropertyGrid.SelectedObject = inst;
-        }
+                    }
 
                         private void AboutMenuItem_Click(object sender, EventArgs e)
         {

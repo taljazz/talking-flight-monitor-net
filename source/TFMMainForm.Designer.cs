@@ -56,10 +56,10 @@
             this.GageValueTextBox = new System.Windows.Forms.TextBox();
             this.GageComboBox = new System.Windows.Forms.ComboBox();
             this.AvionicsExplorationTabPage = new System.Windows.Forms.TabPage();
+            this.AutopilotPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.FlightPlanTabPage = new System.Windows.Forms.TabPage();
             this.ProceduresTabPage = new System.Windows.Forms.TabPage();
             this.FindTabPage = new System.Windows.Forms.TabPage();
-            this.AutopilotPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.TFMMainMenu.SuspendLayout();
             this.TFMTabControl.SuspendLayout();
             this.AvionicsTabPage.SuspendLayout();
@@ -358,23 +358,22 @@
             this.GageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.GageComboBox.FormattingEnabled = true;
             this.GageComboBox.Items.AddRange(new object[] {
-            "ADF",
             "Air speed",
-            "Altimeter [inches]",
-            "Altimeter [QNH]",
+            "Vertical speed",
+            "Mach",
             "Altitude",
+            "Heading",
             "Com 1",
             "Com 2",
-            "Heading",
-            "Mach",
+            "Transponder",
+            "Altimeter [inches]",
+            "Altimeter [QNH]",
             "Nav 1",
             "Nav 2",
-            "Transponder",
-            "Vertical speed"});
-            this.GageComboBox.Location = new System.Drawing.Point(10, 83);
+            "ADF"});
+            this.GageComboBox.Location = new System.Drawing.Point(10, 82);
             this.GageComboBox.Name = "GageComboBox";
             this.GageComboBox.Size = new System.Drawing.Size(121, 29);
-            this.GageComboBox.Sorted = true;
             this.GageComboBox.TabIndex = 0;
             this.GageComboBox.SelectedIndexChanged += new System.EventHandler(this.GageComboBox_SelectedIndexChanged);
             // 
@@ -388,6 +387,16 @@
             this.AvionicsExplorationTabPage.TabIndex = 4;
             this.AvionicsExplorationTabPage.Text = "Autopilot instrument panel";
             this.AvionicsExplorationTabPage.UseVisualStyleBackColor = true;
+            // 
+            // AutopilotPropertyGrid
+            // 
+            this.AutopilotPropertyGrid.AccessibleName = "Autopilot instrument panel";
+            this.AutopilotPropertyGrid.Dock = System.Windows.Forms.DockStyle.Left;
+            this.AutopilotPropertyGrid.LargeButtons = true;
+            this.AutopilotPropertyGrid.Location = new System.Drawing.Point(0, 0);
+            this.AutopilotPropertyGrid.Name = "AutopilotPropertyGrid";
+            this.AutopilotPropertyGrid.Size = new System.Drawing.Size(130, 194);
+            this.AutopilotPropertyGrid.TabIndex = 2;
             // 
             // FlightPlanTabPage
             // 
@@ -419,16 +428,6 @@
             this.FindTabPage.TabIndex = 3;
             this.FindTabPage.Text = "Find";
             this.FindTabPage.UseVisualStyleBackColor = true;
-            // 
-            // AutopilotPropertyGrid
-            // 
-            this.AutopilotPropertyGrid.AccessibleName = "Autopilot instrument panel";
-            this.AutopilotPropertyGrid.Dock = System.Windows.Forms.DockStyle.Left;
-            this.AutopilotPropertyGrid.LargeButtons = true;
-            this.AutopilotPropertyGrid.Location = new System.Drawing.Point(0, 0);
-            this.AutopilotPropertyGrid.Name = "AutopilotPropertyGrid";
-            this.AutopilotPropertyGrid.Size = new System.Drawing.Size(130, 194);
-            this.AutopilotPropertyGrid.TabIndex = 2;
             // 
             // TFMMainForm
             // 

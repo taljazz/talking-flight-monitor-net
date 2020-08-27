@@ -64,7 +64,6 @@ namespace tfm
         private bool GroundspeedEnabled;
         private bool TrimEnabled = true;
         private bool FlapsMoving;
-        private bool MuteSimconnect;
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private bool muteSimconnect;
@@ -936,13 +935,17 @@ namespace tfm
             Aircraft.textMenu.RefreshData();
             if (Aircraft.textMenu.Changed) // Check if the text/menu is different from the last time we called RefreshData()
             {
-                if (Aircraft.textMenu.IsMenu) // Check if it's a menu (true) or a simple message (false)
+                if (!muteSimconnect)
                 {
-                    Tolk.Output(Aircraft.textMenu.ToString());
-                }
-                else
-                {
-                    Tolk.Output(Aircraft.textMenu.ToString());
+                    if (Aircraft.textMenu.IsMenu) // Check if it's a menu (true) or a simple message (false)
+                    {
+                        Tolk.Output(Aircraft.textMenu.ToString());
+                    }
+                    else
+                    {
+                        Tolk.Output(Aircraft.textMenu.ToString());
+                    }
+
                 }
                 OldSimConnectMessage = Aircraft.textMenu.ToString();
             }
@@ -1576,12 +1579,12 @@ namespace tfm
         {
             if (muteSimconnect)
             {
-                MuteSimconnect = false;
+                muteSimconnect = false;
                 Tolk.Output("SimConnect messages unmuted. ");
             }
             else
             {
-                MuteSimconnect = true;
+                muteSimconnect = true;
                 Tolk.Output("SimConnect messages muted.");
             }
             ResetHotkeys();

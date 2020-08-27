@@ -33,7 +33,7 @@
       <Value Profile="(Default)">Shift+T</Value>
     </Setting>
     <Setting Name="MuteSimconnect" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">Shift+R</Value>
+      <Value Profile="(Default)">Shift+M</Value>
     </Setting>
     <Setting Name="FlightFollowing" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">C</Value>

@@ -67,6 +67,7 @@ namespace tfm
         private bool onGround;
         private bool TrimEnabled = true;
         private bool FlapsMoving;
+        private bool flapsEnabled = true;
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private bool muteSimconnect;
@@ -561,6 +562,7 @@ namespace tfm
         private bool readNavRadios;
         private double groundSpeed;
         private int attitudeModeSelect;
+        private int RunwayGuidanceModeSelect;
         private double oldPitch;
 
         public Instrumentation()
@@ -647,7 +649,7 @@ namespace tfm
                 ReadToggle(Aircraft.Eng3FuelValve, Aircraft.Eng3FuelValve.Value > 0, "number 3 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.Eng4FuelValve, Aircraft.Eng4FuelValve.Value > 0, "number 4 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.FuelPump, Aircraft.FuelPump.Value > 0, "Fuel pump", "active", "off");
-                ReadFlaps();
+                if (flapsEnabled) ReadFlaps();
                 ReadLandingGear();
                 if (ReadAutopilot) ReadAutopilotInstruments();
                 if (groundspeedEnabled) ReadGroundSpeed();
@@ -912,6 +914,7 @@ namespace tfm
                 }
 
             }
+
         }
         public void ReadLandingGear()
         {
@@ -1422,7 +1425,16 @@ namespace tfm
         
         private void onToggleFlapsKey()
         {
-            Tolk.Output("not yet implemented.");
+            if (flapsEnabled)
+            {
+                flapsEnabled = false;
+                Tolk.Output("flaps announcement disabled. ");
+            }
+            else
+            {
+                flapsEnabled = true;
+                Tolk.Output("Flaps announcement enabled. ");
+            }
         }
 
         private void onToggleILSKey()

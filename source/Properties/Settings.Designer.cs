@@ -46,5 +46,17 @@ namespace tfm.Properties {
                 this["flight_following"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("simplified")]
+        public string avionics_tab {
+            get {
+                return ((string)(this["avionics_tab"]));
+            }
+            set {
+                this["avionics_tab"] = value;
+            }
+        }
     }
 }

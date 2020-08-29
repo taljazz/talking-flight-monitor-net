@@ -14,6 +14,7 @@ using NHotkey;
 using NHotkey.WindowsForms;
 using DavyKager;
 using System.Reflection;
+using tfm.Properties;
 
 namespace tfm
 {
@@ -55,7 +56,8 @@ namespace tfm
             {
                 FSUIPCConnection.Process();
                 inst.ReadAircraftState();
-                
+                // Keeps track of the autopilot master switch in the simplified avionics tab.
+                this.AutopilotCheckBox.Checked = inst.ApMaster;                                
             }
 
 
@@ -113,9 +115,14 @@ namespace tfm
             {
                 OutputLogTextBox.Focus();
             } //End output log assignment.
-            if((e.Control && e.KeyCode == Keys.D1))
+            if ((e.Control && e.KeyCode == Keys.D1))
             {
+                if (TFMTabControl.TabPages.Contains(AvionicsTabPage)) { 
                 TFMTabControl.SelectedTab = AvionicsTabPage;
+            } else
+            {
+                TFMTabControl.SelectedTab = AvionicsExplorationTabPage;
+            }
             } //End Avionics assignment.
 
             if((e.Control && e.KeyCode == Keys.D2)) {
@@ -150,22 +157,27 @@ namespace tfm
                         break;
                 case "Air speed":
                     GageValueTextBox.Text = inst.ApAirspeed.ToString();
+                    LockGageCheckBox.Visible = true;
                     LockGageCheckBox.Checked = inst.ApAirspeedHold;
                     break;
                 case "Vertical speed":
                     GageValueTextBox.Text = inst.ApVerticalSpeed.ToString();
+                    LockGageCheckBox.Visible = true;
                     LockGageCheckBox.Checked = inst.ApVerticalSpeedHold;
                     break;
                 case "Mach":
                     GageValueTextBox.Text = inst.ApMachSpeed.ToString();
+                    LockGageCheckBox.Visible = true;
                     LockGageCheckBox.Checked = inst.ApMachHold;
                     break;
                 case "Altitude":
                     GageValueTextBox.Text = inst.ApAltitude.ToString();
+                    LockGageCheckBox.Visible = true;
                     LockGageCheckBox.Checked = inst.ApAltitudeLock;
                     break;
                 case "Heading":
                     GageValueTextBox.Text = inst.ApHeading.ToString();
+                    LockGageCheckBox.Visible = true;
                     LockGageCheckBox.Checked = inst.ApHeadingLock;
                     break;
                 case "Com 1":
@@ -190,6 +202,7 @@ namespace tfm
                     break;
                 case "Nav 1":
                     GageValueTextBox.Text = inst.Nav1Freq.ToString();
+                    LockGageCheckBox.Visible = true;
                     LockGageCheckBox.Checked = inst.ApNavLock;
                     break;
                 case "Nav 2":
@@ -250,12 +263,21 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
         private void TFMMainForm_Load(object sender, EventArgs e)
         {
             //Move to a configure function when implementing settings.
-            GageComboBox.SelectedIndex = 0;
-            FlyModeComboBox.SelectedIndex = 0;
-            GageComboBox.Focus();
-            AutopilotCheckBox.Checked = inst.ApMaster;
-            //Following code is expiremental.
-            AutopilotPropertyGrid.SelectedObject = inst;
+            if (Properties.Settings.Default.avionics_tab == "simplified")
+            {
+                TFMTabControl.TabPages.Remove(AvionicsExplorationTabPage);
+                GageComboBox.SelectedIndex = 0;
+                FlyModeComboBox.SelectedIndex = 0;
+                GageComboBox.Focus();
+                AutopilotCheckBox.Checked = inst.ApMaster;
+            }
+            else
+            {
+                                //Following code is expiremental.
+
+                TFMTabControl.TabPages.Remove(AvionicsTabPage);
+                                AutopilotPropertyGrid.SelectedObject = inst;
+            }
                     }
 
                         private void AboutMenuItem_Click(object sender, EventArgs e)

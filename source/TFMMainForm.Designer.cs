@@ -295,14 +295,14 @@
             // FlyModeComboBox
             // 
             this.FlyModeComboBox.AccessibleName = "Fly mode";
-            this.FlyModeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.FlyModeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.FlyModeComboBox.FormattingEnabled = true;
             this.FlyModeComboBox.Items.AddRange(new object[] {
             "Plan",
             "Approach"});
             this.FlyModeComboBox.Location = new System.Drawing.Point(381, 149);
             this.FlyModeComboBox.Name = "FlyModeComboBox";
-            this.FlyModeComboBox.Size = new System.Drawing.Size(100, 21);
+            this.FlyModeComboBox.Size = new System.Drawing.Size(100, 29);
             this.FlyModeComboBox.TabIndex = 3;
             this.FlyModeComboBox.SelectedIndexChanged += new System.EventHandler(this.FlyModeComboBox_SelectedIndexChanged);
             // 

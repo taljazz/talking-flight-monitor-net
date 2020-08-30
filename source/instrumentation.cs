@@ -590,8 +590,9 @@ namespace tfm
 
         private void OffsetTest(object sender, HotkeyEventArgs e)
         {
-            ApHeading = 100;
-            ApHeadingLock = true;
+            PMDG_NGX_CDU_Screen PM = new PMDG_NGX_CDU_Screen(0X5800);
+            PM.RefreshData();
+            Tolk.Output(PM.ToString());
 
 
         }
@@ -665,6 +666,7 @@ namespace tfm
                 ReadLights();
                 ReadDoors();
                 ReadILSInfo();
+                ReadSimulationRate(TriggeredByKey : false);
                 // TODO: engine select
             }
             else
@@ -876,6 +878,18 @@ namespace tfm
                 }
             }
         }
+        private void ReadSimulationRate(bool TriggeredByKey)
+        {
+            double rate = (double)Aircraft.SimulationRate.Value / 256;
+            if (TriggeredByKey)
+            {
+                Tolk.Output($"simulation rate: {rate}");
+            }
+            if (Aircraft.SimulationRate.ValueChanged && rate >= 0.25)
+            {
+                Tolk.Output($"simulation rate: {rate}");
+            }
+        }
         private void ReadSpoilers()
         {
             if (Aircraft.Spoilers.ValueChanged)
@@ -1060,6 +1074,7 @@ namespace tfm
                 HotkeyManager.Current.AddOrReplace("ToggleTrim", (Keys)Properties.Hotkeys.Default.ToggleTrim, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("MuteSimconnect", (Keys)Properties.Hotkeys.Default.MuteSimconnect, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("RepeatLastSimconnectMessage", (Keys)Properties.Hotkeys.Default.RepeatLastSimconnectMessage, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("ReadSimulationRate", (Keys)Properties.Hotkeys.Default.ReadSimulationRate, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("FlightFollowing", (Keys)Properties.Hotkeys.Default.FlightFollowing, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("NextWaypoint", (Keys)Properties.Hotkeys.Default.NextWaypoint, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("DestinationInfo", (Keys)Properties.Hotkeys.Default.DestinationInfo, onKeyPressed);
@@ -1120,6 +1135,9 @@ namespace tfm
                 case "IndicatedAirspeed":
                     onIASKey();
                     break;
+                case "ReadSimulationRate":
+                    ReadSimulationRate(true);
+                    break;
                 case "TrueAirspeed":
                     onTASKey();
                     break;
@@ -1165,8 +1183,8 @@ namespace tfm
                 case "ToggleILS":
                     onToggleILSKey();
                     break;
-                case "ToggleFlaps":
-                    onToggleFlapsKey();
+                case "ToggleFlapsAnnouncement":
+                    onToggleFlapsAnnouncementKey();
                     break;
                 case "ReadWind":
                     onWindKey();
@@ -1423,7 +1441,7 @@ namespace tfm
 
 
         
-        private void onToggleFlapsKey()
+        private void onToggleFlapsAnnouncementKey()
         {
             if (flapsEnabled)
             {

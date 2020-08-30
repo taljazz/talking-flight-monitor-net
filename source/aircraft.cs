@@ -181,6 +181,7 @@ namespace tfm
         public static Offset<int> AttitudePitch = new Offset<int>("attitude", 0x0578);
         public static Offset<int> AttitudeBank = new Offset<int>("attitude", 0x057c);
         public static  TextMenu textMenu = new TextMenu();
+        public static Offset<ushort> SimulationRate = new Offset<ushort>(0x0c1a);
         
         public static void InitOffsets()
         {

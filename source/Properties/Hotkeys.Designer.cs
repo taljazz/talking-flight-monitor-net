@@ -526,5 +526,17 @@ namespace tfm.Properties {
                 this["RepeatLastSimconnectMessage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("E")]
+        public global::System.Windows.Forms.Keys ReadSimulationRate {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ReadSimulationRate"]));
+            }
+            set {
+                this["ReadSimulationRate"] = value;
+            }
+        }
     }
 }

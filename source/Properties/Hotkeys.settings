@@ -128,5 +128,8 @@
     <Setting Name="RepeatLastSimconnectMessage" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">R</Value>
     </Setting>
+    <Setting Name="ReadSimulationRate" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">E</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

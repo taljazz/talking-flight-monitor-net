@@ -346,11 +346,13 @@
             // 
             // GageValueTextBox
             // 
+            this.GageValueTextBox.AcceptsReturn = true;
             this.GageValueTextBox.Location = new System.Drawing.Point(249, 83);
             this.GageValueTextBox.Name = "GageValueTextBox";
             this.GageValueTextBox.Size = new System.Drawing.Size(100, 29);
             this.GageValueTextBox.TabIndex = 1;
             this.GageValueTextBox.WordWrap = false;
+            this.GageValueTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GageValueTextBox_KeyDown);
             // 
             // GageComboBox
             // 

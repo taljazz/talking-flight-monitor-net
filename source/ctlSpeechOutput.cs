@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace tfm
 {
-    public partial class ctlGeneral : UserControl, iSettingsPage
+    public partial class ctlSpeechOutput : UserControl, iSettingsPage
     {
-        public ctlGeneral()
+        public ctlSpeechOutput()
         {
             InitializeComponent();
         }

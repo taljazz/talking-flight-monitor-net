@@ -1,4 +1,4 @@
-﻿namespace tfm.Properties
+﻿namespace tfm
 {
     partial class frmSettings
     {
@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("General");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("speech output");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Timing");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("General");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("speech output");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Timing");
             this.tvCategories = new System.Windows.Forms.TreeView();
             this.pnlContent = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -44,18 +44,19 @@
             this.tvCategories.AccessibleName = "Categories";
             this.tvCategories.Location = new System.Drawing.Point(0, 0);
             this.tvCategories.Name = "tvCategories";
-            treeNode1.Name = "Node0";
-            treeNode1.Text = "General";
-            treeNode2.Name = "Node2";
-            treeNode2.Text = "speech output";
-            treeNode3.Name = "Node1";
-            treeNode3.Text = "Timing";
+            treeNode4.Name = "nodGeneral";
+            treeNode4.Text = "General";
+            treeNode5.Name = "nodSpeechOutput";
+            treeNode5.Text = "speech output";
+            treeNode6.Name = "nodTiming";
+            treeNode6.Text = "Timing";
             this.tvCategories.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3});
+            treeNode4,
+            treeNode5,
+            treeNode6});
             this.tvCategories.Size = new System.Drawing.Size(121, 97);
             this.tvCategories.TabIndex = 0;
+            this.tvCategories.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvCategory_AfterSelect);
             // 
             // pnlContent
             // 
@@ -100,8 +101,11 @@
             // 
             // frmSettings
             // 
+            this.AcceptButton = this.btnOK;
+            this.AccessibleRole = System.Windows.Forms.AccessibleRole.Dialog;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.pnlContent);
@@ -111,7 +115,7 @@
             this.MinimizeBox = false;
             this.Name = "frmSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "frmSettings";
+            this.Text = "TFM Settings";
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

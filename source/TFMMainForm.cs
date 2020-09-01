@@ -82,7 +82,7 @@ namespace tfm
             FSUIPCConnection.Close();
         }
 
-        private void QuitMenuItem_Click(object sender, EventArgs e)
+        private void QuitMenuItem_Click     (object sender, EventArgs e)
         {
             this.Dispose();
         }
@@ -294,6 +294,23 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
         private void ReportIssueMenuItem_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/jfayre/talking-flight-monitor-net/issues");
+        }
+
+        private void SettingsMenuItem_Click(object sender, EventArgs e)
+        {
+            frmSettings settings = new frmSettings();
+            settings.ShowDialog();
+            if (settings.DialogResult == DialogResult.OK)
+            {
+                Properties.Settings.Default.Save();
+            }
+            else
+            {
+                Properties.Settings.Default.Reload();
+                
+            }
+            
+
         }
     }//End TFMMainForm class.
 } //End TFM namespace.

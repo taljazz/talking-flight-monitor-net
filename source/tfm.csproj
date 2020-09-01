@@ -104,12 +104,19 @@
     <Compile Include="ctlGeneral.Designer.cs">
       <DependentUpon>ctlGeneral.cs</DependentUpon>
     </Compile>
+    <Compile Include="ctlSpeechOutput.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctlSpeechOutput.Designer.cs">
+      <DependentUpon>ctlSpeechOutput.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmSettings.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSettings.Designer.cs">
       <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="iSettingsPage.cs" />
     <Compile Include="TemplateForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ctlGeneral.resx">
       <DependentUpon>ctlGeneral.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctlSpeechOutput.resx">
+      <DependentUpon>ctlSpeechOutput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSettings.resx">
       <DependentUpon>frmSettings.cs</DependentUpon>

@@ -178,5 +178,53 @@ namespace tfm.Properties {
                 this["AttitudeAnnouncementMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AltitudeAnnouncements {
+            get {
+                return ((bool)(this["AltitudeAnnouncements"]));
+            }
+            set {
+                this["AltitudeAnnouncements"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ReadFlaps {
+            get {
+                return ((bool)(this["ReadFlaps"]));
+            }
+            set {
+                this["ReadFlaps"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ReadAutopilot {
+            get {
+                return ((bool)(this["ReadAutopilot"]));
+            }
+            set {
+                this["ReadAutopilot"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FlightFollowingOffline {
+            get {
+                return ((bool)(this["FlightFollowingOffline"]));
+            }
+            set {
+                this["FlightFollowingOffline"] = value;
+            }
+        }
     }
 }

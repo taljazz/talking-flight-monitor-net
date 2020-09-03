@@ -110,7 +110,7 @@ namespace tfm
             FSUIPCConnection.Close();
         }
 
-        private void QuitMenuItem_Click(object sender, EventArgs e)
+        private void QuitMenuItem_Click     (object sender, EventArgs e)
         {
             this.Dispose();
         }
@@ -482,6 +482,21 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                 e.SuppressKeyPress = true;
             } //End apGage input.
                                        } //End sending data to the simulator.
-        
+        private void SettingsMenuItem_Click(object sender, EventArgs e)
+        {
+            frmSettings settings = new frmSettings();
+            settings.ShowDialog();
+            if (settings.DialogResult == DialogResult.OK)
+            {
+                Properties.Settings.Default.Save();
+            }
+            else
+            {
+                Properties.Settings.Default.Reload();
+                
+            }
+            
+
+        }
     }//End TFMMainForm class.
 } //End TFM namespace.

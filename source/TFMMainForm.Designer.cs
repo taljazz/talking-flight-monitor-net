@@ -210,6 +210,7 @@
             this.SettingsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemcomma)));
             this.SettingsMenuItem.Size = new System.Drawing.Size(337, 26);
             this.SettingsMenuItem.Text = "&Settings...";
+            this.SettingsMenuItem.Click += new System.EventHandler(this.SettingsMenuItem_Click);
             // 
             // HelpMenu
             // 
@@ -395,6 +396,7 @@
             this.AutopilotPropertyGrid.AccessibleName = "Autopilot instrument panel";
             this.AutopilotPropertyGrid.Dock = System.Windows.Forms.DockStyle.Left;
             this.AutopilotPropertyGrid.LargeButtons = true;
+            this.AutopilotPropertyGrid.LineColor = System.Drawing.SystemColors.ControlDarkDark;
             this.AutopilotPropertyGrid.Location = new System.Drawing.Point(0, 0);
             this.AutopilotPropertyGrid.Name = "AutopilotPropertyGrid";
             this.AutopilotPropertyGrid.Size = new System.Drawing.Size(130, 194);

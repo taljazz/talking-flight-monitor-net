@@ -22,20 +22,23 @@ using System.Xml.Linq;
 using System.Configuration;
 using NGeoNames;
 using NGeoNames.Entities;
+using TimeZoneConverter;
 using System.Diagnostics;
 
 namespace tfm
 {
     public class Instrumentation
     {
+        // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
         private SineWaveProvider pitchSineProvider;
         private SineWaveProvider bankSineProvider;
 
-        // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
+        
         // timers
         private static System.Timers.Timer RunwayGuidanceTimer;
         private static System.Timers.Timer GroundSpeedTimer = new System.Timers.Timer(3000); // 3 seconds;
         private static System.Timers.Timer AttitudeTimer;
+        private static System.Timers.Timer flightFollowingTimer;
         private double HdgRight;
         private double HdgLeft;
 
@@ -54,6 +57,7 @@ namespace tfm
         FsFuelTanksCollection FuelTanks = null;
         // list to store fuel tanks present on the aircraft
         List<FsFuelTank> ActiveTanks = new List<FsFuelTank>();
+        private Dictionary<int, bool> altitudeCalloutFlags = new Dictionary<int, bool>();
 
         static bool FirstRun = true;
         // flags for tfm features   
@@ -75,8 +79,6 @@ namespace tfm
         private bool runwayGuidanceEnabled;
         private bool attitudeModeEnabled;
         private bool localiserDetected;
-        private bool ReadILSEnabled;
-        private bool ReadAutopilot = false;
         private bool AttitudePitchPlaying;
         private bool AttitudeBankLeftPlaying;
 
@@ -564,6 +566,7 @@ namespace tfm
         private int attitudeModeSelect;
         private int RunwayGuidanceModeSelect;
         private double oldPitch;
+        private string oldTimezone;
 
         public Instrumentation()
         {
@@ -585,7 +588,39 @@ namespace tfm
             runwayGuidanceEnabled = false;
             // hook up the event for the groundspeed timer so we can enable it later
             GroundSpeedTimer.Elapsed += onGroundSpeedTimerTick;
+            // start the flight following timer if it is enabled in settings
+            SetupFlightFollowing();
+            // populate the dictionary for the altitude callout flags
+            for (int i = 1000; i < 65000; i += 1000)
+            {
+                altitudeCalloutFlags.Add(i, false);
+            }
 
+        }
+
+        public void SetupFlightFollowing()
+        {
+            flightFollowingTimer = new System.Timers.Timer(TimeSpan.FromMinutes(Properties.Settings.Default.FlightFollowingTimeInterval).TotalMilliseconds);
+            flightFollowingTimer.Elapsed += onFlightFollowingTimerTick;
+            if (Properties.Settings.Default.FlightFollowing)
+            {
+                flightFollowingTimer.AutoReset = true;
+                flightFollowingTimer.Enabled = true;
+
+            }
+            else
+            {
+                flightFollowingTimer.Stop();
+
+
+            }
+
+        }
+
+        private void onFlightFollowingTimerTick(object sender, ElapsedEventArgs e)
+        {
+            // this just reads the flight following info, same as the hotkey
+            onCityKey();
         }
 
         private void OffsetTest(object sender, HotkeyEventArgs e)
@@ -650,11 +685,11 @@ namespace tfm
                 ReadToggle(Aircraft.Eng3FuelValve, Aircraft.Eng3FuelValve.Value > 0, "number 3 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.Eng4FuelValve, Aircraft.Eng4FuelValve.Value > 0, "number 4 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.FuelPump, Aircraft.FuelPump.Value > 0, "Fuel pump", "active", "off");
-                if (flapsEnabled) ReadFlaps();
+                if (Properties.Settings.Default.ReadFlaps) ReadFlaps();
                 ReadLandingGear();
-                if (ReadAutopilot) ReadAutopilotInstruments();
+                if (Properties.Settings.Default.ReadAutopilot) ReadAutopilotInstruments();
                 if (groundspeedEnabled) ReadGroundSpeed();
-                
+                if (Properties.Settings.Default.AltitudeAnnouncements) ReadAltitudeAnnouncement();
                 ReadSimConnectMessages();
                 ReadTransponder();
                 ReadRadios();
@@ -665,7 +700,7 @@ namespace tfm
                 ReadNextWaypoint();
                 ReadLights();
                 ReadDoors();
-                ReadILSInfo();
+                if (Properties.Settings.Default.ReadILS) ReadILSInfo();
                 ReadSimulationRate(TriggeredByKey : false);
                 // TODO: engine select
             }
@@ -677,6 +712,29 @@ namespace tfm
             }
         }
 
+        private void ReadAltitudeAnnouncement()
+        {
+            // read altitude every 1000 feet
+            double alt = Math.Round((double)Aircraft.Altitude.Value);
+
+            for (int i = 1000; i < 65000; i += 1000)
+            {
+                if (alt >= i-10 && alt <= i-10 && altitudeCalloutFlags[i] == false)
+                {
+                    Tolk.Output($"{i} feet. ");
+                    altitudeCalloutFlags[i] = true;
+
+                }
+                else
+                {
+                    if (alt >= i + 100)
+                    {
+                        altitudeCalloutFlags[i] = false;
+
+                    }
+                }
+            }
+        }
 
         private void DetectFuelTanks()
         {
@@ -868,14 +926,11 @@ namespace tfm
         }
         private void ReadILSInfo()
         {
-            if (ReadILSEnabled)
+            if (Aircraft.Nav1Signal.Value == 256 && localiserDetected == false && Aircraft.Nav1Flags.Value[7])
             {
-                if (Aircraft.Nav1Signal.Value == 256 && localiserDetected == false && Aircraft.Nav1Flags.Value[7])
-                {
-                    Tolk.PreferSAPI(true);
-                    Tolk.Output("Localiser is alive. ");
-                    localiserDetected = true;
-                }
+                Tolk.PreferSAPI(true);
+                Tolk.Output("Localiser is alive. ");
+                localiserDetected = true;
             }
         }
         private void ReadSimulationRate(bool TriggeredByKey)
@@ -1443,14 +1498,14 @@ namespace tfm
         
         private void onToggleFlapsAnnouncementKey()
         {
-            if (flapsEnabled)
+            if (Properties.Settings.Default.ReadFlaps)
             {
-                flapsEnabled = false;
+                Properties.Settings.Default.ReadFlaps = false;
                 Tolk.Output("flaps announcement disabled. ");
             }
             else
             {
-                flapsEnabled = true;
+                Properties.Settings.Default.ReadFlaps = true;
                 Tolk.Output("Flaps announcement enabled. ");
             }
         }
@@ -1472,14 +1527,14 @@ namespace tfm
 
         private void onAutopilotKey()
         {
-            if (ReadAutopilot)
+            if (Properties.Settings.Default.ReadAutopilot)
             {
-                ReadAutopilot = false;
+             Properties.Settings.Default.ReadAutopilot = false;
                 Tolk.Output("read autopilot instruments disabled");
             }
             else
             {
-                ReadAutopilot = true;
+                Properties.Settings.Default.ReadAutopilot = true;
                 Tolk.Output("Read autopilot instruments enabled. ");
             }
         }
@@ -1681,9 +1736,9 @@ namespace tfm
             double lat = Aircraft.aircraftLat.Value.DecimalDegrees;
             double lon = Aircraft.aircraftLon.Value.DecimalDegrees;
             // double lat = -48.876667;
-            //double lon = -123.393333;
+            // double lon = -123.393333;
             flightFollowingOnline = true;
-            if (!flightFollowingOnline)
+            if (Properties.Settings.Default.FlightFollowingOffline)
             {
                 var pos = r.CreateFromLatLong(lat, lon);
                 var results = r.NearestNeighbourSearch(pos, 1);
@@ -1695,25 +1750,49 @@ namespace tfm
             }
             else
             {
-                var xml = XElement.Load($"http://api.geonames.org/findNearbyPlaceName?style=long&lat={lat}&lng={lon}&username=jfayre&cities=cities5000&radius=200");
-                var locations = xml.Descendants("geoname").Select(g => new
+                var xmlNearby = XElement.Load($"http://api.geonames.org/findNearbyPlaceName?style=long&lat={lat}&lng={lon}&username=jfayre&cities=cities1000&radius=200");
+                var locations = xmlNearby.Descendants("geoname").Select(g => new
                 {
                     Name = g.Element("name").Value,
                     Lat = g.Element("lat").Value,
                     Long = g.Element("lng").Value,
-                    admin1 = g.Element("adminName1").Value
+                    admin1 = g.Element("adminName1").Value,
+                    countryName = g.Element("countryName").Value
                 });
-
                 if (locations.Count() > 0)
                 {
                     var location = locations.First();
+                    Tolk.Output($"closest city: {location.Name} {location.admin1}, {location.countryName}. ");
+                }
 
-                    Tolk.Output($"closest city: {location.Name} {location.admin1}.");
-                }
-                else
+                var xmlOcean = XElement.Load($"http://api.geonames.org/ocean?lat={lat}&lng={lon}&username=jfayre");
+                var ocean = xmlOcean.Descendants("ocean").Select(g => new
                 {
-                    Tolk.Output("no locations in range.");
+                    Name = g.Element("name").Value
+                });
+                if (ocean.Count() > 0)
+                {
+                    var currentOcean = ocean.First();
+                    Tolk.Output($"{currentOcean.Name}. ");
                 }
+                var xmlTimezone = XElement.Load($"http://api.geonames.org/timezone?lat={lat}&lng={lon}&username=jfayre&radius=50");
+                var timezone = xmlTimezone.Descendants("timezone").Select(g => new
+                {
+                    Name = g.Element("timezoneId").Value
+                });
+                if (timezone.Count() > 0)
+                {
+                    var currentTimezone = timezone.First();
+                    if (currentTimezone.Name != oldTimezone)
+                    {
+                        string tzName = TZConvert.IanaToWindows(currentTimezone.Name);
+                        Tolk.Output($"{tzName}. ");
+                        oldTimezone = currentTimezone.Name;
+                    }
+
+                }
+
+
             }
         }
         private void onMuteSimconnectKey()

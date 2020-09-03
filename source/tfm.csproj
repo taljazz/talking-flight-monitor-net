@@ -98,6 +98,25 @@
     <Compile Include="AutoDisposeFileReader.cs" />
     <Compile Include="CachedSound.cs" />
     <Compile Include="CachedSoundSampleProvider.cs" />
+    <Compile Include="ctlGeneral.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctlGeneral.Designer.cs">
+      <DependentUpon>ctlGeneral.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ctlSpeechOutput.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctlSpeechOutput.Designer.cs">
+      <DependentUpon>ctlSpeechOutput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSettings.Designer.cs">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="iSettingsPage.cs" />
     <Compile Include="TemplateForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +141,15 @@
     <Compile Include="SineWaveProvider.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctlGeneral.resx">
+      <DependentUpon>ctlGeneral.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctlSpeechOutput.resx">
+      <DependentUpon>ctlSpeechOutput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSettings.resx">
+      <DependentUpon>frmSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TemplateForm.resx">
       <DependentUpon>TemplateForm.cs</DependentUpon>
@@ -211,7 +239,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Properties\DataSources\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -28,9 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("General");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("speech output");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Timing");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("General");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("speech output");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Timing");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("User interface");
             this.tvCategories = new System.Windows.Forms.TreeView();
             this.pnlContent = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -41,20 +42,24 @@
             // 
             // tvCategories
             // 
-            this.tvCategories.AccessibleName = "Categories";
+            this.tvCategories.AccessibleName = "Settings categories";
             this.tvCategories.Location = new System.Drawing.Point(0, 0);
+            this.tvCategories.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tvCategories.Name = "tvCategories";
-            treeNode4.Name = "nodGeneral";
-            treeNode4.Text = "General";
-            treeNode5.Name = "nodSpeechOutput";
-            treeNode5.Text = "speech output";
-            treeNode6.Name = "nodTiming";
-            treeNode6.Text = "Timing";
+            treeNode1.Name = "nodGeneral";
+            treeNode1.Text = "General";
+            treeNode2.Name = "nodSpeechOutput";
+            treeNode2.Text = "speech output";
+            treeNode3.Name = "nodTiming";
+            treeNode3.Text = "Timing";
+            treeNode4.Name = "nodeUserInterface";
+            treeNode4.Text = "User interface";
             this.tvCategories.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode4,
-            treeNode5,
-            treeNode6});
-            this.tvCategories.Size = new System.Drawing.Size(121, 97);
+            treeNode1,
+            treeNode2,
+            treeNode3,
+            treeNode4});
+            this.tvCategories.Size = new System.Drawing.Size(160, 118);
             this.tvCategories.TabIndex = 0;
             this.tvCategories.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvCategory_AfterSelect);
             // 
@@ -63,8 +68,9 @@
             this.pnlContent.AutoScroll = true;
             this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContent.Location = new System.Drawing.Point(0, 0);
+            this.pnlContent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlContent.Name = "pnlContent";
-            this.pnlContent.Size = new System.Drawing.Size(800, 450);
+            this.pnlContent.Size = new System.Drawing.Size(1067, 554);
             this.pnlContent.TabIndex = 1;
             // 
             // flowLayoutPanel1
@@ -72,18 +78,20 @@
             this.flowLayoutPanel1.Controls.Add(this.btnOK);
             this.flowLayoutPanel1.Controls.Add(this.btnCancel);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 350);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 431);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(800, 100);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1067, 123);
             this.flowLayoutPanel1.TabIndex = 2;
             // 
             // btnOK
             // 
             this.btnOK.AccessibleName = "Ok";
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(3, 3);
+            this.btnOK.Location = new System.Drawing.Point(4, 4);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
+            this.btnOK.Size = new System.Drawing.Size(100, 28);
             this.btnOK.TabIndex = 0;
             this.btnOK.Text = "Ok";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -92,9 +100,10 @@
             // 
             this.btnCancel.AccessibleName = "Cancel";
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(84, 3);
+            this.btnCancel.Location = new System.Drawing.Point(112, 4);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(100, 28);
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -103,14 +112,15 @@
             // 
             this.AcceptButton = this.btnOK;
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.Dialog;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1067, 554);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.pnlContent);
             this.Controls.Add(this.tvCategories);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmSettings";

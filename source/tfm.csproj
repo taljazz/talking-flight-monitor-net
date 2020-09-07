@@ -98,25 +98,25 @@
     <Compile Include="AutoDisposeFileReader.cs" />
     <Compile Include="CachedSound.cs" />
     <Compile Include="CachedSoundSampleProvider.cs" />
-    <Compile Include="ctlGeneral.cs">
+    <Compile Include="Settings panels\ctlGeneral.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ctlGeneral.Designer.cs">
+    <Compile Include="Settings panels\ctlGeneral.Designer.cs">
       <DependentUpon>ctlGeneral.cs</DependentUpon>
     </Compile>
-    <Compile Include="ctlSpeechOutput.cs">
+    <Compile Include="Settings panels\ctlSpeechOutput.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ctlSpeechOutput.Designer.cs">
+    <Compile Include="Settings panels\ctlSpeechOutput.Designer.cs">
       <DependentUpon>ctlSpeechOutput.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmSettings.cs">
+    <Compile Include="Settings panels\frmSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmSettings.Designer.cs">
+    <Compile Include="Settings panels\frmSettings.Designer.cs">
       <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="iSettingsPage.cs" />
+    <Compile Include="Settings panels\iSettingsPage.cs" />
     <Compile Include="TemplateForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,13 +142,13 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ctlGeneral.resx">
+    <EmbeddedResource Include="Settings panels\ctlGeneral.resx">
       <DependentUpon>ctlGeneral.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ctlSpeechOutput.resx">
+    <EmbeddedResource Include="Settings panels\ctlSpeechOutput.resx">
       <DependentUpon>ctlSpeechOutput.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmSettings.resx">
+    <EmbeddedResource Include="Settings panels\frmSettings.resx">
       <DependentUpon>frmSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TemplateForm.resx">

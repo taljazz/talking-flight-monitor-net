@@ -37,13 +37,193 @@ namespace tfm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public ushort flight_following {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FlightFollowing {
             get {
-                return ((ushort)(this["flight_following"]));
+                return ((bool)(this["FlightFollowing"]));
             }
             set {
-                this["flight_following"] = value;
+                this["FlightFollowing"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("simplified")]
+        public string avionics_tab {
+            get {
+                return ((string)(this["avionics_tab"]));
+            }
+            set {
+                this["avionics_tab"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseSAPIOutput {
+            get {
+                return ((bool)(this["UseSAPIOutput"]));
+            }
+            set {
+                this["UseSAPIOutput"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ReadInstrumentation {
+            get {
+                return ((bool)(this["ReadInstrumentation"]));
+            }
+            set {
+                this["ReadInstrumentation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ReadSimconnectMessages {
+            get {
+                return ((bool)(this["ReadSimconnectMessages"]));
+            }
+            set {
+                this["ReadSimconnectMessages"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ReadGPWS {
+            get {
+                return ((bool)(this["ReadGPWS"]));
+            }
+            set {
+                this["ReadGPWS"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ReadILS {
+            get {
+                return ((bool)(this["ReadILS"]));
+            }
+            set {
+                this["ReadILS"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ReadGroundSpeed {
+            get {
+                return ((bool)(this["ReadGroundSpeed"]));
+            }
+            set {
+                this["ReadGroundSpeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseMetric {
+            get {
+                return ((bool)(this["UseMetric"]));
+            }
+            set {
+                this["UseMetric"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int FlightFollowingTimeInterval {
+            get {
+                return ((int)(this["FlightFollowingTimeInterval"]));
+            }
+            set {
+                this["FlightFollowingTimeInterval"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int ILSAnnouncementTimeInterval {
+            get {
+                return ((int)(this["ILSAnnouncementTimeInterval"]));
+            }
+            set {
+                this["ILSAnnouncementTimeInterval"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int AttitudeAnnouncementMode {
+            get {
+                return ((int)(this["AttitudeAnnouncementMode"]));
+            }
+            set {
+                this["AttitudeAnnouncementMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AltitudeAnnouncements {
+            get {
+                return ((bool)(this["AltitudeAnnouncements"]));
+            }
+            set {
+                this["AltitudeAnnouncements"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ReadFlaps {
+            get {
+                return ((bool)(this["ReadFlaps"]));
+            }
+            set {
+                this["ReadFlaps"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ReadAutopilot {
+            get {
+                return ((bool)(this["ReadAutopilot"]));
+            }
+            set {
+                this["ReadAutopilot"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FlightFollowingOffline {
+            get {
+                return ((bool)(this["FlightFollowingOffline"]));
+            }
+            set {
+                this["FlightFollowingOffline"] = value;
             }
         }
     }

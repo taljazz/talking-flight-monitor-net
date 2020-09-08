@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("tfm")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Talking Flight Monitor")]
+[assembly: AssemblyDescription("Uses the FSUIPC Client DLL for .NET by Paul Henty")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TFM")]
+[assembly: AssemblyProduct("Talking Flight Monitor")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

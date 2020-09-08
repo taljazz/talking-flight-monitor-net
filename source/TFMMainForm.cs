@@ -14,26 +14,19 @@ using NHotkey;
 using NHotkey.WindowsForms;
 using DavyKager;
 using System.Reflection;
-using System.Net.Configuration;
-using System.Security.Policy;
+using tfm.Properties;
 
 namespace tfm
 {
     public partial class TFMMainForm : Form
     {
         public Instrumentation inst = new Instrumentation();
-        Publisher pub = new Publisher();
         public TFMMainForm()
         {
             InitializeComponent();
             Aircraft.InitOffsets();
-            SubscribeOutputEvent(pub);
             // Start the connection timer to look for a flight sim
             this.timerConnection.Start();
-        }
-        void SubscribeOutputEvent(Publisher pub)
-        {
-            pub.RaiseOutputEvent += onOutputEvent;
         }
         // This method is called every 1 second by the connection timer.
         private void timerConnection_Tick(object sender, EventArgs e)
@@ -63,6 +56,36 @@ namespace tfm
             {
                 FSUIPCConnection.Process();
                 inst.ReadAircraftState();
+                // Keeps track of the autopilot master switch in the simplified avionics tab.
+                if (Properties.Settings.Default.avionics_tab == "simplified") { 
+                AutopilotCheckBox.Checked = inst.ApMaster;
+
+                // Keep track of the locks/holds on each autopilot gage.
+                var apGage = GageComboBox.SelectedItem.ToString();
+                switch (apGage)
+                {
+                    case "Heading":
+                        LockGageCheckBox.Checked = inst.ApHeadingLock;
+                        break;
+                    case "Air speed":
+                        LockGageCheckBox.Checked = inst.ApAirspeedHold;
+                        break;
+                    case "Altitude":
+                        LockGageCheckBox.Checked = inst.ApAltitudeLock;
+                        break;
+                    case "Mach":
+                        LockGageCheckBox.Checked = inst.ApMachHold;
+                        break;
+                    case "Vertical speed":
+                        LockGageCheckBox.Checked = inst.ApVerticalSpeedHold;
+                        break;
+                    case "Nav 1":
+                        LockGageCheckBox.Checked = inst.ApNavLock;
+                        break;
+                    case "default":
+                        break;
+                }
+            }
             }
 
 
@@ -77,6 +100,8 @@ namespace tfm
             }
         }
 
+        // This runs when the master avionics tick has been changed
+
         // Form is closing so stop all the timers and close FSUIPC Connection
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -85,7 +110,7 @@ namespace tfm
             FSUIPCConnection.Close();
         }
 
-        private void QuitMenuItem_Click(object sender, EventArgs e)
+        private void QuitMenuItem_Click     (object sender, EventArgs e)
         {
             this.Dispose();
         }
@@ -118,9 +143,14 @@ namespace tfm
             {
                 OutputLogTextBox.Focus();
             } //End output log assignment.
-            if((e.Control && e.KeyCode == Keys.D1))
+            if ((e.Control && e.KeyCode == Keys.D1))
             {
+                if (TFMTabControl.TabPages.Contains(AvionicsTabPage)) { 
                 TFMTabControl.SelectedTab = AvionicsTabPage;
+            } else
+            {
+                TFMTabControl.SelectedTab = AvionicsExplorationTabPage;
+            }
             } //End Avionics assignment.
 
             if((e.Control && e.KeyCode == Keys.D2)) {
@@ -144,11 +174,81 @@ namespace tfm
             var item = GagesList.SelectedItem.ToString();
                         GageValueTextBox.AccessibleName = "Enter " + item;
             LockGageCheckBox.AccessibleName = item + " lock";
-            Tolk.Output(GageValueTextBox.Text);
-            var screenReader = Tolk.DetectScreenReader();
+            // Assign the airplane auto pilot gages to the gage value field.
+            // See related checked changed events for locks and apMaster switch.
+
+                switch(item)
+                {
+                    case "ADF":
+                    GageValueTextBox.Text = inst.Adf1Freq.ToString();
+                        LockGageCheckBox.Visible = false;
+                        break;
+                case "Air speed":
+                    GageValueTextBox.Text = inst.ApAirspeed.ToString();
+                    LockGageCheckBox.Visible = true;
+                    LockGageCheckBox.Checked = inst.ApAirspeedHold;
+                    break;
+                case "Vertical speed":
+                    GageValueTextBox.Text = inst.ApVerticalSpeed.ToString();
+                    LockGageCheckBox.Visible = true;
+                    LockGageCheckBox.Checked = inst.ApVerticalSpeedHold;
+                    break;
+                case "Mach":
+                    GageValueTextBox.Text = inst.ApMachSpeed.ToString();
+                    LockGageCheckBox.Visible = true;
+                    LockGageCheckBox.Checked = inst.ApMachHold;
+                    break;
+                case "Altitude":
+                    GageValueTextBox.Text = inst.ApAltitude.ToString();
+                    LockGageCheckBox.Visible = true;
+                    LockGageCheckBox.Checked = inst.ApAltitudeLock;
+                    break;
+                case "Heading":
+                    GageValueTextBox.Text = inst.ApHeading.ToString();
+                    LockGageCheckBox.Visible = true;
+                    LockGageCheckBox.Checked = inst.ApHeadingLock;
+                    break;
+                case "Com 1":
+                    GageValueTextBox.Text = inst.Com1Freq.ToString();
+                    LockGageCheckBox.Visible = false;
+                    break;
+                case "Com 2":
+                    GageValueTextBox.Text = inst.Com2Freq.ToString();
+                    LockGageCheckBox.Checked = false;
+                    break;
+                case "Transponder":
+                    GageValueTextBox.Text = inst.Transponder.ToString();
+                    LockGageCheckBox.Visible = false;
+                    break;
+                case "Altimeter [inches]":
+                    GageValueTextBox.Text = inst.AltimeterInches.ToString();
+                    LockGageCheckBox.Visible = false;
+                    break;
+                case "Altimeter [QNH]":
+                    GageValueTextBox.Text = inst.AltimeterQNH.ToString();
+                    LockGageCheckBox.Visible = false;
+                    break;
+                case "Nav 1":
+                    GageValueTextBox.Text = inst.Nav1Freq.ToString();
+                    LockGageCheckBox.Visible = true;
+                    LockGageCheckBox.Checked = inst.ApNavLock;
+                    break;
+                case "Nav 2":
+                    GageValueTextBox.Text = inst.Nav2Freq.ToString();
+                    LockGageCheckBox.Visible = false;
+                    break;
+                case "default":
+                    GageValueTextBox.Text = "That gage is not supported at this time.";
+                    break;
+                }
+                                       
+                        var screenReader = Tolk.DetectScreenReader();
             if(screenReader == "NVDA" && GagesList.DroppedDown == false)
             {
-                Tolk.Output(item + ", " + GageValueTextBox.Text);
+                Tolk.Output(GageValueTextBox.Text + ", " + GagesList.SelectedItem.ToString());
+            } else
+            {
+                Tolk.Output(GageValueTextBox.Text);
             }
         } //End gages list selected index change event.
         private void AutoGageCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -165,6 +265,7 @@ namespace tfm
                 
         private void AutopilotCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            inst.ApMaster = AutopilotCheckBox.Checked;
             if (AutopilotCheckBox.Checked == true)
             {
                 AutopilotCheckBox.ForeColor = Color.Green;
@@ -189,20 +290,213 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
 
         private void TFMMainForm_Load(object sender, EventArgs e)
         {
-            GageComboBox.SelectedIndex = 0;
-            FlyModeComboBox.SelectedIndex = 0;
-            GageComboBox.Focus();
-        }
+            //Move to a configure function when implementing settings.
+            if (Properties.Settings.Default.avionics_tab == "simplified")
+            {
+                TFMTabControl.TabPages.Remove(AvionicsExplorationTabPage);
+                GageComboBox.SelectedIndex = 0;
+                FlyModeComboBox.SelectedIndex = 0;
+                GageComboBox.Focus();
+                AutopilotCheckBox.Checked = inst.ApMaster;
+            }
+            else
+            {
+                                //Following code is expiremental.
 
-        private void AboutMenuItem_Click(object sender, EventArgs e)
+                TFMTabControl.TabPages.Remove(AvionicsTabPage);
+                                AutopilotPropertyGrid.SelectedObject = inst;
+            }
+                    }
+
+                        private void AboutMenuItem_Click(object sender, EventArgs e)
         {
             AboutBox about = new AboutBox();
             about.ShowDialog();
         } //End About menu item.
-        void onOutputEvent(object sender, OutputEventArgs e)
+
+        private void WebsiteMenuItem_Click(object sender, EventArgs e)
         {
-            OutputLogTextBox.AppendText(e.Message);
-            Tolk.Output(e.Message);
+            System.Diagnostics.Process.Start("https://github.com/jfayre/talking-flight-monitor-net");                       
+        }
+
+        private void ReportIssueMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/jfayre/talking-flight-monitor-net/issues");
+        }
+
+        private void GageValueTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+                        if (e.KeyCode == Keys.Enter)
+            {
+                                
+                var apGage = GageComboBox.SelectedItem.ToString();
+                switch (apGage)
+                {
+                    case "Air speed":
+                        if (Double.TryParse(GageValueTextBox.Text, out double airSpeed) && airSpeed > 0)
+                        {
+                            inst.ApAirspeed = airSpeed;
+                            GageValueTextBox.Text = inst.ApAirspeed.ToString();
+                        } else
+                        {
+                            GageValueTextBox.Text = string.Empty;
+                            Tolk.Output("Invalid air speed");
+                        }
+                        break;
+                    case "Vertical speed":
+                        if (Double.TryParse(GageValueTextBox.Text, out double verticalSpeed))
+                        {
+                            inst.ApVerticalSpeed = verticalSpeed;
+                            GageValueTextBox.Text = inst.ApVerticalSpeed.ToString();
+                        } else
+                        {
+                            GageValueTextBox.Text = string.Empty;
+                            Tolk.Output("Invalid vertical speed");
+                        }
+                        break;
+                    case "Mach":
+                        if(Double.TryParse(GageValueTextBox.Text, out double machSpeed))
+                        {
+                            inst.ApMachSpeed = machSpeed;
+                            GageValueTextBox.Text = inst.ApMachSpeed.ToString();
+                        } else
+                        {
+                            GageValueTextBox.Text = string.Empty;
+                            Tolk.Output("Invalid mach speed");
+                        }
+                        break;
+                    case "Altitude":
+                        if(Double.TryParse(GageValueTextBox.Text, out double altitude))
+                        {
+                            inst.ApAltitude = altitude;
+                            GageValueTextBox.Text = inst.ApAltitude.ToString();
+                        } else
+                        {
+                            GageValueTextBox.Text = string.Empty;
+                            Tolk.Output("Invalid altitude.");
+                        }
+                        break;
+                    case "Heading":
+                        if(Double.TryParse(GageValueTextBox.Text, out Double heading) && heading <= 359)
+                        {
+                            inst.ApHeading = heading;
+                            GageValueTextBox.Text = inst.ApHeading.ToString();
+                        } else
+                        {
+                            GageValueTextBox.Text = string.Empty;
+                            Tolk.Output("Invalid heading.");
+                        }
+                        break;
+                    case "Com 1":
+                        if(Decimal.TryParse(GageValueTextBox.Text, out decimal com1))
+                        {
+                            inst.Com1Freq = com1;
+                            GageValueTextBox.Text = inst.Com1Freq.ToString();
+                        } else
+                        {
+                            GageValueTextBox.Text = string.Empty;
+                            Tolk.Output("Invalid frequency.");
+                        }
+                        break;
+                    case "Com 2":
+                        if(Decimal.TryParse(GageValueTextBox.Text, out decimal com2))
+                        {
+                            inst.Com2Freq = com2;
+                            GageValueTextBox.Text = inst.Com2Freq.ToString();
+                        } else
+                        {
+                            GageValueTextBox.Text = string.Empty;
+                            Tolk.Output("Invalid frequency.");
+                        }
+                        break;
+                    case "Transponder":
+                        if(int.TryParse(GageValueTextBox.Text, out int transponder) && transponder < 9999)
+                        {
+                            inst.Transponder = transponder;
+                            GageValueTextBox.Text = inst.Transponder.ToString();
+                        } else
+                        {
+                            GageValueTextBox.Text = string.Empty;
+                            Tolk.Output("Invalid transponder number.");
+                        }
+                        break;
+                    case "Altimeter[inches]":
+                        if(Double.TryParse(GageValueTextBox.Text, out double altimeterInches))
+                        {
+                            inst.AltimeterInches = altimeterInches;
+                            GageValueTextBox.Text = inst.AltimeterInches.ToString();
+                        } else
+                        {
+                            GageValueTextBox.Text = string.Empty;
+                            Tolk.Output("Invalid altimeter value.");
+                        }
+                        break;
+                    case "Altimeter[QNH]":
+                        if(double.TryParse(GageValueTextBox.Text, out double altimeterQNH))
+                        {
+                            inst.AltimeterQNH = altimeterQNH;
+                            GageValueTextBox.Text = inst.AltimeterQNH.ToString();
+                        } else
+                        {
+                            GageValueTextBox.Text = string.Empty;
+                            Tolk.Output("Invalid altimeter value.");
+                        }
+                        break;
+                    case "Nav 1":
+                        if(Decimal.TryParse(GageValueTextBox.Text, out decimal nav1))
+                        {
+                            inst.Nav1Freq = nav1;
+                            GageValueTextBox.Text = inst.Nav1Freq.ToString();
+                        } else
+                        {
+                            GageValueTextBox.Text = string.Empty;
+                            GageValueTextBox.Text = inst.Nav1Freq.ToString();
+                        }
+                        break;
+                    case "Nav 2":
+                        if(Decimal.TryParse(GageValueTextBox.Text, out decimal nav2))
+                        {
+                            inst.Nav2Freq = nav2;
+                            GageValueTextBox.Text = inst.Nav2Freq.ToString();
+                        } else
+                        {
+                            GageValueTextBox.Text = string.Empty;
+                            Tolk.Output("Invalid frequency.");
+                        }
+                        break;
+                    case "ADF":
+                        if(Decimal.TryParse(GageValueTextBox.Text, out decimal adf))
+                        {
+                            inst.Adf1Freq = adf;
+                            GageValueTextBox.Text = inst.Adf1Freq.ToString();
+                        } else
+                        {
+                            GageValueTextBox.Text = string.Empty;
+                            Tolk.Output("Invalid frequency.");
+                        }
+                        break;
+                    case "default":
+                        break;
+                }
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            } //End apGage input.
+                                       } //End sending data to the simulator.
+        private void SettingsMenuItem_Click(object sender, EventArgs e)
+        {
+            frmSettings settings = new frmSettings();
+            settings.ShowDialog();
+            if (settings.DialogResult == DialogResult.OK)
+            {
+                Properties.Settings.Default.Save();
+            }
+            else
+            {
+                Properties.Settings.Default.Reload();
+                
+            }
+            
+
         }
     }//End TFMMainForm class.
 } //End TFM namespace.

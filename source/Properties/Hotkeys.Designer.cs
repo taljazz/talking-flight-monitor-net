@@ -145,7 +145,7 @@ namespace tfm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Shift+R")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+M")]
         public global::System.Windows.Forms.Keys MuteSimconnect {
             get {
                 return ((global::System.Windows.Forms.Keys)(this["MuteSimconnect"]));
@@ -524,6 +524,18 @@ namespace tfm.Properties {
             }
             set {
                 this["RepeatLastSimconnectMessage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("E")]
+        public global::System.Windows.Forms.Keys ReadSimulationRate {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ReadSimulationRate"]));
+            }
+            set {
+                this["ReadSimulationRate"] = value;
             }
         }
     }

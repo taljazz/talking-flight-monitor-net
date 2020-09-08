@@ -17,12 +17,18 @@ namespace tfm
         public static  Offset<ushort> Com1Freq = new Offset<ushort>(0x034e);
         public static  Offset<ushort> Com2Freq = new Offset<ushort>(0x3118);
         public static  Offset<byte> RadioActive = new Offset<byte>(0x3122);
+        public static Offset<ushort> Nav1Freq = new Offset<ushort>(0x0350);
+        public static Offset<ushort> Nav2Freq = new Offset<ushort>(0x0352);
+        // ADF frequencies are split over 2 offsets, the 'main' and 'extended'.
+        public static Offset<ushort> adf1Main = new Offset<ushort>(0x034C);
+        public static Offset<ushort> adf1Extended = new Offset<ushort>(0x0356);
+
         public static  Offset<FsLatitude> aircraftLat = new Offset<FsLatitude>(0x0560, 8);
         public static  Offset<FsLongitude> aircraftLon = new Offset<FsLongitude>(0x0568, 8);
         public static  Offset<short> Flaps = new Offset<short>(0x30f0);
         public static  Offset<short> OnGround = new Offset<short>(0x0366);
         public static  Offset<short> ParkingBrake = new Offset<short>(0x0bc8);
-        public static  Offset<uint> Gear = new Offset<uint>(0x0be8);
+        public static  Offset<uint> LandingGear = new Offset<uint>(0x0bec);
         public static  Offset<int> Altitude = new Offset<int>(0x3324);
         public static  Offset<uint> GroundAltitude = new Offset<uint>(0x0020);
         public static  Offset<uint> SpoilersArm = new Offset<uint>(0x0bcc);
@@ -69,8 +75,8 @@ namespace tfm
         public static  Offset<short> AirspeedMach = new Offset<short>(0x11c6);
         public static  Offset<uint> NextWPETA = new Offset<uint>(0x60e8);
         public static  Offset<double> NextWPBaring = new Offset<double>(0x6050);
-        public static  Offset<uint> DestETE = new Offset<uint>(0x6198);
-        public static  Offset<uint> DestETA = new Offset<uint>(0x619c);
+        public static Offset<string> DestinationAirportID = new Offset<string>(0x6137, 5);
+        public static  Offset<uint> DestinationTimeEnroute = new Offset<uint>(0x6198);
         public static  Offset<double> RouteDistance = new Offset<double>(0x61a0);
         public static  Offset<double> FuelBurn = new Offset<double>(0x61a8);
         public static  Offset<uint> FuelQuantity = new Offset<uint>(0x126c);
@@ -171,7 +177,11 @@ namespace tfm
         public static  Offset<double> GyroSuction = new Offset<double>(0x0b18);
         public static  Offset<byte> OilQuantity = new Offset<byte>(0x66c9);
         public static  Offset<string> AircraftName = new Offset<string>(0x3d00, 255);
+        // atitude mode offsets
+        public static Offset<int> AttitudePitch = new Offset<int>("attitude", 0x0578);
+        public static Offset<int> AttitudeBank = new Offset<int>("attitude", 0x057c);
         public static  TextMenu textMenu = new TextMenu();
+        public static Offset<ushort> SimulationRate = new Offset<ushort>(0x0c1a);
         
         public static void InitOffsets()
         {
@@ -183,115 +193,6 @@ namespace tfm
             return (degrees);
         }
 
-        public static void SetHeading(double hdg)
-        {
-            if (hdg >= 0 && hdg <= 360)
-            {
-                // convert the supplied heading into the proper FSUIPC format(degrees*65536/360)
-                hdg = hdg * 65536 / 360;
-                // send heading value to FSUIPC
-                ApHeading.Value = (ushort)hdg;
-            }
-            else
-            {
-                throw new ArgumentException("Heading must be between 0 and 360 degrees");
-            }
-        }
-
-        public static void SetAirspeed(double spd)
-        {
-            if (spd > 0)
-            {
-                // no processing necessary, just send the speed to FSUIPC
-                ApAirspeed.Value = (short)spd;
-            }
-            else
-            {
-                throw new ArgumentException("airspeed value must be greater than 0");
-            }
-        }
-        private static void SetAltitude(double alt)
-        {
-            if (alt > 0)
-            {
-                //convert the supplied altitude into the proper FSUIPC format.
-                // FSUIPC needs the altitude as metres*65536
-                alt = alt / 3.28084 * 65536;
-                ApAltitude.Value = (uint)alt;
-            }
-            else
-            {
-                throw new ArgumentException("Altitude must be greater than 0");
-            }
-        }
-
-        public static void SetMachSpeed(double mch)
-        {
-            if (mch > 0)
-            {
-                // FSUIPC needs the mach multiplied by 65536            }
-                mch = mch * 65536;
-                ApMach.Value = (uint)mch;
-            }
-            else
-            {
-                throw new ArgumentException("Mach must be greater than 0");
-            }
-        }
-
-        private static void SetVerticalSpeed(double vspd)
-        {
-            // no processing required, just send the vertical speed as entered
-            ApVerticalSpeed.Value = (short)vspd;
-        }
-
-        public static void SetTransponder(double squawk)
-        {
-            if (squawk > 0)
-            {
-                // 1. Create a new instance of the Transponder helper class using the integer that was entered
-                //    Note the number box always returns the value as a 'decimal' type. So we have to cast to Int32
-                FsTransponderCode txHelper = new FsTransponderCode((int)squawk);
-                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                Transponder.Value = txHelper.ToBCD();
-
-            }
-            else
-            {
-                throw new ArgumentException("Transponder values mush be greater than 0");
-            }
-        }
-
-        public static void SetCom1(double freq)
-        {
-            if (freq > 0)
-            {
-                // 1. Create a new instance of the COM helper class using the decimal value entered
-                FsFrequencyCOM com1Helper = new FsFrequencyCOM((ushort)freq);
-                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                Com1Freq.Value = com1Helper.ToBCD();
-
-            }
-            else
-            {
-                throw new ArgumentException("com 1 frequency must be greater than 0");
-            }
-        }
-        public static void SetCom2(double freq)
-        {
-            if (freq > 0)
-            {
-                // 1. Create a new instance of the COM helper class using the decimal value entered
-                FsFrequencyCOM com2Helper = new FsFrequencyCOM((ushort)freq);
-                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                Com2Freq.Value = com2Helper.ToBCD();
-
-            }
-            else
-            {
-                throw new ArgumentException("com 2 frequency must be greater than 0");
-            }
-        }
-
+        
     }
 }

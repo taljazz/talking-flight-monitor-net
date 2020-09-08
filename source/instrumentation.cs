@@ -15,12 +15,14 @@ using System.Linq;
 using System.Media;
 using System.Text;
 using System.Timers;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Configuration;
 using NGeoNames;
 using NGeoNames.Entities;
+using TimeZoneConverter;
 using System.Diagnostics;
 
 namespace tfm
@@ -28,54 +30,543 @@ namespace tfm
     public class Instrumentation
     {
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
-        private static Publisher pub = new Publisher();
+        private SineWaveProvider pitchSineProvider;
+        private SineWaveProvider bankSineProvider;
 
+        
         // timers
         private static System.Timers.Timer RunwayGuidanceTimer;
+        private static System.Timers.Timer GroundSpeedTimer = new System.Timers.Timer(3000); // 3 seconds;
+        private static System.Timers.Timer AttitudeTimer;
+        private static System.Timers.Timer flightFollowingTimer;
         private double HdgRight;
         private double HdgLeft;
 
         // Audio objects
         IWavePlayer driverOut;
         SignalGenerator wg;
+        SignalGenerator BankWG;
         PanningSampleProvider pan;
         OffsetSampleProvider pulse;
         MixingSampleProvider mixer;
 
         // initialize command mode sound
-        SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
+        readonly SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
         // list to store registered hotkey identifiers
         List<string> hotkeys = new List<string>();
         FsFuelTanksCollection FuelTanks = null;
         // list to store fuel tanks present on the aircraft
         List<FsFuelTank> ActiveTanks = new List<FsFuelTank>();
+        private Dictionary<int, bool> altitudeCalloutFlags = new Dictionary<int, bool>();
 
         static bool FirstRun = true;
         // flags for tfm features   
-        bool FlightFollowingEnabled;
-        bool InstrumentationEnabled;
-        bool SimConnectMessagesEnabled;
-        bool CalloutsEnabled;
-        bool ILSEnabled;
-        bool GroundspeedEnabled;
-        bool TrimEnabled = true;
+        private bool FlightFollowingEnabled;
+        private bool InstrumentationEnabled;
+        private bool SimConnectMessagesEnabled;
+        private bool calloutsEnabled;
+        private bool ILSEnabled;
+        private bool groundspeedEnabled = true;
+        private bool groundSpeedActive;
+        private bool onGround;
+        private bool TrimEnabled = true;
         private bool FlapsMoving;
-        private bool MuteSimconnect;
+        private bool flapsEnabled = true;
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public bool muteSimconnect { get; private set; }
-        public bool flightFollowingOnline { get; private set; }
-        public bool RunwayGuidanceEnabled { get; private set; }
-        public bool LocaliserDetected { get; private set; }
-        public bool ReadILSEnabled { get; private set; }
-        public bool ReadAutopilot { get; private set; }
+        private bool muteSimconnect;
+        private bool flightFollowingOnline;
+        private bool runwayGuidanceEnabled;
+        private bool attitudeModeEnabled;
+        private bool localiserDetected;
+        private bool AttitudePitchPlaying;
+        private bool AttitudeBankLeftPlaying;
 
-        public double CurrentHeading;   
+        private bool apMaster;
+        [DisplayName("autopilot master switch")]
+        public bool ApMaster
+        {
+            get
+            {
+                apMaster = Aircraft.ApMaster.Value != 0;
+                return apMaster;
+            }
+            set
+            {
+                Aircraft.ApMaster.Value = (value) ? (uint)1 : (uint)0;
+                apMaster = value;
+            }
+        }
+        private bool apNavLock;
+        [DisplayName("nav lock")]
+        public bool ApNavLock
+        {
+            get
+            {
+                apNavLock = (Aircraft.ApNavLock.Value == 0) ? false : true;
+                return apNavLock;
+            }
+            set
+            {
+                Aircraft.ApNavLock.Value = (value) ? (uint)1 : (uint)0;
+                apNavLock = value;
+            }
+        }
+        private bool apWingLeveler;
+        [DisplayName("Wing Leveler")]
+        public bool ApWingLeveler
+        {
+            get
+            {
+                apWingLeveler = (Aircraft.ApWingLeveler.Value == 0) ? false : true;
+                return apWingLeveler;
+            }
+            set
+            {
+                Aircraft.ApWingLeveler.Value = (value) ? (uint)1 : (uint)0;
+                apWingLeveler = value;
+            }
+        }
+        private bool apAttitudeHold;
+        [DisplayName("attitude hold")]
+        public bool ApAttitudeHold
+        {
+            get
+            {
+                apAttitudeHold = (Aircraft.ApAttitudeHold.Value == 0) ? false : true;
+                return apAttitudeHold;
+            }
+            set
+            {
+                Aircraft.ApAttitudeHold.Value = (value) ? (uint)1 : (uint)0;
+                apAttitudeHold = value;
+            }
+        }
+        private bool apApproachHold;
+        [DisplayName("Approach hold")]
+        public bool ApApproachHold
+        {
+            get
+            {
+                apApproachHold = (Aircraft.ApApproachHold.Value == 0) ? false : true;
+                return apApproachHold;
+            }
+            set
+            {
+                Aircraft.ApApproachHold.Value = (value) ? (uint)1 : (uint)0;
+                apApproachHold = value;
+            }
+        }
+        [DisplayName("Heading")]
+        public double ApHeading
+        {
+            get
+            {
+                apHeading = (double)Math.Round(Aircraft.ApHeading.Value / 65536d * 360d);
+                return apHeading;
+            }
+            set
+            {
+                if (value > 0 && value < 360)
+                {
+                    // convert the supplied heading into the proper FSUIPC format(degrees*65536/360)
+                    Aircraft.ApHeading.Value = (ushort)(value * 65536 / 360);
+                    apHeading = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Heading values must be between 0 and 360");
+                }
+            }
+        }
+        private bool apHeadingLock;
+        [DisplayName("heading lock")]
+        public bool ApHeadingLock
+        {
+            get
+            {
+                apHeadingLock = (Aircraft.ApHeadingLock.Value == 0) ? false : true;
+                return apHeadingLock;
+            }
+            set
+            {
+                Aircraft.ApHeadingLock.Value = (value) ? (uint)1 : (uint)0;
+                apHeadingLock = value;
+            }
+        }
+        [DisplayName("Altitude")]
+        public double ApAltitude
+        {
+            get
+            {
+                apAltitude = Math.Round((double)Aircraft.ApAltitude.Value / 65536d * 3.28084d);
+                return apAltitude;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    Aircraft.ApAltitude.Value = (uint)(value / 3.28084 * 65536);
+                    apAltitude = value;
+                }
+                else
+                {
+                    throw new ArgumentException("altitude must be greter than 0");
+                }
+            }
+        }
+        private bool apAltitudeLock;
+        [DisplayName("altitude lock")]
+        public bool ApAltitudeLock
+        {
+            get
+            {
+                apAltitudeLock = (Aircraft.ApAltitudeLock.Value == 0) ? false : true;
+                return apAltitudeLock;
+            }
+            set
+            {
+                Aircraft.ApAltitudeLock.Value = (value) ? (uint)1 : (uint)0;
+                apAltitudeLock = value;
+            }
+        }
+
+        private double apAirspeed;
+        [DisplayName("Airspeed")]
+        public double ApAirspeed
+        {
+            get
+            {
+                apAirspeed = Aircraft.ApAirspeed.Value;
+                return apAirspeed;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    Aircraft.ApAirspeed.Value = (short)value;
+                    apAirspeed = value;
+                }
+                else
+                {
+                    throw new ArgumentException("speed must be greater than 0");
+                }
+            }
+        }
+        private bool apAirspeedHold;
+        [DisplayName("airspeed hold")]
+        public bool ApAirspeedHold
+        {
+            get
+            {
+                apAirspeedHold = (Aircraft.ApSpeedHold.Value == 0) ? false : true;
+                return apAirspeedHold;
+            }
+            set
+            {
+                Aircraft.ApSpeedHold.Value = (value) ? (uint)1 : (uint)0;
+                apAirspeedHold = value;
+            }
+        }
+
+        private double apMachSpeed;
+        [DisplayName("Mach")]
+        public double ApMachSpeed
+        {
+            get
+            {
+                double mach = (double)Aircraft.ApMach.Value / 65536d;
+                string strMach = mach.ToString("F2");
+                apMachSpeed = double.Parse(strMach);
+                return apMachSpeed;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    // FSUIPC needs the mach multiplied by 65536            }
+                    Aircraft.ApMach.Value = (uint)(value * 65536);
+                    apMachSpeed = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Mach must be greater than 0");
+                }
+            }
+        }
+        private bool apMachHold;
+        [DisplayName("mach hold")]
+        public bool ApMachHold
+        {
+            get
+            {
+                apMachHold = (Aircraft.ApMachHold.Value == 0) ? false : true;
+                return apMachHold;
+            }
+            set
+            {
+                Aircraft.ApMachHold.Value = (value) ? (uint)1 : (uint)0;
+                apMachHold = value;
+            }
+        }
+
+
+        private double apVerticalSpeed;
+        [DisplayName("Vertical speed")]
+        public double ApVerticalSpeed
+        {
+            get
+            {
+                apVerticalSpeed = Aircraft.ApVerticalSpeed.Value;
+                return apVerticalSpeed;
+            }
+            set
+            {
+                Aircraft.ApVerticalSpeed.Value = (short)value;
+                apVerticalSpeed = value;
+
+            }
+        }
+        private bool apVerticalSpeedHold;
+        [DisplayName("vertical speed hold")]
+        public bool ApVerticalSpeedHold
+        {
+            get
+            {
+                apVerticalSpeedHold = (Aircraft.ApVerticalSpeedHold.Value == 0) ? false : true;
+                return apVerticalSpeedHold;
+            }
+            set
+            {
+                Aircraft.ApVerticalSpeedHold.Value = (value) ? (uint)1 : (uint)0;
+                apVerticalSpeedHold = value;
+            }
+        }
+
+
+        private decimal com1Freq;
+        [DisplayName("com 1")]
+        [Category("communications")]
+        public decimal Com1Freq
+        {
+            get
+            {
+                FsFrequencyCOM com1Helper = new FsFrequencyCOM(Aircraft.Com1Freq.Value);
+                com1Freq = com1Helper.ToDecimal();
+                return com1Freq;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    // 1. Create a new instance of the COM helper class using the decimal value entered
+                    FsFrequencyCOM com1Helper = new FsFrequencyCOM(value);
+                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                    Aircraft.Com1Freq.Value = com1Helper.ToBCD();
+                    com1Freq = value;
+                }
+                else
+                {
+                    throw new ArgumentException("com 1 frequency must be greater than 0");
+                }
+            }
+        }
+
+        private decimal com2Freq;
+        [DisplayName("com 2")]
+        [Category("communications")]
+        public decimal Com2Freq
+        {
+            get
+            {
+                FsFrequencyCOM com2Helper = new FsFrequencyCOM(Aircraft.Com2Freq.Value);
+                com2Freq = com2Helper.ToDecimal();
+                return com2Freq;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    // 1. Create a new instance of the COM helper class using the decimal value entered
+                    FsFrequencyCOM com2Helper = new FsFrequencyCOM(value);
+                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                    Aircraft.Com2Freq.Value = com2Helper.ToBCD();
+                    com2Freq = value;
+                }
+                else
+                {
+                    throw new ArgumentException("com 2 frequency must be greater than 0");
+                }
+            }
+        }
+        private int transponder;
+        [DisplayName("transponder")]
+        [Category("communications")]
+        public int Transponder
+        {
+            get
+            {
+                FsTransponderCode txHelper = new FsTransponderCode(Aircraft.Transponder.Value);
+                transponder = txHelper.ToInteger();
+                return transponder;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    // 1. Create a new instance of the Transponder helper class using the integer that was entered
+                    //    Note the number box always returns the value as a 'decimal' type. So we have to cast to Int32
+                    FsTransponderCode txHelper = new FsTransponderCode((int)value);
+                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                    Aircraft.Transponder.Value = txHelper.ToBCD();
+                    transponder = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Transponder values mush be greater than 0");
+                }
+            }
+        }
+        private decimal adf1Freq;
+        [DisplayName("ADF frequency")]
+        [Category("navigation")]
+        public decimal Adf1Freq
+        {
+            get
+            {
+                // 1. Create a new instance of the helper ADF class using the values of the main AND extended offsets
+                //    This is taking in the BCD values sent from FSUIPC
+                FsFrequencyADF adf1Helper = new FsFrequencyADF(Aircraft.adf1Main.Value, Aircraft.adf1Extended.Value);
+                // 2. Now use the helper class to get the string representation and show it on the form
+                adf1Freq = adf1Helper.ToDecimal();
+                return adf1Freq;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    // 1. Create a new instance of the ADF helper class using the decimal value entered
+                    FsFrequencyADF adf1Helper = new FsFrequencyADF(value);
+                    // 2. Now use the helper class to get the two BCD values required by FSUIPC (main and extended)
+                    //    Set the offsets to these new values
+                    Aircraft.adf1Main.Value = adf1Helper.ToBCDMain();
+                    Aircraft.adf1Extended.Value = adf1Helper.ToBCDExtended();
+                    adf1Freq = value;
+                }
+                else
+                {
+                    throw new ArgumentException("aDF frequency must be greater than 0");
+                }
+            }
+        }
+        private double altimeterQNH;
+        [DisplayName("Altimeter QNH")]
+        public double AltimeterQNH
+        {
+            get
+            {
+                double AltQNH = (double)Aircraft.Altimeter.Value / 16d;
+                altimeterQNH = Math.Floor(AltQNH + 0.5);
+                return altimeterQNH;
+            }
+            set
+            {
+                Aircraft.Altimeter.Value = (ushort)(value * 16);
+                altimeterQNH = value;
+            }
+        }
+        private double altimeterInches;
+        [DisplayName("Altimeter Inches")]
+        public double AltimeterInches
+        {
+            get
+            {
+                double AltQNH = (double)Aircraft.Altimeter.Value / 16d;
+                altimeterInches = Math.Floor(((100 * AltQNH * 29.92) / 1013.2) + 0.5);
+                return altimeterInches;
+            }
+            set
+            {
+                double qnh = value * 33.864;
+                qnh = Math.Round(qnh, 1) * 16;
+                Aircraft.Altimeter.Value = (ushort)qnh;
+                altimeterInches = value;
+
+            }
+        }
+
+        private decimal nav1Freq;
+        [DisplayName("nav 1")]
+        [Category("navigation")]
+        public decimal Nav1Freq
+        {
+            get
+            {
+                FsFrequencyNAV nav1Helper = new FsFrequencyNAV(Aircraft.Nav1Freq.Value);
+                nav1Freq = nav1Helper.ToDecimal();
+                return nav1Freq;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    // 1. Create a new instance of the COM helper class using the decimal value entered
+                    FsFrequencyNAV nav1Helper = new FsFrequencyNAV(value);
+                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                    Aircraft.Nav1Freq.Value = nav1Helper.ToBCD();
+                    nav1Freq = value;
+                }
+                else
+                {
+                    throw new ArgumentException("nav 1 frequency must be greater than 0");
+                }
+            }
+        }
+        private decimal nav2Freq;
+        [DisplayName("nav 2")]
+        [Category("navigation")]
+        public decimal Nav2Freq
+        {
+            get
+            {
+                FsFrequencyNAV nav2Helper = new FsFrequencyNAV(Aircraft.Nav2Freq.Value);
+                nav2Freq = nav2Helper.ToDecimal();
+                return nav2Freq;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    // 1. Create a new instance of the NAV helper class using the decimal value entered
+                    FsFrequencyNAV nav2Helper = new FsFrequencyNAV(value);
+                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                    Aircraft.Nav2Freq.Value = nav2Helper.ToBCD();
+                    nav2Freq = value;
+                }
+                else
+                {
+                    throw new ArgumentException("nav 2 frequency must be greater than 0");
+                }
+            }
+        }
+
+        public double oldBank { get; private set; }
+
+        public double CurrentHeading;
 
         public ReverseGeoCode<ExtendedGeoName> r = new ReverseGeoCode<ExtendedGeoName>(GeoFileReader.ReadExtendedGeoNames(@".\data\cities1000.txt"));
         private int OldSpoilersValue;
         private double RunwayGuidanceTrackedHeading;
         private string OldSimConnectMessage;
+        private double apHeading;
+        private double apAltitude;
+        private bool AttitudeBankRightPlaying;
+        private bool readNavRadios;
+        private double groundSpeed;
+        private int attitudeModeSelect;
+        private int RunwayGuidanceModeSelect;
+        private double oldPitch;
+        private string oldTimezone;
 
         public Instrumentation()
         {
@@ -87,12 +578,57 @@ namespace tfm
             LoggingConfig.AddRule(LogLevel.Debug, LogLevel.Fatal, logfile);
             // Apply config           
             NLog.LogManager.Configuration = LoggingConfig;
-            
+
             Logger.Debug("initializing screen reader driver");
             Tolk.Load();
-            pub.Output("TFM Started", true);
+            Tolk.DetectScreenReader();
+            Tolk.Output("TFM dot net started!");
             HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
-            RunwayGuidanceEnabled = false;
+            // HotkeyManager.Current.AddOrReplace("test", Keys.OemOpenBrackets, OffsetTest);
+            runwayGuidanceEnabled = false;
+            // hook up the event for the groundspeed timer so we can enable it later
+            GroundSpeedTimer.Elapsed += onGroundSpeedTimerTick;
+            // start the flight following timer if it is enabled in settings
+            SetupFlightFollowing();
+            // populate the dictionary for the altitude callout flags
+            for (int i = 1000; i < 65000; i += 1000)
+            {
+                altitudeCalloutFlags.Add(i, false);
+            }
+
+        }
+
+        public void SetupFlightFollowing()
+        {
+            flightFollowingTimer = new System.Timers.Timer(TimeSpan.FromMinutes(Properties.Settings.Default.FlightFollowingTimeInterval).TotalMilliseconds);
+            flightFollowingTimer.Elapsed += onFlightFollowingTimerTick;
+            if (Properties.Settings.Default.FlightFollowing)
+            {
+                flightFollowingTimer.AutoReset = true;
+                flightFollowingTimer.Enabled = true;
+
+            }
+            else
+            {
+                flightFollowingTimer.Stop();
+
+
+            }
+
+        }
+
+        private void onFlightFollowingTimerTick(object sender, ElapsedEventArgs e)
+        {
+            // this just reads the flight following info, same as the hotkey
+            onCityKey();
+        }
+
+        private void OffsetTest(object sender, HotkeyEventArgs e)
+        {
+            PMDG_NGX_CDU_Screen PM = new PMDG_NGX_CDU_Screen(0X5800);
+            PM.RefreshData();
+            Tolk.Output(PM.ToString());
+
 
         }
 
@@ -149,11 +685,14 @@ namespace tfm
                 ReadToggle(Aircraft.Eng3FuelValve, Aircraft.Eng3FuelValve.Value > 0, "number 3 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.Eng4FuelValve, Aircraft.Eng4FuelValve.Value > 0, "number 4 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.FuelPump, Aircraft.FuelPump.Value > 0, "Fuel pump", "active", "off");
-                ReadFlaps();
-                if (ReadAutopilot) ReadAutopilotInstruments();
+                if (Properties.Settings.Default.ReadFlaps) ReadFlaps();
+                ReadLandingGear();
+                if (Properties.Settings.Default.ReadAutopilot) ReadAutopilotInstruments();
+                if (groundspeedEnabled) ReadGroundSpeed();
+                if (Properties.Settings.Default.AltitudeAnnouncements) ReadAltitudeAnnouncement();
                 ReadSimConnectMessages();
                 ReadTransponder();
-                ReadComRadios();
+                ReadRadios();
                 ReadAutoBrake();
                 ReadSpoilers();
                 ReadTrim();
@@ -161,7 +700,8 @@ namespace tfm
                 ReadNextWaypoint();
                 ReadLights();
                 ReadDoors();
-                ReadILSInfo();
+                if (Properties.Settings.Default.ReadILS) ReadILSInfo();
+                ReadSimulationRate(TriggeredByKey : false);
                 // TODO: engine select
             }
             else
@@ -172,7 +712,30 @@ namespace tfm
             }
         }
 
-        
+        private void ReadAltitudeAnnouncement()
+        {
+            // read altitude every 1000 feet
+            double alt = Math.Round((double)Aircraft.Altitude.Value);
+
+            for (int i = 1000; i < 65000; i += 1000)
+            {
+                if (alt >= i-10 && alt <= i-10 && altitudeCalloutFlags[i] == false)
+                {
+                    Tolk.Output($"{i} feet. ");
+                    altitudeCalloutFlags[i] = true;
+
+                }
+                else
+                {
+                    if (alt >= i + 100)
+                    {
+                        altitudeCalloutFlags[i] = false;
+
+                    }
+                }
+            }
+        }
+
         private void DetectFuelTanks()
         {
             // grab fuel tank data from the sim
@@ -239,7 +802,7 @@ namespace tfm
             string AbState = null;
             if (Aircraft.AutoBrake.ValueChanged)
             {
-                 switch (Aircraft.AutoBrake.Value)
+                switch (Aircraft.AutoBrake.Value)
                 {
                     case 0:
                         AbState = "R T O";
@@ -265,28 +828,42 @@ namespace tfm
             }
         }
 
-        private void ReadComRadios()
+        private void ReadRadios()
         {
+            FsFrequencyCOM com1Helper = new FsFrequencyCOM(Aircraft.Com1Freq.Value);
+            FsFrequencyCOM com2Helper = new FsFrequencyCOM(Aircraft.Com2Freq.Value);
+            FsFrequencyNAV nav1Helper = new FsFrequencyNAV(Aircraft.Nav1Freq.Value);
+            FsFrequencyNAV nav2Helper = new FsFrequencyNAV(Aircraft.Nav2Freq.Value);
             if (Aircraft.Com1Freq.ValueChanged)
             {
-                FsFrequencyCOM com1Helper = new FsFrequencyCOM(Aircraft.Com1Freq.Value);
                 Tolk.Output("Com1: " + com1Helper.ToString());
             }
             if (Aircraft.Com2Freq.ValueChanged)
             {
-                FsFrequencyCOM com2Helper = new FsFrequencyCOM(Aircraft.Com2Freq.Value);
                 Tolk.Output("Com1: " + com2Helper.ToString());
             }
+            if (readNavRadios)
+            {
+                if (Aircraft.Nav1Freq.ValueChanged)
+                {
+                    Tolk.Output($"Nav 1: {nav1Helper.ToString()}");
+                }
+                if (Aircraft.Nav2Freq.ValueChanged)
+                {
+                    Tolk.Output($"Nav 2: {nav2Helper.ToString()}");
+                }
 
+            }
         }
 
         private void ReadTransponder()
         {
+            FsTransponderCode txHelper = new FsTransponderCode(Aircraft.Transponder.Value);
             if (Aircraft.Transponder.ValueChanged)
             {
-                FsTransponderCode txHelper = new FsTransponderCode(Aircraft.Transponder.Value);
                 Tolk.Output("squawk " + txHelper.ToString());
             }
+            Transponder = txHelper.ToInteger();
 
         }
         private void ReadNextWaypoint(bool TriggeredByHotkey = false)
@@ -341,7 +918,7 @@ namespace tfm
                     if (DoorBits.Changed[i])
                     {
                         string state = (Aircraft.Doors.Value[i]) ? "closed" : "open";
-                        Tolk.Output($"door {i+1} {state}. ");
+                        Tolk.Output($"door {i + 1} {state}. ");
                     }
                 }
             }
@@ -349,14 +926,23 @@ namespace tfm
         }
         private void ReadILSInfo()
         {
-            if (ReadILSEnabled)
+            if (Aircraft.Nav1Signal.Value == 256 && localiserDetected == false && Aircraft.Nav1Flags.Value[7])
             {
-                if (Aircraft.Nav1Signal.Value == 256 && LocaliserDetected == false && Aircraft.Nav1Flags.Value[7])
-                {
-                    Tolk.PreferSAPI(true);
-                    Tolk.Output("Localiser is alive. ");
-                    LocaliserDetected = true;
-                }
+                Tolk.PreferSAPI(true);
+                Tolk.Output("Localiser is alive. ");
+                localiserDetected = true;
+            }
+        }
+        private void ReadSimulationRate(bool TriggeredByKey)
+        {
+            double rate = (double)Aircraft.SimulationRate.Value / 256;
+            if (TriggeredByKey)
+            {
+                Tolk.Output($"simulation rate: {rate}");
+            }
+            if (Aircraft.SimulationRate.ValueChanged && rate >= 0.25)
+            {
+                Tolk.Output($"simulation rate: {rate}");
             }
         }
         private void ReadSpoilers()
@@ -380,7 +966,7 @@ namespace tfm
                 }
             }
         }
-        
+
         private void ReadFlaps()
         {
             if (Aircraft.Flaps.ValueChanged)
@@ -397,6 +983,21 @@ namespace tfm
                 }
 
             }
+
+        }
+        public void ReadLandingGear()
+        {
+            if (Aircraft.LandingGear.ValueChanged)
+            {
+                if (Aircraft.LandingGear.Value == 0)
+                {
+                    Tolk.Output("gear up. ");
+                }
+                if (Aircraft.LandingGear.Value == 16383)
+                {
+                    Tolk.Output("Gear down. ");
+                }
+            }
         }
         // read autopilot settings
         public void ReadAutopilotInstruments()
@@ -404,42 +1005,76 @@ namespace tfm
             // heading
             if (Aircraft.ApHeading.ValueChanged)
             {
-                CurrentHeading = (double)Math.Round(Aircraft.ApHeading.Value / 65536d * 360d);
-                Tolk.Output("Heading: " + CurrentHeading.ToString());
+                Tolk.Output("Heading: " + ApHeading.ToString());
             }
             // Altitude
             if (Aircraft.ApAltitude.ValueChanged)
             {
-                double curAlt = Math.Round((double)Aircraft.ApAltitude.Value / 65536d * 3.28084d);
-                Tolk.Output($"Altitude set to {curAlt} feet. ");
+                Tolk.Output($"Altitude set to {ApAltitude} feet. ");
             }
             // airspeed
             if (Aircraft.ApAirspeed.ValueChanged)
             {
-                Tolk.Output($"{Aircraft.ApAirspeed.Value} knotts.");  
+                Tolk.Output($"{ApAirspeed} knotts.");
             }
         }
-        public void ReadSimConnectMessages ()
+        public void ReadGroundSpeed()
+        {
+            // convert groundspeed from how it is stored in FSIPC
+            groundSpeed = (Aircraft.GroundSpeed.Value * 3600) / (65536 * 1852);
+            groundSpeed = Math.Round(groundSpeed);
+            if (!groundSpeedActive)
+            {
+                // only read if aircraft is on ground
+                if (Aircraft.OnGround.Value == 1)
+                {
+                    if (groundSpeed > 10)
+                    {
+                        groundSpeedActive = true;
+                        GroundSpeedTimer.AutoReset = true;
+                        GroundSpeedTimer.Enabled = true;
+                        
+                    }
+                    
+
+
+                }
+
+            }
+        }
+
+        private void onGroundSpeedTimerTick(object sender, ElapsedEventArgs e)
+        {
+            if (groundSpeed > 10)
+            {
+                Tolk.Output($"{groundSpeed} knotts. ");
+            }
+            if (groundSpeed < 10 || Aircraft.OnGround.Value == 0)
+            {
+                groundSpeedActive = false;
+                GroundSpeedTimer.Stop();
+            }
+        }
+
+        public void ReadSimConnectMessages()
         {
             Aircraft.textMenu.RefreshData();
             if (Aircraft.textMenu.Changed) // Check if the text/menu is different from the last time we called RefreshData()
             {
-                if (Aircraft.textMenu.IsMenu) // Check if it's a menu (true) or a simple message (false)
+                if (!muteSimconnect)
                 {
-                    Tolk.Output(Aircraft.textMenu.ToString());
-                }
-                else
-                {
-                    Tolk.Output(Aircraft.textMenu.ToString());
+                    if (Aircraft.textMenu.IsMenu) // Check if it's a menu (true) or a simple message (false)
+                    {
+                        Tolk.Output(Aircraft.textMenu.ToString());
+                    }
+                    else
+                    {
+                        Tolk.Output(Aircraft.textMenu.ToString());
+                    }
+
                 }
                 OldSimConnectMessage = Aircraft.textMenu.ToString();
             }
-        }
-        // set autopilot heading
-        public static void SetHeading(string hdg)
-        {
-            Tolk.Output("not implemented yet");
-            Tolk.Output("heading: " + hdg);
         }
         
         private void ReadToggle(Offset instrument, bool toggleStateOn, string name, string OnMsg, string OffMsg)
@@ -494,6 +1129,7 @@ namespace tfm
                 HotkeyManager.Current.AddOrReplace("ToggleTrim", (Keys)Properties.Hotkeys.Default.ToggleTrim, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("MuteSimconnect", (Keys)Properties.Hotkeys.Default.MuteSimconnect, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("RepeatLastSimconnectMessage", (Keys)Properties.Hotkeys.Default.RepeatLastSimconnectMessage, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("ReadSimulationRate", (Keys)Properties.Hotkeys.Default.ReadSimulationRate, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("FlightFollowing", (Keys)Properties.Hotkeys.Default.FlightFollowing, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("NextWaypoint", (Keys)Properties.Hotkeys.Default.NextWaypoint, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("DestinationInfo", (Keys)Properties.Hotkeys.Default.DestinationInfo, onKeyPressed);
@@ -529,13 +1165,13 @@ namespace tfm
             }
             else
             {
-                pub.Output("not connected to simulator");
-                
+                Tolk.Output("not connected to simulator");
+
             }
 
         }
 
-         private void onKeyPressed(object sender, HotkeyEventArgs e)
+        private void onKeyPressed(object sender, HotkeyEventArgs e)
         {
 
             e.Handled = true;
@@ -553,6 +1189,9 @@ namespace tfm
                     break;
                 case "IndicatedAirspeed":
                     onIASKey();
+                    break;
+                case "ReadSimulationRate":
+                    ReadSimulationRate(true);
                     break;
                 case "TrueAirspeed":
                     onTASKey();
@@ -582,7 +1221,7 @@ namespace tfm
                     onWaypointKey();
                     break;
                 case "DestinationInfo":
-                    onDestKey();
+                    onDestinationKey();
                     break;
                 case "AttitudeMode":
                     onAttitudeKey();
@@ -599,11 +1238,8 @@ namespace tfm
                 case "ToggleILS":
                     onToggleILSKey();
                     break;
-                case "ToggleFlaps":
-                    onToggleFlapsKey();
-                    break;
-                case "ReadLastSimconnectMessage":
-                    onMessageKey();
+                case "ToggleFlapsAnnouncement":
+                    onToggleFlapsAnnouncementKey();
                     break;
                 case "ReadWind":
                     onWindKey();
@@ -696,7 +1332,7 @@ namespace tfm
 
         }
 
-        
+
         private void onTCASAir()
         {
             Tolk.Output("not yet implemented.");
@@ -748,7 +1384,7 @@ namespace tfm
 
         }
 
-        private void onFuelReportKey()  
+        private void onFuelReportKey()
         {
             // Make a variable to make accessing the payload services object quicker
             // NOTE: The connection must already be open in order to access payload services
@@ -786,9 +1422,9 @@ namespace tfm
         }
         private void onRunwayGuidanceKey()
         {
-            if (!RunwayGuidanceEnabled)
+            if (!runwayGuidanceEnabled)
             {
-                RunwayGuidanceEnabled = true;
+                runwayGuidanceEnabled = true;
                 // set up the timer
                 RunwayGuidanceTimer = new System.Timers.Timer(200); // 200 milliseconds
                 // Hook up the Elapsed event for the timer. 
@@ -808,6 +1444,16 @@ namespace tfm
                     HdgLeft = HdgLeft + 360;
                 }
                 // start audio
+                wg = new SignalGenerator();
+                wg.Type = SignalGeneratorType.Square;
+                wg.Gain = 0.1;
+                // set up panning provider, with the signal generator as input
+                pan = new PanningSampleProvider(wg.ToMono());
+                // we use an OffsetSampleProvider to allow playing beep tones
+                pulse = new OffsetSampleProvider(pan)
+                {
+                    Take = TimeSpan.FromMilliseconds(50),
+                };
                 driverOut = new WaveOutEvent();
                 mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
                 mixer.ReadFully = true;
@@ -820,30 +1466,13 @@ namespace tfm
             {
                 driverOut.Stop();
                 RunwayGuidanceTimer.Stop();
-                RunwayGuidanceEnabled = false;
+                runwayGuidanceEnabled = false;
                 Tolk.Output("Runway Guidance disabled. ");
             }
-
-
-
-
-
-
 
         }
         private void OnRunwayGuidanceTickEvent(Object source, ElapsedEventArgs e)
         {
-            // signal generator for generating tones
-            wg = new SignalGenerator();
-            wg.Type = SignalGeneratorType.Square;
-            wg.Gain = 0.1;
-
-            pan = new PanningSampleProvider(wg.ToMono());
-            // we use an OffsetSampleProvider to allow playing beep tones
-            pulse = new OffsetSampleProvider(pan)
-            {
-                Take = TimeSpan.FromMilliseconds(50),
-            };
             double hdg = (double)Math.Round(Aircraft.CompassHeading.Value);
             if (hdg > RunwayGuidanceTrackedHeading && hdg < HdgRight)
             {
@@ -865,15 +1494,20 @@ namespace tfm
             }
         }
 
-        
-        private void onMessageKey()
-        {
-            Tolk.Output("not yet implemented.");
-        }
 
-        private void onToggleFlapsKey()
+        
+        private void onToggleFlapsAnnouncementKey()
         {
-            Tolk.Output("not yet implemented.");
+            if (Properties.Settings.Default.ReadFlaps)
+            {
+                Properties.Settings.Default.ReadFlaps = false;
+                Tolk.Output("flaps announcement disabled. ");
+            }
+            else
+            {
+                Properties.Settings.Default.ReadFlaps = true;
+                Tolk.Output("Flaps announcement enabled. ");
+            }
         }
 
         private void onToggleILSKey()
@@ -893,14 +1527,14 @@ namespace tfm
 
         private void onAutopilotKey()
         {
-            if (ReadAutopilot)
+            if (Properties.Settings.Default.ReadAutopilot)
             {
-                ReadAutopilot = false;
+             Properties.Settings.Default.ReadAutopilot = false;
                 Tolk.Output("read autopilot instruments disabled");
             }
             else
             {
-                ReadAutopilot = true;
+                Properties.Settings.Default.ReadAutopilot = true;
                 Tolk.Output("Read autopilot instruments enabled. ");
             }
         }
@@ -909,15 +1543,187 @@ namespace tfm
         {
             Tolk.Output("not yet implemented.");
         }
-
         private void onAttitudeKey()
         {
-            Tolk.Output("not yet implemented.");
+            if (!attitudeModeEnabled)
+            {
+                attitudeModeEnabled = true;
+                // set up the timer
+                AttitudeTimer = new System.Timers.Timer(150); // 200 milliseconds
+                // Hook up the Elapsed event for the timer. 
+                AttitudeTimer.Elapsed += OnAttitudeModeTickEvent;
+                AttitudeTimer.AutoReset = true;
+                Tolk.Output("Attitude mode enabled. ");
+                // start audio
+                // signal generator for generating tones
+                driverOut = new WaveOutEvent();
+                mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+                mixer.ReadFully = true;
+                driverOut.Init(mixer);
+                pitchSineProvider = new SineWaveProvider();
+                bankSineProvider = new SineWaveProvider();
+                // start the mixer. We can then add audio sources as needed.
+                driverOut.Play();
+                AttitudeTimer.Enabled = true;
+            }
+            else
+            {
+                driverOut.Stop();
+                mixer.RemoveAllMixerInputs();
+                AttitudePitchPlaying = false;
+                AttitudeBankLeftPlaying = false;
+                AttitudeBankRightPlaying = false;
+                AttitudeTimer.Stop();
+                attitudeModeEnabled = false;
+                Tolk.Output("Attitude mode disabled. ");
+            }
+        }
+        private void OnAttitudeModeTickEvent(Object source, ElapsedEventArgs e)
+        {
+            attitudeModeSelect = 2;
+            pan = new PanningSampleProvider(bankSineProvider);
+            FSUIPCConnection.Process("attitude");
+            double Pitch = Math.Round((double)Aircraft.AttitudePitch.Value * 360d / (65536d * 65536d));
+            double Bank = Math.Round((double)Aircraft.AttitudeBank.Value * 360d / (65536d * 65536d));
+            // pitch down
+            if (Pitch > 0 && Pitch < 20)
+            {
+                if (attitudeModeSelect == 2 || attitudeModeSelect == 3)
+                {
+                    if (Pitch != oldPitch)
+                    {
+                        Tolk.Output($"down {Pitch}", true);
+                        oldPitch = Pitch;
+                        if (attitudeModeSelect == 2) return;
+                    }
+                }
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    if (!AttitudePitchPlaying)
+                    {
+                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
+                        Logger.Debug("pitch: " + Pitch);
+                        AttitudePitchPlaying = true;
+                    }
+
+                    double freq = mapOneRangeToAnother(Pitch, 0, 20, 600, 200, 0);
+                    pitchSineProvider.Frequency = freq;
+                }
+
+            }            
+            // pitch up
+            if (Pitch < 0 && Pitch > -20)
+            {
+                if (attitudeModeSelect == 2 || attitudeModeSelect == 3)
+                {
+                    if (Pitch != oldPitch)
+                    {
+                        Tolk.Output($"up {Math.Abs(Pitch)}", true);
+                        oldPitch = Pitch;
+                        if (attitudeModeSelect == 2) return;
+                    }
+                }
+
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    if (!AttitudePitchPlaying)
+                    {
+                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
+                        Logger.Debug("pitch: " + Pitch);
+                        AttitudePitchPlaying = true;
+                    }
+                    double freq = mapOneRangeToAnother(Pitch, -20, 0, 1200, 800, 0);
+                    pitchSineProvider.Frequency = freq;
+                }
+
+            }            
+            // bank left
+            if (Bank > 0 && Bank < 90)
+            {
+                if (attitudeModeSelect == 2 || attitudeModeSelect == 3)
+                {
+                    if (Bank != oldBank)
+                    {
+                        Tolk.Output($"left {Bank}", true);
+                        oldBank = Bank;
+                        if (attitudeModeSelect == 2) return;
+                    }
+                }
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    double freq = mapOneRangeToAnother(Bank, 1, 90, 400, 800, 0);
+                    bankSineProvider.Frequency = freq;
+                    if (!AttitudeBankLeftPlaying)
+                    {
+                        mixer.RemoveAllMixerInputs();
+                        pan.Pan = -1;
+                        mixer.AddMixerInput(pan);
+                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                        AttitudeBankLeftPlaying = true;
+                        AttitudeBankRightPlaying = false;
+                    }
+
+                }
+
+
+            }
+            // bank right
+            if (Bank < 0 && Bank > -90)
+            {
+                Bank = Math.Abs(Bank);
+                if (attitudeModeSelect == 2 || attitudeModeSelect == 3)
+                {
+                    if (Bank != oldBank)
+                    {
+                        Tolk.Output($"right {Bank}", true);
+                        oldBank = Bank;
+                        if (attitudeModeSelect == 2) return;
+                    }
+                }
+
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    double freq = mapOneRangeToAnother(Bank, 1, 90, 400, 800, 0);
+                    bankSineProvider.Frequency = freq;
+                    if (!AttitudeBankRightPlaying)
+                    {
+                        mixer.RemoveAllMixerInputs();
+                        pan.Pan = 1;
+                        mixer.AddMixerInput(pan);
+                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                        AttitudeBankLeftPlaying = false;
+                        AttitudeBankRightPlaying = true;
+                    }
+
+                }
+            }
+            if (Bank == 0)
+            {
+                if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
+                {
+                    mixer.RemoveAllMixerInputs();
+                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                    AttitudeBankLeftPlaying = false;
+                    AttitudeBankRightPlaying = false;
+                    AttitudePitchPlaying = true;
+
+                }
+            }
+
         }
 
-        private void onDestKey()
+
+        private void onDestinationKey()
         {
-            Tolk.Output("not yet implemented.");
+            TimeSpan TimeEnroute = TimeSpan.FromSeconds(Aircraft.DestinationTimeEnroute.Value);
+            string icao = Aircraft.DestinationAirportID.Value;
+            string strTime = string.Format("{0:D2} hours, {1:D2} minutes, {2:D2} seconds.",
+                TimeEnroute.Hours.ToString().TrimStart(new Char[] { '0' }),
+                TimeEnroute.Minutes.ToString().TrimStart(new Char[] { '0' }),
+                TimeEnroute.Seconds.ToString().TrimStart(new Char[] { '0' }));
+            Tolk.Output($"Time enroute to {icao}, {strTime}. ");
+
+
         }
 
         private void onWaypointKey()
@@ -930,9 +1736,9 @@ namespace tfm
             double lat = Aircraft.aircraftLat.Value.DecimalDegrees;
             double lon = Aircraft.aircraftLon.Value.DecimalDegrees;
             // double lat = -48.876667;
-            //double lon = -123.393333;
+            // double lon = -123.393333;
             flightFollowingOnline = true;
-            if (!flightFollowingOnline)
+            if (Properties.Settings.Default.FlightFollowingOffline)
             {
                 var pos = r.CreateFromLatLong(lat, lon);
                 var results = r.NearestNeighbourSearch(pos, 1);
@@ -944,37 +1750,61 @@ namespace tfm
             }
             else
             {
-                var xml = XElement.Load($"http://api.geonames.org/findNearbyPlaceName?style=long&lat={lat}&lng={lon}&username=jfayre&cities=cities5000&radius=200");
-                var locations = xml.Descendants("geoname").Select(g => new
+                var xmlNearby = XElement.Load($"http://api.geonames.org/findNearbyPlaceName?style=long&lat={lat}&lng={lon}&username=jfayre&cities=cities1000&radius=200");
+                var locations = xmlNearby.Descendants("geoname").Select(g => new
                 {
                     Name = g.Element("name").Value,
                     Lat = g.Element("lat").Value,
                     Long = g.Element("lng").Value,
-                    admin1 = g.Element("adminName1").Value
+                    admin1 = g.Element("adminName1").Value,
+                    countryName = g.Element("countryName").Value
                 });
-
                 if (locations.Count() > 0)
                 {
                     var location = locations.First();
+                    Tolk.Output($"closest city: {location.Name} {location.admin1}, {location.countryName}. ");
+                }
 
-                    Tolk.Output($"closest city: {location.Name} {location.admin1}.");
-                }
-                else
+                var xmlOcean = XElement.Load($"http://api.geonames.org/ocean?lat={lat}&lng={lon}&username=jfayre");
+                var ocean = xmlOcean.Descendants("ocean").Select(g => new
                 {
-                    Tolk.Output("no locations in range.");
+                    Name = g.Element("name").Value
+                });
+                if (ocean.Count() > 0)
+                {
+                    var currentOcean = ocean.First();
+                    Tolk.Output($"{currentOcean.Name}. ");
                 }
+                var xmlTimezone = XElement.Load($"http://api.geonames.org/timezone?lat={lat}&lng={lon}&username=jfayre&radius=50");
+                var timezone = xmlTimezone.Descendants("timezone").Select(g => new
+                {
+                    Name = g.Element("timezoneId").Value
+                });
+                if (timezone.Count() > 0)
+                {
+                    var currentTimezone = timezone.First();
+                    if (currentTimezone.Name != oldTimezone)
+                    {
+                        string tzName = TZConvert.IanaToWindows(currentTimezone.Name);
+                        Tolk.Output($"{tzName}. ");
+                        oldTimezone = currentTimezone.Name;
+                    }
+
+                }
+
+
             }
         }
         private void onMuteSimconnectKey()
         {
             if (muteSimconnect)
             {
-                MuteSimconnect = false;
+                muteSimconnect = false;
                 Tolk.Output("SimConnect messages unmuted. ");
             }
             else
             {
-                MuteSimconnect = true;
+                muteSimconnect = true;
                 Tolk.Output("SimConnect messages muted.");
             }
             ResetHotkeys();
@@ -1041,7 +1871,7 @@ namespace tfm
 
         private void onHeadingKey()
         {
-            Tolk.Output("heading: "+ Math.Round(Aircraft.CompassHeading.Value));
+            Tolk.Output("heading: " + Math.Round(Aircraft.CompassHeading.Value));
             ResetHotkeys();
         }
 
@@ -1050,7 +1880,7 @@ namespace tfm
             double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
             double agl = (double)Aircraft.Altitude.Value - groundAlt;
             agl = Math.Round(agl, 0);
-            Tolk.Output(agl.ToString() +" feet A G L.");
+            Tolk.Output(agl.ToString() + " feet A G L.");
             ResetHotkeys();
         }
 
@@ -1063,7 +1893,7 @@ namespace tfm
             HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
         }
 
-        
+
         private void onASLKey()
         {
             double asl = Math.Round((double)Aircraft.Altitude.Value, 0);
@@ -1101,5 +1931,5 @@ namespace tfm
         }
 
 
-        }
     }
+}

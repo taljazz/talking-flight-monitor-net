@@ -1097,12 +1097,14 @@ namespace tfm
                 {
                     if (Aircraft.textMenu.IsMenu) // Check if it's a menu (true) or a simple message (false)
                     {
+                        if (Aircraft.textMenu.ToString() == "") return;
                         Logger.Debug("simconnect menu: " + Aircraft.textMenu.ToString());
                         Tolk.Output(Aircraft.textMenu.ToString());
                     }
                     else
                     {
-                        Logger.Debug("simconnect message: " + Aircraft.textMenu.ToString());
+                        if (Aircraft.textMenu.Message == "") return;
+                        Logger.Debug("simconnect message: " + Aircraft.textMenu.Message);
                         Tolk.Output(Aircraft.textMenu.ToString());
                     }
 

@@ -1908,7 +1908,6 @@ namespace tfm
         private void onAGLKey()
         {
             double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
-            Tolk.Output($"ground altitude: {groundAlt}");
             double agl = (double)Aircraft.Altitude.Value - groundAlt;
             agl = Math.Round(agl, 0);
             Tolk.Output(agl.ToString() + " feet A G L.");

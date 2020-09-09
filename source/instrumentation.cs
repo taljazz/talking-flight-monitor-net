@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
@@ -582,6 +583,7 @@ namespace tfm
         private int RunwayGuidanceModeSelect;
         private double oldPitch;
         private string oldTimezone;
+        // AirportsDatabase db = FSUIPCConnection.AirportsDatabase;
 
         public Instrumentation()
         {
@@ -596,11 +598,11 @@ namespace tfm
 
             Logger.Debug("initializing screen reader driver");
             Tolk.Load();
-            Tolk.DetectScreenReader();
             Tolk.Output("TFM dot net started!");
             HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
             // HotkeyManager.Current.AddOrReplace("test", Keys.OemOpenBrackets, OffsetTest);
             runwayGuidanceEnabled = false;
+            
             // hook up the event for the groundspeed timer so we can enable it later
             GroundSpeedTimer.Elapsed += onGroundSpeedTimerTick;
             // start the flight following timer if it is enabled in settings
@@ -1095,10 +1097,12 @@ namespace tfm
                 {
                     if (Aircraft.textMenu.IsMenu) // Check if it's a menu (true) or a simple message (false)
                     {
+                        Logger.Debug("simconnect menu: " + Aircraft.textMenu.ToString());
                         Tolk.Output(Aircraft.textMenu.ToString());
                     }
                     else
                     {
+                        Logger.Debug("simconnect message: " + Aircraft.textMenu.ToString());
                         Tolk.Output(Aircraft.textMenu.ToString());
                     }
 

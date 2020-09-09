@@ -50,14 +50,29 @@ namespace tfm
         OffsetSampleProvider pulse;
         MixingSampleProvider mixer;
 
-        // initialize command mode sound
+        // initialize sound objects
         readonly SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
         // list to store registered hotkey identifiers
         List<string> hotkeys = new List<string>();
         FsFuelTanksCollection FuelTanks = null;
         // list to store fuel tanks present on the aircraft
         List<FsFuelTank> ActiveTanks = new List<FsFuelTank>();
+        // dictionaries for altitude and GPWS callouts
         private Dictionary<int, bool> altitudeCalloutFlags = new Dictionary<int, bool>();
+        private Dictionary<int, bool> gpwsFlags = new Dictionary<int, bool>() {
+            {2500, false },
+            {1000, false },
+            {500, false },
+            {400, false },
+            {300, false },
+            {200, false },
+            {100, false },
+            {50, false },
+            {40, false },
+            {30, false },
+            {20, false },
+            {10, false }
+        };
 
         static bool FirstRun = true;
         // flags for tfm features   
@@ -716,6 +731,8 @@ namespace tfm
         {
             // read altitude every 1000 feet
             double alt = Math.Round((double)Aircraft.Altitude.Value);
+            double radioAlt = Math.Round((double)Aircraft.RadioAltimeter.Value / 65536d * 3.28084d);
+            double vSpeed = Math.Round((Aircraft.VerticalSpeed.Value * 3.28084) * -1);
 
             for (int i = 1000; i < 65000; i += 1000)
             {
@@ -731,6 +748,19 @@ namespace tfm
                     {
                         altitudeCalloutFlags[i] = false;
 
+                    }
+                }
+            }
+            if (radioAlt < 10000 && vSpeed < -50)
+            {
+                var gpwsKeys = new List<int>(gpwsFlags.Keys);
+                foreach (int key in gpwsKeys)
+                {
+                    if (radioAlt <= key + 5 && radioAlt >= key - 5 && gpwsFlags[key] == false)
+                    {
+                        SoundPlayer snd = new SoundPlayer("sounds\\" + key.ToString() + ".wav");
+                        snd.Play();
+                        gpwsFlags[key] = true;
                     }
                 }
             }
@@ -1878,6 +1908,7 @@ namespace tfm
         private void onAGLKey()
         {
             double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
+            Tolk.Output($"ground altitude: {groundAlt}");
             double agl = (double)Aircraft.Altitude.Value - groundAlt;
             agl = Math.Round(agl, 0);
             Tolk.Output(agl.ToString() + " feet A G L.");

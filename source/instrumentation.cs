@@ -1205,6 +1205,7 @@ namespace tfm
                 HotkeyManager.Current.AddOrReplace("Engine2Info", (Keys)Properties.Hotkeys.Default.Engine2Info, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("Engine3Info", (Keys)Properties.Hotkeys.Default.Engine3Info, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("Engine4Info", (Keys)Properties.Hotkeys.Default.Engine4Info, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("GroundSpeed", (Keys)Properties.Hotkeys.Default.GroundSpeed, onKeyPressed);
 
 
             }
@@ -1238,6 +1239,10 @@ namespace tfm
                 case "ReadSimulationRate":
                     ReadSimulationRate(true);
                     break;
+                case "GroundSpeed":
+                    onGroundSpeedKey();
+                    break;
+
                 case "TrueAirspeed":
                     onTASKey();
                     break;
@@ -1352,6 +1357,11 @@ namespace tfm
                     break;
 
             }
+        }
+
+        private void onGroundSpeedKey()
+        {
+            Tolk.Output($"{GroundSpeed} knotts ground speed");
         }
 
         private void onRepeatLastSimconnectMessage()

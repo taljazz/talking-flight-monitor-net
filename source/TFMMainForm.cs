@@ -35,6 +35,17 @@ namespace tfm
             try
             {
                 FSUIPCConnection.Open();
+                // load the airport database
+                FSUIPCConnection.AirportsDatabase.Load();
+                if (FSUIPCConnection.AirportsDatabase.IsLoaded)
+                {
+                    Tolk.Output("airport database loaded");
+                }
+                else
+                {
+                    Tolk.Output("airport database not loaded");
+                }
+                
                 // If there was no problem, stop this timer and start the main timer
                 this.timerConnection.Stop();
                 this.timerMain.Start();

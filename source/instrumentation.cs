@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
@@ -50,14 +51,29 @@ namespace tfm
         OffsetSampleProvider pulse;
         MixingSampleProvider mixer;
 
-        // initialize command mode sound
+        // initialize sound objects
         readonly SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
         // list to store registered hotkey identifiers
         List<string> hotkeys = new List<string>();
         FsFuelTanksCollection FuelTanks = null;
         // list to store fuel tanks present on the aircraft
         List<FsFuelTank> ActiveTanks = new List<FsFuelTank>();
+        // dictionaries for altitude and GPWS callouts
         private Dictionary<int, bool> altitudeCalloutFlags = new Dictionary<int, bool>();
+        private Dictionary<int, bool> gpwsFlags = new Dictionary<int, bool>() {
+            {2500, false },
+            {1000, false },
+            {500, false },
+            {400, false },
+            {300, false },
+            {200, false },
+            {100, false },
+            {50, false },
+            {40, false },
+            {30, false },
+            {20, false },
+            {10, false }
+        };
 
         static bool FirstRun = true;
         // flags for tfm features   
@@ -567,6 +583,7 @@ namespace tfm
         private int RunwayGuidanceModeSelect;
         private double oldPitch;
         private string oldTimezone;
+        // AirportsDatabase db = FSUIPCConnection.AirportsDatabase;
 
         public Instrumentation()
         {
@@ -581,11 +598,11 @@ namespace tfm
 
             Logger.Debug("initializing screen reader driver");
             Tolk.Load();
-            Tolk.DetectScreenReader();
             Tolk.Output("TFM dot net started!");
             HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
             // HotkeyManager.Current.AddOrReplace("test", Keys.OemOpenBrackets, OffsetTest);
             runwayGuidanceEnabled = false;
+            
             // hook up the event for the groundspeed timer so we can enable it later
             GroundSpeedTimer.Elapsed += onGroundSpeedTimerTick;
             // start the flight following timer if it is enabled in settings
@@ -716,6 +733,8 @@ namespace tfm
         {
             // read altitude every 1000 feet
             double alt = Math.Round((double)Aircraft.Altitude.Value);
+            double radioAlt = Math.Round((double)Aircraft.RadioAltimeter.Value / 65536d * 3.28084d);
+            double vSpeed = Math.Round((Aircraft.VerticalSpeed.Value * 3.28084) * -1);
 
             for (int i = 1000; i < 65000; i += 1000)
             {
@@ -731,6 +750,19 @@ namespace tfm
                     {
                         altitudeCalloutFlags[i] = false;
 
+                    }
+                }
+            }
+            if (radioAlt < 10000 && vSpeed < -50)
+            {
+                var gpwsKeys = new List<int>(gpwsFlags.Keys);
+                foreach (int key in gpwsKeys)
+                {
+                    if (radioAlt <= key + 5 && radioAlt >= key - 5 && gpwsFlags[key] == false)
+                    {
+                        SoundPlayer snd = new SoundPlayer("sounds\\" + key.ToString() + ".wav");
+                        snd.Play();
+                        gpwsFlags[key] = true;
                     }
                 }
             }
@@ -1065,10 +1097,14 @@ namespace tfm
                 {
                     if (Aircraft.textMenu.IsMenu) // Check if it's a menu (true) or a simple message (false)
                     {
+                        if (Aircraft.textMenu.ToString() == "") return;
+                        Logger.Debug("simconnect menu: " + Aircraft.textMenu.ToString());
                         Tolk.Output(Aircraft.textMenu.ToString());
                     }
                     else
                     {
+                        if (Aircraft.textMenu.Message == "") return;
+                        Logger.Debug("simconnect message: " + Aircraft.textMenu.Message);
                         Tolk.Output(Aircraft.textMenu.ToString());
                     }
 

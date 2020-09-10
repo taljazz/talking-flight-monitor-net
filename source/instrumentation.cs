@@ -26,11 +26,39 @@ using NGeoNames.Entities;
 using TimeZoneConverter;
 using System.Diagnostics;
 
+
+
 namespace tfm
 {
     public class Instrumentation
     {
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
+
+        // The event that handles speech/braille output.
+public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput;
+
+        // The virtual method for the event. Used as a shell and fired when needed.
+        protected virtual void onScreenReaderOutput(ScreenReaderOutputEventArgs e)
+        {
+            EventHandler<ScreenReaderOutputEventArgs> handler = ScreenReaderOutput;
+            if(handler != null)
+            {
+                handler(this, e);
+            } // End event callback.
+        } // End onScreenReaderOutput method.
+
+        public void fireOnScreenReaderOutputEvent(string gageName = "",string gageValue = "",bool isGage = false,string output = "")
+        {
+            ScreenReaderOutputEventArgs args = new ScreenReaderOutputEventArgs();
+            args.output = output;
+            args.gageName = gageName;
+            args.gageValue = gageValue;
+            args.isGage = isGage;
+
+            this.onScreenReaderOutput(args);
+        } // End event fire method.
+
+
         private SineWaveProvider pitchSineProvider;
         private SineWaveProvider bankSineProvider;
 
@@ -1898,7 +1926,15 @@ namespace tfm
         private void onVSpeedKey()
         {
             double vspeed = (double)Aircraft.VerticalSpeed.Value * 3.28084d * -1;
-            Tolk.Output(vspeed.ToString("f0") + " feet per minute. ");
+
+            // used in the onScreenReaderOutput event in the main form.
+            var gageName = "Vertical speed";
+            var gageValue = vspeed.ToString("f0");
+            var isGage = true;
+
+            //Tolk.Output(vspeed.ToString("f0") + " feet per minute. ");
+            // Test the new event.
+            fireOnScreenReaderOutputEvent(gageName, gageValue, isGage);
             ResetHotkeys();
 
         }

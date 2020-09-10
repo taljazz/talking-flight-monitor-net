@@ -82,7 +82,6 @@ namespace tfm
         private bool SimConnectMessagesEnabled;
         private bool calloutsEnabled;
         private bool ILSEnabled;
-        private bool groundspeedEnabled = true;
         private bool groundSpeedActive;
         private bool onGround;
         private bool TrimEnabled = true;
@@ -609,9 +608,8 @@ namespace tfm
             Tolk.Load();
             Tolk.Output("TFM dot net started!");
             HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
-            // HotkeyManager.Current.AddOrReplace("test", Keys.OemOpenBrackets, OffsetTest);
+            // HotkeyManager.Current.AddOrReplace("test", Keys.Q, OffsetTest);
             runwayGuidanceEnabled = false;
-            // Airport.LoadAirportDatabase();
 
 
             // hook up the event for the groundspeed timer so we can enable it later
@@ -653,9 +651,8 @@ namespace tfm
 
         private void OffsetTest(object sender, HotkeyEventArgs e)
         {
-            PMDG_NGX_CDU_Screen PM = new PMDG_NGX_CDU_Screen(0X5800);
-            PM.RefreshData();
-            Tolk.Output(PM.ToString());
+            AirportsDatabase db = FSUIPCConnection.AirportsDatabase;
+            Tolk.Output($"airports: {db.Airports.Count}");
 
 
         }
@@ -716,9 +713,9 @@ namespace tfm
                 if (Properties.Settings.Default.ReadFlaps) ReadFlaps();
                 ReadLandingGear();
                 if (Properties.Settings.Default.ReadAutopilot) ReadAutopilotInstruments();
-                if (groundspeedEnabled) ReadGroundSpeed();
+                if (Properties.Settings.Default.ReadGroundSpeed) ReadGroundSpeed();
                 if (Properties.Settings.Default.AltitudeAnnouncements) ReadAltitudeAnnouncement();
-                ReadSimConnectMessages();
+                if (Properties.Settings.Default.ReadSimconnectMessages) ReadSimConnectMessages();
                 ReadTransponder();
                 ReadRadios();
                 ReadAutoBrake();
@@ -1805,30 +1802,47 @@ namespace tfm
             }
             else
             {
-                var xmlNearby = XElement.Load($"http://api.geonames.org/findNearbyPlaceName?style=long&lat={lat}&lng={lon}&username=jfayre&cities=cities1000&radius=200");
-                var locations = xmlNearby.Descendants("geoname").Select(g => new
+                try
                 {
-                    Name = g.Element("name").Value,
-                    Lat = g.Element("lat").Value,
-                    Long = g.Element("lng").Value,
-                    admin1 = g.Element("adminName1").Value,
-                    countryName = g.Element("countryName").Value
-                });
-                if (locations.Count() > 0)
-                {
-                    var location = locations.First();
-                    Tolk.Output($"closest city: {location.Name} {location.admin1}, {location.countryName}. ");
-                }
+                    var xmlNearby = XElement.Load($"http://api.geonames.org/findNearbyPlaceName?style=long&lat={lat}&lng={lon}&username=jfayre&cities=cities1000&radius=200");
+                    var locations = xmlNearby.Descendants("geoname").Select(g => new
+                    {
+                        Name = g.Element("name").Value,
+                        Lat = g.Element("lat").Value,
+                        Long = g.Element("lng").Value,
+                        admin1 = g.Element("adminName1").Value,
+                        countryName = g.Element("countryName").Value
+                    });
+                    if (locations.Count() > 0)
+                    {
+                        var location = locations.First();
+                        Tolk.Output($"closest city: {location.Name} {location.admin1}, {location.countryName}. ");
+                    }
 
-                var xmlOcean = XElement.Load($"http://api.geonames.org/ocean?lat={lat}&lng={lon}&username=jfayre");
-                var ocean = xmlOcean.Descendants("ocean").Select(g => new
+                }
+                catch (Exception ex)
                 {
-                    Name = g.Element("name").Value
-                });
-                if (ocean.Count() > 0)
+                    Logger.Debug($"error retrieving nearest city: {ex.Message}");
+                    Tolk.Output("error retrieving nearest city. check log.");
+                }
+                try
                 {
-                    var currentOcean = ocean.First();
-                    Tolk.Output($"{currentOcean.Name}. ");
+                    var xmlOcean = XElement.Load($"http://api.geonames.org/ocean?lat={lat}&lng={lon}&username=jfayre");
+                    var ocean = xmlOcean.Descendants("ocean").Select(g => new
+                    {
+                        Name = g.Element("name").Value
+                    });
+                    if (ocean.Count() > 0)
+                    {
+                        var currentOcean = ocean.First();
+                        Tolk.Output($"{currentOcean.Name}. ");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Logger.Debug($"error retrieving oceanic info: {ex.Message}");
+
                 }
                 var xmlTimezone = XElement.Load($"http://api.geonames.org/timezone?lat={lat}&lng={lon}&username=jfayre&radius=50");
                 var timezone = xmlTimezone.Descendants("timezone").Select(g => new
@@ -1840,8 +1854,17 @@ namespace tfm
                     var currentTimezone = timezone.First();
                     if (currentTimezone.Name != oldTimezone)
                     {
-                        string tzName = TZConvert.IanaToWindows(currentTimezone.Name);
-                        Tolk.Output($"{tzName}. ");
+                        try
+                        {
+                            string tzName = TZConvert.IanaToWindows(currentTimezone.Name);
+                            Tolk.Output($"{tzName}. ");
+                        }
+                        catch (Exception)
+                        {
+
+                            Logger.Debug($"cannot convert timezone: {currentTimezone.Name}");
+                        }
+                        
                         oldTimezone = currentTimezone.Name;
                     }
 

@@ -949,7 +949,7 @@ namespace tfm
                 {
                     if (DoorBits.Changed[i])
                     {
-                        string state = (Aircraft.Doors.Value[i]) ? "closed" : "open";
+                        string state = (Aircraft.Doors.Value[i]) ? "open" : "closed";
                         Tolk.Output($"door {i + 1} {state}. ");
                     }
                 }

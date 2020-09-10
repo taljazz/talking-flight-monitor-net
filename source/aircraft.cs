@@ -1,4 +1,5 @@
-﻿using FSUIPC;
+﻿using DavyKager;
+using FSUIPC;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -192,7 +193,6 @@ namespace tfm
             double degrees = (180 / Math.PI) * radians;
             return (degrees);
         }
-
         
     }
 }

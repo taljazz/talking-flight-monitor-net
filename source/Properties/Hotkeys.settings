@@ -131,5 +131,8 @@
     <Setting Name="ReadSimulationRate" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">E</Value>
     </Setting>
+    <Setting Name="GroundSpeed" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">U</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

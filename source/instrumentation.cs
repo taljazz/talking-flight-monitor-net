@@ -579,11 +579,20 @@ namespace tfm
         private bool AttitudeBankRightPlaying;
         private bool readNavRadios;
         private double groundSpeed;
+        public double GroundSpeed
+        {
+            get
+            {
+                groundSpeed = ((double)Aircraft.GroundSpeed.Value * 3600d) / (65536d * 1852d);
+                groundSpeed = Math.Round(groundSpeed);
+                return groundSpeed;
+
+            }
+        }
         private int attitudeModeSelect;
         private int RunwayGuidanceModeSelect;
         private double oldPitch;
         private string oldTimezone;
-        // AirportsDatabase db = FSUIPCConnection.AirportsDatabase;
 
         public Instrumentation()
         {
@@ -602,7 +611,9 @@ namespace tfm
             HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
             // HotkeyManager.Current.AddOrReplace("test", Keys.OemOpenBrackets, OffsetTest);
             runwayGuidanceEnabled = false;
-            
+            // Airport.LoadAirportDatabase();
+
+
             // hook up the event for the groundspeed timer so we can enable it later
             GroundSpeedTimer.Elapsed += onGroundSpeedTimerTick;
             // start the flight following timer if it is enabled in settings
@@ -949,7 +960,7 @@ namespace tfm
                 {
                     if (DoorBits.Changed[i])
                     {
-                        string state = (Aircraft.Doors.Value[i]) ? "closed" : "open";
+                        string state = (Aircraft.Doors.Value[i]) ? "open" : "closed";
                         Tolk.Output($"door {i + 1} {state}. ");
                     }
                 }
@@ -1052,15 +1063,12 @@ namespace tfm
         }
         public void ReadGroundSpeed()
         {
-            // convert groundspeed from how it is stored in FSIPC
-            groundSpeed = (Aircraft.GroundSpeed.Value * 3600) / (65536 * 1852);
-            groundSpeed = Math.Round(groundSpeed);
             if (!groundSpeedActive)
             {
                 // only read if aircraft is on ground
                 if (Aircraft.OnGround.Value == 1)
                 {
-                    if (groundSpeed > 10)
+                    if (GroundSpeed > 10)
                     {
                         groundSpeedActive = true;
                         GroundSpeedTimer.AutoReset = true;
@@ -1077,11 +1085,12 @@ namespace tfm
 
         private void onGroundSpeedTimerTick(object sender, ElapsedEventArgs e)
         {
-            if (groundSpeed > 10)
+            
+            if (GroundSpeed > 10)
             {
-                Tolk.Output($"{groundSpeed} knotts. ");
+                Tolk.Output($"{GroundSpeed} knotts. ");
             }
-            if (groundSpeed < 10 || Aircraft.OnGround.Value == 0)
+            if (GroundSpeed < 10 || Aircraft.OnGround.Value == 0)
             {
                 groundSpeedActive = false;
                 GroundSpeedTimer.Stop();
@@ -1196,6 +1205,7 @@ namespace tfm
                 HotkeyManager.Current.AddOrReplace("Engine2Info", (Keys)Properties.Hotkeys.Default.Engine2Info, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("Engine3Info", (Keys)Properties.Hotkeys.Default.Engine3Info, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("Engine4Info", (Keys)Properties.Hotkeys.Default.Engine4Info, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("GroundSpeed", (Keys)Properties.Hotkeys.Default.GroundSpeed, onKeyPressed);
 
 
             }
@@ -1229,6 +1239,10 @@ namespace tfm
                 case "ReadSimulationRate":
                     ReadSimulationRate(true);
                     break;
+                case "GroundSpeed":
+                    onGroundSpeedKey();
+                    break;
+
                 case "TrueAirspeed":
                     onTASKey();
                     break;
@@ -1343,6 +1357,11 @@ namespace tfm
                     break;
 
             }
+        }
+
+        private void onGroundSpeedKey()
+        {
+            Tolk.Output($"{GroundSpeed} knotts ground speed");
         }
 
         private void onRepeatLastSimconnectMessage()

@@ -538,5 +538,17 @@ namespace tfm.Properties {
                 this["ReadSimulationRate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("U")]
+        public global::System.Windows.Forms.Keys GroundSpeed {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["GroundSpeed"]));
+            }
+            set {
+                this["GroundSpeed"] = value;
+            }
+        }
     }
 }

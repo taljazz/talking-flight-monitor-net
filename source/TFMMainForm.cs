@@ -540,6 +540,11 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                         Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
+                    case "ASL altitude":
+                        Tolk.Speak($"{e.gaugeValue} feet ASL.");
+                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        break;
 
                     default:
                         Tolk.Output("Gage or instrument not supported.\n");

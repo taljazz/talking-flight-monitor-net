@@ -1852,7 +1852,20 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                     if (locations.Count() > 0)
                     {
                         var location = locations.First();
-                        Tolk.Output($"closest city: {location.Name} {location.admin1}, {location.countryName}. ");
+                        // get the current magnetic variation
+                        double magVarDegrees = (double)Aircraft.MagneticVariation.Value * 360d / 65536d;
+                        // create a point for the aircraft current position
+                        FsLatLonPoint aircraftPos = new FsLatLonPoint(Aircraft.aircraftLat.Value, Aircraft.aircraftLon.Value);
+                        // create a point for the nearest city
+                        double nearestCityLat = double.Parse(location.Lat);
+                        double nearestCityLong = double.Parse(location.Long);
+                        FsLatLonPoint nearestCityPoint = new FsLatLonPoint(nearestCityLat, nearestCityLong);
+                        string distanceNM = aircraftPos.DistanceFromInNauticalMiles(nearestCityPoint).ToString("F1");
+                        double bearingTrue = aircraftPos.BearingTo(nearestCityPoint);
+                        double bearingMagnetic = bearingTrue - magVarDegrees;
+                        string strBearing = bearingMagnetic.ToString("F0");
+                        Tolk.Output($"{location.Name} {location.admin1}, {location.countryName}. ");
+                        Tolk.Output($"{distanceNM} nautical miles, {strBearing} degrees.");
                     }
 
                 }
@@ -2022,7 +2035,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         private void onASLKey()
         {
             double asl = Math.Round((double)Aircraft.Altitude.Value, 0);
-            var gaugeName = "ASL Altitude";
+            var gaugeName = "ASL altitude";
             var gaugeValue = asl.ToString("F0");
             var isGauge = true;
             fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);

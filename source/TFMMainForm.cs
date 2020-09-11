@@ -38,15 +38,23 @@ namespace tfm
             try
             {
                 FSUIPCConnection.Open();
-                FSUIPCConnection.AirportsDatabase.Load();
-                if (FSUIPCConnection.AirportsDatabase.IsLoaded)
-                {
-                    Tolk.Output("Airport database loaded.");
-                }
+                
                 // If there was no problem, stop this timer and start the main timer
                 this.timerConnection.Stop();
                 this.timerMain.Start();
-                // Update the connection status
+                // load airport database
+                try
+                {
+                    FSUIPCConnection.AirportsDatabase.Load();
+                    if (FSUIPCConnection.AirportsDatabase.IsLoaded)
+                    {
+                        Tolk.Output("Airport database loaded.");
+                    }
+                }
+                catch
+                {
+                    Tolk.Output("could not load airport database.");
+                }
 
             }
             catch
@@ -542,6 +550,24 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                         break;
                     case "ASL altitude":
                         Tolk.Speak($"{e.gaugeValue} feet ASL.");
+                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        break;
+                        
+                    case "AGL altitude":
+                        Tolk.Speak($"{e.gaugeValue} feet AGL.");
+                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        break;
+                        
+                    case "Airspeed true":
+                        Tolk.Speak($"{e.gaugeValue} knotts true");
+                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        break;
+                        
+                    case "Airspeed indicated":
+                        Tolk.Speak($"{e.gaugeValue} knotts indicated");
                         Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;

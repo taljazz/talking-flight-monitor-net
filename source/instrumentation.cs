@@ -1996,15 +1996,19 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         private void onTASKey()
         {
             double tas = (double)Aircraft.AirspeedTrue.Value / 128d;
-            Tolk.Output(tas.ToString("f0") + "knotts true. ");
-            ResetHotkeys();
+            var gaugeName = "Airspeed true";
+            var isGauge = true;
+            var gaugeValue = tas.ToString("F0");
+            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
         }
 
         private void onIASKey()
         {
             double ias = (double)Aircraft.AirspeedIndicated.Value / 128d;
-            Tolk.Output(ias.ToString("f0") + "knotts indicated. ");
-            ResetHotkeys();
+            var gaugeName = "Airspeed true";
+            var isGauge = true;
+            var gaugeValue = ias.ToString("F0");
+            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
         }
 
         private void onHeadingKey()
@@ -2017,9 +2021,10 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         {
             double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
             double agl = (double)Aircraft.Altitude.Value - groundAlt;
-            agl = Math.Round(agl, 0);
-            Tolk.Output(agl.ToString() + " feet A G L.");
-            ResetHotkeys();
+            var gaugeName = "AGL altitude";
+            var isGauge = true;
+            var gaugeValue = Math.Round(agl, 0).ToString();
+            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
         }
 
         private void ResetHotkeys()

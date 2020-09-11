@@ -310,7 +310,7 @@
             // OutputLogTextBox
             // 
             this.OutputLogTextBox.AccessibleName = "Speech log";
-            this.OutputLogTextBox.Location = new System.Drawing.Point(110, 132);
+            this.OutputLogTextBox.Location = new System.Drawing.Point(109, 131);
             this.OutputLogTextBox.Multiline = true;
             this.OutputLogTextBox.Name = "OutputLogTextBox";
             this.OutputLogTextBox.ReadOnly = true;

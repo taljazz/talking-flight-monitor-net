@@ -21,12 +21,15 @@ namespace tfm
     public partial class TFMMainForm : Form
     {
         public Instrumentation inst = new Instrumentation();
+        
         public TFMMainForm()
         {
             InitializeComponent();
             Aircraft.InitOffsets();
+            inst.ScreenReaderOutput += onScreenReaderOutput;
             // Start the connection timer to look for a flight sim
             this.timerConnection.Start();
+            
         }
         // This method is called every 1 second by the connection timer.
         private void timerConnection_Tick(object sender, EventArgs e)
@@ -503,5 +506,51 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             
 
         }
+
+        protected void onScreenReaderOutput(object sender, ScreenReaderOutputEventArgs e)
+        {
+            // We can do anything we want since the gage/value are broken up into different variables now.
+            // The event should take care of anything the screen reader needs to output to the user.
+
+                        // when e.isGage is true, e.output is empty.
+            // Otherwise, e.output should contain a string to send to the screen reader.
+        // EX: the next waypoint feature is inappropriate for e.gageName and e.gageValue, so e.isGage will be false, and e.output will have the output for the next waypoint.
+            
+            if(e.isGauge)
+            {
+                switch(e.gaugeName)
+                {
+                    case "Vertical speed":
+                        // We can implement different settings here. One of them is braille support.
+                        // After including a braille only, speech only, or both setting,
+                        // All we need to do is check for the setting and respond to it.
+                        // Braile, speech, and output can have different output without toying with the backend code.
+                        // This also makes way for message type: short or long. A pilot might not want
+                        // to hear "feet per minute" every time he/she presses ]v, so, give them a choice.
+                        // That setting would be checked here because it influences screen reader/braille output.
+                        // The log may also contain different formatting options. For now, stick with
+                        // reasonable defaults.
+                        
+                        Tolk.Speak($"{e.gaugeValue} feet per minute.");
+                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        break;
+                    case "Outside temperature":
+                        Tolk.Speak($"{e.gaugeValue} degrees");
+                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        break;
+
+                    default:
+                        Tolk.Output("Gage or instrument not supported.\n");
+                        break;
+                }
+            } // End gage output.
+            else
+            {
+                Tolk.Output(e.output);
+                OutputLogTextBox.Text += $"{e.output}\n";
+            } // end generic output
+        } // End screenreader output event.
     }//End TFMMainForm class.
 } //End TFM namespace.

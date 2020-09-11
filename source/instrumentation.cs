@@ -25,12 +25,41 @@ using NGeoNames;
 using NGeoNames.Entities;
 using TimeZoneConverter;
 using System.Diagnostics;
+using System.Reflection;
+
+
 
 namespace tfm
 {
     public class Instrumentation
     {
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
+
+        // The event that handles speech/braille output.
+public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput;
+
+        // The virtual method for the event. Used as a shell and fired when needed.
+        protected virtual void onScreenReaderOutput(ScreenReaderOutputEventArgs e)
+        {
+            EventHandler<ScreenReaderOutputEventArgs> handler = ScreenReaderOutput;
+            if(handler != null)
+            {
+                handler(this, e);
+            } // End event callback.
+        } // End onScreenReaderOutput method.
+
+        public void fireOnScreenReaderOutputEvent(string gaugeName = "",string gaugeValue = "",bool isGauge = false,string output = "")
+        {
+            ScreenReaderOutputEventArgs args = new ScreenReaderOutputEventArgs();
+            args.output = output;
+            args.gaugeName = gaugeName;
+            args.gaugeValue = gaugeValue;
+            args.isGauge = isGauge;
+
+            this.onScreenReaderOutput(args);
+        } // End event fire method.
+
+
         private SineWaveProvider pitchSineProvider;
         private SineWaveProvider bankSineProvider;
 
@@ -606,7 +635,8 @@ namespace tfm
 
             Logger.Debug("initializing screen reader driver");
             Tolk.Load();
-            Tolk.Output("TFM dot net started!");
+            var version = typeof(Instrumentation).Assembly.GetName().Version.Build;
+            Tolk.Output($"Talking Flight Monitor test build {version}");
             HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
             // HotkeyManager.Current.AddOrReplace("test", Keys.Q, OffsetTest);
             runwayGuidanceEnabled = false;
@@ -666,7 +696,7 @@ namespace tfm
                 // Read when aircraft changes
                 if (Aircraft.AircraftName.ValueChanged)
                 {
-                    Tolk.Output("Current aircraft: " + Aircraft.AircraftName.Value);
+                    fireOnScreenReaderOutputEvent(isGauge: false, output:"Current aircraft: " + Aircraft.AircraftName.Value);
                     DetectFuelTanks();
                 }
 
@@ -731,7 +761,7 @@ namespace tfm
             }
             else
             {
-                Tolk.Output("current aircraft: " + Aircraft.AircraftName.Value);
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Current aircraft: " + Aircraft.AircraftName.Value);
                 DetectFuelTanks();
                 FirstRun = false;
             }
@@ -748,7 +778,7 @@ namespace tfm
             {
                 if (alt >= i-10 && alt <= i-10 && altitudeCalloutFlags[i] == false)
                 {
-                    Tolk.Output($"{i} feet. ");
+                    fireOnScreenReaderOutputEvent(isGauge:false, output:$"{i} feet. ");
                     altitudeCalloutFlags[i] = true;
 
                 }
@@ -917,14 +947,16 @@ namespace tfm
                 TimeSpan TimeEnroute = TimeSpan.FromSeconds(Aircraft.NextWPETE.Value);
                 double baring = Aircraft.ConvertRadiansToDegrees((double)Aircraft.NextWPBaring.Value);
                 string strBaring = baring.ToString("F0");
-                Tolk.Output($"Next waypoint: {name}. ");
-                Tolk.Output($"Distance: {strDist} nautical miles.");
-                Tolk.Output($"Baring: {strBaring} degrees");
-                string strTime = string.Format("{0:D2} hours, {1:D2} minutes, {2:D2} seconds.",
-                TimeEnroute.Hours,
-                TimeEnroute.Minutes,
-                TimeEnroute.Seconds);
-                Tolk.Output(strTime);
+                string strTime = string.Format("{0:%h} hours, {0:%m} minutes, {0:%s} seconds", TimeEnroute);
+                if (TimeEnroute.Hours == 0)
+                {
+                    strTime = string.Format("{0:%m} minutes, {0:%s} seconds", TimeEnroute);
+                }
+                if (TimeEnroute.Minutes == 0 && TimeEnroute.Hours == 0)
+                {
+                    strTime = string.Format("{0:%s} seconds", TimeEnroute);
+                }
+                fireOnScreenReaderOutputEvent(isGauge: false, output:$"Next waypoint: {name}.\nDistance: {strDist} nautical miles.\nBaring: {strBaring} degrees.\n{strTime}");
             }
         }
         private void ReadLights()
@@ -1768,12 +1800,16 @@ namespace tfm
         private void onDestinationKey()
         {
             TimeSpan TimeEnroute = TimeSpan.FromSeconds(Aircraft.DestinationTimeEnroute.Value);
-            string icao = Aircraft.DestinationAirportID.Value;
-            string strTime = string.Format("{0:D2} hours, {1:D2} minutes, {2:D2} seconds.",
-                TimeEnroute.Hours.ToString().TrimStart(new Char[] { '0' }),
-                TimeEnroute.Minutes.ToString().TrimStart(new Char[] { '0' }),
-                TimeEnroute.Seconds.ToString().TrimStart(new Char[] { '0' }));
-            Tolk.Output($"Time enroute to {icao}, {strTime}. ");
+            string strTime = string.Format("{0:%h} hours {0:%m} minutes, {0:%s} seconds", TimeEnroute);
+            if (TimeEnroute.Hours == 0)
+            {
+                strTime = string.Format("{0:%m} minutes, {0:%s} seconds", TimeEnroute);
+            }
+            if (TimeEnroute.Minutes == 0 && TimeEnroute.Hours == 0)
+            {
+                strTime = string.Format("{0:%s} seconds", TimeEnroute);
+            }
+            fireOnScreenReaderOutputEvent(isGauge:false, output:$"Time enroute to destination, {strTime}. ");
 
 
         }
@@ -1905,23 +1941,34 @@ namespace tfm
 
         private void onAirtempKey()
         {
-            bool metric = true;
             double tempC = (double)Aircraft.AirTemp.Value / 256d;
             double tempF = 9.0 / 5.0 * tempC + 32;
-            if (metric)
+            var gaugeName = "Outside temperature";
+            var isGauge = true;
+            var gaugeValue = "";
+            if (Properties.Settings.Default.UseMetric)
             {
-                Tolk.Output("outside temperature: " + tempC.ToString("f0"));
+                gaugeValue = tempC.ToString("F0");
             }
             else
             {
-                Tolk.Output("outside temperature: " + tempF.ToString("f0") + " degrees F");
+                gaugeValue = tempF.ToString("F0");
             }
+            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
         }
 
         private void onVSpeedKey()
         {
             double vspeed = (double)Aircraft.VerticalSpeed.Value * 3.28084d * -1;
-            Tolk.Output(vspeed.ToString("f0") + " feet per minute. ");
+
+            // used in the onScreenReaderOutput event in the main form.
+            var gageName = "Vertical speed";
+            var gageValue = vspeed.ToString("f0");
+            var isGage = true;
+
+            //Tolk.Output(vspeed.ToString("f0") + " feet per minute. ");
+            // Test the new event.
+            fireOnScreenReaderOutputEvent(gageName, gageValue, isGage);
             ResetHotkeys();
 
         }
@@ -1975,8 +2022,10 @@ namespace tfm
         private void onASLKey()
         {
             double asl = Math.Round((double)Aircraft.Altitude.Value, 0);
-            Tolk.Output(asl.ToString() + " feet ASL");
-            ResetHotkeys();
+            var gaugeName = "ASL Altitude";
+            var gaugeValue = asl.ToString("F0");
+            var isGauge = true;
+            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
         }
 
 

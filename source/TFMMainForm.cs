@@ -511,9 +511,9 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             // Otherwise, e.output should contain a string to send to the screen reader.
         // EX: the next waypoint feature is inappropriate for e.gageName and e.gageValue, so e.isGage will be false, and e.output will have the output for the next waypoint.
             
-            if(e.isGage)
+            if(e.isGauge)
             {
-                switch(e.gageName)
+                switch(e.gaugeName)
                 {
                     case "Vertical speed":
                         // We can implement different settings here. One of them is braille support.
@@ -526,15 +526,26 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                         // The log may also contain different formatting options. For now, stick with
                         // reasonable defaults.
                         
-                        Tolk.Speak($"{e.gageValue} feet per minute.");
-                                                    Tolk.Braille($"{e.gageName}: {e.gageValue}\n");
-                        OutputLogTextBox.Text += $"{e.gageName}: {e.gageValue}\n";
+                        Tolk.Speak($"{e.gaugeValue} feet per minute.");
+                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
-                    case "default":
+                    case "Outside temperature":
+                        Tolk.Speak($"{e.gaugeValue} degrees");
+                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        break;
+
+                    default:
                         Tolk.Output("Gage or instrument not supported.\n");
                         break;
                 }
             } // End gage output.
+            else
+            {
+                Tolk.Output(e.output);
+                OutputLogTextBox.Text += $"{e.output}\n";
+            } // end generic output
         } // End screenreader output event.
     }//End TFMMainForm class.
 } //End TFM namespace.

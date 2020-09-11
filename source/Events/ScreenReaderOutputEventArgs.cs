@@ -9,8 +9,8 @@ namespace tfm
     public class ScreenReaderOutputEventArgs
     {
         public string output { get; set; }
-        public string gageName { get; set; }
-        public string gageValue { get; set; }
-        public bool isGage { get; set; }
+        public string gaugeName { get; set; }
+        public string gaugeValue { get; set; }
+        public bool isGauge { get; set; }
     } // end ScreenReaderOutputEventArgs
 } // End TFM namespace.

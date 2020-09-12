@@ -44,7 +44,7 @@ namespace tfm
                 this.timerMain.Start();
                 // load airport database
                 Tolk.Output("loading airport database");
-                dbLoadWorker.RunWorkerAsync();
+                // dbLoadWorker.RunWorkerAsync();
             }
             catch
             {
@@ -560,12 +560,31 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                         Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
+                    
+                    case "Ground speed":
+                        Tolk.Speak($"{e.gaugeValue} knotts ground speed");
+                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        break;
                         
                     case "Mach":
                         Tolk.Speak($"Mach {e.gaugeValue}. ");
                         Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
+
+                    case "Localiser":
+                        Tolk.Speak($"{e.gaugeValue}. ");
+                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        break;
+
+                    case "Glide slope":
+                        Tolk.Speak($"{e.gaugeValue}. ");
+                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        break;
+
 
 
 

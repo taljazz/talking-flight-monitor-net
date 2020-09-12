@@ -68,6 +68,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         private static System.Timers.Timer GroundSpeedTimer = new System.Timers.Timer(3000); // 3 seconds;
         private static System.Timers.Timer AttitudeTimer;
         private static System.Timers.Timer flightFollowingTimer;
+        private static System.Timers.Timer ilsTimer = new System.Timers.Timer(5000);
         private double HdgRight;
         private double HdgLeft;
 
@@ -125,6 +126,63 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         private bool AttitudePitchPlaying;
         private bool AttitudeBankLeftPlaying;
 
+        // engine throttle properties
+        private double engine1ThrottlePercent;
+        public double Engine1ThrottlePercent
+        {
+            get
+            {
+                engine1ThrottlePercent = (double)Aircraft.Engine1ThrottleLever.Value / 16384d * 100d;
+                return engine1ThrottlePercent;
+            }
+            set
+            {
+                value = value / 100 * 16384;
+                Aircraft.Engine1ThrottleLever.Value = (short)value;
+            }
+        }
+        private double engine2ThrottlePercent;
+        public double Engine2ThrottlePercent
+        {
+            get
+            {
+                engine2ThrottlePercent = (double)Aircraft.Engine2ThrottleLever.Value / 16384d * 100d;
+                return engine2ThrottlePercent;
+            }
+            set
+            {
+                value = value / 100 * 16384;
+                Aircraft.Engine2ThrottleLever.Value = (short)value;
+            }
+        }
+        private double engine3ThrottlePercent;
+        public double Engine3ThrottlePercent
+        {
+            get
+            {
+                engine3ThrottlePercent = (double)Aircraft.Engine3ThrottleLever.Value / 16384d * 100d;
+                return engine3ThrottlePercent;
+            }
+            set
+            {
+                value = value / 100 * 16384;
+                Aircraft.Engine3ThrottleLever.Value = (short)value;
+            }
+        }
+        private double engine4ThrottlePercent;
+        public double Engine4ThrottlePercent
+        {
+            get
+            {
+                engine4ThrottlePercent = (double)Aircraft.Engine4ThrottleLever.Value / 16384d * 100d;
+                return engine4ThrottlePercent;
+            }
+            set
+            {
+                value = value / 100 * 16384;
+                Aircraft.Engine4ThrottleLever.Value = (short)value;
+            }
+        }
         private bool apMaster;
         [DisplayName("autopilot master switch")]
         public bool ApMaster
@@ -621,6 +679,9 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         private int RunwayGuidanceModeSelect;
         private double oldPitch;
         private string oldTimezone;
+        private bool gsDetected;
+        private bool hasLocaliser;
+        private bool hasGlideSlope;
 
         public Instrumentation()
         {
@@ -638,12 +699,13 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             var version = typeof(Instrumentation).Assembly.GetName().Version.Build;
             Tolk.Output($"Talking Flight Monitor test build {version}");
             HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
-            // HotkeyManager.Current.AddOrReplace("test", Keys.Q, OffsetTest);
+            //      HotkeyManager.Current.AddOrReplace("test", Keys.Q, OffsetTest);
             runwayGuidanceEnabled = false;
 
 
-            // hook up the event for the groundspeed timer so we can enable it later
+            // hook up the event for the groundspeed and ILS timer so we can enable it later
             GroundSpeedTimer.Elapsed += onGroundSpeedTimerTick;
+            ilsTimer.Elapsed += onILSTimerTick;
             // start the flight following timer if it is enabled in settings
             SetupFlightFollowing();
             // populate the dictionary for the altitude callout flags
@@ -654,6 +716,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
 
         }
 
+        
         public void SetupFlightFollowing()
         {
             flightFollowingTimer = new System.Timers.Timer(TimeSpan.FromMinutes(Properties.Settings.Default.FlightFollowingTimeInterval).TotalMilliseconds);
@@ -686,9 +749,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
 
         private void OffsetTest(object sender, HotkeyEventArgs e)
         {
-            AirportsDatabase db = FSUIPCConnection.AirportsDatabase;
-            Tolk.Output($"airports: {db.Airports.Count}");
-
+            Engine1ThrottlePercent = 50;
 
         }
 
@@ -1001,15 +1062,89 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             }
 
         }
+        
         private void ReadILSInfo()
         {
-            if (Aircraft.Nav1Signal.Value == 256 && localiserDetected == false && Aircraft.Nav1Flags.Value[7])
+            if (Properties.Settings.Default.ReadILS)
             {
-                Tolk.PreferSAPI(true);
-                Tolk.Output("Localiser is alive. ");
-                localiserDetected = true;
+                if (Aircraft.Nav1GS.Value == 1 && gsDetected == false)
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "glide slope is alive. ");
+                    gsDetected = true;
+                }
+                if (Aircraft.Nav1Flags.Value[7] && hasLocaliser == false)
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "nav 1 has localiser.");
+                    hasLocaliser = true;
+                }
+                if (Aircraft.Nav1Signal.Value == 256 && localiserDetected == false && Aircraft.Nav1Flags.Value[7])
+                {
+                    Tolk.PreferSAPI(true);
+                    Tolk.Output("Localiser is alive. ");
+                    localiserDetected = true;
+                    ilsTimer.AutoReset = true;
+                    ilsTimer.Enabled = true;
+
+                }
+                if (Aircraft.Nav1Flags.Value[6] && hasGlideSlope == false)
+                {
+                    Tolk.Output("nav 1 has glide slope. ");
+                    hasGlideSlope = true;
+                }
+
+            }
+            else
+            {
+                ilsTimer.Enabled = false;
             }
         }
+
+        private void onILSTimerTick(object sender, ElapsedEventArgs e)
+        {
+            sbyte gsNeedle = Aircraft.Nav1GSNeedle.Value;
+            sbyte locNeedle = Aircraft.Nav1LocNeedle.Value;
+            double locPercent;
+            double gsPercent;
+            if (gsNeedle > 0 && gsNeedle < 119)
+            {
+                gsPercent = gsNeedle / 119 * 100;
+                string strPercent = gsPercent.ToString("F0");
+                var gaugeName = "glide slope";
+                var gaugeValue = $"up {strPercent} percent. ";
+                var isGauge = true;
+                Tolk.Output(gaugeValue);
+
+            }
+            if (gsNeedle < 0 && gsNeedle > -119)
+            {
+                gsPercent = Math.Abs(gsNeedle) / 119 * 100;
+                string strPercent = gsPercent.ToString("F0");
+                var gaugeName = "glide slope";
+                var gaugeValue = $"down {strPercent} percent. ";
+                var isGauge = true;
+                Tolk.Output(gaugeValue);
+
+            }
+            if (locNeedle > 0 && locNeedle < 127)
+            {
+                locPercent = locNeedle / 127 * 100;
+                string strPercent = locPercent.ToString("F0");
+                var gaugeName = "Localiser";
+                var gaugeValue = $"{strPercent} percent right. ";
+                var isGauge = true;
+                Tolk.Output(gaugeValue);
+            }
+            if (locNeedle < 0 && locNeedle > -127)
+            {
+                locPercent = Math.Abs(locNeedle) / 127 * 100;
+                string strPercent = locPercent.ToString("F0");
+                var gaugeName = "Localiser";
+                var gaugeValue = $"{strPercent} percent left. ";
+                var isGauge = true;
+                Tolk.Output(gaugeValue);
+            }
+        }
+
         private void ReadSimulationRate(bool TriggeredByKey)
         {
             double rate = (double)Aircraft.SimulationRate.Value / 256;
@@ -1502,6 +1637,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
 
         private void onFuelTankKey(int tank)
         {
+            FSUIPCConnection.PayloadServices.RefreshData();
             if (tank > ActiveTanks.Count)
             {
                 Tolk.Output("tank not available");
@@ -2087,7 +2223,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         private void onIASKey()
         {
             double ias = (double)Aircraft.AirspeedIndicated.Value / 128d;
-            var gaugeName = "Airspeed true";
+            var gaugeName = "Airspeed indicated";
             var isGauge = true;
             var gaugeValue = ias.ToString("F0");
             fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);

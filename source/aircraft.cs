@@ -87,6 +87,9 @@ namespace tfm
         public static  Offset<short> VerticalSpeed = new Offset<short>(0x0842);
         public static  Offset<short> AirTemp = new Offset<short>(0x0e8c);
         public static  Offset<byte> Nav1GS = new Offset<byte>(0x0c4c);
+        public static Offset<sbyte> Nav1GSNeedle = new Offset<sbyte>(0x0c49);
+        public static Offset<sbyte> Nav1LocNeedle = new Offset<sbyte>(0x0c48);
+
         public static  Offset<FsBitArray> Nav1Flags = new Offset<FsBitArray>(0x0c4d, 1);
         public enum NavFlag
         {

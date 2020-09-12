@@ -64,12 +64,12 @@
             // txtGeonames
             // 
             this.txtGeonames.AccessibleName = "Geonames username";
-            this.txtGeonames.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::tfm.Properties.Settings.Default, "geonames_user", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.txtGeonames.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::tfm.Properties.Settings.Default, "GeonamesUsername", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtGeonames.Location = new System.Drawing.Point(103, 3);
             this.txtGeonames.Name = "txtGeonames";
             this.txtGeonames.Size = new System.Drawing.Size(94, 20);
             this.txtGeonames.TabIndex = 1;
-            this.txtGeonames.Text = global::tfm.Properties.Settings.Default.geonames_user;
+            this.txtGeonames.Text = global::tfm.Properties.Settings.Default.GeonamesUsername;
             // 
             // chkMetric
             // 

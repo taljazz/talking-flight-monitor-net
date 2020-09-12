@@ -60,6 +60,7 @@
             this.FlightPlanTabPage = new System.Windows.Forms.TabPage();
             this.ProceduresTabPage = new System.Windows.Forms.TabPage();
             this.FindTabPage = new System.Windows.Forms.TabPage();
+            this.dbLoadWorker = new System.ComponentModel.BackgroundWorker();
             this.TFMMainMenu.SuspendLayout();
             this.TFMTabControl.SuspendLayout();
             this.AvionicsTabPage.SuspendLayout();
@@ -433,6 +434,10 @@
             this.FindTabPage.Text = "Find";
             this.FindTabPage.UseVisualStyleBackColor = true;
             // 
+            // dbLoadWorker
+            // 
+            this.dbLoadWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.dbLoadWorker_DoWork);
+            // 
             // TFMMainForm
             // 
             this.AccessibleDescription = "";
@@ -499,6 +504,7 @@
         private System.Windows.Forms.ComboBox FlyModeComboBox;
         private System.Windows.Forms.TabPage AvionicsExplorationTabPage;
         private System.Windows.Forms.PropertyGrid AutopilotPropertyGrid;
+        private System.ComponentModel.BackgroundWorker dbLoadWorker;
     }
 }
 

@@ -26,8 +26,7 @@ using NGeoNames.Entities;
 using TimeZoneConverter;
 using System.Diagnostics;
 using System.Reflection;
-
-
+using System.ServiceModel.Security;
 
 namespace tfm
 {
@@ -659,6 +658,10 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         {
             flightFollowingTimer = new System.Timers.Timer(TimeSpan.FromMinutes(Properties.Settings.Default.FlightFollowingTimeInterval).TotalMilliseconds);
             flightFollowingTimer.Elapsed += onFlightFollowingTimerTick;
+            if (Properties.Settings.Default.GeonamesUsername == "")
+            {
+                MessageBox.Show("Geonames username has not been configured. Flight following features will not function.\nGo to the General section in settings to add your Geonames user name\n", "error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
             if (Properties.Settings.Default.FlightFollowing)
             {
                 flightFollowingTimer.AutoReset = true;
@@ -677,6 +680,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         private void onFlightFollowingTimerTick(object sender, ElapsedEventArgs e)
         {
             // this just reads the flight following info, same as the hotkey
+            if (Properties.Settings.Default.GeonamesUsername == "") return;
             onCityKey();
         }
 
@@ -1894,7 +1898,12 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             double lon = Aircraft.aircraftLon.Value.DecimalDegrees;
             // double lat = -48.876667;
             // double lon = -123.393333;
-            flightFollowingOnline = true;
+            if (Properties.Settings.Default.GeonamesUsername == "")
+            {
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "geonames username not configured");
+                return;
+            }
+            var geonamesUser = Properties.Settings.Default.GeonamesUsername;
             if (Properties.Settings.Default.FlightFollowingOffline)
             {
                 var pos = r.CreateFromLatLong(lat, lon);
@@ -1909,7 +1918,8 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             {
                 try
                 {
-                    var xmlNearby = XElement.Load($"http://api.geonames.org/findNearbyPlaceName?style=long&lat={lat}&lng={lon}&username=jfayre&cities=cities1000&radius=200");
+                    
+                    var xmlNearby = XElement.Load($"http://api.geonames.org/findNearbyPlaceName?style=long&lat={lat}&lng={lon}&username={geonamesUser}&cities=cities1000&radius=200");
                     var locations = xmlNearby.Descendants("geoname").Select(g => new
                     {
                         Name = g.Element("name").Value,
@@ -1945,7 +1955,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 }
                 try
                 {
-                    var xmlOcean = XElement.Load($"http://api.geonames.org/ocean?lat={lat}&lng={lon}&username=jfayre");
+                    var xmlOcean = XElement.Load($"http://api.geonames.org/ocean?lat={lat}&lng={lon}&username={geonamesUser}");
                     var ocean = xmlOcean.Descendants("ocean").Select(g => new
                     {
                         Name = g.Element("name").Value
@@ -1962,7 +1972,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                     Logger.Debug($"error retrieving oceanic info: {ex.Message}");
 
                 }
-                var xmlTimezone = XElement.Load($"http://api.geonames.org/timezone?lat={lat}&lng={lon}&username=jfayre&radius=50");
+                var xmlTimezone = XElement.Load($"http://api.geonames.org/timezone?lat={lat}&lng={lon}&username={geonamesUser}&radius=50");
                 var timezone = xmlTimezone.Descendants("timezone").Select(g => new
                 {
                     Name = g.Element("timezoneId").Value

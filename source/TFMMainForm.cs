@@ -43,20 +43,8 @@ namespace tfm
                 this.timerConnection.Stop();
                 this.timerMain.Start();
                 // load airport database
-                try
-                {
-                    FSUIPCConnection.AirportsDatabase.LoadTaxiways = true;
-                    FSUIPCConnection.AirportsDatabase.Load();
-                    if (FSUIPCConnection.AirportsDatabase.IsLoaded)
-                    {
-                        Tolk.Output("Airport database loaded.");
-                    }
-                }
-                catch
-                {
-                    Tolk.Output("could not load airport database.");
-                }
-
+                Tolk.Output("loading airport database");
+                dbLoadWorker.RunWorkerAsync();
             }
             catch
             {
@@ -592,5 +580,23 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                 OutputLogTextBox.Text += $"{e.output}\n";
             } // end generic output
         } // End screenreader output event.
+
+        private void dbLoadWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                FSUIPCConnection.AirportsDatabase.LoadTaxiways = true;
+                FSUIPCConnection.AirportsDatabase.Load();
+                if (FSUIPCConnection.AirportsDatabase.IsLoaded)
+                {
+                    Tolk.Output("Airport database loaded.");
+                }
+            }
+            catch
+            {
+                Tolk.Output("could not load airport database.");
+            }
+
+        }
     }//End TFMMainForm class.
 } //End TFM namespace.

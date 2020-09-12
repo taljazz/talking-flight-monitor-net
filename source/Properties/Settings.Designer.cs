@@ -25,13 +25,13 @@ namespace tfm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public string geonames_user {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string GeonamesUsername {
             get {
-                return ((string)(this["geonames_user"]));
+                return ((string)(this["GeonamesUsername"]));
             }
             set {
-                this["geonames_user"] = value;
+                this["GeonamesUsername"] = value;
             }
         }
         

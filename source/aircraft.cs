@@ -121,6 +121,15 @@ namespace tfm
         public static  Offset<uint> Eng3Generator = new Offset<uint>(0x39fc);
         public static  Offset<uint> Eng2Generator = new Offset<uint>(0x3abc);
         public static  Offset<uint> Eng1Generator = new Offset<uint>(0x3b7c);
+        public static Offset<short> Engine1ThrottleLever = new Offset<short>(0x088c);
+        public static Offset<short> Engine2ThrottleLever = new Offset<short>(0x0924);
+        public static Offset<short> Engine3ThrottleLever = new Offset<short>(0x09bc);
+        public static Offset<short> Engine4ThrottleLever = new Offset<short>(0x0a54);
+        public static Offset<double> Engine1JetThrust = new Offset<double>(0x204c);
+        public static Offset<double> Engine2JetThrust = new Offset<double>(0x214c);
+        public static Offset<double> Engine3JetThrust = new Offset<double>(0x224c);
+        public static Offset<double> Engine4JetThrust = new Offset<double>(0x234c);
+
         public static  Offset<double> Eng1N2 = new Offset<double>(0x2018);
         public static  Offset<double> Eng2N1 = new Offset<double>(0x2110);
         public static  Offset<double> Eng2N2 = new Offset<double>(0x2118);

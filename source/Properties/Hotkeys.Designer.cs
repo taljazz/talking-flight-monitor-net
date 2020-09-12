@@ -550,5 +550,53 @@ namespace tfm.Properties {
                 this["GroundSpeed"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+1")]
+        public global::System.Windows.Forms.Keys Engine1Throttle {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Engine1Throttle"]));
+            }
+            set {
+                this["Engine1Throttle"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+2")]
+        public global::System.Windows.Forms.Keys Engine2Throttle {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Engine2Throttle"]));
+            }
+            set {
+                this["Engine2Throttle"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+3")]
+        public global::System.Windows.Forms.Keys Engine3Throttle {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Engine3Throttle"]));
+            }
+            set {
+                this["Engine3Throttle"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+4")]
+        public global::System.Windows.Forms.Keys Engine4Throttle {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Engine4Throttle"]));
+            }
+            set {
+                this["Engine4Throttle"] = value;
+            }
+        }
     }
 }

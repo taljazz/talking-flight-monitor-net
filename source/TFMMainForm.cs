@@ -45,6 +45,7 @@ namespace tfm
                 // load airport database
                 try
                 {
+                    FSUIPCConnection.AirportsDatabase.LoadTaxiways = true;
                     FSUIPCConnection.AirportsDatabase.Load();
                     if (FSUIPCConnection.AirportsDatabase.IsLoaded)
                     {
@@ -571,6 +572,14 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                         Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
+                        
+                    case "Mach":
+                        Tolk.Speak($"Mach {e.gaugeValue}. ");
+                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        break;
+
+
 
                     default:
                         Tolk.Output("Gage or instrument not supported.\n");

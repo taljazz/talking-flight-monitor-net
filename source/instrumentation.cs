@@ -617,6 +617,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
 
             }
         }
+        
         private int attitudeModeSelect;
         private int RunwayGuidanceModeSelect;
         private double oldPitch;
@@ -1137,13 +1138,13 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                     {
                         if (Aircraft.textMenu.ToString() == "") return;
                         Logger.Debug("simconnect menu: " + Aircraft.textMenu.ToString());
-                        Tolk.Output(Aircraft.textMenu.ToString());
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: Aircraft.textMenu.ToString());
                     }
                     else
                     {
                         if (Aircraft.textMenu.Message == "") return;
                         Logger.Debug("simconnect message: " + Aircraft.textMenu.Message);
-                        Tolk.Output(Aircraft.textMenu.ToString());
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: Aircraft.textMenu.Message);
                     }
 
                 }
@@ -1157,11 +1158,11 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             {
                 if (toggleStateOn)
                 {
-                    Tolk.Output($"{name} {OnMsg}");
+                    fireOnScreenReaderOutputEvent(isGauge:false, output:$"{name} {OnMsg}");
                 }
                 else
                 {
-                    Tolk.Output($"{name} {OffMsg}");
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {OffMsg}");
                 }
             }
         }
@@ -1235,6 +1236,11 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 HotkeyManager.Current.AddOrReplace("Engine3Info", (Keys)Properties.Hotkeys.Default.Engine3Info, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("Engine4Info", (Keys)Properties.Hotkeys.Default.Engine4Info, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("GroundSpeed", (Keys)Properties.Hotkeys.Default.GroundSpeed, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("Engine1Throttle", (Keys)Properties.Hotkeys.Default.Engine1Throttle, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("Engine2Throttle", (Keys)Properties.Hotkeys.Default.Engine2Throttle, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("Engine3Throttle", (Keys)Properties.Hotkeys.Default.Engine3Throttle, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("Engine4Throttle", (Keys)Properties.Hotkeys.Default.Engine4Throttle, onKeyPressed);
+                    
 
 
             }
@@ -1372,6 +1378,22 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 case "NearbyGround":
                     onTCASGround();
                     break;
+                case "Engine1Throttle":
+                    onEngineThrottleKey(1);
+                    break;
+
+                case "Engine2Throttle":
+                    onEngineThrottleKey(2);
+                    break;
+
+                case "Engine3Throttle":
+                    onEngineThrottleKey(3);
+                    break;
+
+                case "Engine4Throttle":
+                    onEngineThrottleKey(4);
+                    break;
+
                 case "Engine1Info":
                     onEngineInfoKey(1);
                     break;
@@ -1388,9 +1410,56 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             }
         }
 
+        private void onEngineThrottleKey(int engine)
+        {
+            string throttleValue = null;
+            string thrustValue = null;
+            if (engine > Aircraft.num_engines.Value)
+            {
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Only {Aircraft.num_engines.Value} available. ");
+                return;
+            }
+            if (engine == 1)
+            {
+                double throttlePercent = (double)Aircraft.Engine1ThrottleLever.Value / 16384d * 100d;
+                double thrust = Aircraft.Engine1JetThrust.Value;
+                throttleValue = throttlePercent.ToString("F1");
+                thrustValue = Aircraft.Engine1JetThrust.Value.ToString("F0");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 1: {throttleValue} percent, {thrustValue} pounds thrust.");
+            }
+            if (engine == 2)
+            {
+                double throttlePercent = (double)Aircraft.Engine2ThrottleLever.Value / 16384d * 100d;
+                throttleValue = throttlePercent.ToString("F1");
+                thrustValue = Aircraft.Engine2JetThrust.Value.ToString("F0");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 2: {throttleValue} percent, {thrustValue} pounds thrust.");
+            }
+            if (engine == 3)
+            {
+                double throttlePercent = (double)Aircraft.Engine3ThrottleLever.Value / 16384d * 100d;
+                throttleValue = throttlePercent.ToString("F1");
+                thrustValue = Aircraft.Engine3JetThrust.Value.ToString("F0");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 3: {throttleValue} percent, {thrustValue} pounds thrust.");
+            }
+            if (engine == 4)
+            {
+                double throttlePercent = (double)Aircraft.Engine4ThrottleLever.Value / 16384d * 100d;
+                throttleValue = throttlePercent.ToString("F1");
+                thrustValue = Aircraft.Engine4JetThrust.Value.ToString("F0");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 4: {throttleValue} percent, {thrustValue} pounds thrust.");
+
+            }
+
+
+
+        }
+
         private void onGroundSpeedKey()
         {
-            Tolk.Output($"{GroundSpeed} knotts ground speed");
+            var gaugeName = "Ground speed";
+            var gaugeValue = GroundSpeed.ToString();
+            var isGauge = true;
+            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
         }
 
         private void onRepeatLastSimconnectMessage()
@@ -1989,9 +2058,12 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         private void onMachKey()
         {
             double mach = (double)Aircraft.AirspeedMach.Value / 20480d;
-            Tolk.Output("mach " + mach.ToString("f2"));
+            var gaugeName = "Mach";
+            var isGauge = true;
+            var gaugeValue = mach.ToString("F2");
+            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
 
-        }
+    }
 
         private void onTASKey()
         {

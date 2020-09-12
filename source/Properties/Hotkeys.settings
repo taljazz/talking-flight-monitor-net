@@ -134,5 +134,17 @@
     <Setting Name="GroundSpeed" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">U</Value>
     </Setting>
+    <Setting Name="Engine1Throttle" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Ctrl+1</Value>
+    </Setting>
+    <Setting Name="Engine2Throttle" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Ctrl+2</Value>
+    </Setting>
+    <Setting Name="Engine3Throttle" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Ctrl+3</Value>
+    </Setting>
+    <Setting Name="Engine4Throttle" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Ctrl+4</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

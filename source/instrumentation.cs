@@ -27,6 +27,7 @@ using TimeZoneConverter;
 using System.Diagnostics;
 using System.Reflection;
 using System.ServiceModel.Security;
+using System.Drawing.Text;
 
 namespace tfm
 {
@@ -105,7 +106,11 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         };
 
         static bool FirstRun = true;
+        private string nextWaypoint;
+        private bool waypointTransition;
+
         // flags for tfm features   
+
         private bool FlightFollowingEnabled;
         private bool InstrumentationEnabled;
         private bool SimConnectMessagesEnabled;
@@ -682,6 +687,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         private bool gsDetected;
         private bool hasLocaliser;
         private bool hasGlideSlope;
+        private int waypointLoopCount;
 
         public Instrumentation()
         {
@@ -818,7 +824,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 ReadSpoilers();
                 ReadTrim();
                 ReadAltimeter();
-                ReadNextWaypoint();
+                NextWaypoint();
                 ReadLights();
                 ReadDoors();
                 if (Properties.Settings.Default.ReadILS) ReadILSInfo();
@@ -1002,13 +1008,32 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             Transponder = txHelper.ToInteger();
 
         }
-        private void ReadNextWaypoint(bool TriggeredByHotkey = false)
+        private void NextWaypoint()
         {
-            if (Aircraft.NextWPName.ValueChanged || TriggeredByHotkey)
+            // convert distance to nautical miles
+            double dist = Aircraft.NextWPDistance.Value * 0.00053995D;
+            
+            if (waypointTransition == true && dist > 5)
             {
-                string name = Aircraft.NextWPName.Value;
-                // convert distance to nautical miles
-                double dist = Aircraft.NextWPDistance.Value * 0.00053995D;
+                ReadWayPoint();
+                waypointTransition = false;
+                return;
+            }
+            if (Aircraft.NextWPName.ValueChanged)
+            {
+                if (dist <= 4)
+                {
+                    waypointTransition = true;
+                    return;
+                }
+            }
+            
+        }
+        
+        private void ReadWayPoint()
+            {
+            double dist = Aircraft.NextWPDistance.Value * 0.00053995D;
+            string name = Aircraft.NextWPName.Value;
                 string strDist = dist.ToString("F0");
                 TimeSpan TimeEnroute = TimeSpan.FromSeconds(Aircraft.NextWPETE.Value);
                 double baring = Aircraft.ConvertRadiansToDegrees((double)Aircraft.NextWPBaring.Value);
@@ -1022,9 +1047,8 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 {
                     strTime = string.Format("{0:%s} seconds", TimeEnroute);
                 }
-                fireOnScreenReaderOutputEvent(isGauge: false, output:$"Next waypoint: {name}.\nDistance: {strDist} nautical miles.\nBaring: {strBaring} degrees.\n{strTime}");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Next waypoint: {name}.\nDistance: {strDist} nautical miles.\nBaring: {strBaring} degrees.\n{strTime}");
             }
-        }
         private void ReadLights()
         {
             // read when aircraft lights change
@@ -2025,7 +2049,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
 
         private void onWaypointKey()
         {
-            ReadNextWaypoint(true);
+            ReadWayPoint();
         }
 
         private void onCityKey()

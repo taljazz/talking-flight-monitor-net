@@ -61,6 +61,7 @@
             this.ProceduresTabPage = new System.Windows.Forms.TabPage();
             this.FindTabPage = new System.Windows.Forms.TabPage();
             this.dbLoadWorker = new System.ComponentModel.BackgroundWorker();
+            this.KeyManagerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TFMMainMenu.SuspendLayout();
             this.TFMTabControl.SuspendLayout();
             this.AvionicsTabPage.SuspendLayout();
@@ -172,7 +173,8 @@
             this.ToolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.A2AManagerMenuItem,
             this.AircraftMenuItem,
-            this.SettingsMenuItem});
+            this.SettingsMenuItem,
+            this.KeyManagerMenuItem});
             this.ToolsMenu.Name = "ToolsMenu";
             this.ToolsMenu.ShortcutKeyDisplayString = "ALT+T";
             this.ToolsMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.T)));
@@ -187,7 +189,7 @@
             this.A2AManagerMenuItem.Name = "A2AManagerMenuItem";
             this.A2AManagerMenuItem.ShortcutKeyDisplayString = "CONTROL+M";
             this.A2AManagerMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.A2AManagerMenuItem.Size = new System.Drawing.Size(337, 26);
+            this.A2AManagerMenuItem.Size = new System.Drawing.Size(337, 30);
             this.A2AManagerMenuItem.Text = "A2A aircraft &manager";
             // 
             // AircraftMenuItem
@@ -198,7 +200,7 @@
             this.AircraftMenuItem.Name = "AircraftMenuItem";
             this.AircraftMenuItem.ShortcutKeyDisplayString = "CONTROL+I";
             this.AircraftMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.AircraftMenuItem.Size = new System.Drawing.Size(337, 26);
+            this.AircraftMenuItem.Size = new System.Drawing.Size(337, 30);
             this.AircraftMenuItem.Text = "A&ircraft...";
             // 
             // SettingsMenuItem
@@ -209,7 +211,7 @@
             this.SettingsMenuItem.Name = "SettingsMenuItem";
             this.SettingsMenuItem.ShortcutKeyDisplayString = "CONTROL+,";
             this.SettingsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemcomma)));
-            this.SettingsMenuItem.Size = new System.Drawing.Size(337, 26);
+            this.SettingsMenuItem.Size = new System.Drawing.Size(337, 30);
             this.SettingsMenuItem.Text = "&Settings...";
             this.SettingsMenuItem.Click += new System.EventHandler(this.SettingsMenuItem_Click);
             // 
@@ -438,6 +440,13 @@
             // 
             this.dbLoadWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.dbLoadWorker_DoWork);
             // 
+            // KeyManagerMenuItem
+            // 
+            this.KeyManagerMenuItem.Name = "KeyManagerMenuItem";
+            this.KeyManagerMenuItem.Size = new System.Drawing.Size(337, 30);
+            this.KeyManagerMenuItem.Text = "Keyboard Manager";
+            this.KeyManagerMenuItem.Click += new System.EventHandler(this.KeyManagerMenuItem_Click);
+            // 
             // TFMMainForm
             // 
             this.AccessibleDescription = "";
@@ -505,6 +514,7 @@
         private System.Windows.Forms.TabPage AvionicsExplorationTabPage;
         private System.Windows.Forms.PropertyGrid AutopilotPropertyGrid;
         private System.ComponentModel.BackgroundWorker dbLoadWorker;
+        private System.Windows.Forms.ToolStripMenuItem KeyManagerMenuItem;
     }
 }
 

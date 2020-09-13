@@ -15,6 +15,7 @@ using NHotkey.WindowsForms;
 using DavyKager;
 using System.Reflection;
 using tfm.Properties;
+using tfm.Keyboard_manager;
 
 namespace tfm
 {
@@ -615,6 +616,13 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             {
                 Tolk.Output("could not load airport database.");
             }
+
+        }
+
+        private void KeyManagerMenuItem_Click(object sender, EventArgs e)
+        {
+            frmKeyboardManager keyboardManager = new frmKeyboardManager();
+            keyboardManager.Show();
 
         }
     }//End TFMMainForm class.

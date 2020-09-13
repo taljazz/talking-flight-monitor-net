@@ -774,6 +774,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
 
                 // read any instruments that are toggles
                 ReadToggle(Aircraft.AvionicsMaster, Aircraft.AvionicsMaster.Value > 0, "avionics master", "active", "off");
+                ReadToggle(Aircraft.OnGround, Aircraft.OnGround.Value > 0, "", "on ground", "airborn ");
                 ReadToggle(Aircraft.PitotHeat, Aircraft.PitotHeat.Value > 0, "Pitot Heat", "on", "off");
                 ReadToggle(Aircraft.ParkingBrake, Aircraft.ParkingBrake.Value > 0, "Parking brake", "on", "off");
                 ReadToggle(Aircraft.AutoFeather, Aircraft.AutoFeather.Value > 0, "Auto Feather", "Active", "off");
@@ -1132,6 +1133,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             if (gsNeedle > 0 && gsNeedle < 119)
             {
                 gsPercent = gsNeedle / 119 * 100;
+                Logger.Debug($"gs: up {gsPercent}");
                 string strPercent = gsPercent.ToString("F0");
                 var gaugeName = "glide slope";
                 var gaugeValue = $"up {strPercent} percent. ";
@@ -1142,6 +1144,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             if (gsNeedle < 0 && gsNeedle > -119)
             {
                 gsPercent = Math.Abs(gsNeedle) / 119 * 100;
+                Logger.Debug($"gs: up {gsPercent}");
                 string strPercent = gsPercent.ToString("F0");
                 var gaugeName = "glide slope";
                 var gaugeValue = $"down {strPercent} percent. ";
@@ -1152,6 +1155,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             if (locNeedle > 0 && locNeedle < 127)
             {
                 locPercent = locNeedle / 127 * 100;
+                Logger.Debug($"loc: right {locPercent}, {locNeedle}");
                 string strPercent = locPercent.ToString("F0");
                 var gaugeName = "Localiser";
                 var gaugeValue = $"{strPercent} percent right. ";
@@ -1161,6 +1165,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             if (locNeedle < 0 && locNeedle > -127)
             {
                 locPercent = Math.Abs(locNeedle) / 127 * 100;
+                Logger.Debug($"loc: left {locPercent}");
                 string strPercent = locPercent.ToString("F0");
                 var gaugeName = "Localiser";
                 var gaugeValue = $"{strPercent} percent left. ";
@@ -1829,7 +1834,17 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
 
         private void onToggleILSKey()
         {
-            Tolk.Output("not yet implemented.");
+            if (Properties.Settings.Default.ReadILS == true)
+            {
+                Properties.Settings.Default.ReadILS = false;
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Read ILS disabled");
+            }
+            else
+            {
+                Properties.Settings.Default.ReadILS = true;
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Read ILS enabled");
+
+            }
         }
 
         private void onGPWSKey()

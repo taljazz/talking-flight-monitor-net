@@ -34,6 +34,9 @@ namespace tfm
         public static  Offset<int> GroundAltitude = new Offset<int>(0x0020);
         public static  Offset<uint> SpoilersArm = new Offset<uint>(0x0bcc);
         public static  Offset<uint> Spoilers = new Offset<uint>(0x0bd0);
+        public static Offset<byte> SeatbeltSign = new Offset<byte>(0x341d);
+        public static Offset<byte> NoSmokingSign = new Offset<byte>(0x341c);
+
         public static  Offset<uint> AvionicsMaster = new Offset<uint>(0x2e80);
         public static  Offset<uint> ApMaster = new Offset<uint>(0x07bc);
         public static  Offset<uint> ApNavLock = new Offset<uint>(0x07c4);

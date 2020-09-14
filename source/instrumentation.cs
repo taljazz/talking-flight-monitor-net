@@ -774,6 +774,8 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
 
                 // read any instruments that are toggles
                 ReadToggle(Aircraft.AvionicsMaster, Aircraft.AvionicsMaster.Value > 0, "avionics master", "active", "off");
+                ReadToggle(Aircraft.SeatbeltSign, Aircraft.SeatbeltSign.Value > 0, "seatbelt sign", "on", "off");
+                ReadToggle(Aircraft.NoSmokingSign, Aircraft.NoSmokingSign.Value > 0, "no smoking sign", "on", "off");
                 ReadToggle(Aircraft.OnGround, Aircraft.OnGround.Value > 0, "", "on ground", "airborn ");
                 ReadToggle(Aircraft.PitotHeat, Aircraft.PitotHeat.Value > 0, "Pitot Heat", "on", "off");
                 ReadToggle(Aircraft.ParkingBrake, Aircraft.ParkingBrake.Value > 0, "Parking brake", "on", "off");

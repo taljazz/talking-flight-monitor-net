@@ -32,8 +32,6 @@
             this.lblGeonames = new System.Windows.Forms.Label();
             this.txtGeonames = new System.Windows.Forms.TextBox();
             this.chkMetric = new System.Windows.Forms.CheckBox();
-            this.lblCommandKey = new System.Windows.Forms.Label();
-            this.txtCommandKey = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,8 +40,6 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.txtCommandKey, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.lblCommandKey, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.lblGeonames, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtGeonames, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.chkMetric, 0, 1);
@@ -105,7 +101,5 @@
         private System.Windows.Forms.Label lblGeonames;
         private System.Windows.Forms.TextBox txtGeonames;
         private System.Windows.Forms.CheckBox chkMetric;
-        private System.Windows.Forms.TextBox txtCommandKey;
-        private System.Windows.Forms.Label lblCommandKey;
     }
 }

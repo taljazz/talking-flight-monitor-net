@@ -27,6 +27,9 @@ namespace tfm
         {
             InitializeComponent();
             Aircraft.InitOffsets();
+            // upgrade settings
+            Properties.Settings.Default.Upgrade();
+
             inst.ScreenReaderOutput += onScreenReaderOutput;
             // Start the connection timer to look for a flight sim
             this.timerConnection.Start();

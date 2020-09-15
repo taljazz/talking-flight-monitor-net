@@ -29,6 +29,11 @@ namespace tfm
             Aircraft.InitOffsets();
             // upgrade settings
             Properties.Settings.Default.Upgrade();
+            if (Properties.Settings.Default.GeonamesUsername == "")
+            {
+                MessageBox.Show("Geonames username has not been configured. Flight following features will not function.\nGo to the General section in settings to add your Geonames user name\n", "error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
 
             inst.ScreenReaderOutput += onScreenReaderOutput;
             // Start the connection timer to look for a flight sim

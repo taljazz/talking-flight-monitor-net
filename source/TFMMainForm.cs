@@ -625,5 +625,27 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             keyboardManager.Show();
 
         }
+
+        private void ToolsMenu_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CommandKeyMenuItem_Click(object sender, EventArgs e)
+        {
+            if (inst.CommandKeyEnabled)
+            {
+                inst.CommandKeyEnabled = false;
+                inst.ResetHotkeys();
+                Tolk.Output("command key disabled");
+            }
+            else
+            {
+                inst.CommandKeyEnabled = true;
+                inst.ResetHotkeys();
+                Tolk.Output("command key enabled");
+
+            }
+        }
     }//End TFMMainForm class.
 } //End TFM namespace.

@@ -679,8 +679,11 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
 
             }
         }
+
+        public bool CommandKeyEnabled = true;
         
         private int attitudeModeSelect;
+        
         private int RunwayGuidanceModeSelect;
         private double oldPitch;
         private string oldTimezone;
@@ -1359,10 +1362,12 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 // populate a list of hotkeys, so we can clear them later.
                 foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
                 {
-                    if (s.Name == "command") continue;
+                    // if (s.Name == "command") continue;
                     hotkeys.Add(s.Name);
                 }
                 // hotkey definitions
+                // define the command key here so we can disable it if someone presses it twice
+                HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("agl", (Keys)Properties.Hotkeys.Default.agl, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("asl", (Keys)Properties.Hotkeys.Default.asl, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("heading", (Keys)Properties.Hotkeys.Default.heading, onKeyPressed);
@@ -1426,7 +1431,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         {
 
             e.Handled = true;
-            ResetHotkeys();
+            
             switch (e.Name)
             {
                 case "asl":
@@ -1435,6 +1440,11 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 case "agl":
                     onAGLKey();
                     break;
+                case "command":
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "command key disabled.");
+                    CommandKeyEnabled = false;
+                    break;
+
                 case "heading":
                     onHeadingKey();
                     break;
@@ -1578,6 +1588,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                     break;
 
             }
+            ResetHotkeys();
         }
 
         private void onEngineThrottleKey(int engine)
@@ -2286,13 +2297,18 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
         }
 
-        private void ResetHotkeys()
+        public void ResetHotkeys()
         {
+            HotkeyManager.Current.Remove("command");
             foreach (string k in hotkeys)
             {
                 HotkeyManager.Current.Remove(k);
             }
-            HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
+            if (CommandKeyEnabled)
+            {
+                HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
+            }
+            
         }
 
 

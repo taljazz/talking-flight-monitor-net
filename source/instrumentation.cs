@@ -795,6 +795,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 ReadToggle(Aircraft.ApWingLeveler, Aircraft.ApWingLeveler.Value > 0, "Wing leveler", "active", "off");
                 ReadToggle(Aircraft.ApAutoRudder, Aircraft.ApAutoRudder.Value > 0, "Auto rudder", "active", "off");
                 ReadToggle(Aircraft.ApApproachHold, Aircraft.ApApproachHold.Value > 0, "approach mode", "active", "off");
+                ReadToggle(Aircraft.ApGlideSlopeHold, Aircraft.ApGlideSlopeHold.Value > 0, "Glide slope hold", "active", "off");
                 ReadToggle(Aircraft.ApSpeedHold, Aircraft.ApSpeedHold.Value > 0, "Airspeed hold", "active", "off");
                 ReadToggle(Aircraft.ApMachHold, Aircraft.ApMachHold.Value > 0, "Mach hold", "Active", "off");
                 ReadToggle(Aircraft.PropSync, Aircraft.PropSync.Value > 0, "Propeller Sync", "active", "off");
@@ -822,6 +823,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 ReadLandingGear();
                 if (Properties.Settings.Default.ReadAutopilot) ReadAutopilotInstruments();
                 if (Properties.Settings.Default.ReadGroundSpeed) ReadGroundSpeed();
+                readAutopilotAltitude();
                 if (Properties.Settings.Default.AltitudeAnnouncements) ReadAltitudeAnnouncement();
                 if (Properties.Settings.Default.ReadSimconnectMessages) ReadSimConnectMessages();
                 ReadTransponder();
@@ -1131,51 +1133,62 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
 
         private void onILSTimerTick(object sender, ElapsedEventArgs e)
         {
-            sbyte gsNeedle = Aircraft.Nav1GSNeedle.Value;
-            sbyte locNeedle = Aircraft.Nav1LocNeedle.Value;
+            double gsNeedle = (double)Aircraft.Nav1GSNeedle.Value;
+            double locNeedle = (double)Aircraft.Nav1LocNeedle.Value;
             double locPercent;
             double gsPercent;
-            if (gsNeedle > 0 && gsNeedle < 119)
+            // if on ground, stop reading ILS values
+            if (Aircraft.OnGround.Value == 1)
             {
-                gsPercent = gsNeedle / 119 * 100;
-                Logger.Debug($"gs: up {gsPercent}");
-                string strPercent = gsPercent.ToString("F0");
-                var gaugeName = "glide slope";
-                var gaugeValue = $"up {strPercent} percent. ";
-                var isGauge = true;
-                Tolk.Output(gaugeValue);
+                ilsTimer.Enabled = false;
+                return;
+            }
+            // only read ils when approach mode is on
+            if (Aircraft.ApApproachHold.Value == 1)
+            {
+                if (gsNeedle > 0 && gsNeedle < 119)
+                {
+                    gsPercent = gsNeedle / 119 * 100;
+                    Logger.Debug($"gs: up {gsPercent}");
+                    string strPercent = gsPercent.ToString("F0");
+                    var gaugeName = "glide slope";
+                    var gaugeValue = $"up {strPercent} percent. ";
+                    var isGauge = true;
+                    Tolk.Output(gaugeValue);
 
-            }
-            if (gsNeedle < 0 && gsNeedle > -119)
-            {
-                gsPercent = Math.Abs(gsNeedle) / 119 * 100;
-                Logger.Debug($"gs: up {gsPercent}");
-                string strPercent = gsPercent.ToString("F0");
-                var gaugeName = "glide slope";
-                var gaugeValue = $"down {strPercent} percent. ";
-                var isGauge = true;
-                Tolk.Output(gaugeValue);
+                }
+                if (gsNeedle < 0 && gsNeedle > -119)
+                {
+                    gsPercent = Math.Abs(gsNeedle) / 119 * 100;
+                    Logger.Debug($"gs: up {gsPercent}");
+                    string strPercent = gsPercent.ToString("F0");
+                    var gaugeName = "glide slope";
+                    var gaugeValue = $"down {strPercent} percent. ";
+                    var isGauge = true;
+                    Tolk.Output(gaugeValue);
 
-            }
-            if (locNeedle > 0 && locNeedle < 127)
-            {
-                locPercent = locNeedle / 127 * 100;
-                Logger.Debug($"loc: right {locPercent}, {locNeedle}");
-                string strPercent = locPercent.ToString("F0");
-                var gaugeName = "Localiser";
-                var gaugeValue = $"{strPercent} percent right. ";
-                var isGauge = true;
-                Tolk.Output(gaugeValue);
-            }
-            if (locNeedle < 0 && locNeedle > -127)
-            {
-                locPercent = Math.Abs(locNeedle) / 127 * 100;
-                Logger.Debug($"loc: left {locPercent}");
-                string strPercent = locPercent.ToString("F0");
-                var gaugeName = "Localiser";
-                var gaugeValue = $"{strPercent} percent left. ";
-                var isGauge = true;
-                Tolk.Output(gaugeValue);
+                }
+                if (locNeedle > 0 && locNeedle < 127)
+                {
+                    locPercent = locNeedle / 127 * 100;
+                    Logger.Debug($"loc: right {locPercent}, {locNeedle}");
+                    string strPercent = locPercent.ToString("F0");
+                    var gaugeName = "Localiser";
+                    var gaugeValue = $"{strPercent} percent right. ";
+                    var isGauge = true;
+                    Tolk.Output(gaugeValue);
+                }
+                if (locNeedle < 0 && locNeedle > -127)
+                {
+                    locPercent = Math.Abs(locNeedle) / 127 * 100;
+                    Logger.Debug($"loc: left {locPercent}");
+                    string strPercent = locPercent.ToString("F0");
+                    var gaugeName = "Localiser";
+                    var gaugeValue = $"{strPercent} percent left. ";
+                    var isGauge = true;
+                    Tolk.Output(gaugeValue);
+                }
+
             }
         }
 
@@ -1253,16 +1266,20 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             {
                 Tolk.Output("Heading: " + ApHeading.ToString());
             }
-            // Altitude
-            if (Aircraft.ApAltitude.ValueChanged)
-            {
-                Tolk.Output($"Altitude set to {ApAltitude} feet. ");
-            }
             // airspeed
             if (Aircraft.ApAirspeed.ValueChanged)
             {
                 Tolk.Output($"{ApAirspeed} knotts.");
             }
+        }
+        private void readAutopilotAltitude()
+        {
+            // Altitude
+            if (Aircraft.ApAltitude.ValueChanged)
+            {
+                Tolk.Output($"Altitude set to {ApAltitude} feet. ");
+            }
+
         }
         public void ReadGroundSpeed()
         {
@@ -1850,6 +1867,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             if (Properties.Settings.Default.ReadILS == true)
             {
                 Properties.Settings.Default.ReadILS = false;
+                ilsTimer.Enabled = false;
                 fireOnScreenReaderOutputEvent(isGauge: false, output: "Read ILS disabled");
             }
             else

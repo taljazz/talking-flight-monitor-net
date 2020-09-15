@@ -52,6 +52,7 @@ namespace tfm
         public static  Offset<short> ApVerticalSpeed = new Offset<short>(0x07f2);
         public static  Offset<uint> ApNavGPS = new Offset<uint>(0x132c);
         public static  Offset<uint> ApApproachHold = new Offset<uint>(0x0800);
+        public static  Offset<uint> ApGlideSlopeHold = new Offset<uint>(0x07fc);
         public static  Offset<uint> ApFlightDirector = new Offset<uint>(0x2ee0);
         public static  Offset<double> ApFlightDirectorPitch = new Offset<double>(0x2ee8);
         public static  Offset<double> ApFlightDirectorBank = new Offset<double>(0x2ef0);

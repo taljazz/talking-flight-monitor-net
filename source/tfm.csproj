@@ -99,6 +99,12 @@
     <Compile Include="CachedSound.cs" />
     <Compile Include="CachedSoundSampleProvider.cs" />
     <Compile Include="Events\ScreenReaderOutputEventArgs.cs" />
+    <Compile Include="frmKeyboardHelp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmKeyboardHelp.Designer.cs">
+      <DependentUpon>frmKeyboardHelp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Keyboard manager\frmKeyboardManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +154,9 @@
     <Compile Include="SineWaveProvider.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmKeyboardHelp.resx">
+      <DependentUpon>frmKeyboardHelp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Keyboard manager\frmKeyboardManager.resx">
       <DependentUpon>frmKeyboardManager.cs</DependentUpon>

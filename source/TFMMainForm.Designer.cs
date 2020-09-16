@@ -44,6 +44,7 @@
             this.AircraftMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.KeyManagerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CommandKeyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ReportIssueMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,7 +63,7 @@
             this.ProceduresTabPage = new System.Windows.Forms.TabPage();
             this.FindTabPage = new System.Windows.Forms.TabPage();
             this.dbLoadWorker = new System.ComponentModel.BackgroundWorker();
-            this.CommandKeyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hotkeyHelpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TFMMainMenu.SuspendLayout();
             this.TFMTabControl.SuspendLayout();
             this.AvionicsTabPage.SuspendLayout();
@@ -192,7 +193,7 @@
             this.A2AManagerMenuItem.Name = "A2AManagerMenuItem";
             this.A2AManagerMenuItem.ShortcutKeyDisplayString = "CONTROL+M";
             this.A2AManagerMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.A2AManagerMenuItem.Size = new System.Drawing.Size(381, 30);
+            this.A2AManagerMenuItem.Size = new System.Drawing.Size(450, 30);
             this.A2AManagerMenuItem.Text = "A2A aircraft &manager";
             // 
             // AircraftMenuItem
@@ -203,7 +204,7 @@
             this.AircraftMenuItem.Name = "AircraftMenuItem";
             this.AircraftMenuItem.ShortcutKeyDisplayString = "CONTROL+I";
             this.AircraftMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.AircraftMenuItem.Size = new System.Drawing.Size(381, 30);
+            this.AircraftMenuItem.Size = new System.Drawing.Size(450, 30);
             this.AircraftMenuItem.Text = "A&ircraft...";
             // 
             // SettingsMenuItem
@@ -214,16 +215,26 @@
             this.SettingsMenuItem.Name = "SettingsMenuItem";
             this.SettingsMenuItem.ShortcutKeyDisplayString = "CONTROL+,";
             this.SettingsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemcomma)));
-            this.SettingsMenuItem.Size = new System.Drawing.Size(381, 30);
+            this.SettingsMenuItem.Size = new System.Drawing.Size(450, 30);
             this.SettingsMenuItem.Text = "&Settings...";
             this.SettingsMenuItem.Click += new System.EventHandler(this.SettingsMenuItem_Click);
             // 
             // KeyManagerMenuItem
             // 
             this.KeyManagerMenuItem.Name = "KeyManagerMenuItem";
-            this.KeyManagerMenuItem.Size = new System.Drawing.Size(381, 30);
+            this.KeyManagerMenuItem.Size = new System.Drawing.Size(450, 30);
             this.KeyManagerMenuItem.Text = "Keyboard Manager";
             this.KeyManagerMenuItem.Click += new System.EventHandler(this.KeyManagerMenuItem_Click);
+            // 
+            // CommandKeyMenuItem
+            // 
+            this.CommandKeyMenuItem.CheckOnClick = true;
+            this.CommandKeyMenuItem.Name = "CommandKeyMenuItem";
+            this.CommandKeyMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.C)));
+            this.CommandKeyMenuItem.Size = new System.Drawing.Size(450, 30);
+            this.CommandKeyMenuItem.Text = "Enable/Disable command key";
+            this.CommandKeyMenuItem.Click += new System.EventHandler(this.CommandKeyMenuItem_Click);
             // 
             // HelpMenu
             // 
@@ -232,7 +243,8 @@
             this.HelpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.WebsiteMenuItem,
             this.ReportIssueMenuItem,
-            this.AboutMenuItem});
+            this.AboutMenuItem,
+            this.hotkeyHelpMenuItem});
             this.HelpMenu.Name = "HelpMenu";
             this.HelpMenu.ShortcutKeyDisplayString = "ALT+H";
             this.HelpMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.H)));
@@ -247,7 +259,7 @@
             this.WebsiteMenuItem.Name = "WebsiteMenuItem";
             this.WebsiteMenuItem.ShortcutKeyDisplayString = "CONTROL+W";
             this.WebsiteMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.WebsiteMenuItem.Size = new System.Drawing.Size(337, 26);
+            this.WebsiteMenuItem.Size = new System.Drawing.Size(337, 30);
             this.WebsiteMenuItem.Text = "Visit &website";
             this.WebsiteMenuItem.Click += new System.EventHandler(this.WebsiteMenuItem_Click);
             // 
@@ -260,7 +272,7 @@
             this.ReportIssueMenuItem.ShortcutKeyDisplayString = "CONTROL+SHIFT+I";
             this.ReportIssueMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.I)));
-            this.ReportIssueMenuItem.Size = new System.Drawing.Size(337, 26);
+            this.ReportIssueMenuItem.Size = new System.Drawing.Size(337, 30);
             this.ReportIssueMenuItem.Text = "Report an &issue";
             this.ReportIssueMenuItem.Click += new System.EventHandler(this.ReportIssueMenuItem_Click);
             // 
@@ -270,7 +282,7 @@
             this.AboutMenuItem.AccessibleName = "About...";
             this.AboutMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AboutMenuItem.Name = "AboutMenuItem";
-            this.AboutMenuItem.Size = new System.Drawing.Size(337, 26);
+            this.AboutMenuItem.Size = new System.Drawing.Size(337, 30);
             this.AboutMenuItem.Text = "&About...";
             this.AboutMenuItem.Click += new System.EventHandler(this.AboutMenuItem_Click);
             // 
@@ -450,15 +462,13 @@
             // 
             this.dbLoadWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.dbLoadWorker_DoWork);
             // 
-            // CommandKeyMenuItem
+            // hotkeyHelpMenuItem
             // 
-            this.CommandKeyMenuItem.CheckOnClick = true;
-            this.CommandKeyMenuItem.Name = "CommandKeyMenuItem";
-            this.CommandKeyMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.C)));
-            this.CommandKeyMenuItem.Size = new System.Drawing.Size(450, 30);
-            this.CommandKeyMenuItem.Text = "Enable/Disable command key";
-            this.CommandKeyMenuItem.Click += new System.EventHandler(this.CommandKeyMenuItem_Click);
+            this.hotkeyHelpMenuItem.Name = "hotkeyHelpMenuItem";
+            this.hotkeyHelpMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F1)));
+            this.hotkeyHelpMenuItem.Size = new System.Drawing.Size(337, 30);
+            this.hotkeyHelpMenuItem.Text = "Hotkey help";
+            this.hotkeyHelpMenuItem.Click += new System.EventHandler(this.hotkeyHelpMenuItem_Click);
             // 
             // TFMMainForm
             // 
@@ -529,6 +539,7 @@
         private System.ComponentModel.BackgroundWorker dbLoadWorker;
         private System.Windows.Forms.ToolStripMenuItem KeyManagerMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CommandKeyMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hotkeyHelpMenuItem;
     }
 }
 

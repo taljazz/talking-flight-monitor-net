@@ -655,5 +655,12 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
 
             }
         }
+
+        private void hotkeyHelpMenuItem_Click(object sender, EventArgs e)
+        {
+            frmKeyboardHelp keyboardHelp = new frmKeyboardHelp();
+            keyboardHelp.ShowDialog();
+
+        }
     }//End TFMMainForm class.
 } //End TFM namespace.

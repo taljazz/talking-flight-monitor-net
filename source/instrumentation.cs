@@ -70,6 +70,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         private static System.Timers.Timer AttitudeTimer;
         private static System.Timers.Timer flightFollowingTimer;
         private static System.Timers.Timer ilsTimer = new System.Timers.Timer(5000);
+        private static System.Timers.Timer waypointTransitionTimer = new System.Timers.Timer(5000);
         private double HdgRight;
         private double HdgLeft;
 
@@ -691,6 +692,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         private bool hasLocaliser;
         private bool hasGlideSlope;
         private int waypointLoopCount;
+        private bool readWaypointFlag;
 
         public Instrumentation()
         {
@@ -712,9 +714,10 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             runwayGuidanceEnabled = false;
 
 
-            // hook up the event for the groundspeed and ILS timer so we can enable it later
+            // hook up events for timers
             GroundSpeedTimer.Elapsed += onGroundSpeedTimerTick;
             ilsTimer.Elapsed += onILSTimerTick;
+            waypointTransitionTimer.Elapsed += onWaypointTransitionTimerTick;
             // start the flight following timer if it is enabled in settings
             SetupFlightFollowing();
             // populate the dictionary for the altitude callout flags
@@ -725,7 +728,12 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
 
         }
 
-        
+        private void onWaypointTransitionTimerTick(object sender, ElapsedEventArgs e)
+        {
+            waypointTransition = false;
+            readWaypointFlag = true;
+        }
+
         public void SetupFlightFollowing()
         {
             flightFollowingTimer = new System.Timers.Timer(TimeSpan.FromMinutes(Properties.Settings.Default.FlightFollowingTimeInterval).TotalMilliseconds);
@@ -1012,24 +1020,22 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             Transponder = txHelper.ToInteger();
 
         }
+        
         private void NextWaypoint()
         {
             // convert distance to nautical miles
             double dist = Aircraft.NextWPDistance.Value * 0.00053995D;
             
-            if (waypointTransition == true && dist > 5)
+            if (waypointTransition == false && readWaypointFlag == true)
             {
                 ReadWayPoint();
-                waypointTransition = false;
                 return;
             }
             if (Aircraft.NextWPName.ValueChanged)
             {
-                if (dist <= 4)
-                {
-                    waypointTransition = true;
-                    return;
-                }
+                waypointTransitionTimer.AutoReset = false;
+                waypointTransitionTimer.Start();
+
             }
             
         }
@@ -1043,6 +1049,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 double baring = Aircraft.ConvertRadiansToDegrees((double)Aircraft.NextWPBaring.Value);
                 string strBaring = baring.ToString("F0");
                 string strTime = string.Format("{0:%h} hours, {0:%m} minutes, {0:%s} seconds", TimeEnroute);
+            readWaypointFlag = false;
                 if (TimeEnroute.Hours == 0)
                 {
                     strTime = string.Format("{0:%m} minutes, {0:%s} seconds", TimeEnroute);

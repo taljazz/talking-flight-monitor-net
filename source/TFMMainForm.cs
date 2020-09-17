@@ -53,7 +53,7 @@ namespace tfm
                 this.timerMain.Start();
                 // load airport database
                 Tolk.Output("loading airport database");
-                // dbLoadWorker.RunWorkerAsync();
+                dbLoadWorker.RunWorkerAsync();
             }
             catch
             {

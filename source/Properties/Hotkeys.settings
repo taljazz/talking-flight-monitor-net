@@ -146,5 +146,8 @@
     <Setting Name="Engine4Throttle" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+4</Value>
     </Setting>
+    <Setting Name="currentLocation" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+C</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

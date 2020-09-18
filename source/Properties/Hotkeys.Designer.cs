@@ -598,5 +598,17 @@ namespace tfm.Properties {
                 this["Engine4Throttle"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+C")]
+        public global::System.Windows.Forms.Keys currentLocation {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["currentLocation"]));
+            }
+            set {
+                this["currentLocation"] = value;
+            }
+        }
     }
 }

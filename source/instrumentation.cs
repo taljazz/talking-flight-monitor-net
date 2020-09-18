@@ -1388,6 +1388,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 // hotkey definitions
                 // define the command key here so we can disable it if someone presses it twice
                 HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("location", (Keys)Properties.Hotkeys.Default.currentLocation, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("agl", (Keys)Properties.Hotkeys.Default.agl, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("asl", (Keys)Properties.Hotkeys.Default.asl, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("heading", (Keys)Properties.Hotkeys.Default.heading, onKeyPressed);
@@ -1456,6 +1457,9 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             {
                 case "asl":
                     onASLKey();
+                    break;
+                case "location":
+                    onCurrentLocation();
                     break;
                 case "agl":
                     onAGLKey();
@@ -2371,6 +2375,58 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
             Tolk.Output($"N2: {Math.Round(N2)}. ");
         }
 
+        private void onCurrentLocation()
+        {
+            var database = FSUIPCConnection.AirportsDatabase;
+            database.SetReferenceLocation();
+                        FsGate currentGate = null;
+            FsTaxiway currentTaxiWay = null;
+            FsRunway currentRunway = null;
 
-    }
+            foreach (FsAirport airport in database.Airports)
+            {
+                foreach (FsGate gate in airport.Gates)
+                {
+                    if (gate.IsPlayerAtGate)
+                    {
+                        currentGate = gate;
+                        break;
+                    }
+                } // Loop gates.
+                foreach (FsRunway runway in airport.Runways)
+                {
+                    if (runway.IsPlayerOnRunway)
+                                            {
+                        currentRunway = runway;
+                        break;
+                    }
+                } //Loop through runways.
+                foreach (FsTaxiway taxiway in airport.Taxiways)
+                {
+                    if (taxiway.IsPlayerOnTaxiway)
+                    {
+                        currentTaxiWay = taxiway;
+                        break;
+                    }
+                } // Loop through taxiways.
+            } // loop through airports.
+            
+            if(currentTaxiWay != null)
+            {
+                Tolk.Output($"{currentTaxiWay.Name}@{currentTaxiWay.Airport.ICAO}");
+            }
+            else if(currentRunway != null)
+            {
+                Tolk.Output($"{currentRunway.ID.ToString()}@{currentRunway.Airport.ICAO}");
+            }
+            else if(currentGate != null)
+            {
+                Tolk.Output($"{currentGate.ID}@{currentGate.Airport.ICAO}");
+            }
+            else
+            {
+                Tolk.Output($"{Aircraft.aircraftLat.Value}, {Aircraft.aircraftLon.Value}");
+            }
+        }                    
+                    }
 }

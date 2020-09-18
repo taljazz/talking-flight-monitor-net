@@ -16,11 +16,15 @@ using DavyKager;
 using System.Reflection;
 using tfm.Properties;
 using tfm.Keyboard_manager;
+using NLog;
 
 namespace tfm
 {
     public partial class TFMMainForm : Form
     {
+        // get a logger object for this class
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         public Instrumentation inst = new Instrumentation();
         
         public TFMMainForm()
@@ -620,9 +624,10 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     Tolk.Output("Airport database loaded.");
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 Tolk.Output("could not load airport database.");
+                
             }
 
         }

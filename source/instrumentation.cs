@@ -34,9 +34,10 @@ namespace tfm
     public class Instrumentation
     {
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
-
+        // get a logger object for this class
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         // The event that handles speech/braille output.
-public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput;
+        public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput;
 
         // The virtual method for the event. Used as a shell and fired when needed.
         protected virtual void onScreenReaderOutput(ScreenReaderOutputEventArgs e)
@@ -693,18 +694,14 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
         private bool hasGlideSlope;
         private int waypointLoopCount;
         private bool readWaypointFlag;
+        private bool apuStarting;
+        private bool apuRunning;
+        private bool apuShuttingDown;
+        private bool apuOff = true;
 
         public Instrumentation()
         {
-            // set up logging
-            var LoggingConfig = new NLog.Config.LoggingConfiguration();
-            // Targets where to log to: File and Console
-            var logfile = new NLog.Targets.FileTarget("logfile") { FileName = "tfm.log" };
-            // Rules for mapping loggers to targets            
-            LoggingConfig.AddRule(LogLevel.Debug, LogLevel.Fatal, logfile);
-            // Apply config           
-            NLog.LogManager.Configuration = LoggingConfig;
-
+            
             Logger.Debug("initializing screen reader driver");
             Tolk.Load();
             var version = typeof(Instrumentation).Assembly.GetName().Version.Build;
@@ -841,6 +838,7 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 ReadDoors();
                 if (Properties.Settings.Default.ReadILS) ReadILSInfo();
                 ReadSimulationRate(TriggeredByKey : false);
+                readAPU();
                 // TODO: engine select
             }
             else
@@ -848,6 +846,41 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 fireOnScreenReaderOutputEvent(isGauge: false, output: "Current aircraft: " + Aircraft.AircraftName.Value);
                 DetectFuelTanks();
                 FirstRun = false;
+            }
+        }
+
+        private void readAPU()
+        {
+            double apuPercent = Math.Round((double)Aircraft.APUPercentage.Value);
+            if (Aircraft.APUPercentage.ValueChanged)
+            {
+                if (apuPercent > 4 && apuStarting == false && apuRunning == false && apuShuttingDown == false && apuOff == true)
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "A P U starting. ");
+                    apuStarting = true;
+                    apuOff = false;
+                }
+                if (apuPercent == 100 && apuStarting == true)
+                    {
+                    apuStarting = false;
+                    apuRunning = true;
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "A P U at 100 percent. ");
+                }
+                if (apuPercent < 100 && apuRunning == true)
+                {
+                    apuRunning = false;
+                    apuShuttingDown = true;
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "A P U shutting down. ");
+                }
+                if (apuPercent == 0 && apuOff == false)
+                {
+                    apuRunning = false;
+                    apuStarting = false;
+                    apuShuttingDown = false;
+                    apuOff = true;
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "A P U shut down. ");
+                }
+
             }
         }
 
@@ -1152,7 +1185,6 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 if (gsNeedle > 0 && gsNeedle < 119)
                 {
                     gsPercent = gsNeedle / 119 * 100;
-                    Logger.Debug($"gs: up {gsPercent}");
                     string strPercent = gsPercent.ToString("F0");
                     var gaugeName = "glide slope";
                     var gaugeValue = $"up {strPercent} percent. ";
@@ -1163,7 +1195,6 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 if (gsNeedle < 0 && gsNeedle > -119)
                 {
                     gsPercent = Math.Abs(gsNeedle) / 119 * 100;
-                    Logger.Debug($"gs: up {gsPercent}");
                     string strPercent = gsPercent.ToString("F0");
                     var gaugeName = "glide slope";
                     var gaugeValue = $"down {strPercent} percent. ";
@@ -1174,7 +1205,6 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 if (locNeedle > 0 && locNeedle < 127)
                 {
                     locPercent = locNeedle / 127 * 100;
-                    Logger.Debug($"loc: right {locPercent}, {locNeedle}");
                     string strPercent = locPercent.ToString("F0");
                     var gaugeName = "Localiser";
                     var gaugeValue = $"{strPercent} percent right. ";
@@ -1184,7 +1214,6 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                 if (locNeedle < 0 && locNeedle > -127)
                 {
                     locPercent = Math.Abs(locNeedle) / 127 * 100;
-                    Logger.Debug($"loc: left {locPercent}");
                     string strPercent = locPercent.ToString("F0");
                     var gaugeName = "Localiser";
                     var gaugeValue = $"{strPercent} percent left. ";
@@ -1330,13 +1359,11 @@ public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput
                     if (Aircraft.textMenu.IsMenu) // Check if it's a menu (true) or a simple message (false)
                     {
                         if (Aircraft.textMenu.ToString() == "") return;
-                        Logger.Debug("simconnect menu: " + Aircraft.textMenu.ToString());
                         fireOnScreenReaderOutputEvent(isGauge: false, output: Aircraft.textMenu.ToString());
                     }
                     else
                     {
                         if (Aircraft.textMenu.Message == "") return;
-                        Logger.Debug("simconnect message: " + Aircraft.textMenu.Message);
                         fireOnScreenReaderOutputEvent(isGauge: false, output: Aircraft.textMenu.Message);
                     }
 

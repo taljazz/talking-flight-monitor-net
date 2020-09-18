@@ -16,11 +16,16 @@ using DavyKager;
 using System.Reflection;
 using tfm.Properties;
 using tfm.Keyboard_manager;
+using NLog;
+using NLog.Config;
 
 namespace tfm
 {
     public partial class TFMMainForm : Form
     {
+        // get a logger object for this class
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         public Instrumentation inst = new Instrumentation();
         
         public TFMMainForm()
@@ -54,6 +59,12 @@ namespace tfm
                 // load airport database
                 Tolk.Output("loading airport database");
                 dbLoadWorker.RunWorkerAsync();
+                // write version info to the debug log
+                logger.Debug($"simulator version: {FSUIPCConnection.FlightSimVersionConnected.ToString()}");
+                logger.Debug($"FSUIPC version: {FSUIPCConnection.FSUIPCVersion.ToString()}");
+                logger.Debug($"FSUIPC .net DLL version: {FSUIPCConnection.DLLVersion.ToString()}");
+                
+
             }
             catch
             {
@@ -620,9 +631,10 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     Tolk.Output("Airport database loaded.");
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 Tolk.Output("could not load airport database.");
+                
             }
 
         }

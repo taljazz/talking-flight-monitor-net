@@ -1860,10 +1860,6 @@ namespace tfm
                 // set up panning provider, with the signal generator as input
                 pan = new PanningSampleProvider(wg.ToMono());
                 // we use an OffsetSampleProvider to allow playing beep tones
-                pulse = new OffsetSampleProvider(pan)
-                {
-                    Take = TimeSpan.FromMilliseconds(50),
-                };
                 driverOut = new WaveOutEvent();
                 mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
                 mixer.ReadFully = true;
@@ -1883,6 +1879,11 @@ namespace tfm
         }
         private void OnRunwayGuidanceTickEvent(Object source, ElapsedEventArgs e)
         {
+            pulse = new OffsetSampleProvider(pan)
+            {
+                Take = TimeSpan.FromMilliseconds(50),
+            };
+            mixer.RemoveAllMixerInputs();
             double hdg = (double)Math.Round(Aircraft.CompassHeading.Value);
             if (hdg > RunwayGuidanceTrackedHeading && hdg < HdgRight)
             {

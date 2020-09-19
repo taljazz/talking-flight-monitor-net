@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.ServiceModel.Security;
 using System.Drawing.Text;
+using System.Windows.Forms.VisualStyles;
 
 namespace tfm
 {
@@ -2378,28 +2379,165 @@ namespace tfm
         {
             double N1 = 0;
             double N2 = 0;
-            switch (eng)
+            double cht = 0;
+            double egt = 0;
+            double manifold = 0;
+            double rpm = 0;
+            bool metric = Properties.Settings.Default.UseMetric;
+            string units = null;
+            string output = null;
+            // check engine type. 0 - piston, 1- jet
+            if (Aircraft.EngineType.Value == 0)
             {
-                case 1:
-                    N1 = (double)Aircraft.Eng1N1.Value;
-                    N2 = (double)Aircraft.Eng1N2.Value;
-                    break;
-                case 2:
-                    N1 = (double)Aircraft.Eng2N1.Value;
-                    N2 = (double)Aircraft.Eng2N2.Value;
-                    break;
-                case 3:
-                    N1 = (double)Aircraft.Eng3N1.Value;
-                    N2 = (double)Aircraft.Eng3N2.Value;
-                    break;
-                case 4:
-                    N1 = (double)Aircraft.Eng4N1.Value;
-                    N2 = (double)Aircraft.Eng4N2.Value;
-                    break;
+                switch (eng)
+                {
+                    case 1:
+                        // FSUIPC represents EGT in degrees Rankine, so we need to convert
+                        egt = Aircraft.Engine1EGT.Value;
+                        if (metric == true)
+                        {
+                            egt = Math.Round((egt - 491.67) * 5d / 9d);
+                            units = "C";
+                        }
+                        else
+                        {
+                            egt = Math.Round(egt - 459.67);
+                            units = "F";
+                        }
+                        cht = Aircraft.Engine1CHT.Value;
+                        if (Properties.Settings.Default.UseMetric == true)
+                        {
+                            cht = Math.Round((cht - 32) * 5 / 9);
+                            units = "C";
+                        }
+                        else
+                        {
+                            cht = Math.Round(cht);
+                            units = "F";
+                        }
+                        rpm = Math.Round(Aircraft.Engine1RPM.Value);
+                        manifold = Aircraft.Engine1ManifoldPressure.Value / 1024;
+                        output = $"Engine 1: CHT: {cht} {units}, EGT: {egt} {units}, RPM: {rpm}, manifold: {manifold} inches. ";
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: output);
+                        break;
+
+                    case 2:
+                        // FSUIPC represents EGT in degrees Rankine, so we need to convert
+                        egt = Aircraft.Engine2EGT.Value;
+                        if (metric == true)
+                        {
+                            egt = Math.Round((egt - 491.67) * 5d / 9d);
+                            units = "C";
+                        }
+                        else
+                        {
+                            egt = Math.Round(egt - 459.67);
+                            units = "F";
+                        }
+                        cht = Aircraft.Engine2CHT.Value;
+                        if (Properties.Settings.Default.UseMetric == true)
+                        {
+                            cht = Math.Round((cht - 32) * 5 / 9);
+                            units = "C";
+                        }
+                        else
+                        {
+                            cht = Math.Round(cht);
+                            units = "F";
+                        }
+                        rpm = Math.Round(Aircraft.Engine2RPM.Value);
+                        manifold = Aircraft.Engine2ManifoldPressure.Value / 1024;
+                        output = $"Engine 2: CHT: {cht} {units}, EGT: {egt} {units}, RPM: {rpm}, manifold: {manifold} inches. ";
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: output);
+                        break;
+
+                    case 3:
+                        // FSUIPC represents EGT in degrees Rankine, so we need to convert
+                        egt = Aircraft.Engine3EGT.Value;
+                        if (metric == true)
+                        {
+                            egt = Math.Round((egt - 491.67) * 5d / 9d);
+                            units = "C";
+                        }
+                        else
+                        {
+                            egt = Math.Round(egt - 459.67);
+                            units = "F";
+                        }
+                        cht = Aircraft.Engine3CHT.Value;
+                        if (Properties.Settings.Default.UseMetric == true)
+                        {
+                            cht = Math.Round((cht - 32) * 5 / 9);
+                            units = "C";
+                        }
+                        else
+                        {
+                            cht = Math.Round(cht);
+                            units = "F";
+                        }
+                        rpm = Math.Round(Aircraft.Engine3RPM.Value);
+                        manifold = Aircraft.Engine3ManifoldPressure.Value / 1024;
+                        output = $"Engine 3: CHT: {cht} {units}, EGT: {egt} {units}, RPM: {rpm}, manifold: {manifold} inches. ";
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: output);
+                        break;
+
+                    case 4:
+                        // FSUIPC represents EGT in degrees Rankine, so we need to convert
+                        egt = Aircraft.Engine4EGT.Value;
+                        if (metric == true)
+                        {
+                            egt = Math.Round((egt - 491.67) * 5d / 9d);
+                            units = "C";
+                        }
+                        else
+                        {
+                            egt = Math.Round(egt - 459.67);
+                            units = "F";
+                        }
+                        cht = Aircraft.Engine4CHT.Value;
+                        if (Properties.Settings.Default.UseMetric == true)
+                        {
+                            cht = Math.Round((cht - 32) * 5 / 9);
+                            units = "C";
+                        }
+                        else
+                        {
+                            cht = Math.Round(cht);
+                            units = "F";
+                        }
+                        rpm = Math.Round(Aircraft.Engine4RPM.Value);
+                        manifold = Aircraft.Engine4ManifoldPressure.Value / 1024;
+                        output = $"Engine 4: CHT: {cht} {units}, EGT: {egt} {units}, RPM: {rpm}, manifold: {manifold} inches. ";
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: output);
+                        break;
+                }
             }
-            Tolk.Output($"Engine {eng}. ");
-            Tolk.Output($"N1: {Math.Round(N1)}. ");
-            Tolk.Output($"N2: {Math.Round(N2)}. ");
+            if (Aircraft.EngineType.Value == 1)
+            {
+                switch (eng)
+                {
+                    case 1:
+                        N1 = (double)Aircraft.Eng1N1.Value;
+                        N2 = (double)Aircraft.Eng1N2.Value;
+                        break;
+                    case 2:
+                        N1 = (double)Aircraft.Eng2N1.Value;
+                        N2 = (double)Aircraft.Eng2N2.Value;
+                        break;
+                    case 3:
+                        N1 = (double)Aircraft.Eng3N1.Value;
+                        N2 = (double)Aircraft.Eng3N2.Value;
+                        break;
+                    case 4:
+                        N1 = (double)Aircraft.Eng4N1.Value;
+                        N2 = (double)Aircraft.Eng4N2.Value;
+                        break;
+                }
+                Tolk.Output($"Engine {eng}. ");
+                Tolk.Output($"N1: {Math.Round(N1)}. ");
+                Tolk.Output($"N2: {Math.Round(N2)}. ");
+            }
+
         }
 
         private void onCurrentLocation()

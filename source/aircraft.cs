@@ -194,6 +194,24 @@ namespace tfm
         public static  Offset<double> GyroSuction = new Offset<double>(0x0b18);
         public static  Offset<byte> OilQuantity = new Offset<byte>(0x66c9);
         public static  Offset<string> AircraftName = new Offset<string>(0x3d00, 255);
+        public static Offset<byte> EngineType = new Offset<byte>(0x0609);
+        public static Offset<double> Engine1RPM = new Offset<double>(0x2400);
+        public static Offset<double> Engine2RPM = new Offset<double>(0x2500);
+        public static Offset<double> Engine3RPM = new Offset<double>(0x2600);
+        public static Offset<double> Engine4RPM = new Offset<double>(0x2700);
+        public static Offset<short> Engine1ManifoldPressure = new Offset<short>(0x08c0);
+        public static Offset<short> Engine2ManifoldPressure = new Offset<short>(0x0958);
+        public static Offset<short> Engine3ManifoldPressure = new Offset<short>(0x09f0);
+        public static Offset<short> Engine4ManifoldPressure = new Offset<short>(0x0a88);
+        public static Offset<double> Engine1CHT = new Offset<double>(0x08e8);
+        public static Offset<double> Engine2CHT = new Offset<double>(0x0980);
+        public static Offset<double> Engine3CHT = new Offset<double>(0x0a18);
+        public static Offset<double> Engine4CHT = new Offset<double>(0x0ab0);
+        public static Offset<double> Engine1EGT = new Offset<double>(0x3b70);
+        public static Offset<double> Engine2EGT = new Offset<double>(0x3ab0);
+        public static Offset<double> Engine3EGT = new Offset<double>(0x39f0);
+        public static Offset<double> Engine4EGT = new Offset<double>(0x3930);
+
         // atitude mode offsets
         public static Offset<int> AttitudePitch = new Offset<int>("attitude", 0x0578);
         public static Offset<int> AttitudeBank = new Offset<int>("attitude", 0x057c);

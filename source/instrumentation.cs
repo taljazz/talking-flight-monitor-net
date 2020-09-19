@@ -1327,6 +1327,11 @@ namespace tfm
             {
                 Tolk.Output($"{ApAirspeed} knotts.");
             }
+            // vertical speed
+            if (Aircraft.ApVerticalSpeed.ValueChanged)
+            {
+                Tolk.Output($"{Aircraft.ApVerticalSpeed.Value} feet per minute.");
+            }
         }
         private void readAutopilotAltitude()
         {

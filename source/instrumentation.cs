@@ -2602,15 +2602,15 @@ namespace tfm
             
             if(currentTaxiWay != null)
             {
-                Tolk.Output($"{currentTaxiWay.Name}@{currentTaxiWay.Airport.ICAO}");
+                Tolk.Output($"taxi way {currentTaxiWay.Name}@{currentTaxiWay.Airport.ICAO}");
             }
             else if(currentRunway != null)
             {
-                Tolk.Output($"{currentRunway.ID.ToString()}@{currentRunway.Airport.ICAO}");
+                Tolk.Output($"runway {currentRunway.ID.ToString()}@{currentRunway.Airport.ICAO}");
             }
             else if(currentGate != null)
             {
-                Tolk.Output($"{currentGate.ID}@{currentGate.Airport.ICAO}");
+                Tolk.Output($"gate {currentGate.ID}@{currentGate.Airport.ICAO}");
             }
             else
             {

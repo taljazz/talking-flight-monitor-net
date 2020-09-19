@@ -1439,7 +1439,7 @@ namespace tfm
                 // hotkey definitions
                 // define the command key here so we can disable it if someone presses it twice
                 HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("location", (Keys)Properties.Hotkeys.Default.currentLocation, onKeyPressed);
+                HotkeyManager.Current.AddOrReplace("currentLocation", (Keys)Properties.Hotkeys.Default.currentLocation, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("agl", (Keys)Properties.Hotkeys.Default.agl, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("asl", (Keys)Properties.Hotkeys.Default.asl, onKeyPressed);
                 HotkeyManager.Current.AddOrReplace("heading", (Keys)Properties.Hotkeys.Default.heading, onKeyPressed);
@@ -1509,7 +1509,7 @@ namespace tfm
                 case "asl":
                     onASLKey();
                     break;
-                case "location":
+                case "currentLocation":
                     onCurrentLocation();
                     break;
                 case "agl":

@@ -12,5 +12,7 @@ namespace tfm
         public string gaugeName { get; set; }
         public string gaugeValue { get; set; }
         public bool isGauge { get; set; }
+        public bool useSAPI { get; set; }
+        public bool textOutput { get; set; }
     } // end ScreenReaderOutputEventArgs
 } // End TFM namespace.

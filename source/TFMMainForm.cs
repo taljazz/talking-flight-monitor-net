@@ -18,7 +18,6 @@ using tfm.Properties;
 using tfm.Keyboard_manager;
 using NLog;
 using NLog.Config;
-
 namespace tfm
 {
     public partial class TFMMainForm : Form
@@ -56,6 +55,7 @@ namespace tfm
                 // If there was no problem, stop this timer and start the main timer
                 this.timerConnection.Stop();
                 this.timerMain.Start();
+                this.timerLowPriority.Start();
                 // load airport database
                 Tolk.Output("loading airport database");
                 dbLoadWorker.RunWorkerAsync();
@@ -124,8 +124,13 @@ namespace tfm
                 this.timerConnection.Start();
             }
         }
+        // second 200 MS timer for lower priority instruments, or instruments that don't work well on 100 MS
+        private void timerLowPriority_Tick(object sender, EventArgs e)
+        {
+            FSUIPCConnection.Process("LowPriority");
+            inst.ReadLowPriorityInstruments();
+        }
 
-        // This runs when the master avionics tick has been changed
 
         // Form is closing so stop all the timers and close FSUIPC Connection
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -615,8 +620,17 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             } // End gage output.
             else
             {
+                if (e.useSAPI == true)
+                {
+                    Tolk.PreferSAPI(true);
+                }
                 Tolk.Output(e.output);
-                OutputLogTextBox.Text += $"{e.output}\n";
+                Tolk.PreferSAPI(false);
+                if (e.textOutput == true)
+                {
+                    OutputLogTextBox.Text += $"{e.output}\n";
+                }
+
             } // end generic output
         } // End screenreader output event.
 
@@ -674,5 +688,7 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             keyboardHelp.ShowDialog();
 
         }
+
+
     }//End TFMMainForm class.
 } //End TFM namespace.

@@ -49,6 +49,7 @@
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ReportIssueMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hotkeyHelpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TFMTabControl = new System.Windows.Forms.TabControl();
             this.AvionicsTabPage = new System.Windows.Forms.TabPage();
             this.FlyModeComboBox = new System.Windows.Forms.ComboBox();
@@ -63,7 +64,7 @@
             this.ProceduresTabPage = new System.Windows.Forms.TabPage();
             this.FindTabPage = new System.Windows.Forms.TabPage();
             this.dbLoadWorker = new System.ComponentModel.BackgroundWorker();
-            this.hotkeyHelpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerLowPriority = new System.Windows.Forms.Timer(this.components);
             this.TFMMainMenu.SuspendLayout();
             this.TFMTabControl.SuspendLayout();
             this.AvionicsTabPage.SuspendLayout();
@@ -286,6 +287,14 @@
             this.AboutMenuItem.Text = "&About...";
             this.AboutMenuItem.Click += new System.EventHandler(this.AboutMenuItem_Click);
             // 
+            // hotkeyHelpMenuItem
+            // 
+            this.hotkeyHelpMenuItem.Name = "hotkeyHelpMenuItem";
+            this.hotkeyHelpMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F1)));
+            this.hotkeyHelpMenuItem.Size = new System.Drawing.Size(337, 30);
+            this.hotkeyHelpMenuItem.Text = "Hotkey help";
+            this.hotkeyHelpMenuItem.Click += new System.EventHandler(this.hotkeyHelpMenuItem_Click);
+            // 
             // TFMTabControl
             // 
             this.TFMTabControl.AccessibleName = "Primary tabs";
@@ -462,13 +471,10 @@
             // 
             this.dbLoadWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.dbLoadWorker_DoWork);
             // 
-            // hotkeyHelpMenuItem
+            // timerLowPriority
             // 
-            this.hotkeyHelpMenuItem.Name = "hotkeyHelpMenuItem";
-            this.hotkeyHelpMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F1)));
-            this.hotkeyHelpMenuItem.Size = new System.Drawing.Size(337, 30);
-            this.hotkeyHelpMenuItem.Text = "Hotkey help";
-            this.hotkeyHelpMenuItem.Click += new System.EventHandler(this.hotkeyHelpMenuItem_Click);
+            this.timerLowPriority.Interval = 1000;
+            this.timerLowPriority.Tick += new System.EventHandler(this.timerLowPriority_Tick);
             // 
             // TFMMainForm
             // 
@@ -540,6 +546,7 @@
         private System.Windows.Forms.ToolStripMenuItem KeyManagerMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CommandKeyMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hotkeyHelpMenuItem;
+        private System.Windows.Forms.Timer timerLowPriority;
     }
 }
 

@@ -50,13 +50,15 @@ namespace tfm
             } // End event callback.
         } // End onScreenReaderOutput method.
 
-        public void fireOnScreenReaderOutputEvent(string gaugeName = "",string gaugeValue = "",bool isGauge = false,string output = "")
+        public void fireOnScreenReaderOutputEvent(string gaugeName = "",string gaugeValue = "",bool isGauge = false,string output = "", bool textOutput = true, bool useSAPI = false)
         {
             ScreenReaderOutputEventArgs args = new ScreenReaderOutputEventArgs();
             args.output = output;
             args.gaugeName = gaugeName;
             args.gaugeValue = gaugeValue;
             args.isGauge = isGauge;
+            args.textOutput = textOutput;
+            args.useSAPI = useSAPI;
 
             this.onScreenReaderOutput(args);
         } // End event fire method.
@@ -704,6 +706,7 @@ namespace tfm
         {
             
             Logger.Debug("initializing screen reader driver");
+            Tolk.TrySAPI(true);
             Tolk.Load();
             var version = typeof(Instrumentation).Assembly.GetName().Version.Build;
             Tolk.Output($"Talking Flight Monitor test build {version}");
@@ -781,7 +784,6 @@ namespace tfm
                 ReadToggle(Aircraft.AvionicsMaster, Aircraft.AvionicsMaster.Value > 0, "avionics master", "active", "off");
                 ReadToggle(Aircraft.SeatbeltSign, Aircraft.SeatbeltSign.Value > 0, "seatbelt sign", "on", "off");
                 ReadToggle(Aircraft.NoSmokingSign, Aircraft.NoSmokingSign.Value > 0, "no smoking sign", "on", "off");
-                ReadToggle(Aircraft.OnGround, Aircraft.OnGround.Value > 0, "", "on ground", "airborn ");
                 ReadToggle(Aircraft.PitotHeat, Aircraft.PitotHeat.Value > 0, "Pitot Heat", "on", "off");
                 ReadToggle(Aircraft.ParkingBrake, Aircraft.ParkingBrake.Value > 0, "Parking brake", "on", "off");
                 ReadToggle(Aircraft.AutoFeather, Aircraft.AutoFeather.Value > 0, "Auto Feather", "Active", "off");
@@ -803,23 +805,6 @@ namespace tfm
                 ReadToggle(Aircraft.PropSync, Aircraft.PropSync.Value > 0, "Propeller Sync", "active", "off");
                 ReadToggle(Aircraft.BatteryMaster, Aircraft.BatteryMaster.Value > 0, "Battery Master", "active", "off");
                 // TODO: add check for a2a since below toggles aren't needed for a2a
-                ReadToggle(Aircraft.Eng1Starter, Aircraft.Eng1Starter.Value > 0, "Number 1 starter", "engaged", "off");
-                ReadToggle(Aircraft.Eng2Starter, Aircraft.Eng2Starter.Value > 0, "Number 2 starter", "engaged", "off");
-                ReadToggle(Aircraft.Eng3Starter, Aircraft.Eng3Starter.Value > 0, "Number 3 starter", "engaged", "off");
-                ReadToggle(Aircraft.Eng4Starter, Aircraft.Eng4Starter.Value > 0, "Number 4 starter", "engaged", "off");
-                ReadToggle(Aircraft.Eng1Combustion, Aircraft.Eng1Combustion.Value > 0, "Number 1 ignition", "on", "off");
-                ReadToggle(Aircraft.Eng2Combustion, Aircraft.Eng2Combustion.Value > 0, "Number 2 ignition", "on", "off");
-                ReadToggle(Aircraft.Eng3Combustion, Aircraft.Eng3Combustion.Value > 0, "Number 3 ignition", "on", "off");
-                ReadToggle(Aircraft.Eng4Combustion, Aircraft.Eng4Combustion.Value > 0, "Number 4 ignition", "on", "off");
-                ReadToggle(Aircraft.Eng1Generator, Aircraft.Eng1Generator.Value > 0, "Number 1 generator", "active", "off");
-                ReadToggle(Aircraft.Eng2Generator, Aircraft.Eng2Generator.Value > 0, "Number 2 generator", "active", "off");
-                ReadToggle(Aircraft.Eng3Generator, Aircraft.Eng3Generator.Value > 0, "Number 3 generator", "active", "off");
-                ReadToggle(Aircraft.Eng4Generator, Aircraft.Eng4Generator.Value > 0, "Number 4 generator", "active", "off");
-                ReadToggle(Aircraft.APUGenerator, Aircraft.APUGenerator.Value > 0, "A P U Generator", "active", "off");
-                ReadToggle(Aircraft.Eng1FuelValve, Aircraft.Eng1FuelValve.Value > 0, "number 1 fuel valve", "open", "closed");
-                ReadToggle(Aircraft.Eng2FuelValve, Aircraft.Eng2FuelValve.Value > 0, "number 2 fuel valve", "open", "closed");
-                ReadToggle(Aircraft.Eng3FuelValve, Aircraft.Eng3FuelValve.Value > 0, "number 3 fuel valve", "open", "closed");
-                ReadToggle(Aircraft.Eng4FuelValve, Aircraft.Eng4FuelValve.Value > 0, "number 4 fuel valve", "open", "closed");
                 ReadToggle(Aircraft.FuelPump, Aircraft.FuelPump.Value > 0, "Fuel pump", "active", "off");
                 if (Properties.Settings.Default.ReadFlaps) ReadFlaps();
                 ReadLandingGear();
@@ -840,6 +825,7 @@ namespace tfm
                 if (Properties.Settings.Default.ReadILS) ReadILSInfo();
                 ReadSimulationRate(TriggeredByKey : false);
                 readAPU();
+                readOnGround();
                 // TODO: engine select
             }
             else
@@ -847,6 +833,43 @@ namespace tfm
                 fireOnScreenReaderOutputEvent(isGauge: false, output: "Current aircraft: " + Aircraft.AircraftName.Value);
                 DetectFuelTanks();
                 FirstRun = false;
+            }
+        }
+        
+        public void ReadLowPriorityInstruments()
+        {
+            ReadToggle(Aircraft.Eng1Starter, Aircraft.Eng1Starter.Value > 0, "Number 1 starter", "engaged", "off");
+            ReadToggle(Aircraft.Eng2Starter, Aircraft.Eng2Starter.Value > 0, "Number 2 starter", "engaged", "off");
+            ReadToggle(Aircraft.Eng3Starter, Aircraft.Eng3Starter.Value > 0, "Number 3 starter", "engaged", "off");
+            ReadToggle(Aircraft.Eng4Starter, Aircraft.Eng4Starter.Value > 0, "Number 4 starter", "engaged", "off");
+            ReadToggle(Aircraft.Eng1Combustion, Aircraft.Eng1Combustion.Value > 0, "Number 1 ignition", "on", "off");
+            ReadToggle(Aircraft.Eng2Combustion, Aircraft.Eng2Combustion.Value > 0, "Number 2 ignition", "on", "off");
+            ReadToggle(Aircraft.Eng3Combustion, Aircraft.Eng3Combustion.Value > 0, "Number 3 ignition", "on", "off");
+            ReadToggle(Aircraft.Eng4Combustion, Aircraft.Eng4Combustion.Value > 0, "Number 4 ignition", "on", "off");
+            ReadToggle(Aircraft.Eng1Generator, Aircraft.Eng1Generator.Value > 0, "Number 1 generator", "active", "off");
+            ReadToggle(Aircraft.Eng2Generator, Aircraft.Eng2Generator.Value > 0, "Number 2 generator", "active", "off");
+            ReadToggle(Aircraft.Eng3Generator, Aircraft.Eng3Generator.Value > 0, "Number 3 generator", "active", "off");
+            ReadToggle(Aircraft.Eng4Generator, Aircraft.Eng4Generator.Value > 0, "Number 4 generator", "active", "off");
+            ReadToggle(Aircraft.APUGenerator, Aircraft.APUGenerator.Value > 0, "A P U Generator", "active", "off");
+            ReadToggle(Aircraft.Eng1FuelValve, Aircraft.Eng1FuelValve.Value > 0, "number 1 fuel valve", "open", "closed");
+            ReadToggle(Aircraft.Eng2FuelValve, Aircraft.Eng2FuelValve.Value > 0, "number 2 fuel valve", "open", "closed");
+            ReadToggle(Aircraft.Eng3FuelValve, Aircraft.Eng3FuelValve.Value > 0, "number 3 fuel valve", "open", "closed");
+            ReadToggle(Aircraft.Eng4FuelValve, Aircraft.Eng4FuelValve.Value > 0, "number 4 fuel valve", "open", "closed");
+
+        }
+        private void readOnGround()
+        {
+            if (Aircraft.OnGround.ValueChanged)
+            {
+                if (Aircraft.OnGround.Value == 1)
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "on ground. ");
+                }
+                else
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "airborn. ");
+                }
+
             }
         }
 
@@ -1341,7 +1364,7 @@ namespace tfm
             
             if (GroundSpeed > 10)
             {
-                Tolk.Output($"{GroundSpeed} knotts. ");
+                fireOnScreenReaderOutputEvent(textOutput: false, isGauge: false, useSAPI: true, output:$"{GroundSpeed} knotts. ");
             }
             if (GroundSpeed < 10 || Aircraft.OnGround.Value == 0)
             {

@@ -250,5 +250,29 @@ namespace tfm.Properties {
                 this["ReadNavRadios"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string NewAvionicsTab {
+            get {
+                return ((string)(this["NewAvionicsTab"]));
+            }
+            set {
+                this["NewAvionicsTab"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AvionicsTabChangeFlag {
+            get {
+                return ((bool)(this["AvionicsTabChangeFlag"]));
+            }
+            set {
+                this["AvionicsTabChangeFlag"] = value;
+            }
+        }
     }
 }

@@ -50,7 +50,7 @@ namespace tfm
             } // End event callback.
         } // End onScreenReaderOutput method.
 
-        public void fireOnScreenReaderOutputEvent(string gaugeName = "",string gaugeValue = "",bool isGauge = false,string output = "", bool textOutput = true, bool useSAPI = false)
+        public void fireOnScreenReaderOutputEvent(string gaugeName = "",string gaugeValue = "",bool isGauge = false,string output = "", bool textOutput = true, bool useSAPI = false, bool interruptSpeech = false)
         {
             ScreenReaderOutputEventArgs args = new ScreenReaderOutputEventArgs();
             args.output = output;
@@ -59,7 +59,7 @@ namespace tfm
             args.isGauge = isGauge;
             args.textOutput = textOutput;
             args.useSAPI = useSAPI;
-
+            args.interruptSpeech = interruptSpeech;
             this.onScreenReaderOutput(args);
         } // End event fire method.
 
@@ -2055,7 +2055,7 @@ namespace tfm
                 {
                     if (Pitch != oldPitch)
                     {
-                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: false, output: $"down {Pitch}");
+                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: false, interruptSpeech: true, output: $"down {Pitch}");
                         oldPitch = Pitch;
                         if (attitudeModeSelect == 2) return;
                     }
@@ -2081,7 +2081,7 @@ namespace tfm
                 {
                     if (Pitch != oldPitch)
                     {
-                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: false, output: $"up {Math.Abs(Pitch)}");
+                        fireOnScreenReaderOutputEvent(interruptSpeech: true, isGauge: false, textOutput: false, output: $"up {Math.Abs(Pitch)}");
                         oldPitch = Pitch;
                         if (attitudeModeSelect == 2) return;
                     }
@@ -2107,7 +2107,7 @@ namespace tfm
                 {
                     if (Bank != oldBank)
                     {
-                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: false, output: $"left {Bank}");
+                        fireOnScreenReaderOutputEvent(interruptSpeech: true, isGauge: false, textOutput: false, output: $"left {Bank}");
                         oldBank = Bank;
                         if (attitudeModeSelect == 2) return;
                     }
@@ -2138,7 +2138,7 @@ namespace tfm
                 {
                     if (Bank != oldBank)
                     {
-                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: false, output: $"right {Bank}");
+                        fireOnScreenReaderOutputEvent(interruptSpeech: true, isGauge: false, textOutput: false, output: $"right {Bank}");
                         oldBank = Bank;
                         if (attitudeModeSelect == 2) return;
                     }

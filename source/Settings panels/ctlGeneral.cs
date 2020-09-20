@@ -16,12 +16,44 @@ namespace tfm
         public ctlGeneral()
         {
             InitializeComponent();
+            if (Properties.Settings.Default.avionics_tab == "simplified")
+            {
+                radSimplified.Checked = true;
+            }
+            else
+            {
+                radPropertyGrid.Checked = true;
+            }
+
         }
 
         public void SetDocking()
         {
-            
+
         }
 
+        void avionicsRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb.Checked)
+            {
+                if (rb.Name == "radSimplified")
+                {
+                    if (Properties.Settings.Default.avionics_tab != "simplified")
+                    {
+                        Properties.Settings.Default.NewAvionicsTab = "simplified";
+                        Properties.Settings.Default.AvionicsTabChangeFlag = true;
+                    }
+                }
+                if (rb.Name == "radPropertyGrid")
+                {
+                    if (Properties.Settings.Default.avionics_tab != "PropertyGrid")
+                    {
+                        Properties.Settings.Default.NewAvionicsTab = "PropertyGrid";
+                        Properties.Settings.Default.AvionicsTabChangeFlag = true;
+                    }
+                }
+            }
+        }
     }
 }

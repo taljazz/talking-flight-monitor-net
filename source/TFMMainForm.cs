@@ -326,6 +326,12 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
         private void TFMMainForm_Load(object sender, EventArgs e)
         {
             //Move to a configure function when implementing settings.
+            if (Properties.Settings.Default.AvionicsTabChangeFlag)
+            {
+                Properties.Settings.Default.avionics_tab = Properties.Settings.Default.NewAvionicsTab;
+                Properties.Settings.Default.AvionicsTabChangeFlag = false;
+                Properties.Settings.Default.Save();
+            }
             if (Properties.Settings.Default.avionics_tab == "simplified")
             {
                 TFMTabControl.TabPages.Remove(AvionicsExplorationTabPage);
@@ -523,6 +529,10 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             settings.ShowDialog();
             if (settings.DialogResult == DialogResult.OK)
             {
+                if (Properties.Settings.Default.AvionicsTabChangeFlag)
+                {
+                    MessageBox.Show("You must restart TFM for the avionics tab changes to take affect", "restart required", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
                 Properties.Settings.Default.Save();
             }
             else
@@ -701,11 +711,11 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             {
                 if (e.useSAPI == true)
                 {
-                    speak(useSAPI: true, output: e.output);
+                    speak(useSAPI: true, interruptSpeech:  e.interruptSpeech, output: e.output);
                 }
                 else
                 {
-                    speak(e.output);
+                    speak(e.output, interruptSpeech: e.interruptSpeech);
                 }
                 if (e.textOutput == true)
                 {
@@ -714,16 +724,17 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
 
             } // end generic output
         } // End screenreader output event.
-        private void speak(string output, bool useSAPI = false)
+        private void speak(string output, bool useSAPI = false, bool interruptSpeech = false)
         {
             if (Properties.Settings.Default.UseSAPIOutput == true || useSAPI == true)
             {
+                if (interruptSpeech == true) synth.SpeakAsyncCancelAll();
                 synth.Rate = Properties.Settings.Default.SAPISpeechRate;
                 synth.SpeakAsync(output);
             }
             else
             {
-                Tolk.Speak(output);
+                Tolk.Speak(output, interruptSpeech);
 
             }
         }

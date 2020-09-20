@@ -14,5 +14,6 @@ namespace tfm
         public bool isGauge { get; set; }
         public bool useSAPI { get; set; }
         public bool textOutput { get; set; }
+        public bool interruptSpeech { get; set; }
     } // end ScreenReaderOutputEventArgs
 } // End TFM namespace.

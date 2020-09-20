@@ -709,7 +709,7 @@ namespace tfm
             Tolk.TrySAPI(true);
             Tolk.Load();
             var version = typeof(Instrumentation).Assembly.GetName().Version.Build;
-            Tolk.Output($"Talking Flight Monitor test build {version}");
+            fireOnScreenReaderOutputEvent(textOutput:false, output: $"Talking Flight Monitor test build {version}");
             HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
             //      HotkeyManager.Current.AddOrReplace("test", Keys.Q, OffsetTest);
             runwayGuidanceEnabled = false;
@@ -972,11 +972,11 @@ namespace tfm
             {
                 if (elevator < 0)
                 {
-                    Tolk.Output($"Trim down {Math.Abs(Math.Round(elevator, 2)):F2}. ");
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"Trim down {Math.Abs(Math.Round(elevator, 2)):F2}. ");
                 }
                 else
                 {
-                    Tolk.Output($"Trim up: {Math.Round(elevator, 2):F2}");
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"Trim up: {Math.Round(elevator, 2):F2}");
                 }
 
             }
@@ -984,11 +984,11 @@ namespace tfm
             {
                 if (aileron < 0)
                 {
-                    Tolk.Output($"Trim left {Math.Abs(Math.Round(aileron, 2))}. ");
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"Trim left {Math.Abs(Math.Round(aileron, 2))}. ");
                 }
                 else
                 {
-                    Tolk.Output($"Trim right {Math.Round(aileron, 2)}");
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"Trim right {Math.Round(aileron, 2)}");
                 }
             }
         }
@@ -1000,7 +1000,10 @@ namespace tfm
                 double AltQNH = (double)Aircraft.Altimeter.Value / 16d;
                 double AltHPA = Math.Floor(AltQNH + 0.5);
                 double AltInches = Math.Floor(((100 * AltQNH * 29.92) / 1013.2) + 0.5);
-                Tolk.Output($"Altimeter: {AltHPA}, {AltInches / 100} inches. ");
+                var isGauge = true;
+                var gaugeName = "Altimeter";
+                var gaugeValue = $"{AltHPA}, {AltInches / 100} inches. ";
+                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
             }
 
 
@@ -1035,7 +1038,7 @@ namespace tfm
                         break;
 
                 }
-                Tolk.Output("Autobrake " + AbState);
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Autobrake " + AbState);
             }
         }
 
@@ -1045,23 +1048,38 @@ namespace tfm
             FsFrequencyCOM com2Helper = new FsFrequencyCOM(Aircraft.Com2Freq.Value);
             FsFrequencyNAV nav1Helper = new FsFrequencyNAV(Aircraft.Nav1Freq.Value);
             FsFrequencyNAV nav2Helper = new FsFrequencyNAV(Aircraft.Nav2Freq.Value);
+            bool isGauge = true;
+            string gaugeName;
+            string gaugeValue;
             if (Aircraft.Com1Freq.ValueChanged)
             {
-                Tolk.Output("Com1: " + com1Helper.ToString());
+                gaugeName = "Com1";
+                gaugeValue = com1Helper.ToString();
+                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
             }
             if (Aircraft.Com2Freq.ValueChanged)
             {
-                Tolk.Output("Com1: " + com2Helper.ToString());
+                gaugeName = "Com2";
+                gaugeValue = com2Helper.ToString();
+                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
             }
-            if (readNavRadios)
+            if (Properties.Settings.Default.ReadNavRadios == true)
             {
                 if (Aircraft.Nav1Freq.ValueChanged)
                 {
-                    Tolk.Output($"Nav 1: {nav1Helper.ToString()}");
+                    gaugeName = "Nav1";
+                    gaugeValue = nav1Helper.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
                 }
                 if (Aircraft.Nav2Freq.ValueChanged)
                 {
-                    Tolk.Output($"Nav 2: {nav2Helper.ToString()}");
+                    gaugeName = "Nav2";
+                    gaugeValue = nav2Helper.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
                 }
 
             }
@@ -1069,10 +1087,15 @@ namespace tfm
 
         private void ReadTransponder()
         {
+            
             FsTransponderCode txHelper = new FsTransponderCode(Aircraft.Transponder.Value);
             if (Aircraft.Transponder.ValueChanged)
             {
-                Tolk.Output("squawk " + txHelper.ToString());
+                var gaugeName = "Transponder";
+                var gaugeValue = txHelper.ToString();
+                var isGauge = true;
+                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
             }
             Transponder = txHelper.ToInteger();
 
@@ -1130,7 +1153,7 @@ namespace tfm
                     {
                         string name = Enum.GetName(typeof(Aircraft.light), i);
                         string state = (Aircraft.Lights.Value[i]) ? "off" : "on";
-                        Tolk.Output($"{name} {state}. ");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {state}. ");
                     }
                 }
             }
@@ -1148,7 +1171,7 @@ namespace tfm
                     if (DoorBits.Changed[i])
                     {
                         string state = (Aircraft.Doors.Value[i]) ? "open" : "closed";
-                        Tolk.Output($"door {i + 1} {state}. ");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"door {i + 1} {state}. ");
                     }
                 }
             }
@@ -1161,18 +1184,17 @@ namespace tfm
             {
                 if (Aircraft.Nav1GS.Value == 1 && gsDetected == false)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: "glide slope is alive. ");
+                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "glide slope is alive. ");
                     gsDetected = true;
                 }
                 if (Aircraft.Nav1Flags.Value[7] && hasLocaliser == false)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: "nav 1 has localiser.");
+                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "nav 1 has localiser.");
                     hasLocaliser = true;
                 }
                 if (Aircraft.Nav1Signal.Value == 256 && localiserDetected == false && Aircraft.Nav1Flags.Value[7])
                 {
-                    Tolk.PreferSAPI(true);
-                    Tolk.Output("Localiser is alive. ");
+                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "Localiser is alive. ");
                     localiserDetected = true;
                     ilsTimer.AutoReset = true;
                     ilsTimer.Enabled = true;
@@ -1180,7 +1202,7 @@ namespace tfm
                 }
                 if (Aircraft.Nav1Flags.Value[6] && hasGlideSlope == false)
                 {
-                    Tolk.Output("nav 1 has glide slope. ");
+                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "nav 1 has glide slope. ");
                     hasGlideSlope = true;
                 }
 
@@ -1213,7 +1235,7 @@ namespace tfm
                     var gaugeName = "glide slope";
                     var gaugeValue = $"up {strPercent} percent. ";
                     var isGauge = true;
-                    Tolk.Output(gaugeValue);
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge, useSAPI: true, textOutput: false);
 
                 }
                 if (gsNeedle < 0 && gsNeedle > -119)
@@ -1223,7 +1245,7 @@ namespace tfm
                     var gaugeName = "glide slope";
                     var gaugeValue = $"down {strPercent} percent. ";
                     var isGauge = true;
-                    Tolk.Output(gaugeValue);
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge, useSAPI: true, textOutput: false);
 
                 }
                 if (locNeedle > 0 && locNeedle < 127)
@@ -1233,7 +1255,7 @@ namespace tfm
                     var gaugeName = "Localiser";
                     var gaugeValue = $"{strPercent} percent right. ";
                     var isGauge = true;
-                    Tolk.Output(gaugeValue);
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge, useSAPI: true, textOutput: false);
                 }
                 if (locNeedle < 0 && locNeedle > -127)
                 {
@@ -1242,7 +1264,7 @@ namespace tfm
                     var gaugeName = "Localiser";
                     var gaugeValue = $"{strPercent} percent left. ";
                     var isGauge = true;
-                    Tolk.Output(gaugeValue);
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge, useSAPI: true, textOutput: false);
                 }
 
             }
@@ -1253,11 +1275,11 @@ namespace tfm
             double rate = (double)Aircraft.SimulationRate.Value / 256;
             if (TriggeredByKey)
             {
-                Tolk.Output($"simulation rate: {rate}");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"simulation rate: {rate}");
             }
             if (Aircraft.SimulationRate.ValueChanged && rate >= 0.25)
             {
-                Tolk.Output($"simulation rate: {rate}");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"simulation rate: {rate}");
             }
         }
         private void ReadSpoilers()
@@ -1265,17 +1287,17 @@ namespace tfm
             if (Aircraft.Spoilers.ValueChanged)
             {
                 uint sp = Aircraft.Spoilers.Value;
-                if (sp == 4800) Tolk.Output("Spoilers armed. ");
-                else if (sp == 16384) Tolk.Output("Spoilers deployed. ");
+                if (sp == 4800) fireOnScreenReaderOutputEvent(isGauge: false, output: "Spoilers armed. ");
+                else if (sp == 16384) fireOnScreenReaderOutputEvent(isGauge: false, output: "Spoilers deployed. ");
                 else if (sp == 0)
                 {
                     if (OldSpoilersValue == 4800)
                     {
-                        Tolk.Output("arm spoilers off. ");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "arm spoilers off. ");
                     }
                     else
                     {
-                        Tolk.Output("spoilers retracted. ");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "spoilers retracted. ");
                     }
 
                 }
@@ -1294,7 +1316,10 @@ namespace tfm
                 {
                     FlapsMoving = false;
                     double FlapsAngle = (double)Aircraft.Flaps.Value / 256d;
-                    Tolk.Output("flaps " + FlapsAngle.ToString("f0"));
+                    var gaugeName = "Flaps";
+                    var gaugeValue = FlapsAngle.ToString("f0");
+                    var isGauge = true;
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
                 }
 
             }
@@ -1302,43 +1327,61 @@ namespace tfm
         }
         public void ReadLandingGear()
         {
+            var gaugeName = "gear";
+            var isGauge = true;
+            string gaugeValue;
             if (Aircraft.LandingGear.ValueChanged)
             {
                 if (Aircraft.LandingGear.Value == 0)
                 {
-                    Tolk.Output("gear up. ");
+                    gaugeValue = "up. ";
                 }
                 if (Aircraft.LandingGear.Value == 16383)
                 {
-                    Tolk.Output("Gear down. ");
+                    gaugeValue = "down. ";
                 }
             }
         }
         // read autopilot settings
         public void ReadAutopilotInstruments()
         {
+            string gaugeName;
+            string gaugeValue;
+            bool isGauge = true;
             // heading
             if (Aircraft.ApHeading.ValueChanged)
             {
-                Tolk.Output("Heading: " + ApHeading.ToString());
+                gaugeName = "AP heading";
+                gaugeValue = ApHeading.ToString();
+                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
             }
             // airspeed
             if (Aircraft.ApAirspeed.ValueChanged)
             {
-                Tolk.Output($"{ApAirspeed} knotts.");
+                gaugeName = "AP airspeed";
+                gaugeValue = ApAirspeed.ToString();
+                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
             }
             // vertical speed
             if (Aircraft.ApVerticalSpeed.ValueChanged)
             {
-                Tolk.Output($"{Aircraft.ApVerticalSpeed.Value} feet per minute.");
+                gaugeName = "AP vertical speed";
+                gaugeValue = ApVerticalSpeed.ToString();
+                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
             }
         }
         private void readAutopilotAltitude()
         {
             // Altitude
+            var gaugeName = "AP altitude";
+            var isGauge = true;
+
             if (Aircraft.ApAltitude.ValueChanged)
             {
-                Tolk.Output($"Altitude set to {ApAltitude} feet. ");
+                var gaugeValue = ApAltitude.ToString();
+                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
+
             }
 
         }
@@ -1571,9 +1614,6 @@ namespace tfm
                 case "AttitudeMode":
                     onAttitudeKey();
                     break;
-                case "SpeakAttitude":
-                    onManualKey();
-                    break;
                 case "SpeakAutopilot":
                     onAutopilotKey();
                     break;
@@ -1727,11 +1767,11 @@ namespace tfm
         {
             if (OldSimConnectMessage != null)
             {
-                Tolk.Output(OldSimConnectMessage);
+                fireOnScreenReaderOutputEvent(isGauge: false, output: OldSimConnectMessage);
             }
             else
             {
-                Tolk.Output("no recent message");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "no recent message");
             }
 
         }
@@ -1739,10 +1779,10 @@ namespace tfm
         private void onWindKey()
         {
             double WindSpeed = (double)Aircraft.WindSpeed.Value;
-            double WindDirection = (double)Aircraft.WindDirection.Value * 360 / 65536;
+            double WindDirection = (double)Aircraft.WindDirection.Value * 360d / 65536d;
             WindDirection = Math.Round(WindDirection);
             double WindGust = (double)Aircraft.WindGust.Value;
-            Tolk.Output($"Wind: {WindDirection} at {WindSpeed} knotts. Gusts at {WindGust} knotts.");
+            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Wind: {WindDirection} at {WindSpeed} knotts. Gusts at {WindGust} knotts.");
 
         }
 
@@ -1762,7 +1802,7 @@ namespace tfm
             FSUIPCConnection.PayloadServices.RefreshData();
             if (tank > ActiveTanks.Count)
             {
-                Tolk.Output("tank not available");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "tank not available");
             }
             else
             {
@@ -1771,7 +1811,7 @@ namespace tfm
                 string pct = ActiveTanks[tank].LevelPercentage.ToString("F0");
                 string weight = ActiveTanks[tank].WeightLbs.ToString("F0");
                 string gal = ActiveTanks[tank].LevelUSGallons.ToString("F0");
-                Tolk.Output($"{name}.  {pct} percent, {weight} pounds, {gal} gallons.");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name}.  {pct} percent, {weight} pounds, {gal} gallons.");
             }
         }
 
@@ -1782,19 +1822,19 @@ namespace tfm
             double eng2 = Math.Round(Aircraft.eng2_fuel_flow.Value);
             double eng3 = Math.Round(Aircraft.eng3_fuel_flow.Value);
             double eng4 = Math.Round(Aircraft.eng4_fuel_flow.Value);
-            Tolk.Output("Fuel flow (pounds per hour): ");
-            Tolk.Output($"Engine 1: {eng1}. ");
+            fireOnScreenReaderOutputEvent(isGauge: false, output: "Fuel flow (pounds per hour): ");
+            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 1: {eng1}. ");
             if (NumEngines >= 2)
             {
-                Tolk.Output($"Engine 2: {eng2}. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 2: {eng2}. ");
             }
             if (NumEngines >= 3)
             {
-                Tolk.Output($"Engine 3: {eng3}. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 3: {eng3}. ");
             }
             if (NumEngines >= 4)
             {
-                Tolk.Output($"Engine 4: {eng4}. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 4: {eng4}. ");
             }
 
         }
@@ -1808,11 +1848,11 @@ namespace tfm
             ps.RefreshData();
             string TotalFuelWeight = ps.FuelWeightLbs.ToString("F1");
             string TotalFuelQuantity = ps.FuelLevelUSGallons.ToString("F1");
-            Tolk.Output($"total fuel: {TotalFuelWeight} pounds. ");
-            Tolk.Output($"{TotalFuelQuantity} gallons. ");
+            fireOnScreenReaderOutputEvent(isGauge: false, output: $"total fuel: {TotalFuelWeight} pounds. ");
+            fireOnScreenReaderOutputEvent(isGauge: false, output: $"{TotalFuelQuantity} gallons. ");
             double TotalFuelFlow = (double)Aircraft.eng1_fuel_flow.Value + Aircraft.eng2_fuel_flow.Value + Aircraft.eng3_fuel_flow.Value + Aircraft.eng4_fuel_flow.Value;
             TotalFuelFlow = Math.Round(TotalFuelFlow);
-            Tolk.Output($"Total fuel flow: {TotalFuelFlow}");
+            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Total fuel flow: {TotalFuelFlow}");
         }
         private void onWeightReportKey()
         {
@@ -1828,11 +1868,11 @@ namespace tfm
             string MaxGrossWeight = ps.MaxGrossWeightLbs.ToString("F0");
             if (ps.GrossWeightLbs > ps.MaxGrossWeightLbs)
             {
-                Tolk.Output("Overweight warning! ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Overweight warning! ");
             }
-            Tolk.Output($"Fuel Weight: {FuelWeight} pounds");
-            Tolk.Output($"Payload Weight: {PayloadWeight} pounds. ");
-            Tolk.Output($"Gross Weight: {GrossWeight} of {MaxGrossWeight} pounds maximum.");
+            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Fuel Weight: {FuelWeight} pounds");
+            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Payload Weight: {PayloadWeight} pounds. ");
+            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Gross Weight: {GrossWeight} of {MaxGrossWeight} pounds maximum.");
 
         }
         private void onRunwayGuidanceKey()
@@ -1846,7 +1886,7 @@ namespace tfm
                 RunwayGuidanceTimer.Elapsed += OnRunwayGuidanceTickEvent;
                 RunwayGuidanceTimer.AutoReset = true;
                 RunwayGuidanceTrackedHeading = (double)Math.Round(Aircraft.CompassHeading.Value);
-                Tolk.Output($"Runway guidance enabled. current heading: {RunwayGuidanceTrackedHeading}. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Runway guidance enabled. current heading: {RunwayGuidanceTrackedHeading}. ");
                 // play tones for 45 degrees on either side of the tracked heading
                 HdgRight = RunwayGuidanceTrackedHeading + 45;
                 HdgLeft = RunwayGuidanceTrackedHeading - 45;
@@ -1878,7 +1918,7 @@ namespace tfm
                 driverOut.Stop();
                 RunwayGuidanceTimer.Stop();
                 runwayGuidanceEnabled = false;
-                Tolk.Output("Runway Guidance disabled. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Runway Guidance disabled. ");
             }
 
         }
@@ -1917,12 +1957,12 @@ namespace tfm
             if (Properties.Settings.Default.ReadFlaps)
             {
                 Properties.Settings.Default.ReadFlaps = false;
-                Tolk.Output("flaps announcement disabled. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "flaps announcement disabled. ");
             }
             else
             {
                 Properties.Settings.Default.ReadFlaps = true;
-                Tolk.Output("Flaps announcement enabled. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Flaps announcement enabled. ");
             }
         }
 
@@ -1957,19 +1997,15 @@ namespace tfm
             if (Properties.Settings.Default.ReadAutopilot)
             {
              Properties.Settings.Default.ReadAutopilot = false;
-                Tolk.Output("read autopilot instruments disabled");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "read autopilot instruments disabled");
             }
             else
             {
                 Properties.Settings.Default.ReadAutopilot = true;
-                Tolk.Output("Read autopilot instruments enabled. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Read autopilot instruments enabled. ");
             }
         }
 
-        private void onManualKey()
-        {
-            Tolk.Output("not yet implemented.");
-        }
         private void onAttitudeKey()
         {
             if (!attitudeModeEnabled)
@@ -1980,7 +2016,7 @@ namespace tfm
                 // Hook up the Elapsed event for the timer. 
                 AttitudeTimer.Elapsed += OnAttitudeModeTickEvent;
                 AttitudeTimer.AutoReset = true;
-                Tolk.Output("Attitude mode enabled. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Attitude mode enabled. ");
                 // start audio
                 // signal generator for generating tones
                 driverOut = new WaveOutEvent();
@@ -2002,7 +2038,7 @@ namespace tfm
                 AttitudeBankRightPlaying = false;
                 AttitudeTimer.Stop();
                 attitudeModeEnabled = false;
-                Tolk.Output("Attitude mode disabled. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Attitude mode disabled. ");
             }
         }
         private void OnAttitudeModeTickEvent(Object source, ElapsedEventArgs e)
@@ -2019,7 +2055,7 @@ namespace tfm
                 {
                     if (Pitch != oldPitch)
                     {
-                        Tolk.Output($"down {Pitch}", true);
+                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: false, output: $"down {Pitch}");
                         oldPitch = Pitch;
                         if (attitudeModeSelect == 2) return;
                     }
@@ -2045,7 +2081,7 @@ namespace tfm
                 {
                     if (Pitch != oldPitch)
                     {
-                        Tolk.Output($"up {Math.Abs(Pitch)}", true);
+                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: false, output: $"up {Math.Abs(Pitch)}");
                         oldPitch = Pitch;
                         if (attitudeModeSelect == 2) return;
                     }
@@ -2071,7 +2107,7 @@ namespace tfm
                 {
                     if (Bank != oldBank)
                     {
-                        Tolk.Output($"left {Bank}", true);
+                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: false, output: $"left {Bank}");
                         oldBank = Bank;
                         if (attitudeModeSelect == 2) return;
                     }
@@ -2102,7 +2138,7 @@ namespace tfm
                 {
                     if (Bank != oldBank)
                     {
-                        Tolk.Output($"right {Bank}", true);
+                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: false, output: $"right {Bank}");
                         oldBank = Bank;
                         if (attitudeModeSelect == 2) return;
                     }
@@ -2213,8 +2249,8 @@ namespace tfm
                         double bearingTrue = aircraftPos.BearingTo(nearestCityPoint);
                         double bearingMagnetic = bearingTrue - magVarDegrees;
                         string strBearing = bearingMagnetic.ToString("F0");
-                        Tolk.Output($"{location.Name} {location.admin1}, {location.countryName}. ");
-                        Tolk.Output($"{distanceNM} nautical miles, {strBearing} degrees.");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"{location.Name} {location.admin1}, {location.countryName}. ");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"{distanceNM} nautical miles, {strBearing} degrees.");
                     }
 
                 }
@@ -2233,7 +2269,7 @@ namespace tfm
                     if (ocean.Count() > 0)
                     {
                         var currentOcean = ocean.First();
-                        Tolk.Output($"{currentOcean.Name}. ");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"{currentOcean.Name}. ");
                     }
 
                 }
@@ -2255,7 +2291,7 @@ namespace tfm
                         try
                         {
                             string tzName = TZConvert.IanaToWindows(currentTimezone.Name);
-                            Tolk.Output($"{tzName}. ");
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: $"{tzName}. ");
                         }
                         catch (Exception)
                         {
@@ -2276,12 +2312,12 @@ namespace tfm
             if (muteSimconnect)
             {
                 muteSimconnect = false;
-                Tolk.Output("SimConnect messages unmuted. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "SimConnect messages unmuted. ");
             }
             else
             {
                 muteSimconnect = true;
-                Tolk.Output("SimConnect messages muted.");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "SimConnect messages muted.");
             }
             ResetHotkeys();
         }
@@ -2291,12 +2327,12 @@ namespace tfm
             if (TrimEnabled)
             {
                 TrimEnabled = false;
-                Tolk.Output("read trim disabled. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "read trim disabled. ");
             }
             else
             {
                 TrimEnabled = true;
-                Tolk.Output("trim enabled. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "trim enabled. ");
             }
             ResetHotkeys();
         }
@@ -2365,7 +2401,7 @@ namespace tfm
 
         private void onHeadingKey()
         {
-            Tolk.Output("heading: " + Math.Round(Aircraft.CompassHeading.Value));
+            fireOnScreenReaderOutputEvent(isGauge: false,  output: "heading: " + Math.Round(Aircraft.CompassHeading.Value));
             ResetHotkeys();
         }
 
@@ -2562,9 +2598,9 @@ namespace tfm
                         N2 = (double)Aircraft.Eng4N2.Value;
                         break;
                 }
-                Tolk.Output($"Engine {eng}. ");
-                Tolk.Output($"N1: {Math.Round(N1)}. ");
-                Tolk.Output($"N2: {Math.Round(N2)}. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine {eng}. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"N1: {Math.Round(N1)}. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"N2: {Math.Round(N2)}. ");
             }
 
         }
@@ -2607,19 +2643,19 @@ namespace tfm
             
             if(currentTaxiWay != null)
             {
-                Tolk.Output($"taxi way {currentTaxiWay.Name}@{currentTaxiWay.Airport.ICAO}");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"taxi way {currentTaxiWay.Name}@{currentTaxiWay.Airport.ICAO}");
             }
             else if(currentRunway != null)
             {
-                Tolk.Output($"runway {currentRunway.ID.ToString()}@{currentRunway.Airport.ICAO}");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"runway {currentRunway.ID.ToString()}@{currentRunway.Airport.ICAO}");
             }
             else if(currentGate != null)
             {
-                Tolk.Output($"gate {currentGate.ID}@{currentGate.Airport.ICAO}");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"gate {currentGate.ID}@{currentGate.Airport.ICAO}");
             }
             else
             {
-                Tolk.Output($"{Aircraft.aircraftLat.Value}, {Aircraft.aircraftLon.Value}");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"{Aircraft.aircraftLat.Value}, {Aircraft.aircraftLon.Value}");
             }
         }                    
                     }

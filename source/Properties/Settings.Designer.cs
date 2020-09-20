@@ -226,5 +226,29 @@ namespace tfm.Properties {
                 this["FlightFollowingOffline"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SAPISpeechRate {
+            get {
+                return ((int)(this["SAPISpeechRate"]));
+            }
+            set {
+                this["SAPISpeechRate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ReadNavRadios {
+            get {
+                return ((bool)(this["ReadNavRadios"]));
+            }
+            set {
+                this["ReadNavRadios"] = value;
+            }
+        }
     }
 }

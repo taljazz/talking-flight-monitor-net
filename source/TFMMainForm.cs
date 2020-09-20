@@ -614,15 +614,13 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                         break;
 
                     case "Localiser":
-                        speak($"{e.gaugeValue}. ");
+                        speak($"{e.gaugeValue}. ", useSAPI: true);
                         Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "Glide slope":
-                        speak($"{e.gaugeValue}. ");
+                        speak($"{e.gaugeValue}. ", useSAPI: true);
                         Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "Altimeter":

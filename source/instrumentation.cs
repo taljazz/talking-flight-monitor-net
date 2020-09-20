@@ -1232,7 +1232,7 @@ namespace tfm
                 {
                     gsPercent = gsNeedle / 119 * 100;
                     string strPercent = gsPercent.ToString("F0");
-                    var gaugeName = "glide slope";
+                    var gaugeName = "Glide slope";
                     var gaugeValue = $"up {strPercent} percent. ";
                     var isGauge = true;
                     fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge, useSAPI: true, textOutput: false);
@@ -1242,7 +1242,7 @@ namespace tfm
                 {
                     gsPercent = Math.Abs(gsNeedle) / 119 * 100;
                     string strPercent = gsPercent.ToString("F0");
-                    var gaugeName = "glide slope";
+                    var gaugeName = "Glide slope";
                     var gaugeValue = $"down {strPercent} percent. ";
                     var isGauge = true;
                     fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge, useSAPI: true, textOutput: false);

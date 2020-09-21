@@ -113,6 +113,12 @@
     <Compile Include="Keyboard manager\frmKeyboardManager.Designer.cs">
       <DependentUpon>frmKeyboardManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="Keyboard manager\frmModifyKey.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Keyboard manager\frmModifyKey.Designer.cs">
+      <DependentUpon>frmModifyKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings panels\ctlGeneral.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -162,6 +168,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Keyboard manager\frmKeyboardManager.resx">
       <DependentUpon>frmKeyboardManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Keyboard manager\frmModifyKey.resx">
+      <DependentUpon>frmModifyKey.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\ctlGeneral.resx">
       <DependentUpon>ctlGeneral.cs</DependentUpon>

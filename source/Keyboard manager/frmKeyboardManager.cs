@@ -13,16 +13,43 @@ namespace tfm.Keyboard_manager
 {
     public partial class frmKeyboardManager : Form
     {
+        KeysConverter kc = new KeysConverter();
+        ListView.SelectedListViewItemCollection selectedKey;
         public frmKeyboardManager()
         {
             InitializeComponent();
-            KeysConverter kc = new KeysConverter();
-            lvKeys.Items.Add("command key").SubItems.Add(kc.ConvertToInvariantString(Properties.Hotkeys.Default.command));
+
+            lvKeys.BeginUpdate();
+            foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
+            {
+                lvKeys.Items.Add(s.Name).SubItems.Add(kc.ConvertToString(s.DefaultValue));
+            }
+            lvKeys.EndUpdate();
         }
 
-        private void lvKeys_SelectedIndexChanged(object sender, EventArgs e)
+        void lvKeys_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            string mods;
+            string key;
+            selectedKey = this.lvKeys.SelectedItems;
+        }
+
+        private void btnModify_Click(object sender, EventArgs e)
+        {
+            string name = null;
+            string key = null;
+            foreach (ListViewItem item in selectedKey)
+            {
+                name = item.SubItems[0].Text;
+                key = item.SubItems[1].Text;
+
+            }
+            frmModifyKey frm = new frmModifyKey(name: name, value: key);
+            frm.ShowDialog();
+            Properties.Hotkeys.Default[name] = (Keys)kc.ConvertFromString("Ctrl+Q");
+
         }
     }
+
 }
+

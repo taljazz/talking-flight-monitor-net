@@ -30,13 +30,15 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lblGeonames = new System.Windows.Forms.Label();
-            this.grpUserInterfaceMode = new System.Windows.Forms.GroupBox();
-            this.radPropertyGrid = new System.Windows.Forms.RadioButton();
-            this.radSimplified = new System.Windows.Forms.RadioButton();
             this.txtGeonames = new System.Windows.Forms.TextBox();
             this.chkMetric = new System.Windows.Forms.CheckBox();
+            this.grpUserInterfaceMode = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.radPropertyGrid = new System.Windows.Forms.RadioButton();
+            this.radSimplified = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.grpUserInterfaceMode.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -66,41 +68,6 @@
             this.lblGeonames.TabIndex = 0;
             this.lblGeonames.Text = "Geonames username: ";
             // 
-            // grpUserInterfaceMode
-            // 
-            this.grpUserInterfaceMode.Controls.Add(this.radPropertyGrid);
-            this.grpUserInterfaceMode.Controls.Add(this.radSimplified);
-            this.grpUserInterfaceMode.Location = new System.Drawing.Point(103, 43);
-            this.grpUserInterfaceMode.Name = "grpUserInterfaceMode";
-            this.grpUserInterfaceMode.Size = new System.Drawing.Size(94, 34);
-            this.grpUserInterfaceMode.TabIndex = 3;
-            this.grpUserInterfaceMode.TabStop = false;
-            this.grpUserInterfaceMode.Text = "avionics panel mode";
-            // 
-            // radPropertyGrid
-            // 
-            this.radPropertyGrid.AutoSize = true;
-            this.radPropertyGrid.Location = new System.Drawing.Point(3, 16);
-            this.radPropertyGrid.Name = "radPropertyGrid";
-            this.radPropertyGrid.Size = new System.Drawing.Size(83, 17);
-            this.radPropertyGrid.TabIndex = 1;
-            this.radPropertyGrid.TabStop = true;
-            this.radPropertyGrid.Text = "property grid";
-            this.radPropertyGrid.UseVisualStyleBackColor = true;
-            this.radPropertyGrid.CheckedChanged += new System.EventHandler(this.avionicsRadioButton_CheckedChanged);
-            // 
-            // radSimplified
-            // 
-            this.radSimplified.AutoSize = true;
-            this.radSimplified.Location = new System.Drawing.Point(3, 16);
-            this.radSimplified.Name = "radSimplified";
-            this.radSimplified.Size = new System.Drawing.Size(67, 17);
-            this.radSimplified.TabIndex = 0;
-            this.radSimplified.TabStop = true;
-            this.radSimplified.Text = "simplified";
-            this.radSimplified.UseVisualStyleBackColor = true;
-            this.radSimplified.CheckedChanged += new System.EventHandler(this.avionicsRadioButton_CheckedChanged);
-            // 
             // txtGeonames
             // 
             this.txtGeonames.AccessibleName = "Geonames username";
@@ -123,6 +90,47 @@
             this.chkMetric.Text = "Use metric measurements";
             this.chkMetric.UseVisualStyleBackColor = true;
             // 
+            // grpUserInterfaceMode
+            // 
+            this.grpUserInterfaceMode.Controls.Add(this.flowLayoutPanel1);
+            this.grpUserInterfaceMode.Location = new System.Drawing.Point(103, 43);
+            this.grpUserInterfaceMode.Name = "grpUserInterfaceMode";
+            this.grpUserInterfaceMode.Size = new System.Drawing.Size(94, 34);
+            this.grpUserInterfaceMode.TabIndex = 3;
+            this.grpUserInterfaceMode.TabStop = false;
+            this.grpUserInterfaceMode.Text = "avionics panel mode";
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.radPropertyGrid);
+            this.flowLayoutPanel1.Controls.Add(this.radSimplified);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(-53, -33);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 100);
+            this.flowLayoutPanel1.TabIndex = 3;
+            // 
+            // radPropertyGrid
+            // 
+            this.radPropertyGrid.AutoSize = true;
+            this.radPropertyGrid.Location = new System.Drawing.Point(3, 3);
+            this.radPropertyGrid.Name = "radPropertyGrid";
+            this.radPropertyGrid.Size = new System.Drawing.Size(83, 17);
+            this.radPropertyGrid.TabIndex = 2;
+            this.radPropertyGrid.TabStop = true;
+            this.radPropertyGrid.Text = "property grid";
+            this.radPropertyGrid.UseVisualStyleBackColor = true;
+            // 
+            // radSimplified
+            // 
+            this.radSimplified.AutoSize = true;
+            this.radSimplified.Location = new System.Drawing.Point(92, 3);
+            this.radSimplified.Name = "radSimplified";
+            this.radSimplified.Size = new System.Drawing.Size(67, 17);
+            this.radSimplified.TabIndex = 3;
+            this.radSimplified.TabStop = true;
+            this.radSimplified.Text = "simplified";
+            this.radSimplified.UseVisualStyleBackColor = true;
+            // 
             // ctlGeneral
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -132,7 +140,8 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.grpUserInterfaceMode.ResumeLayout(false);
-            this.grpUserInterfaceMode.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -144,6 +153,7 @@
         private System.Windows.Forms.TextBox txtGeonames;
         private System.Windows.Forms.CheckBox chkMetric;
         private System.Windows.Forms.GroupBox grpUserInterfaceMode;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.RadioButton radPropertyGrid;
         private System.Windows.Forms.RadioButton radSimplified;
     }

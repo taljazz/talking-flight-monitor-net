@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -12,31 +13,43 @@ namespace tfm.Keyboard_manager
 {
     public partial class frmModifyKey : Form
     {
-        public frmModifyKey(string name, string value)
+        KeysConverter kc = new KeysConverter();
+        private Keys newKey;
+        private string name;
+        public frmModifyKey(string name)
         {
             InitializeComponent();
-            string[] temp = value.Split('+');
-            if (temp.Length == 1)
-            {
-                txtKey.Text = value;
-            }
-            if (temp.Length == 2)
-            {
-                if (temp[0] == "Alt")
-                {
-                    chkAlt.Checked = true;
-                }
-                if (temp[0] == "Control")
-                {
-                    chkControl.Checked = true;
-                }
-                if (temp[0] == "Shift")
-                {
-                    chkShift.Checked = true;
-                }
-                txtKey.Text = temp[1];
+            txtKey.Text = kc.ConvertToString(Properties.Hotkeys.Default[name]);
+            this.name = name;
+        }
 
+
+        private void txtKey_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+
+        }
+
+        private void txtKey_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ShiftKey) return;
+
+            foreach (SettingsPropertyValue s in Properties.Hotkeys.Default.PropertyValues)
+            {
+                string k = s.PropertyValue.ToString();
+                if (e.KeyData.ToString() == k)
+                {
+                    MessageBox.Show($"This key is already assigned to {s.Name}");
+                    return;
+                }
             }
+            txtKey.Text = kc.ConvertToString(e.KeyData);
+            newKey = e.KeyData;
+        }
+
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            Properties.Hotkeys.Default[name] = newKey;
         }
     }
 }

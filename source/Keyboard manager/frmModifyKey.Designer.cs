@@ -29,9 +29,6 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.chkAlt = new System.Windows.Forms.CheckBox();
-            this.chkControl = new System.Windows.Forms.CheckBox();
-            this.chkShift = new System.Windows.Forms.CheckBox();
             this.txtKey = new System.Windows.Forms.TextBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -43,9 +40,6 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.chkAlt, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.chkControl, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.chkShift, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.txtKey, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.btnOk, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnCancel, 1, 1);
@@ -59,36 +53,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 100);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // chkAlt
-            // 
-            this.chkAlt.AutoSize = true;
-            this.chkAlt.Location = new System.Drawing.Point(3, 3);
-            this.chkAlt.Name = "chkAlt";
-            this.chkAlt.Size = new System.Drawing.Size(38, 17);
-            this.chkAlt.TabIndex = 0;
-            this.chkAlt.Text = "Alt";
-            this.chkAlt.UseVisualStyleBackColor = true;
-            // 
-            // chkControl
-            // 
-            this.chkControl.AutoSize = true;
-            this.chkControl.Location = new System.Drawing.Point(3, 33);
-            this.chkControl.Name = "chkControl";
-            this.chkControl.Size = new System.Drawing.Size(59, 17);
-            this.chkControl.TabIndex = 1;
-            this.chkControl.Text = "Control";
-            this.chkControl.UseVisualStyleBackColor = true;
-            // 
-            // chkShift
-            // 
-            this.chkShift.AutoSize = true;
-            this.chkShift.Location = new System.Drawing.Point(3, 63);
-            this.chkShift.Name = "chkShift";
-            this.chkShift.Size = new System.Drawing.Size(47, 14);
-            this.chkShift.TabIndex = 2;
-            this.chkShift.Text = "Shift";
-            this.chkShift.UseVisualStyleBackColor = true;
-            // 
             // txtKey
             // 
             this.txtKey.AccessibleName = "Key";
@@ -96,6 +60,8 @@
             this.txtKey.Name = "txtKey";
             this.txtKey.Size = new System.Drawing.Size(94, 20);
             this.txtKey.TabIndex = 3;
+            this.txtKey.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtKey_KeyDown);
+            this.txtKey.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKey_KeyPress);
             // 
             // btnOk
             // 
@@ -106,6 +72,7 @@
             this.btnOk.TabIndex = 4;
             this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // btnCancel
             // 
@@ -140,9 +107,6 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.CheckBox chkAlt;
-        private System.Windows.Forms.CheckBox chkControl;
-        private System.Windows.Forms.CheckBox chkShift;
         private System.Windows.Forms.TextBox txtKey;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;

@@ -15,6 +15,8 @@
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
 				<Directory Id="INSTALLFOLDER" Name="installer" />
+				<Directory Id="sounds" Name="sounds" />
+				<Directory Id="data" Name="data" />
 			</Directory>
 		</Directory>
 	</Fragment>

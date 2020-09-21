@@ -758,8 +758,16 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
         private void KeyManagerMenuItem_Click(object sender, EventArgs e)
         {
             frmKeyboardManager keyboardManager = new frmKeyboardManager();
-            keyboardManager.Show();
+            keyboardManager.ShowDialog();
+            if (keyboardManager.DialogResult == DialogResult.OK)
+            {
+                Properties.Hotkeys.Default.Save();
 
+            }
+            if (keyboardManager.DialogResult == DialogResult.Cancel)
+            {
+                Properties.Hotkeys.Default.Reload();
+            }
         }
 
         private void ToolsMenu_Click(object sender, EventArgs e)

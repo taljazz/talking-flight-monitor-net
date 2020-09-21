@@ -223,8 +223,9 @@
             // KeyManagerMenuItem
             // 
             this.KeyManagerMenuItem.Name = "KeyManagerMenuItem";
+            this.KeyManagerMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
             this.KeyManagerMenuItem.Size = new System.Drawing.Size(450, 30);
-            this.KeyManagerMenuItem.Text = "Keyboard Manager";
+            this.KeyManagerMenuItem.Text = "&Keyboard Manager";
             this.KeyManagerMenuItem.Click += new System.EventHandler(this.KeyManagerMenuItem_Click);
             // 
             // CommandKeyMenuItem

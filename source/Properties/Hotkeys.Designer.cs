@@ -145,7 +145,7 @@ namespace tfm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Shift+M")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+R")]
         public global::System.Windows.Forms.Keys MuteSimconnect {
             get {
                 return ((global::System.Windows.Forms.Keys)(this["MuteSimconnect"]));

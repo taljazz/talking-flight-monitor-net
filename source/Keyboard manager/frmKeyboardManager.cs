@@ -20,9 +20,9 @@ namespace tfm.Keyboard_manager
             InitializeComponent();
 
             lvKeys.BeginUpdate();
-            foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
+            foreach (SettingsPropertyValue s in Properties.Hotkeys.Default.PropertyValues)
             {
-                lvKeys.Items.Add(s.Name).SubItems.Add(kc.ConvertToString(s.DefaultValue));
+                lvKeys.Items.Add(s.Name).SubItems.Add(kc.ConvertToString(s.PropertyValue));
             }
             lvKeys.EndUpdate();
         }
@@ -32,6 +32,7 @@ namespace tfm.Keyboard_manager
             string mods;
             string key;
             selectedKey = this.lvKeys.SelectedItems;
+            btnModify.Enabled = true;
         }
 
         private void btnModify_Click(object sender, EventArgs e)
@@ -44,9 +45,29 @@ namespace tfm.Keyboard_manager
                 key = item.SubItems[1].Text;
 
             }
-            frmModifyKey frm = new frmModifyKey(name: name, value: key);
+            frmModifyKey frm = new frmModifyKey(name: name);
             frm.ShowDialog();
-            Properties.Hotkeys.Default[name] = (Keys)kc.ConvertFromString("Ctrl+Q");
+            lvKeys.Items.Clear();
+            lvKeys.BeginUpdate();
+            foreach (SettingsPropertyValue s in Properties.Hotkeys.Default.PropertyValues)
+            {
+                lvKeys.Items.Add(s.Name).SubItems.Add(kc.ConvertToString(s.PropertyValue));
+            }
+            lvKeys.EndUpdate();
+
+        }
+
+        private void btnDefaults_Click(object sender, EventArgs e)
+        {
+            Properties.Hotkeys.Default.Reset();
+            Properties.Hotkeys.Default.Reload();
+            lvKeys.Items.Clear();
+            lvKeys.BeginUpdate();
+            foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
+            {
+                lvKeys.Items.Add(s.Name).SubItems.Add(kc.ConvertToString(s.DefaultValue));
+            }
+            lvKeys.EndUpdate();
 
         }
     }

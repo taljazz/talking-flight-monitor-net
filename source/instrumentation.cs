@@ -917,7 +917,7 @@ namespace tfm
 
             for (int i = 1000; i < 65000; i += 1000)
             {
-                if (alt >= i-10 && alt <= i-10 && altitudeCalloutFlags[i] == false)
+                if (alt >= i-10 && alt <= i+10 && altitudeCalloutFlags[i] == false)
                 {
                     fireOnScreenReaderOutputEvent(isGauge:false, output:$"{i} feet. ");
                     altitudeCalloutFlags[i] = true;

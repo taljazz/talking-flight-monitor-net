@@ -2560,6 +2560,11 @@ namespace tfm
         private void onCurrentLocation()
         {
             var database = FSUIPCConnection.AirportsDatabase;
+            if (database.IsLoaded == false)
+            {
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "airport database not loaded. ");
+                return;
+            }
             database.SetReferenceLocation();
                         FsGate currentGate = null;
             FsTaxiway currentTaxiWay = null;

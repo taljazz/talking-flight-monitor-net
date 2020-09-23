@@ -527,7 +527,7 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             settings.ShowDialog();
             if (settings.DialogResult == DialogResult.OK)
             {
-                if (Properties.Settings.Default.AvionicsTabChangeFlag == true)
+                if (Properties.Settings.Default.AvionicsTabChangeFlag)
                 {
                     MessageBox.Show("You must restart TFM for the avionics tab changes to take affect", "restart required", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }

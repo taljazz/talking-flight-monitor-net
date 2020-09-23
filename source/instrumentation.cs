@@ -710,7 +710,7 @@ namespace tfm
             Tolk.Load();
             var version = typeof(Instrumentation).Assembly.GetName().Version.Build;
             fireOnScreenReaderOutputEvent(textOutput:false, output: $"Talking Flight Monitor test build {version}");
-            HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
+            HotkeyManager.Current.AddOrReplace("Command_Key", (Keys)Properties.Hotkeys.Default.Command_Key, commandMode);
             //      HotkeyManager.Current.AddOrReplace("test", Keys.Q, OffsetTest);
             runwayGuidanceEnabled = false;
 
@@ -1481,60 +1481,12 @@ namespace tfm
                 // populate a list of hotkeys, so we can clear them later.
                 foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
                 {
-                    // if (s.Name == "command") continue;
+                    if (s.Name == "Command_Key") continue;
                     hotkeys.Add(s.Name);
+                    HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onKeyPressed);
+
                 }
                 // hotkey definitions
-                // define the command key here so we can disable it if someone presses it twice
-                HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("currentLocation", (Keys)Properties.Hotkeys.Default.currentLocation, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("agl", (Keys)Properties.Hotkeys.Default.agl, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("asl", (Keys)Properties.Hotkeys.Default.asl, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("heading", (Keys)Properties.Hotkeys.Default.heading, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("IndicatedAirspeed", (Keys)Properties.Hotkeys.Default.IndicatedAirspeed, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("TrueAirspeed", (Keys)Properties.Hotkeys.Default.TrueAirspeed, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("MachSpeed", (Keys)Properties.Hotkeys.Default.MachSpeed, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("VerticalSpeed", (Keys)Properties.Hotkeys.Default.VerticalSpeed, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("AirTemperature", (Keys)Properties.Hotkeys.Default.AirTemperature, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("ToggleTrim", (Keys)Properties.Hotkeys.Default.ToggleTrim, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("MuteSimconnect", (Keys)Properties.Hotkeys.Default.MuteSimconnect, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("RepeatLastSimconnectMessage", (Keys)Properties.Hotkeys.Default.RepeatLastSimconnectMessage, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("ReadSimulationRate", (Keys)Properties.Hotkeys.Default.ReadSimulationRate, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("FlightFollowing", (Keys)Properties.Hotkeys.Default.FlightFollowing, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("NextWaypoint", (Keys)Properties.Hotkeys.Default.NextWaypoint, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("DestinationInfo", (Keys)Properties.Hotkeys.Default.DestinationInfo, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("AttitudeMode", (Keys)Properties.Hotkeys.Default.AttitudeMode, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("SpeakAttitude", (Keys)Properties.Hotkeys.Default.SpeakAttitude, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("SpeakAutopilot", (Keys)Properties.Hotkeys.Default.SpeakAutopilot, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("ToggleGPWS", (Keys)Properties.Hotkeys.Default.ToggleGPWS, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("ToggleILS", (Keys)Properties.Hotkeys.Default.ToggleILS, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("ToggleFlapsAnnouncement", (Keys)Properties.Hotkeys.Default.ToggleFlapsAnnouncement, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("ReadWind", (Keys)Properties.Hotkeys.Default.ReadWind, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("RunwayGuidance", (Keys)Properties.Hotkeys.Default.RunwayGuidance, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("FuelReport", (Keys)Properties.Hotkeys.Default.FuelReport, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("FuelFlow", (Keys)Properties.Hotkeys.Default.FuelFlow, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("WeightReport", (Keys)Properties.Hotkeys.Default.WeightReport, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("FuelTank1", (Keys)Properties.Hotkeys.Default.FuelTank1, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("FuelTank2", (Keys)Properties.Hotkeys.Default.FuelTank2, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("FuelTank3", (Keys)Properties.Hotkeys.Default.FuelTank3, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("FuelTank4", (Keys)Properties.Hotkeys.Default.FuelTank4, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("FuelTank5", (Keys)Properties.Hotkeys.Default.FuelTank5, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("FuelTank6", (Keys)Properties.Hotkeys.Default.FuelTank6, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("FuelTank7", (Keys)Properties.Hotkeys.Default.FuelTank7, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("FuelTank8", (Keys)Properties.Hotkeys.Default.FuelTank8, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("FuelTank9", (Keys)Properties.Hotkeys.Default.FuelTank9, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("FuelTank10", (Keys)Properties.Hotkeys.Default.FuelTank10, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("NearbyAirborn", (Keys)Properties.Hotkeys.Default.NearbyAirborn, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("NearbyGround", (Keys)Properties.Hotkeys.Default.NearbyGround, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("Engine1Info", (Keys)Properties.Hotkeys.Default.Engine1Info, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("Engine2Info", (Keys)Properties.Hotkeys.Default.Engine2Info, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("Engine3Info", (Keys)Properties.Hotkeys.Default.Engine3Info, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("Engine4Info", (Keys)Properties.Hotkeys.Default.Engine4Info, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("GroundSpeed", (Keys)Properties.Hotkeys.Default.GroundSpeed, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("Engine1Throttle", (Keys)Properties.Hotkeys.Default.Engine1Throttle, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("Engine2Throttle", (Keys)Properties.Hotkeys.Default.Engine2Throttle, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("Engine3Throttle", (Keys)Properties.Hotkeys.Default.Engine3Throttle, onKeyPressed);
-                HotkeyManager.Current.AddOrReplace("Engine4Throttle", (Keys)Properties.Hotkeys.Default.Engine4Throttle, onKeyPressed);
                     
 
 
@@ -1554,156 +1506,156 @@ namespace tfm
             
             switch (e.Name)
             {
-                case "asl":
+                case "ASL_Altitude":
                     onASLKey();
                     break;
-                case "currentLocation":
+                case "Current_Location":
                     onCurrentLocation();
                     break;
-                case "agl":
+                case "AGL_Altitude":
                     onAGLKey();
                     break;
-                case "command":
+                case "Disable_Command_Key":
                     fireOnScreenReaderOutputEvent(isGauge: false, output: "command key disabled.");
                     CommandKeyEnabled = false;
                     break;
 
-                case "heading":
+                case "Aircraft_Heading":
                     onHeadingKey();
                     break;
-                case "IndicatedAirspeed":
+                case "Indicated_Airspeed":
                     onIASKey();
                     break;
-                case "ReadSimulationRate":
+                case "Read_Simulation_Rate":
                     ReadSimulationRate(true);
                     break;
-                case "GroundSpeed":
+                case "Ground_Speed":
                     onGroundSpeedKey();
                     break;
 
-                case "TrueAirspeed":
+                case "True_Airspeed":
                     onTASKey();
                     break;
-                case "MachSpeed":
+                case "Mach_Speed":
                     onMachKey();
                     break;
-                case "VerticalSpeed":
+                case "Vertical_Speed":
                     onVSpeedKey();
                     break;
-                case "AirTemperature":
+                case "Outside_Temperature":
                     onAirtempKey();
                     break;
-                case "ToggleTrim":
+                case "Toggle_Trim_Announcement":
                     onTrimKey();
                     break;
-                case "MuteSimconnect":
+                case "Mute_Simconnect_Messages":
                     onMuteSimconnectKey();
                     break;
-                case "RepeatLastSimconnectMessage":
+                case "Repeat_Last_Simconnect_Message":
                     onRepeatLastSimconnectMessage();
                     break;
-                case "FlightFollowing":
+                case "Nearest_City":
                     onCityKey();
                     break;
-                case "NextWaypoint":
+                case "Next_Waypoint":
                     onWaypointKey();
                     break;
-                case "DestinationInfo":
+                case "Destination_Info":
                     onDestinationKey();
                     break;
-                case "AttitudeMode":
+                case "Attitude_Mode":
                     onAttitudeKey();
                     break;
-                case "SpeakAutopilot":
+                case "Toggle_Autopilot_Announcement":
                     onAutopilotKey();
                     break;
-                case "ToggleGPWS":
+                case "Toggle_GPWS_Announcement":
                     onGPWSKey();
                     break;
-                case "ToggleILS":
+                case "Toggle_ILS_Announcement":
                     onToggleILSKey();
                     break;
-                case "ToggleFlapsAnnouncement":
+                case "Toggle_Flaps_Announcement":
                     onToggleFlapsAnnouncementKey();
                     break;
-                case "ReadWind":
+                case "Wind_Information":
                     onWindKey();
                     break;
-                case "RunwayGuidance":
+                case "Runway_Guidance_Mode":
                     onRunwayGuidanceKey();
                     break;
-                case "FuelReport":
+                case "Fuel_Report":
                     onFuelReportKey();
                     break;
-                case "FuelFlow":
+                case "Fuel_Flow":
                     onFuelFlowKey();
                     break;
-                case "WeightReport":
+                case "Weight_Report":
                     onWeightReportKey();
                     break;
 
-                case "FuelTank1":
+                case "Fuel_Tank_1":
                     onFuelTankKey(1);
                     break;
-                case "FuelTank2":
+                case "Fuel_Tank_2":
                     onFuelTankKey(2);
                     break;
-                case "FuelTank3":
+                case "Fuel_Tank_3":
                     onFuelTankKey(3);
                     break;
-                case "FuelTank4":
+                case "Fuel_Tank_4":
                     onFuelTankKey(4);
                     break;
-                case "FuelTank5":
+                case "Fuel_Tank_5":
                     onFuelTankKey(5);
                     break;
-                case "FuelTank6":
+                case "Fuel_Tank_6":
                     onFuelTankKey(6);
                     break;
-                case "FuelTank7":
+                case "Fuel_Tank_7":
                     onFuelTankKey(7);
                     break;
-                case "FuelTank8":
+                case "Fuel_Tank_8":
                     onFuelTankKey(8);
                     break;
-                case "FuelTank9":
+                case "Fuel_Tank_9":
                     onFuelTankKey(9);
                     break;
-                case "FuelTank10":
+                case "Fuel_Tank_10":
                     onFuelTankKey(10);
                     break;
-                case "NearbyAirborn":
+                case "Nearby_Airborn_Aircraft":
                     onTCASAir();
                     break;
-                case "NearbyGround":
+                case "Nearby_Ground_Aircraft":
                     onTCASGround();
                     break;
-                case "Engine1Throttle":
+                case "Engine_1_Throttle":
                     onEngineThrottleKey(1);
                     break;
 
-                case "Engine2Throttle":
+                case "Engine_2_Throttle":
                     onEngineThrottleKey(2);
                     break;
 
-                case "Engine3Throttle":
+                case "Engine_3_Throttle":
                     onEngineThrottleKey(3);
                     break;
 
-                case "Engine4Throttle":
+                case "Engine_4_Throttle":
                     onEngineThrottleKey(4);
                     break;
 
-                case "Engine1Info":
+                case "Engine_1_Info":
                     onEngineInfoKey(1);
                     break;
-                case "Engine2Info":
+                case "Engine_2_Info":
                     onEngineInfoKey(2);
                     break;
-                case "Engine3Info":
+                case "Engine_3_Info":
                     onEngineInfoKey(3);
                     break;
-                case "Engine4Info":
+                case "Engine_4_Info":
                     onEngineInfoKey(4);
                     break;
 
@@ -2417,14 +2369,14 @@ namespace tfm
 
         public void ResetHotkeys()
         {
-            HotkeyManager.Current.Remove("command");
+            HotkeyManager.Current.Remove("Command_Key");
             foreach (string k in hotkeys)
             {
                 HotkeyManager.Current.Remove(k);
             }
             if (CommandKeyEnabled)
             {
-                HotkeyManager.Current.AddOrReplace("command", (Keys)Properties.Hotkeys.Default.command, commandMode);
+                HotkeyManager.Current.AddOrReplace("Command_Key", (Keys)Properties.Hotkeys.Default.Command_Key, commandMode);
             }
             
         }
@@ -2641,7 +2593,7 @@ namespace tfm
                 } // Loop through taxiways.
             } // loop through airports.
             
-            if(currentTaxiWay != null)
+            if(currentTaxiWay != null && currentGate == null)
             {
                 fireOnScreenReaderOutputEvent(isGauge: false, output: $"taxi way {currentTaxiWay.Name}@{currentTaxiWay.Airport.ICAO}");
             }

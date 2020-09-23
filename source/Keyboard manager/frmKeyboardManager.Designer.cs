@@ -63,7 +63,7 @@
             this.lvKeys.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.hdrFunction,
             this.hdrKey});
-            this.lvKeys.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lvKeys.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvKeys.HideSelection = false;
             this.lvKeys.Location = new System.Drawing.Point(3, 3);
             this.lvKeys.MultiSelect = false;

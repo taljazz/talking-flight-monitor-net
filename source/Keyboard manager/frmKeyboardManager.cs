@@ -20,9 +20,10 @@ namespace tfm.Keyboard_manager
             InitializeComponent();
 
             lvKeys.BeginUpdate();
-            foreach (SettingsPropertyValue s in Properties.Hotkeys.Default.PropertyValues)
+            foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
             {
-                lvKeys.Items.Add(s.Name).SubItems.Add(kc.ConvertToString(s.PropertyValue));
+                string keyName = s.Name.Replace("_", " ");
+                lvKeys.Items.Add(keyName).SubItems.Add(kc.ConvertToString(s.DefaultValue));
             }
             lvKeys.EndUpdate();
         }
@@ -41,7 +42,7 @@ namespace tfm.Keyboard_manager
             string key = null;
             foreach (ListViewItem item in selectedKey)
             {
-                name = item.SubItems[0].Text;
+                name = item.SubItems[0].Text.Replace(" ", "_");
                 key = item.SubItems[1].Text;
 
             }

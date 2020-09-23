@@ -2,152 +2,155 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="tfm.Properties" GeneratedClassName="Hotkeys">
   <Profiles />
   <Settings>
-    <Setting Name="agl" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="AGL_Altitude" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">G</Value>
     </Setting>
-    <Setting Name="command" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Command_Key" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Oem6</Value>
     </Setting>
-    <Setting Name="asl" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="ASL_Altitude" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">A</Value>
     </Setting>
-    <Setting Name="heading" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Aircraft_Heading" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">H</Value>
     </Setting>
-    <Setting Name="IndicatedAirspeed" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Indicated_Airspeed" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">S</Value>
     </Setting>
-    <Setting Name="TrueAirspeed" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="True_Airspeed" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">T</Value>
     </Setting>
-    <Setting Name="MachSpeed" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Mach_Speed" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">M</Value>
     </Setting>
-    <Setting Name="VerticalSpeed" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Vertical_Speed" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">V</Value>
     </Setting>
-    <Setting Name="AirTemperature" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Outside_Temperature" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">O</Value>
     </Setting>
-    <Setting Name="ToggleTrim" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Toggle_Trim_Announcement" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+T</Value>
     </Setting>
-    <Setting Name="MuteSimconnect" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Mute_Simconnect_Messages" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+R</Value>
     </Setting>
-    <Setting Name="FlightFollowing" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Nearest_City" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">C</Value>
     </Setting>
-    <Setting Name="NextWaypoint" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Next_Waypoint" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">W</Value>
     </Setting>
-    <Setting Name="DestinationInfo" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Destination_Info" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">D</Value>
     </Setting>
-    <Setting Name="AttitudeMode" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Attitude_Mode" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">OemOpenBrackets</Value>
     </Setting>
-    <Setting Name="SpeakAttitude" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Speak_Attitude" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+M</Value>
     </Setting>
-    <Setting Name="SpeakAutopilot" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Toggle_Autopilot_Announcement" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+A</Value>
     </Setting>
-    <Setting Name="ToggleGPWS" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Toggle_GPWS_Announcement" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+G</Value>
     </Setting>
-    <Setting Name="ToggleILS" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Toggle_ILS_Announcement" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+I</Value>
     </Setting>
-    <Setting Name="ToggleFlapsAnnouncement" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Toggle_Flaps_Announcement" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+F</Value>
     </Setting>
-    <Setting Name="ReadWind" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Wind_Information" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">I</Value>
     </Setting>
-    <Setting Name="RunwayGuidance" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Runway_Guidance_Mode" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+H</Value>
     </Setting>
-    <Setting Name="FuelReport" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Fuel_Report" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">F</Value>
     </Setting>
-    <Setting Name="FuelFlow" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Fuel_Flow" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">B</Value>
     </Setting>
-    <Setting Name="FuelTank1" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Fuel_Tank_1" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="FuelTank2" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Fuel_Tank_2" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">2</Value>
     </Setting>
-    <Setting Name="FuelTank3" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Fuel_Tank_3" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">3</Value>
     </Setting>
-    <Setting Name="FuelTank4" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Fuel_Tank_4" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">4</Value>
     </Setting>
-    <Setting Name="FuelTank5" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Fuel_Tank_5" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
-    <Setting Name="FuelTank6" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Fuel_Tank_6" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">6</Value>
     </Setting>
-    <Setting Name="FuelTank7" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Fuel_Tank_7" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">7</Value>
     </Setting>
-    <Setting Name="FuelTank8" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Fuel_Tank_8" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">8</Value>
     </Setting>
-    <Setting Name="FuelTank9" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Fuel_Tank_9" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">9</Value>
     </Setting>
-    <Setting Name="FuelTank10" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Fuel_Tank_10" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="NearbyAirborn" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Nearby_Airborn_Aircraft" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">P</Value>
     </Setting>
-    <Setting Name="NearbyGround" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Nearby_Ground_Aircraft" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+P</Value>
     </Setting>
-    <Setting Name="Engine1Info" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Engine_1_Info" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+1</Value>
     </Setting>
-    <Setting Name="Engine2Info" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Engine_2_Info" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+2</Value>
     </Setting>
-    <Setting Name="Engine3Info" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Engine_3_Info" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+3</Value>
     </Setting>
-    <Setting Name="Engine4Info" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Engine_4_Info" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+4</Value>
     </Setting>
-    <Setting Name="WeightReport" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Weight_Report" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+W</Value>
     </Setting>
-    <Setting Name="RepeatLastSimconnectMessage" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Repeat_Last_Simconnect_Message" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">R</Value>
     </Setting>
-    <Setting Name="ReadSimulationRate" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Read_Simulation_Rate" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">E</Value>
     </Setting>
-    <Setting Name="GroundSpeed" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Ground_Speed" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">U</Value>
     </Setting>
-    <Setting Name="Engine1Throttle" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Engine_1_Throttle" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+1</Value>
     </Setting>
-    <Setting Name="Engine2Throttle" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Engine_2_Throttle" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+2</Value>
     </Setting>
-    <Setting Name="Engine3Throttle" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Engine_3_Throttle" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+3</Value>
     </Setting>
-    <Setting Name="Engine4Throttle" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Engine_4_Throttle" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+4</Value>
     </Setting>
-    <Setting Name="currentLocation" Type="System.Windows.Forms.Keys" Scope="User">
+    <Setting Name="Current_Location" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+C</Value>
+    </Setting>
+    <Setting Name="Disable_Command_Key" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Z</Value>
     </Setting>
   </Settings>
 </SettingsFile>

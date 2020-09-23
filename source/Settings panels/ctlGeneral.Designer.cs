@@ -119,6 +119,7 @@
             this.radPropertyGrid.TabStop = true;
             this.radPropertyGrid.Text = "property grid";
             this.radPropertyGrid.UseVisualStyleBackColor = true;
+            this.radPropertyGrid.CheckedChanged += new System.EventHandler(this.avionicsRadioButton_CheckedChanged);
             // 
             // radSimplified
             // 
@@ -130,6 +131,7 @@
             this.radSimplified.TabStop = true;
             this.radSimplified.Text = "simplified";
             this.radSimplified.UseVisualStyleBackColor = true;
+            this.radSimplified.CheckedChanged += new System.EventHandler(this.avionicsRadioButton_CheckedChanged);
             // 
             // ctlGeneral
             // 

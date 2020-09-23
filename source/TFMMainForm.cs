@@ -326,10 +326,12 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
         private void TFMMainForm_Load(object sender, EventArgs e)
         {
             //Move to a configure function when implementing settings.
-            // The following line makes sure flag indicating an avionics panel change is returned to its default state.
-            Properties.Settings.Default.AvionicsTabChangeFlag = false;
+            if (Properties.Settings.Default.AvionicsTabChangeFlag)
+            {
+                Properties.Settings.Default.avionics_tab = Properties.Settings.Default.NewAvionicsTab;
+                Properties.Settings.Default.AvionicsTabChangeFlag = false;
                 Properties.Settings.Default.Save();
-            
+            }
             if (Properties.Settings.Default.avionics_tab == "simplified")
             {
                 TFMTabControl.TabPages.Remove(AvionicsExplorationTabPage);

@@ -32,25 +32,28 @@ namespace tfm
 
         }
 
-        private void radPropertyGrid_CheckedChanged(object sender, EventArgs e)
+        void avionicsRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            RadioButton rb = (RadioButton)sender;
+            RadioButton rb = sender as RadioButton;
             if (rb.Checked)
             {
-                Properties.Settings.Default.avionics_tab = "properties";
-                Properties.Settings.Default.AvionicsTabChangeFlag = true;
+                if (rb.Name == "radSimplified")
+                {
+                    if (Properties.Settings.Default.avionics_tab != "simplified")
+                    {
+                        Properties.Settings.Default.NewAvionicsTab = "simplified";
+                        Properties.Settings.Default.AvionicsTabChangeFlag = true;
+                    }
+                }
+                if (rb.Name == "radPropertyGrid")
+                {
+                    if (Properties.Settings.Default.avionics_tab != "PropertyGrid")
+                    {
+                        Properties.Settings.Default.NewAvionicsTab = "PropertyGrid";
+                        Properties.Settings.Default.AvionicsTabChangeFlag = true;
+                    }
+                }
             }
-        } // End properties grid check.
-
-        private void radSimplified_CheckedChanged(object sender, EventArgs e)
-        {
-            RadioButton rb = (RadioButton)sender;
-            if(rb.Checked)
-            {
-                Properties.Settings.Default.avionics_tab = "simplified";
-                Properties.Settings.Default.AvionicsTabChangeFlag = true;
-            }
-        } // End simplified change.
-
+        }
     }
 }

@@ -1180,7 +1180,8 @@ namespace tfm
         
         private void ReadILSInfo()
         {
-            if (Properties.Settings.Default.ReadILS)
+            double vspeed = (double)Aircraft.VerticalSpeed.Value * 3.28084d * -1;
+            if (Properties.Settings.Default.ReadILS && Aircraft.OnGround.Value == 0 && vspeed < 200 )
             {
                 if (Aircraft.Nav1GS.Value == 1 && gsDetected == false)
                 {
@@ -1210,6 +1211,10 @@ namespace tfm
             else
             {
                 ilsTimer.Enabled = false;
+                hasGlideSlope = false;
+                hasLocaliser = false;
+                localiserDetected = false;
+                gsDetected = false;
             }
         }
 

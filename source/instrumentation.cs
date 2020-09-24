@@ -1332,7 +1332,7 @@ namespace tfm
         }
         public void ReadLandingGear()
         {
-            var gaugeName = "gear";
+            var gaugeName = "Gear";
             var isGauge = true;
             string gaugeValue;
             if (Aircraft.LandingGear.ValueChanged)
@@ -1340,11 +1340,14 @@ namespace tfm
                 if (Aircraft.LandingGear.Value == 0)
                 {
                     gaugeValue = "up. ";
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
                 }
                 if (Aircraft.LandingGear.Value == 16383)
                 {
                     gaugeValue = "down. ";
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
                 }
+                
             }
         }
         // read autopilot settings

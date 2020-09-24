@@ -27,7 +27,9 @@ namespace tfm
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         // get a speech synthesis object for SAPI output
         public static SpeechSynthesizer synth = new SpeechSynthesizer();
-        
+        // Create a counter for the connection timer.
+        private int connectionCounter = 0;
+
         
         public Instrumentation inst = new Instrumentation();
         
@@ -52,11 +54,16 @@ namespace tfm
         // This method is called every 1 second by the connection timer.
         private void timerConnection_Tick(object sender, EventArgs e)
         {
+
+            // The connection counter prevents excessive instances of an error
+            // from appearing in the log.
+            connectionCounter++;
+
             // Try to open the connection
             try
             {
                 FSUIPCConnection.Open();
-                
+
                 // If there was no problem, stop this timer and start the main timer
                 this.timerConnection.Stop();
                 this.timerMain.Start();
@@ -68,14 +75,22 @@ namespace tfm
                 logger.Debug($"simulator version: {FSUIPCConnection.FlightSimVersionConnected.ToString()}");
                 logger.Debug($"FSUIPC version: {FSUIPCConnection.FSUIPCVersion.ToString()}");
                 logger.Debug($"FSUIPC .net DLL version: {FSUIPCConnection.DLLVersion.ToString()}");
-                
+
 
             }
-            catch
+            catch (Exception ex)
             {
-                // No connection found. Don't need to do anything, just keep trying
+                if (connectionCounter <= 5) { 
+                logger.Debug($"Connection failed [attempt #{connectionCounter}]: {ex.Message}");
             }
-        }
+            else if(connectionCounter == 35) 
+            {
+                Tolk.Output("Connection timed out. See the TFM log for more details. Please restart TFM or manually connect to continue.");
+                    logger.Debug("Connection timeout: The simulator or fsuipc are not running. Make sure they are running before starting TFM.");
+                this.timerConnection.Stop();
+            }
+            }
+                    }
 
         // This method runs 10 times per second (every 100ms). This is set on the timerMain properties.
         private void timerMain_Tick(object sender, EventArgs e)
@@ -799,6 +814,12 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
 
         }
 
-
+        private void ConnectMenuItem_Click(object sender, EventArgs e)
+        {
+            // Reset the connection counter so logging errors work.
+            connectionCounter = 0;
+            Tolk.Output("Attempting to connect...");
+            this.timerConnection.Start();
+        }
     }//End TFMMainForm class.
 } //End TFM namespace.

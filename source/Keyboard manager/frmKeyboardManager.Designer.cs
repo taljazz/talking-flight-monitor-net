@@ -28,102 +28,184 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabGeneral = new System.Windows.Forms.TabPage();
+            this.tabAutopilot = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.tabA2A = new System.Windows.Forms.TabPage();
             this.lvKeys = new System.Windows.Forms.ListView();
-            this.hdrFunction = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.hdrKey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvAutopilotKeys = new System.Windows.Forms.ListView();
+            this.lvA2AKeys = new System.Windows.Forms.ListView();
             this.btnModify = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.btnDefaults = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.hdrName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.hdrKey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.hdrApName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.hdrApKey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.flowLayoutPanel1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabGeneral.SuspendLayout();
+            this.tabAutopilot.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
+            this.tabA2A.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tableLayoutPanel1
+            // flowLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.lvKeys, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnModify, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnOk, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.btnCancel, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.btnDefaults, 0, 2);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 100);
-            this.tableLayoutPanel1.TabIndex = 0;
+            this.flowLayoutPanel1.Controls.Add(this.tabControl1);
+            this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel2);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(800, 450);
+            this.flowLayoutPanel1.TabIndex = 0;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.AccessibleRole = System.Windows.Forms.AccessibleRole.PageTab;
+            this.tabControl1.Controls.Add(this.tabGeneral);
+            this.tabControl1.Controls.Add(this.tabAutopilot);
+            this.tabControl1.Controls.Add(this.tabA2A);
+            this.tabControl1.Location = new System.Drawing.Point(3, 3);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(200, 100);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // tabGeneral
+            // 
+            this.tabGeneral.Controls.Add(this.lvKeys);
+            this.tabGeneral.Location = new System.Drawing.Point(4, 22);
+            this.tabGeneral.Name = "tabGeneral";
+            this.tabGeneral.Padding = new System.Windows.Forms.Padding(3);
+            this.tabGeneral.Size = new System.Drawing.Size(192, 74);
+            this.tabGeneral.TabIndex = 0;
+            this.tabGeneral.Text = "General";
+            this.tabGeneral.UseVisualStyleBackColor = true;
+            this.tabGeneral.Click += new System.EventHandler(this.tabGeneral_Click);
+            // 
+            // tabAutopilot
+            // 
+            this.tabAutopilot.Controls.Add(this.lvAutopilotKeys);
+            this.tabAutopilot.Location = new System.Drawing.Point(4, 22);
+            this.tabAutopilot.Name = "tabAutopilot";
+            this.tabAutopilot.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAutopilot.Size = new System.Drawing.Size(192, 74);
+            this.tabAutopilot.TabIndex = 1;
+            this.tabAutopilot.Text = "Autopilot";
+            this.tabAutopilot.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.btnModify);
+            this.flowLayoutPanel2.Controls.Add(this.btnOk);
+            this.flowLayoutPanel2.Controls.Add(this.btnCancel);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 109);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(200, 100);
+            this.flowLayoutPanel2.TabIndex = 1;
+            // 
+            // tabA2A
+            // 
+            this.tabA2A.Controls.Add(this.lvA2AKeys);
+            this.tabA2A.Location = new System.Drawing.Point(4, 22);
+            this.tabA2A.Name = "tabA2A";
+            this.tabA2A.Padding = new System.Windows.Forms.Padding(3);
+            this.tabA2A.Size = new System.Drawing.Size(192, 74);
+            this.tabA2A.TabIndex = 2;
+            this.tabA2A.Text = "A2A";
+            this.tabA2A.UseVisualStyleBackColor = true;
             // 
             // lvKeys
             // 
             this.lvKeys.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.hdrFunction,
+            this.hdrName,
             this.hdrKey});
-            this.lvKeys.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvKeys.Dock = System.Windows.Forms.DockStyle.Top;
             this.lvKeys.HideSelection = false;
             this.lvKeys.Location = new System.Drawing.Point(3, 3);
             this.lvKeys.MultiSelect = false;
             this.lvKeys.Name = "lvKeys";
             this.lvKeys.ShowGroups = false;
-            this.lvKeys.Size = new System.Drawing.Size(94, 34);
+            this.lvKeys.Size = new System.Drawing.Size(186, 97);
             this.lvKeys.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvKeys.TabIndex = 0;
             this.lvKeys.UseCompatibleStateImageBehavior = false;
             this.lvKeys.View = System.Windows.Forms.View.Details;
             this.lvKeys.SelectedIndexChanged += new System.EventHandler(this.lvKeys_SelectedIndexChanged);
             // 
-            // hdrFunction
+            // lvAutopilotKeys
             // 
-            this.hdrFunction.Text = "Function";
+            this.lvAutopilotKeys.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.hdrApName,
+            this.hdrApKey});
+            this.lvAutopilotKeys.HideSelection = false;
+            this.lvAutopilotKeys.Location = new System.Drawing.Point(36, -11);
+            this.lvAutopilotKeys.Name = "lvAutopilotKeys";
+            this.lvAutopilotKeys.Size = new System.Drawing.Size(121, 97);
+            this.lvAutopilotKeys.TabIndex = 1;
+            this.lvAutopilotKeys.UseCompatibleStateImageBehavior = false;
+            this.lvAutopilotKeys.View = System.Windows.Forms.View.Details;
+            this.lvAutopilotKeys.SelectedIndexChanged += new System.EventHandler(this.lvAutopilotKeys_SelectedIndexChanged);
             // 
-            // hdrKey
+            // lvA2AKeys
             // 
-            this.hdrKey.Text = "Key";
+            this.lvA2AKeys.HideSelection = false;
+            this.lvA2AKeys.Location = new System.Drawing.Point(36, -11);
+            this.lvA2AKeys.Name = "lvA2AKeys";
+            this.lvA2AKeys.Size = new System.Drawing.Size(121, 97);
+            this.lvA2AKeys.TabIndex = 1;
+            this.lvA2AKeys.UseCompatibleStateImageBehavior = false;
             // 
             // btnModify
             // 
-            this.btnModify.Enabled = false;
-            this.btnModify.Location = new System.Drawing.Point(103, 3);
+            this.btnModify.Location = new System.Drawing.Point(3, 3);
             this.btnModify.Name = "btnModify";
             this.btnModify.Size = new System.Drawing.Size(75, 23);
-            this.btnModify.TabIndex = 1;
-            this.btnModify.Text = "&Modify";
+            this.btnModify.TabIndex = 0;
+            this.btnModify.Text = "Modify";
             this.btnModify.UseVisualStyleBackColor = true;
             this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
             // 
             // btnOk
             // 
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(3, 43);
+            this.btnOk.Location = new System.Drawing.Point(84, 3);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
-            this.btnOk.TabIndex = 2;
-            this.btnOk.Text = "&Ok";
+            this.btnOk.TabIndex = 1;
+            this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(103, 43);
+            this.btnCancel.Location = new System.Drawing.Point(3, 32);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 3;
-            this.btnCancel.Text = "&Cancel";
+            this.btnCancel.TabIndex = 2;
+            this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // btnDefaults
+            // hdrName
             // 
-            this.btnDefaults.Location = new System.Drawing.Point(3, 83);
-            this.btnDefaults.Name = "btnDefaults";
-            this.btnDefaults.Size = new System.Drawing.Size(75, 14);
-            this.btnDefaults.TabIndex = 4;
-            this.btnDefaults.Text = "Restore &Defaults";
-            this.btnDefaults.UseVisualStyleBackColor = true;
-            this.btnDefaults.Click += new System.EventHandler(this.btnDefaults_Click);
+            this.hdrName.Text = "Name";
+            // 
+            // hdrKey
+            // 
+            this.hdrKey.Text = "Key";
+            // 
+            // hdrApName
+            // 
+            this.hdrApName.Text = "Name";
+            // 
+            // hdrApKey
+            // 
+            this.hdrApKey.Text = "Key";
             // 
             // frmKeyboardManager
             // 
@@ -133,26 +215,40 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "frmKeyboardManager";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Keyboard Manager";
-            this.tableLayoutPanel1.ResumeLayout(false);
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabGeneral.ResumeLayout(false);
+            this.tabAutopilot.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.tabA2A.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabGeneral;
         private System.Windows.Forms.ListView lvKeys;
-        private System.Windows.Forms.ColumnHeader hdrFunction;
-        private System.Windows.Forms.ColumnHeader hdrKey;
+        private System.Windows.Forms.TabPage tabAutopilot;
+        private System.Windows.Forms.ListView lvAutopilotKeys;
+        private System.Windows.Forms.TabPage tabA2A;
+        private System.Windows.Forms.ListView lvA2AKeys;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button btnModify;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnDefaults;
+        private System.Windows.Forms.ColumnHeader hdrName;
+        private System.Windows.Forms.ColumnHeader hdrKey;
+        private System.Windows.Forms.ColumnHeader hdrApName;
+        private System.Windows.Forms.ColumnHeader hdrApKey;
     }
 }

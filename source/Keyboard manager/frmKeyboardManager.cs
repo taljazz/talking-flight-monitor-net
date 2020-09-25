@@ -19,13 +19,6 @@ namespace tfm.Keyboard_manager
         {
             InitializeComponent();
 
-            lvKeys.BeginUpdate();
-            foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
-            {
-                string keyName = s.Name.Replace("_", " ");
-                lvKeys.Items.Add(keyName).SubItems.Add(kc.ConvertToString(s.DefaultValue));
-            }
-            lvKeys.EndUpdate();
         }
 
         void lvKeys_SelectedIndexChanged(object sender, EventArgs e)
@@ -33,6 +26,13 @@ namespace tfm.Keyboard_manager
             string mods;
             string key;
             selectedKey = this.lvKeys.SelectedItems;
+            btnModify.Enabled = true;
+        }
+        void lvAutopilotKeys_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string mods;
+            string key;
+            selectedKey = this.lvAutopilotKeys.SelectedItems;
             btnModify.Enabled = true;
         }
 
@@ -67,6 +67,18 @@ namespace tfm.Keyboard_manager
             foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
             {
                 lvKeys.Items.Add(s.Name).SubItems.Add(kc.ConvertToString(s.DefaultValue));
+            }
+            lvKeys.EndUpdate();
+
+        }
+
+        private void tabGeneral_Click(object sender, EventArgs e)
+        {
+            lvKeys.BeginUpdate();
+            foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
+            {
+                string keyName = s.Name.Replace("_", " ");
+                lvKeys.Items.Add(keyName).SubItems.Add(kc.ConvertToString(s.DefaultValue));
             }
             lvKeys.EndUpdate();
 

@@ -169,7 +169,7 @@ namespace tfm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public int AttitudeAnnouncementMode {
             get {
                 return ((int)(this["AttitudeAnnouncementMode"]));

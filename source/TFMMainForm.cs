@@ -138,8 +138,8 @@ namespace tfm
             {
                 // An error occured. Tell the user and stop this timer.
                 this.timerMain.Stop();
-                MessageBox.Show("Communication with FSUIPC Failed\n\n" + ex.Message, "FSUIPC", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                // Update the connection status
+                logger.Debug("High priority instruments failed to read. Probable causes include a lost simulator connection, lost network access, or an fsuipc problem.");
+                                // Update the connection status
                 // start the connection timer
                 this.timerConnection.Start();
             }
@@ -147,8 +147,20 @@ namespace tfm
         // second 200 MS timer for lower priority instruments, or instruments that don't work well on 100 MS
         private void timerLowPriority_Tick(object sender, EventArgs e)
         {
-            FSUIPCConnection.Process("LowPriority");
-            inst.ReadLowPriorityInstruments();
+            try
+            {
+                FSUIPCConnection.Process("LowPriority");
+                inst.ReadLowPriorityInstruments();
+            }
+            catch (Exception ex)
+            {
+                // Stop the timer.
+                this.timerLowPriority.Stop();
+
+                // Make a log entry since notifying the user is pointless.
+                logger.Debug("Low priority instruments failed to read. Probable causes include simulator shutdown, loss of network access, or a fsuipc problem.");
+                this.timerConnection.Start();
+            }
         }
 
 

@@ -1666,9 +1666,26 @@ namespace tfm
                 case "Engine_4_Info":
                     onEngineInfoKey(4);
                     break;
+                case "Toggle_Braille_Output":
+                    onBrailleOutputKey();
+                    break;
 
             }
             ResetHotkeys();
+        }
+
+        private void onBrailleOutputKey()
+        {
+            if (Properties.Settings.Default.OutputBraille)
+            {
+                Properties.Settings.Default.OutputBraille = false;
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Braille output disabled. ");
+            }
+            else
+            {
+                Properties.Settings.Default.OutputBraille = true;
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Braille output enabled. ");
+            }
         }
 
         private void onEngineThrottleKey(int engine)

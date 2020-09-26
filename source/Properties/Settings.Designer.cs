@@ -274,5 +274,17 @@ namespace tfm.Properties {
                 this["AvionicsTabChangeFlag"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OutputBraille {
+            get {
+                return ((bool)(this["OutputBraille"]));
+            }
+            set {
+                this["OutputBraille"] = value;
+            }
+        }
     }
 }

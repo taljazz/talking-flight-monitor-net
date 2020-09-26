@@ -622,5 +622,17 @@ namespace tfm.Properties {
                 this["Disable_Command_Key"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+B")]
+        public global::System.Windows.Forms.Keys Toggle_Braille_output {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Toggle_Braille_output"]));
+            }
+            set {
+                this["Toggle_Braille_output"] = value;
+            }
+        }
     }
 }

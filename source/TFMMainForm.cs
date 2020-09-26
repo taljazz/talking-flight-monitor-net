@@ -596,130 +596,130 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                         // reasonable defaults.
                         
                         speak($"{e.gaugeValue} feet per minute.");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"VSPD {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                     case "Outside temperature":
                         speak($"{e.gaugeValue} degrees");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"temp {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                     case "ASL altitude":
                         speak($"{e.gaugeValue} feet ASL.");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"ASL  {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                         
                     case "AGL altitude":
                         speak($"{e.gaugeValue} feet AGL.");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"AGL {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                         
                     case "Airspeed true":
                         speak($"{e.gaugeValue} knotts true");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"TAS {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                         
                     case "Airspeed indicated":
                         speak($"{e.gaugeValue} knotts indicated");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"IAS {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                     
                     case "Ground speed":
                         speak($"{e.gaugeValue} knotts ground speed");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"gnd: {e.gaugeValue}\n";
                         break;
                         
                     case "Mach":
                         speak($"Mach {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"mach{e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "Localiser":
                         speak($"{e.gaugeValue}. ", useSAPI: true);
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"loc {e.gaugeValue}\n");
                         break;
 
                     case "Glide slope":
                         speak($"{e.gaugeValue}. ", useSAPI: true);
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"gs {e.gaugeValue}\n");
                         break;
 
                     case "Altimeter":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                     
                     case "Flaps":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                     
                     case "Gear":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "AP heading":
                         speak($"heading: {e.gaugeValue}. ");
-                        Tolk.Braille($"hdg: {e.gaugeValue}\n");
+                        braille($"hdg: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "AP airspeed":
                         speak($"{e.gaugeValue} knotts. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "AP vertical speed":
                         speak($"{e.gaugeValue} feet per minute. ");
-                        Tolk.Braille($"{e.gaugeValue} FPM\n");
+                        braille($"{e.gaugeValue} FPM\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "AP altitude":
                         speak($"{e.gaugeName}: {e.gaugeValue} feet. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
 
                     case "Com1":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "Com2":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "Nav1":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "Nav2":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "Transponder":
                         speak($"squawk: {e.gaugeValue}. ");
-                        Tolk.Braille($"Squawk: {e.gaugeValue}\n");
+                        braille($"Squawk: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
@@ -763,7 +763,16 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
 
             }
         }
-        private void dbLoadWorker_DoWork(object sender, DoWorkEventArgs e)
+        
+        private void braille(string output)
+        {
+            if (Properties.Settings.Default.OutputBraille)
+            {
+                Tolk.Braille(output);
+            }
+        }
+
+            private void dbLoadWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {

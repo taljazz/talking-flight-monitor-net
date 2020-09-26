@@ -152,5 +152,8 @@
     <Setting Name="Disable_Command_Key" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Z</Value>
     </Setting>
+    <Setting Name="Toggle_Braille_output" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Ctrl+B</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

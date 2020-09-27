@@ -169,7 +169,7 @@ namespace tfm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public int AttitudeAnnouncementMode {
             get {
                 return ((int)(this["AttitudeAnnouncementMode"]));
@@ -272,6 +272,18 @@ namespace tfm.Properties {
             }
             set {
                 this["AvionicsTabChangeFlag"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OutputBraille {
+            get {
+                return ((bool)(this["OutputBraille"]));
+            }
+            set {
+                this["OutputBraille"] = value;
             }
         }
     }

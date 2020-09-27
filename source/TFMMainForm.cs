@@ -27,7 +27,9 @@ namespace tfm
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         // get a speech synthesis object for SAPI output
         public static SpeechSynthesizer synth = new SpeechSynthesizer();
-        
+        // Create a counter for the connection timer.
+        private int connectionCounter = 0;
+
         
         public Instrumentation inst = new Instrumentation();
         public Autopilot Autopilot = new Autopilot();
@@ -53,11 +55,16 @@ namespace tfm
         // This method is called every 1 second by the connection timer.
         private void timerConnection_Tick(object sender, EventArgs e)
         {
+
+            // The connection counter prevents excessive instances of an error
+            // from appearing in the log.
+            connectionCounter++;
+
             // Try to open the connection
             try
             {
                 FSUIPCConnection.Open();
-                
+
                 // If there was no problem, stop this timer and start the main timer
                 this.timerConnection.Stop();
                 this.timerMain.Start();
@@ -69,14 +76,22 @@ namespace tfm
                 logger.Debug($"simulator version: {FSUIPCConnection.FlightSimVersionConnected.ToString()}");
                 logger.Debug($"FSUIPC version: {FSUIPCConnection.FSUIPCVersion.ToString()}");
                 logger.Debug($"FSUIPC .net DLL version: {FSUIPCConnection.DLLVersion.ToString()}");
-                
+
 
             }
-            catch
+            catch (Exception ex)
             {
-                // No connection found. Don't need to do anything, just keep trying
+                if (connectionCounter <= 5) { 
+                logger.Debug($"Connection failed [attempt #{connectionCounter}]: {ex.Message}");
             }
-        }
+            else if(connectionCounter == 35) 
+            {
+                Tolk.Output("Connection timed out. See the TFM log for more details. Please restart TFM or manually connect to continue.");
+                    logger.Debug("Connection timeout: The simulator or fsuipc are not running. Make sure they are running before starting TFM.");
+                this.timerConnection.Stop();
+            }
+            }
+                    }
 
         // This method runs 10 times per second (every 100ms). This is set on the timerMain properties.
         private void timerMain_Tick(object sender, EventArgs e)
@@ -124,8 +139,8 @@ namespace tfm
             {
                 // An error occured. Tell the user and stop this timer.
                 this.timerMain.Stop();
-                MessageBox.Show("Communication with FSUIPC Failed\n\n" + ex.Message, "FSUIPC", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                // Update the connection status
+                logger.Debug("High priority instruments failed to read. Probable causes include a lost simulator connection, lost network access, or an fsuipc problem.");
+                                // Update the connection status
                 // start the connection timer
                 this.timerConnection.Start();
             }
@@ -133,8 +148,20 @@ namespace tfm
         // second 200 MS timer for lower priority instruments, or instruments that don't work well on 100 MS
         private void timerLowPriority_Tick(object sender, EventArgs e)
         {
-            FSUIPCConnection.Process("LowPriority");
-            inst.ReadLowPriorityInstruments();
+            try
+            {
+                FSUIPCConnection.Process("LowPriority");
+                inst.ReadLowPriorityInstruments();
+            }
+            catch (Exception ex)
+            {
+                // Stop the timer.
+                this.timerLowPriority.Stop();
+
+                // Make a log entry since notifying the user is pointless.
+                logger.Debug("Low priority instruments failed to read. Probable causes include simulator shutdown, loss of network access, or a fsuipc problem.");
+                this.timerConnection.Start();
+            }
         }
 
 
@@ -570,63 +597,63 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                         // reasonable defaults.
                         
                         speak($"{e.gaugeValue} feet per minute.");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"VSPD {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                     case "Outside temperature":
                         speak($"{e.gaugeValue} degrees");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"temp {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                     case "ASL altitude":
                         speak($"{e.gaugeValue} feet ASL.");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"ASL  {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                         
                     case "AGL altitude":
                         speak($"{e.gaugeValue} feet AGL.");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"AGL {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                         
                     case "Airspeed true":
                         speak($"{e.gaugeValue} knotts true");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"TAS {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                         
                     case "Airspeed indicated":
                         speak($"{e.gaugeValue} knotts indicated");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"IAS {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                     
                     case "Ground speed":
                         speak($"{e.gaugeValue} knotts ground speed");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"gnd: {e.gaugeValue}\n";
                         break;
                         
                     case "Mach":
                         speak($"Mach {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"mach{e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "Localiser":
                         speak($"{e.gaugeValue}. ", useSAPI: true);
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"loc {e.gaugeValue}\n");
                         break;
 
                     case "Glide slope":
                         speak($"{e.gaugeValue}. ", useSAPI: true);
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"gs {e.gaugeValue}\n");
                         break;
 
                     case "Altimeter":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                     
@@ -638,62 +665,62 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     
                     case "Gear":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "AP heading":
                         speak($"heading: {e.gaugeValue}. ");
-                        Tolk.Braille($"hdg: {e.gaugeValue}\n");
+                        braille($"hdg: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "AP airspeed":
                         speak($"{e.gaugeValue} knotts. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "AP vertical speed":
                         speak($"{e.gaugeValue} feet per minute. ");
-                        Tolk.Braille($"{e.gaugeValue} FPM\n");
+                        braille($"{e.gaugeValue} FPM\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "AP altitude":
                         speak($"{e.gaugeName}: {e.gaugeValue} feet. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
 
                     case "Com1":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "Com2":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "Nav1":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "Nav2":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        Tolk.Braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "Transponder":
                         speak($"squawk: {e.gaugeValue}. ");
-                        Tolk.Braille($"Squawk: {e.gaugeValue}\n");
+                        braille($"Squawk: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
@@ -737,7 +764,16 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
 
             }
         }
-        private void dbLoadWorker_DoWork(object sender, DoWorkEventArgs e)
+        
+        private void braille(string output)
+        {
+            if (Properties.Settings.Default.OutputBraille)
+            {
+                Tolk.Braille(output);
+            }
+        }
+
+            private void dbLoadWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
@@ -800,6 +836,12 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
 
         }
 
-
+        private void ConnectMenuItem_Click(object sender, EventArgs e)
+        {
+            // Reset the connection counter so logging errors work.
+            connectionCounter = 0;
+            Tolk.Output("Attempting to connect...");
+            this.timerConnection.Start();
+        }
     }//End TFMMainForm class.
 } //End TFM namespace.

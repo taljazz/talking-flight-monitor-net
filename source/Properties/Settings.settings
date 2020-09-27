@@ -39,7 +39,7 @@
       <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="AttitudeAnnouncementMode" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">3</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="AltitudeAnnouncements" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -64,6 +64,9 @@
     </Setting>
     <Setting Name="AvionicsTabChangeFlag" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="OutputBraille" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

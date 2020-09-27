@@ -98,9 +98,16 @@
     <Compile Include="aircraft.cs" />
     <Compile Include="AudioPlaybackEngine.cs" />
     <Compile Include="AutoDisposeFileReader.cs" />
+    <Compile Include="autopilot.cs" />
     <Compile Include="CachedSound.cs" />
     <Compile Include="CachedSoundSampleProvider.cs" />
     <Compile Include="Events\ScreenReaderOutputEventArgs.cs" />
+    <Compile Include="frmAutopilot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAutopilot.Designer.cs">
+      <DependentUpon>frmAutopilot.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmKeyboardHelp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,6 +169,9 @@
     <Compile Include="SineWaveProvider.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAutopilot.resx">
+      <DependentUpon>frmAutopilot.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmKeyboardHelp.resx">
       <DependentUpon>frmKeyboardHelp.cs</DependentUpon>

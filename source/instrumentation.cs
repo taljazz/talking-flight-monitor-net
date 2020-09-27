@@ -1439,7 +1439,16 @@ namespace tfm
                     if (Aircraft.textMenu.IsMenu) // Check if it's a menu (true) or a simple message (false)
                     {
                         if (Aircraft.textMenu.ToString() == "") return;
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: Aircraft.textMenu.ToString());
+                        string menu = Aircraft.textMenu.MenuTitleText + "\r\n";
+                        menu += Aircraft.textMenu.MenuPromptText + "\r\n";
+                        
+                        int count = 1;
+                        foreach (string item in Aircraft.textMenu.MenuItems)
+                        {
+                            menu += $"{count}: {item}. \r\n";
+                            count++;
+                        }
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: menu);
                     }
                     else
                     {

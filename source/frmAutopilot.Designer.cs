@@ -94,6 +94,7 @@
             this.btnOk.TabIndex = 0;
             this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // btnCancel
             // 
@@ -119,6 +120,7 @@
             this.MinimizeBox = false;
             this.Name = "frmAutopilot";
             this.Text = "Autopilot";
+            this.Load += new System.EventHandler(this.frmAutopilot_Load);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();

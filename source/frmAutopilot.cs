@@ -12,9 +12,40 @@ namespace tfm
 {
     public partial class frmAutopilot : Form
     {
-        public frmAutopilot()
+        Autopilot ap = new Autopilot();
+        string instrument;
+        public frmAutopilot(string instrument)
         {
             InitializeComponent();
+            this.instrument = instrument;
+
+        }
+
+        private void frmAutopilot_Load(object sender, EventArgs e)
+        {
+            this.Activate();
+            lblSetting.Text = $"Enter {this.instrument}: ";
+            switch (this.instrument)
+            {
+                case "Altitude":
+                    txtSetting.Text = ap.ApAltitude.ToString();
+                    break;
+
+            }
+        }
+
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            switch (this.instrument)
+            {
+                case "Altitude":
+                    if (double.TryParse(txtSetting.Text, out double altitude))
+                    {
+                        ap.ApAltitude = altitude;
+                    }
+                    break;
+
+            }
         }
     }
 }

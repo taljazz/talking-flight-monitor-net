@@ -634,5 +634,41 @@ namespace tfm.Properties {
                 this["Toggle_Braille_output"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("A")]
+        public global::System.Windows.Forms.Keys ap_Get_Altitude {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Altitude"]));
+            }
+            set {
+                this["ap_Get_Altitude"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+A")]
+        public global::System.Windows.Forms.Keys ap_Set_Altitude {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Altitude"]));
+            }
+            set {
+                this["ap_Set_Altitude"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("OemOpenBrackets")]
+        public global::System.Windows.Forms.Keys ap_Command_Key {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Command_Key"]));
+            }
+            set {
+                this["ap_Command_Key"] = value;
+            }
+        }
     }
 }

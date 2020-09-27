@@ -155,5 +155,14 @@
     <Setting Name="Toggle_Braille_output" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+B</Value>
     </Setting>
+    <Setting Name="ap_Get_Altitude" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">A</Value>
+    </Setting>
+    <Setting Name="ap_Set_Altitude" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+A</Value>
+    </Setting>
+    <Setting Name="ap_Command_Key" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">OemOpenBrackets</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

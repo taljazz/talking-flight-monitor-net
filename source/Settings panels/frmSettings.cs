@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using tfm.Settings_panels;
 
 namespace tfm
 {
@@ -25,6 +26,7 @@ namespace tfm
         {
             pages.Add("nodGeneral", new ctlGeneral());
             pages.Add("nodSpeechOutput", new ctlSpeechOutput());
+            pages.Add("nodTiming", new ctlTiming());
             // set the parent and hide them all
             foreach (iSettingsPage page in this.pages.Values)
             {

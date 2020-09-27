@@ -195,212 +195,6 @@ namespace tfm
             }
         }
         
-        private decimal com1Freq;
-        [DisplayName("com 1")]
-        [Category("communications")]
-        public decimal Com1Freq
-        {
-            get
-            {
-                FsFrequencyCOM com1Helper = new FsFrequencyCOM(Aircraft.Com1Freq.Value);
-                com1Freq = com1Helper.ToDecimal();
-                return com1Freq;
-            }
-            set
-            {
-                if (value > 0)
-                {
-                    // 1. Create a new instance of the COM helper class using the decimal value entered
-                    FsFrequencyCOM com1Helper = new FsFrequencyCOM(value);
-                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                    Aircraft.Com1Freq.Value = com1Helper.ToBCD();
-                    com1Freq = value;
-                }
-                else
-                {
-                    throw new ArgumentException("com 1 frequency must be greater than 0");
-                }
-            }
-        }
-
-        private decimal com2Freq;
-        [DisplayName("com 2")]
-        [Category("communications")]
-        public decimal Com2Freq
-        {
-            get
-            {
-                FsFrequencyCOM com2Helper = new FsFrequencyCOM(Aircraft.Com2Freq.Value);
-                com2Freq = com2Helper.ToDecimal();
-                return com2Freq;
-            }
-            set
-            {
-                if (value > 0)
-                {
-                    // 1. Create a new instance of the COM helper class using the decimal value entered
-                    FsFrequencyCOM com2Helper = new FsFrequencyCOM(value);
-                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                    Aircraft.Com2Freq.Value = com2Helper.ToBCD();
-                    com2Freq = value;
-                }
-                else
-                {
-                    throw new ArgumentException("com 2 frequency must be greater than 0");
-                }
-            }
-        }
-        private int transponder;
-        [DisplayName("transponder")]
-        [Category("communications")]
-        public int Transponder
-        {
-            get
-            {
-                FsTransponderCode txHelper = new FsTransponderCode(Aircraft.Transponder.Value);
-                transponder = txHelper.ToInteger();
-                return transponder;
-            }
-            set
-            {
-                if (value > 0)
-                {
-                    // 1. Create a new instance of the Transponder helper class using the integer that was entered
-                    //    Note the number box always returns the value as a 'decimal' type. So we have to cast to Int32
-                    FsTransponderCode txHelper = new FsTransponderCode((int)value);
-                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                    Aircraft.Transponder.Value = txHelper.ToBCD();
-                    transponder = value;
-                }
-                else
-                {
-                    throw new ArgumentException("Transponder values mush be greater than 0");
-                }
-            }
-        }
-        private decimal adf1Freq;
-        [DisplayName("ADF frequency")]
-        [Category("navigation")]
-        public decimal Adf1Freq
-        {
-            get
-            {
-                // 1. Create a new instance of the helper ADF class using the values of the main AND extended offsets
-                //    This is taking in the BCD values sent from FSUIPC
-                FsFrequencyADF adf1Helper = new FsFrequencyADF(Aircraft.adf1Main.Value, Aircraft.adf1Extended.Value);
-                // 2. Now use the helper class to get the string representation and show it on the form
-                adf1Freq = adf1Helper.ToDecimal();
-                return adf1Freq;
-            }
-            set
-            {
-                if (value > 0)
-                {
-                    // 1. Create a new instance of the ADF helper class using the decimal value entered
-                    FsFrequencyADF adf1Helper = new FsFrequencyADF(value);
-                    // 2. Now use the helper class to get the two BCD values required by FSUIPC (main and extended)
-                    //    Set the offsets to these new values
-                    Aircraft.adf1Main.Value = adf1Helper.ToBCDMain();
-                    Aircraft.adf1Extended.Value = adf1Helper.ToBCDExtended();
-                    adf1Freq = value;
-                }
-                else
-                {
-                    throw new ArgumentException("aDF frequency must be greater than 0");
-                }
-            }
-        }
-        private double altimeterQNH;
-        [DisplayName("Altimeter QNH")]
-        public double AltimeterQNH
-        {
-            get
-            {
-                double AltQNH = (double)Aircraft.Altimeter.Value / 16d;
-                altimeterQNH = Math.Floor(AltQNH + 0.5);
-                return altimeterQNH;
-            }
-            set
-            {
-                Aircraft.Altimeter.Value = (ushort)(value * 16);
-                altimeterQNH = value;
-            }
-        }
-        private double altimeterInches;
-        [DisplayName("Altimeter Inches")]
-        public double AltimeterInches
-        {
-            get
-            {
-                double AltQNH = (double)Aircraft.Altimeter.Value / 16d;
-                altimeterInches = Math.Floor(((100 * AltQNH * 29.92) / 1013.2) + 0.5);
-                return altimeterInches;
-            }
-            set
-            {
-                double qnh = value * 33.864;
-                qnh = Math.Round(qnh, 1) * 16;
-                Aircraft.Altimeter.Value = (ushort)qnh;
-                altimeterInches = value;
-
-            }
-        }
-
-        private decimal nav1Freq;
-        [DisplayName("nav 1")]
-        [Category("navigation")]
-        public decimal Nav1Freq
-        {
-            get
-            {
-                FsFrequencyNAV nav1Helper = new FsFrequencyNAV(Aircraft.Nav1Freq.Value);
-                nav1Freq = nav1Helper.ToDecimal();
-                return nav1Freq;
-            }
-            set
-            {
-                if (value > 0)
-                {
-                    // 1. Create a new instance of the COM helper class using the decimal value entered
-                    FsFrequencyNAV nav1Helper = new FsFrequencyNAV(value);
-                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                    Aircraft.Nav1Freq.Value = nav1Helper.ToBCD();
-                    nav1Freq = value;
-                }
-                else
-                {
-                    throw new ArgumentException("nav 1 frequency must be greater than 0");
-                }
-            }
-        }
-        private decimal nav2Freq;
-        [DisplayName("nav 2")]
-        [Category("navigation")]
-        public decimal Nav2Freq
-        {
-            get
-            {
-                FsFrequencyNAV nav2Helper = new FsFrequencyNAV(Aircraft.Nav2Freq.Value);
-                nav2Freq = nav2Helper.ToDecimal();
-                return nav2Freq;
-            }
-            set
-            {
-                if (value > 0)
-                {
-                    // 1. Create a new instance of the NAV helper class using the decimal value entered
-                    FsFrequencyNAV nav2Helper = new FsFrequencyNAV(value);
-                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                    Aircraft.Nav2Freq.Value = nav2Helper.ToBCD();
-                    nav2Freq = value;
-                }
-                else
-                {
-                    throw new ArgumentException("nav 2 frequency must be greater than 0");
-                }
-            }
-        }
-
         public double oldBank { get; private set; }
 
         public double CurrentHeading;
@@ -451,7 +245,8 @@ namespace tfm
             var version = typeof(Instrumentation).Assembly.GetName().Version.Build;
             fireOnScreenReaderOutputEvent(textOutput:false, output: $"Talking Flight Monitor test build {version}");
             HotkeyManager.Current.AddOrReplace("Command_Key", (Keys)Properties.Hotkeys.Default.Command_Key, commandMode);
-            //      HotkeyManager.Current.AddOrReplace("test", Keys.Q, OffsetTest);
+            HotkeyManager.Current.AddOrReplace("ap_Command_Key", (Keys)Properties.Hotkeys.Default.ap_Command_Key, autopilotCommandMode);
+            // HotkeyManager.Current.AddOrReplace("test", Keys.Q, OffsetTest);
             runwayGuidanceEnabled = false;
 
 
@@ -503,7 +298,8 @@ namespace tfm
 
         private void OffsetTest(object sender, HotkeyEventArgs e)
         {
-            Engine1ThrottlePercent = 50;
+            frmAutopilot ap = new frmAutopilot("Altitude");
+            ap.ShowDialog();
 
         }
 
@@ -837,7 +633,6 @@ namespace tfm
                 fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
 
             }
-            Transponder = txHelper.ToInteger();
 
         }
         
@@ -1243,7 +1038,6 @@ namespace tfm
                     HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onKeyPressed);
 
                 }
-                // hotkey definitions
                     
 
 
@@ -1254,6 +1048,58 @@ namespace tfm
 
             }
 
+        }
+        
+        private void autopilotCommandMode(object sender, HotkeyEventArgs e)
+        {
+            // Check to see if we are connected to the sim
+            if (FSUIPCConnection.IsOpen)
+            {
+                // play the command sound
+                // AudioPlaybackEngine.Instance.PlaySound(cmdSound);
+                cmdSound.Play();
+                // populate a list of hotkeys, so we can clear them later.
+                foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
+                {
+                    if (s.Name == "Autopilot_Command_Key") continue;
+                    if (s.Name.StartsWith("ap_"))
+                    {
+                        hotkeys.Add(s.Name);
+                        HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onAutopilotKeyPressed);
+                    }
+
+                }
+
+
+            }
+            else
+            {
+                Tolk.Output("not connected to simulator");
+
+            }
+
+        }
+
+        private void onAutopilotKeyPressed(object sender, HotkeyEventArgs e)
+        {
+            string gaugeName;
+            string gaugeValue;
+            bool isGauge = true;
+
+            e.Handled = true;
+            ResetHotkeys();
+            switch (e.Name)
+            {
+                case "ap_Get_Altitude":
+                    gaugeName = "Ap Altitude";
+                    gaugeValue = Autopilot.ApAltitude.ToString();
+                    break;
+                case "ap_Set_Altitude":
+                    frmAutopilot ap = new frmAutopilot("Altitude");
+                    ap.ShowDialog();
+                    break;
+
+            }
         }
 
         private void onKeyPressed(object sender, HotkeyEventArgs e)
@@ -2152,6 +1998,7 @@ namespace tfm
         public void ResetHotkeys()
         {
             HotkeyManager.Current.Remove("Command_Key");
+            HotkeyManager.Current.Remove("ap_Command_Key");
             foreach (string k in hotkeys)
             {
                 HotkeyManager.Current.Remove(k);
@@ -2159,6 +2006,7 @@ namespace tfm
             if (CommandKeyEnabled)
             {
                 HotkeyManager.Current.AddOrReplace("Command_Key", (Keys)Properties.Hotkeys.Default.Command_Key, commandMode);
+                HotkeyManager.Current.AddOrReplace("ap_Command_Key", (Keys)Properties.Hotkeys.Default.ap_Command_Key, autopilotCommandMode);
             }
             
         }

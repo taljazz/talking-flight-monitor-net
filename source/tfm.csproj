@@ -131,6 +131,12 @@
     <Compile Include="Settings panels\ctlSpeechOutput.Designer.cs">
       <DependentUpon>ctlSpeechOutput.cs</DependentUpon>
     </Compile>
+    <Compile Include="Settings panels\ctlTiming.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings panels\ctlTiming.Designer.cs">
+      <DependentUpon>ctlTiming.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings panels\frmSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,6 +183,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\ctlSpeechOutput.resx">
       <DependentUpon>ctlSpeechOutput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings panels\ctlTiming.resx">
+      <DependentUpon>ctlTiming.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\frmSettings.resx">
       <DependentUpon>frmSettings.cs</DependentUpon>

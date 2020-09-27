@@ -32,10 +32,10 @@
     <Setting Name="UseMetric" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="FlightFollowingTimeInterval" Type="System.Int32" Scope="User">
+    <Setting Name="FlightFollowingTimeInterval" Type="System.String" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
-    <Setting Name="ILSAnnouncementTimeInterval" Type="System.Int32" Scope="User">
+    <Setting Name="ILSAnnouncementTimeInterval" Type="System.String" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="AttitudeAnnouncementMode" Type="System.Int32" Scope="User">

@@ -30,7 +30,7 @@
         {
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("General");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Output");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Timing");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Timing (requires TFM restart)");
             System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("User interface");
             this.tvCategories = new System.Windows.Forms.TreeView();
             this.pnlContent = new System.Windows.Forms.Panel();
@@ -50,7 +50,7 @@
             treeNode2.Name = "nodSpeechOutput";
             treeNode2.Text = "Output";
             treeNode3.Name = "nodTiming";
-            treeNode3.Text = "Timing";
+            treeNode3.Text = "Timing (requires TFM restart)";
             treeNode4.Name = "nodeUserInterface";
             treeNode4.Text = "User interface";
             this.tvCategories.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {

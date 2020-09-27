@@ -552,7 +552,9 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                                        } //End sending data to the simulator.
         private void SettingsMenuItem_Click(object sender, EventArgs e)
         {
+            Settings.Default.PropertyChanged += onChange;
             frmSettings settings = new frmSettings();
+
             settings.ShowDialog();
             if (settings.DialogResult == DialogResult.OK)
             {
@@ -569,6 +571,11 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             }
             
 
+        }
+
+        private void onChange(object sender, PropertyChangedEventArgs e)
+        {
+            logger.Debug($"Setting {e.PropertyName} changed");
         }
 
         protected void onScreenReaderOutput(object sender, ScreenReaderOutputEventArgs e)

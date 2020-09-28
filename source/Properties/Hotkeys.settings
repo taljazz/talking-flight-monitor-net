@@ -164,5 +164,17 @@
     <Setting Name="ap_Command_Key" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">OemOpenBrackets</Value>
     </Setting>
+    <Setting Name="ap_Get_Heading" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">H</Value>
+    </Setting>
+    <Setting Name="ap_Set_heading" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+H</Value>
+    </Setting>
+    <Setting Name="ap_Get_Airspeed" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">S</Value>
+    </Setting>
+    <Setting Name="ap_Set_Airspeed" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+S</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

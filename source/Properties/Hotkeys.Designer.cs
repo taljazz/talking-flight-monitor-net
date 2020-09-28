@@ -670,5 +670,53 @@ namespace tfm.Properties {
                 this["ap_Command_Key"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("H")]
+        public global::System.Windows.Forms.Keys ap_Get_Heading {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Heading"]));
+            }
+            set {
+                this["ap_Get_Heading"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+H")]
+        public global::System.Windows.Forms.Keys ap_Set_heading {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_heading"]));
+            }
+            set {
+                this["ap_Set_heading"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("S")]
+        public global::System.Windows.Forms.Keys ap_Get_Airspeed {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Airspeed"]));
+            }
+            set {
+                this["ap_Get_Airspeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+S")]
+        public global::System.Windows.Forms.Keys ap_Set_Airspeed {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Airspeed"]));
+            }
+            set {
+                this["ap_Set_Airspeed"] = value;
+            }
+        }
     }
 }

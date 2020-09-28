@@ -30,6 +30,18 @@ namespace tfm
                 case "Altitude":
                     txtSetting.Text = ap.ApAltitude.ToString();
                     break;
+                case "Heading":
+                    txtSetting.Text = ap.ApHeading.ToString();
+                    break;
+                case "Airspeed":
+                    txtSetting.Text = ap.ApAirspeed.ToString();
+                    break;
+                case "Mach":
+                    txtSetting.Text = ap.ApMachSpeed.ToString();
+                    break;
+                case "Vertical speed":
+                    txtSetting.Text = ap.ApVerticalSpeed.ToString();
+                    break;
 
             }
         }
@@ -44,6 +56,21 @@ namespace tfm
                         ap.ApAltitude = altitude;
                     }
                     break;
+
+                case "Heading":
+                    if (double.TryParse(txtSetting.Text, out double heading))
+                    {
+                        ap.ApHeading = heading;
+                    }
+                    break;
+
+                case "Airspeed":
+                    if (double.TryParse(txtSetting.Text, out double airspeed))
+                    {
+                        ap.ApAirspeed = airspeed;
+                    }
+                    break;
+
 
             }
         }

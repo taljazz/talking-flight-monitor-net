@@ -146,9 +146,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10")]
-        public int FlightFollowingTimeInterval {
+        public string FlightFollowingTimeInterval {
             get {
-                return ((int)(this["FlightFollowingTimeInterval"]));
+                return ((string)(this["FlightFollowingTimeInterval"]));
             }
             set {
                 this["FlightFollowingTimeInterval"] = value;
@@ -158,9 +158,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public int ILSAnnouncementTimeInterval {
+        public string ILSAnnouncementTimeInterval {
             get {
-                return ((int)(this["ILSAnnouncementTimeInterval"]));
+                return ((string)(this["ILSAnnouncementTimeInterval"]));
             }
             set {
                 this["ILSAnnouncementTimeInterval"] = value;

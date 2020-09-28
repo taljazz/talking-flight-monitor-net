@@ -272,7 +272,7 @@ namespace tfm
 
         public void SetupFlightFollowing()
         {
-            flightFollowingTimer = new System.Timers.Timer(TimeSpan.FromMinutes(Properties.Settings.Default.FlightFollowingTimeInterval).TotalMilliseconds);
+            flightFollowingTimer = new System.Timers.Timer(TimeSpan.FromMinutes(double.Parse(Properties.Settings.Default.FlightFollowingTimeInterval)).TotalMilliseconds);
             flightFollowingTimer.Elapsed += onFlightFollowingTimerTick;
             if (Properties.Settings.Default.FlightFollowing)
             {

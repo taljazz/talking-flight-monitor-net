@@ -29,6 +29,7 @@ using System.Reflection;
 using System.ServiceModel.Security;
 using System.Drawing.Text;
 using System.Windows.Forms.VisualStyles;
+using tfm.Properties;
 
 namespace tfm
 {
@@ -37,12 +38,15 @@ namespace tfm
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
         // get a logger object for this class
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+        
         // The event that handles speech/braille output.
         public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput;
+
 
         // The virtual method for the event. Used as a shell and fired when needed.
         protected virtual void onScreenReaderOutput(ScreenReaderOutputEventArgs e)
         {
+            
             EventHandler<ScreenReaderOutputEventArgs> handler = ScreenReaderOutput;
             if(handler != null)
             {
@@ -67,17 +71,19 @@ namespace tfm
         private SineWaveProvider pitchSineProvider;
         private SineWaveProvider bankSineProvider;
 
+
+
         
         // timers
         private static System.Timers.Timer RunwayGuidanceTimer;
         private static System.Timers.Timer GroundSpeedTimer = new System.Timers.Timer(3000); // 3 seconds;
         private static System.Timers.Timer AttitudeTimer;
         private static System.Timers.Timer flightFollowingTimer;
-        private static System.Timers.Timer ilsTimer = new System.Timers.Timer(5000);
+        private static System.Timers.Timer ilsTimer = new System.Timers.Timer(TimeSpan.FromSeconds(double.Parse(Properties.Settings.Default.ILSAnnouncementTimeInterval)).TotalMilliseconds);
         private static System.Timers.Timer waypointTransitionTimer = new System.Timers.Timer(5000);
         private double HdgRight;
         private double HdgLeft;
-
+        
         // Audio objects
         IWavePlayer driverOut;
         SignalGenerator wg;
@@ -292,6 +298,7 @@ namespace tfm
         private void onFlightFollowingTimerTick(object sender, ElapsedEventArgs e)
         {
             // this just reads the flight following info, same as the hotkey
+            
             if (Properties.Settings.Default.GeonamesUsername == "") return;
             onCityKey();
         }
@@ -1181,6 +1188,10 @@ namespace tfm
                 case "Toggle_Flaps_Announcement":
                     onToggleFlapsAnnouncementKey();
                     break;
+                case "Read_Flaps_Angle":
+                    onFlapsAngleKey();
+                    break;
+
                 case "Wind_Information":
                     onWindKey();
                     break;
@@ -1268,6 +1279,17 @@ namespace tfm
             }
             ResetHotkeys();
         }
+
+        private void onFlapsAngleKey()
+        {
+            double FlapsAngle = (double)Aircraft.Flaps.Value / 256d;
+            var gaugeName = "Flaps";
+            var gaugeValue = FlapsAngle.ToString("f0");
+            var isGauge = true;
+            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+        }
+
+
 
         private void onBrailleOutputKey()
         {

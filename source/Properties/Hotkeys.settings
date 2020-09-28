@@ -175,6 +175,9 @@
     </Setting>
     <Setting Name="ap_Set_Airspeed" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+S</Value>
+</Setting>
+    <Setting Name="Read_Flaps_Angle" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">L</Value>
     </Setting>
   </Settings>
 </SettingsFile>

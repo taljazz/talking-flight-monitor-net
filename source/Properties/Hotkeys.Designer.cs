@@ -718,5 +718,14 @@ namespace tfm.Properties {
                 this["ap_Set_Airspeed"] = value;
             }
         }
+
+        [global::System.Configuration.DefaultSettingValueAttribute("L")]
+        public global::System.Windows.Forms.Keys Read_Flaps_Angle {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Read_Flaps_Angle"]));
+            }
+            set {
+                this["Read_Flaps_Angle"] = value;
+
     }
 }

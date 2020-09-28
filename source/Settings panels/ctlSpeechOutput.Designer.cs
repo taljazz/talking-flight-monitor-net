@@ -30,6 +30,11 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.trkSpeechRate = new System.Windows.Forms.TrackBar();
+            this.grpAttitude = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.radTones = new System.Windows.Forms.RadioButton();
+            this.radSpeech = new System.Windows.Forms.RadioButton();
+            this.radBoth = new System.Windows.Forms.RadioButton();
             this.chkReadInstrumentation = new System.Windows.Forms.CheckBox();
             this.chkAltitude = new System.Windows.Forms.CheckBox();
             this.chkReadGroundSpeed = new System.Windows.Forms.CheckBox();
@@ -40,11 +45,6 @@
             this.chkUseSAPI = new System.Windows.Forms.CheckBox();
             this.chkAutopilot = new System.Windows.Forms.CheckBox();
             this.chkBraille = new System.Windows.Forms.CheckBox();
-            this.grpAttitude = new System.Windows.Forms.GroupBox();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.radTones = new System.Windows.Forms.RadioButton();
-            this.radSpeech = new System.Windows.Forms.RadioButton();
-            this.radBoth = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trkSpeechRate)).BeginInit();
             this.grpAttitude.SuspendLayout();
@@ -90,6 +90,62 @@
             this.trkSpeechRate.TabIndex = 1;
             this.trkSpeechRate.Value = 10;
             this.trkSpeechRate.Scroll += new System.EventHandler(this.trkSpeechRate_Scroll);
+            // 
+            // grpAttitude
+            // 
+            this.grpAttitude.Controls.Add(this.flowLayoutPanel1);
+            this.grpAttitude.Location = new System.Drawing.Point(103, 83);
+            this.grpAttitude.Name = "grpAttitude";
+            this.grpAttitude.Size = new System.Drawing.Size(94, 14);
+            this.grpAttitude.TabIndex = 15;
+            this.grpAttitude.TabStop = false;
+            this.grpAttitude.Text = "Attitude output mode";
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.radTones);
+            this.flowLayoutPanel1.Controls.Add(this.radSpeech);
+            this.flowLayoutPanel1.Controls.Add(this.radBoth);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 16);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 100);
+            this.flowLayoutPanel1.TabIndex = 0;
+            // 
+            // radTones
+            // 
+            this.radTones.AutoSize = true;
+            this.radTones.Location = new System.Drawing.Point(3, 3);
+            this.radTones.Name = "radTones";
+            this.radTones.Size = new System.Drawing.Size(55, 17);
+            this.radTones.TabIndex = 0;
+            this.radTones.TabStop = true;
+            this.radTones.Text = "Tones";
+            this.radTones.UseVisualStyleBackColor = true;
+            this.radTones.CheckedChanged += new System.EventHandler(this.radTones_CheckedChanged);
+            // 
+            // radSpeech
+            // 
+            this.radSpeech.AutoSize = true;
+            this.radSpeech.Location = new System.Drawing.Point(64, 3);
+            this.radSpeech.Name = "radSpeech";
+            this.radSpeech.Size = new System.Drawing.Size(62, 17);
+            this.radSpeech.TabIndex = 1;
+            this.radSpeech.TabStop = true;
+            this.radSpeech.Text = "Speech";
+            this.radSpeech.UseVisualStyleBackColor = true;
+            this.radSpeech.CheckedChanged += new System.EventHandler(this.radSpeech_CheckedChanged);
+            // 
+            // radBoth
+            // 
+            this.radBoth.AutoSize = true;
+            this.radBoth.Location = new System.Drawing.Point(3, 26);
+            this.radBoth.Name = "radBoth";
+            this.radBoth.Size = new System.Drawing.Size(116, 17);
+            this.radBoth.TabIndex = 2;
+            this.radBoth.TabStop = true;
+            this.radBoth.Text = "Speech and Tones";
+            this.radBoth.UseVisualStyleBackColor = true;
+            this.radBoth.CheckedChanged += new System.EventHandler(this.radBoth_CheckedChanged);
             // 
             // chkReadInstrumentation
             // 
@@ -217,62 +273,6 @@
             this.chkBraille.TabIndex = 14;
             this.chkBraille.Text = "Output tfm messages to Braile display";
             this.chkBraille.UseVisualStyleBackColor = true;
-            // 
-            // grpAttitude
-            // 
-            this.grpAttitude.Controls.Add(this.flowLayoutPanel1);
-            this.grpAttitude.Location = new System.Drawing.Point(103, 83);
-            this.grpAttitude.Name = "grpAttitude";
-            this.grpAttitude.Size = new System.Drawing.Size(94, 14);
-            this.grpAttitude.TabIndex = 15;
-            this.grpAttitude.TabStop = false;
-            this.grpAttitude.Text = "Attitude output mode";
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Controls.Add(this.radTones);
-            this.flowLayoutPanel1.Controls.Add(this.radSpeech);
-            this.flowLayoutPanel1.Controls.Add(this.radBoth);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 16);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 100);
-            this.flowLayoutPanel1.TabIndex = 0;
-            // 
-            // radTones
-            // 
-            this.radTones.AutoSize = true;
-            this.radTones.Location = new System.Drawing.Point(3, 3);
-            this.radTones.Name = "radTones";
-            this.radTones.Size = new System.Drawing.Size(55, 17);
-            this.radTones.TabIndex = 0;
-            this.radTones.TabStop = true;
-            this.radTones.Text = "Tones";
-            this.radTones.UseVisualStyleBackColor = true;
-            this.radTones.CheckedChanged += new System.EventHandler(this.radTones_CheckedChanged);
-            // 
-            // radSpeech
-            // 
-            this.radSpeech.AutoSize = true;
-            this.radSpeech.Location = new System.Drawing.Point(64, 3);
-            this.radSpeech.Name = "radSpeech";
-            this.radSpeech.Size = new System.Drawing.Size(62, 17);
-            this.radSpeech.TabIndex = 1;
-            this.radSpeech.TabStop = true;
-            this.radSpeech.Text = "Speech";
-            this.radSpeech.UseVisualStyleBackColor = true;
-            this.radSpeech.CheckedChanged += new System.EventHandler(this.radSpeech_CheckedChanged);
-            // 
-            // radBoth
-            // 
-            this.radBoth.AutoSize = true;
-            this.radBoth.Location = new System.Drawing.Point(3, 26);
-            this.radBoth.Name = "radBoth";
-            this.radBoth.Size = new System.Drawing.Size(116, 17);
-            this.radBoth.TabIndex = 2;
-            this.radBoth.TabStop = true;
-            this.radBoth.Text = "Speech and Tones";
-            this.radBoth.UseVisualStyleBackColor = true;
-            this.radBoth.CheckedChanged += new System.EventHandler(this.radBoth_CheckedChanged);
             // 
             // ctlSpeechOutput
             // 

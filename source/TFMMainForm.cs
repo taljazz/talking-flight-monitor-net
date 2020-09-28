@@ -553,7 +553,9 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                                        } //End sending data to the simulator.
         private void SettingsMenuItem_Click(object sender, EventArgs e)
         {
+            Settings.Default.PropertyChanged += onChange;
             frmSettings settings = new frmSettings();
+
             settings.ShowDialog();
             if (settings.DialogResult == DialogResult.OK)
             {
@@ -570,6 +572,11 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             }
             
 
+        }
+
+        private void onChange(object sender, PropertyChangedEventArgs e)
+        {
+            logger.Debug($"Setting {e.PropertyName} changed");
         }
 
         protected void onScreenReaderOutput(object sender, ScreenReaderOutputEventArgs e)
@@ -659,18 +666,18 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     
                     case "Flaps":
                         speak($"{e.gaugeName} {e.gaugeValue}. ");
-                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        braille($"{e.gaugeName} {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                     
                     case "Gear":
-                        speak($"{e.gaugeName}: {e.gaugeValue}. ");
+                        speak($"{e.gaugeName} {e.gaugeValue}. ");
                         braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "AP heading":
-                        speak($"heading: {e.gaugeValue}. ");
+                        speak($"heading {e.gaugeValue}. ");
                         braille($"hdg: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;

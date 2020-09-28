@@ -634,5 +634,17 @@ namespace tfm.Properties {
                 this["Toggle_Braille_output"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("L")]
+        public global::System.Windows.Forms.Keys Read_Flaps_Angle {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Read_Flaps_Angle"]));
+            }
+            set {
+                this["Read_Flaps_Angle"] = value;
+            }
+        }
     }
 }

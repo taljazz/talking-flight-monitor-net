@@ -155,5 +155,8 @@
     <Setting Name="Toggle_Braille_output" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+B</Value>
     </Setting>
+    <Setting Name="Read_Flaps_Angle" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">L</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

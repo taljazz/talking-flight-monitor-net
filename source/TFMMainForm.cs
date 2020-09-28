@@ -664,19 +664,19 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                         break;
                     
                     case "Flaps":
-                        speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        speak($"{e.gaugeName} {e.gaugeValue}. ");
+                        braille($"{e.gaugeName} {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
                     
                     case "Gear":
-                        speak($"{e.gaugeName}: {e.gaugeValue}. ");
+                        speak($"{e.gaugeName} {e.gaugeValue}. ");
                         braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
                     case "AP heading":
-                        speak($"heading: {e.gaugeValue}. ");
+                        speak($"heading {e.gaugeValue}. ");
                         braille($"hdg: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;

@@ -1602,6 +1602,10 @@ namespace tfm
                 case "Toggle_Flaps_Announcement":
                     onToggleFlapsAnnouncementKey();
                     break;
+                case "Read_Flaps_Angle":
+                    onFlapsAngleKey();
+                    break;
+
                 case "Wind_Information":
                     onWindKey();
                     break;
@@ -1689,6 +1693,17 @@ namespace tfm
             }
             ResetHotkeys();
         }
+
+        private void onFlapsAngleKey()
+        {
+            double FlapsAngle = (double)Aircraft.Flaps.Value / 256d;
+            var gaugeName = "Flaps";
+            var gaugeValue = FlapsAngle.ToString("f0");
+            var isGauge = true;
+            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+        }
+
+
 
         private void onBrailleOutputKey()
         {

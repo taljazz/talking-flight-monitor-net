@@ -29,6 +29,7 @@ using System.Reflection;
 using System.ServiceModel.Security;
 using System.Drawing.Text;
 using System.Windows.Forms.VisualStyles;
+using tfm.Properties;
 
 namespace tfm
 {
@@ -37,12 +38,15 @@ namespace tfm
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
         // get a logger object for this class
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+        
         // The event that handles speech/braille output.
         public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput;
+
 
         // The virtual method for the event. Used as a shell and fired when needed.
         protected virtual void onScreenReaderOutput(ScreenReaderOutputEventArgs e)
         {
+            
             EventHandler<ScreenReaderOutputEventArgs> handler = ScreenReaderOutput;
             if(handler != null)
             {
@@ -67,17 +71,19 @@ namespace tfm
         private SineWaveProvider pitchSineProvider;
         private SineWaveProvider bankSineProvider;
 
+
+
         
         // timers
         private static System.Timers.Timer RunwayGuidanceTimer;
         private static System.Timers.Timer GroundSpeedTimer = new System.Timers.Timer(3000); // 3 seconds;
         private static System.Timers.Timer AttitudeTimer;
         private static System.Timers.Timer flightFollowingTimer;
-        private static System.Timers.Timer ilsTimer = new System.Timers.Timer(5000);
+        private static System.Timers.Timer ilsTimer = new System.Timers.Timer(TimeSpan.FromSeconds(double.Parse(Properties.Settings.Default.ILSAnnouncementTimeInterval)).TotalMilliseconds);
         private static System.Timers.Timer waypointTransitionTimer = new System.Timers.Timer(5000);
         private double HdgRight;
         private double HdgLeft;
-
+        
         // Audio objects
         IWavePlayer driverOut;
         SignalGenerator wg;
@@ -737,7 +743,7 @@ namespace tfm
 
         public void SetupFlightFollowing()
         {
-            flightFollowingTimer = new System.Timers.Timer(TimeSpan.FromMinutes(Properties.Settings.Default.FlightFollowingTimeInterval).TotalMilliseconds);
+            flightFollowingTimer = new System.Timers.Timer(TimeSpan.FromMinutes(double.Parse(Properties.Settings.Default.FlightFollowingTimeInterval)).TotalMilliseconds);
             flightFollowingTimer.Elapsed += onFlightFollowingTimerTick;
             if (Properties.Settings.Default.FlightFollowing)
             {
@@ -757,6 +763,7 @@ namespace tfm
         private void onFlightFollowingTimerTick(object sender, ElapsedEventArgs e)
         {
             // this just reads the flight following info, same as the hotkey
+            
             if (Properties.Settings.Default.GeonamesUsername == "") return;
             onCityKey();
         }
@@ -1180,7 +1187,8 @@ namespace tfm
         
         private void ReadILSInfo()
         {
-            if (Properties.Settings.Default.ReadILS)
+            double vspeed = (double)Aircraft.VerticalSpeed.Value * 3.28084d * -1;
+            if (Properties.Settings.Default.ReadILS && Aircraft.OnGround.Value == 0 && vspeed < 200 )
             {
                 if (Aircraft.Nav1GS.Value == 1 && gsDetected == false)
                 {
@@ -1210,6 +1218,10 @@ namespace tfm
             else
             {
                 ilsTimer.Enabled = false;
+                hasGlideSlope = false;
+                hasLocaliser = false;
+                localiserDetected = false;
+                gsDetected = false;
             }
         }
 
@@ -1327,7 +1339,7 @@ namespace tfm
         }
         public void ReadLandingGear()
         {
-            var gaugeName = "gear";
+            var gaugeName = "Gear";
             var isGauge = true;
             string gaugeValue;
             if (Aircraft.LandingGear.ValueChanged)
@@ -1335,11 +1347,14 @@ namespace tfm
                 if (Aircraft.LandingGear.Value == 0)
                 {
                     gaugeValue = "up. ";
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
                 }
                 if (Aircraft.LandingGear.Value == 16383)
                 {
                     gaugeValue = "down. ";
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
                 }
+                
             }
         }
         // read autopilot settings
@@ -1431,7 +1446,16 @@ namespace tfm
                     if (Aircraft.textMenu.IsMenu) // Check if it's a menu (true) or a simple message (false)
                     {
                         if (Aircraft.textMenu.ToString() == "") return;
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: Aircraft.textMenu.ToString());
+                        string menu = Aircraft.textMenu.MenuTitleText + "\r\n";
+                        menu += Aircraft.textMenu.MenuPromptText + "\r\n";
+                        
+                        int count = 1;
+                        foreach (string item in Aircraft.textMenu.MenuItems)
+                        {
+                            menu += $"{count}: {item}. \r\n";
+                            count++;
+                        }
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: menu);
                     }
                     else
                     {
@@ -1578,6 +1602,10 @@ namespace tfm
                 case "Toggle_Flaps_Announcement":
                     onToggleFlapsAnnouncementKey();
                     break;
+                case "Read_Flaps_Angle":
+                    onFlapsAngleKey();
+                    break;
+
                 case "Wind_Information":
                     onWindKey();
                     break;
@@ -1658,9 +1686,37 @@ namespace tfm
                 case "Engine_4_Info":
                     onEngineInfoKey(4);
                     break;
+                case "Toggle_Braille_Output":
+                    onBrailleOutputKey();
+                    break;
 
             }
             ResetHotkeys();
+        }
+
+        private void onFlapsAngleKey()
+        {
+            double FlapsAngle = (double)Aircraft.Flaps.Value / 256d;
+            var gaugeName = "Flaps";
+            var gaugeValue = FlapsAngle.ToString("f0");
+            var isGauge = true;
+            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+        }
+
+
+
+        private void onBrailleOutputKey()
+        {
+            if (Properties.Settings.Default.OutputBraille)
+            {
+                Properties.Settings.Default.OutputBraille = false;
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Braille output disabled. ");
+            }
+            else
+            {
+                Properties.Settings.Default.OutputBraille = true;
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Braille output enabled. ");
+            }
         }
 
         private void onEngineThrottleKey(int engine)
@@ -1971,12 +2027,18 @@ namespace tfm
                 fireOnScreenReaderOutputEvent(isGauge: false, output: "Attitude mode enabled. ");
                 // start audio
                 // signal generator for generating tones
+                wg = new SignalGenerator();
+                wg.Type = SignalGeneratorType.Square;
+                wg.Gain = 0.1;
+                // set up panning provider, with the signal generator as input
+                pan = new PanningSampleProvider(wg.ToMono());
+
                 driverOut = new WaveOutEvent();
                 mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
                 mixer.ReadFully = true;
                 driverOut.Init(mixer);
                 pitchSineProvider = new SineWaveProvider();
-                bankSineProvider = new SineWaveProvider();
+                // bankSineProvider = new SineWaveProvider();
                 // start the mixer. We can then add audio sources as needed.
                 driverOut.Play();
                 AttitudeTimer.Enabled = true;
@@ -1995,8 +2057,8 @@ namespace tfm
         }
         private void OnAttitudeModeTickEvent(Object source, ElapsedEventArgs e)
         {
-            attitudeModeSelect = 2;
-            pan = new PanningSampleProvider(bankSineProvider);
+            attitudeModeSelect = Properties.Settings.Default.AttitudeAnnouncementMode;
+            // pan = new PanningSampleProvider(bankSineProvider);
             FSUIPCConnection.Process("attitude");
             double Pitch = Math.Round((double)Aircraft.AttitudePitch.Value * 360d / (65536d * 65536d));
             double Bank = Math.Round((double)Aircraft.AttitudeBank.Value * 360d / (65536d * 65536d));
@@ -2067,13 +2129,14 @@ namespace tfm
                 if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
                 {
                     double freq = mapOneRangeToAnother(Bank, 1, 90, 400, 800, 0);
-                    bankSineProvider.Frequency = freq;
+                    // bankSineProvider.Frequency = freq;
+                    wg.Frequency = freq;
                     if (!AttitudeBankLeftPlaying)
                     {
                         mixer.RemoveAllMixerInputs();
                         pan.Pan = -1;
                         mixer.AddMixerInput(pan);
-                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
                         AttitudeBankLeftPlaying = true;
                         AttitudeBankRightPlaying = false;
                     }
@@ -2099,13 +2162,14 @@ namespace tfm
                 if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
                 {
                     double freq = mapOneRangeToAnother(Bank, 1, 90, 400, 800, 0);
-                    bankSineProvider.Frequency = freq;
+                    // bankSineProvider.Frequency = freq;
+                    wg.Frequency = freq;
                     if (!AttitudeBankRightPlaying)
                     {
                         mixer.RemoveAllMixerInputs();
                         pan.Pan = 1;
                         mixer.AddMixerInput(pan);
-                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                        mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
                         AttitudeBankLeftPlaying = false;
                         AttitudeBankRightPlaying = true;
                     }
@@ -2117,7 +2181,7 @@ namespace tfm
                 if (attitudeModeSelect == 1 || attitudeModeSelect == 3)
                 {
                     mixer.RemoveAllMixerInputs();
-                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider));
+                    mixer.AddMixerInput(new SampleToWaveProvider(pitchSineProvider.ToStereo()));
                     AttitudeBankLeftPlaying = false;
                     AttitudeBankRightPlaying = false;
                     AttitudePitchPlaying = true;

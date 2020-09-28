@@ -24,6 +24,22 @@ namespace tfm
         {
             
         }
+        private void ctlSpeechOutput_Load(object sender, EventArgs e)
+        {
+switch (Properties.Settings.Default.AttitudeAnnouncementMode)
+            {
+                case 1:
+                    radTones.Checked = true;
+                    break;
+                case 2:
+                    radSpeech.Checked = true;
+                    break;
+                case 3:
+                    radBoth.Checked = true;
+                    break;
+            }
+            trkSpeechRate.Value = Properties.Settings.Default.SAPISpeechRate + 10;
+        }
 
         private void trkSpeechRate_Scroll(object sender, EventArgs e)
         {
@@ -35,5 +51,38 @@ namespace tfm
             synth.Rate = val;
             
         }
+
+        private void radTones_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb.Checked)
+            {
+                Properties.Settings.Default.AttitudeAnnouncementMode = 1;
+            }
+
+        }
+
+        private void radSpeech_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb.Checked)
+            {
+                Properties.Settings.Default.AttitudeAnnouncementMode = 2;
+            }
+
+
+        }
+
+        private void radBoth_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb.Checked)
+            {
+                Properties.Settings.Default.AttitudeAnnouncementMode = 3;
+            }
+
+        }
+
+
     }
 }

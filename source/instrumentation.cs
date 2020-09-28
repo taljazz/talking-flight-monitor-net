@@ -96,6 +96,7 @@ namespace tfm
         readonly SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
         // list to store registered hotkey identifiers
         List<string> hotkeys = new List<string>();
+        List<string> autopilotHotkeys = new List<string>();
         FsFuelTanksCollection FuelTanks = null;
         // list to store fuel tanks present on the aircraft
         List<FsFuelTank> ActiveTanks = new List<FsFuelTank>();
@@ -1034,6 +1035,8 @@ namespace tfm
             // Check to see if we are connected to the sim
             if (FSUIPCConnection.IsOpen)
             {
+                // remove the left bracket autopilot command
+                HotkeyManager.Current.Remove("ap_Command_Key");
                 // play the command sound
                 // AudioPlaybackEngine.Instance.PlaySound(cmdSound);
                 cmdSound.Play();
@@ -1041,6 +1044,7 @@ namespace tfm
                 foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
                 {
                     if (s.Name == "Command_Key") continue;
+                    if (s.Name.StartsWith("ap_")) continue;
                     hotkeys.Add(s.Name);
                     HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onKeyPressed);
 
@@ -1071,7 +1075,7 @@ namespace tfm
                     if (s.Name == "Autopilot_Command_Key") continue;
                     if (s.Name.StartsWith("ap_"))
                     {
-                        hotkeys.Add(s.Name);
+                        autopilotHotkeys.Add(s.Name);
                         HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onAutopilotKeyPressed);
                     }
 
@@ -1089,6 +1093,7 @@ namespace tfm
 
         private void onAutopilotKeyPressed(object sender, HotkeyEventArgs e)
         {
+            frmAutopilot ap;
             string gaugeName;
             string gaugeValue;
             bool isGauge = true;
@@ -1098,12 +1103,26 @@ namespace tfm
             switch (e.Name)
             {
                 case "ap_Get_Altitude":
-                    gaugeName = "Ap Altitude";
+                    gaugeName = "AP altitude";
                     gaugeValue = Autopilot.ApAltitude.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
                     break;
                 case "ap_Set_Altitude":
-                    frmAutopilot ap = new frmAutopilot("Altitude");
+                    ap = new frmAutopilot("Altitude");
                     ap.ShowDialog();
+                    break;
+                case "ap_Get_Heading":
+                    gaugeName = "AP heading";
+                    gaugeValue = Autopilot.ApHeading.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    break;
+                case "ap_Set_Heading":
+                    ap = new frmAutopilot("Heading");
+                    ap.ShowDialog();
+                    break;
+
+                default:
+                    Tolk.Output("key not defined");
                     break;
 
             }
@@ -2022,6 +2041,10 @@ namespace tfm
             HotkeyManager.Current.Remove("Command_Key");
             HotkeyManager.Current.Remove("ap_Command_Key");
             foreach (string k in hotkeys)
+            {
+                HotkeyManager.Current.Remove(k);
+            }
+            foreach (string k in autopilotHotkeys)
             {
                 HotkeyManager.Current.Remove(k);
             }

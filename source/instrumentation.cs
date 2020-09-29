@@ -38,23 +38,23 @@ namespace tfm
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
         // get a logger object for this class
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        
+
         // The event that handles speech/braille output.
-        public        event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput;
+        public event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput;
 
 
         // The virtual method for the event. Used as a shell and fired when needed.
         protected virtual void onScreenReaderOutput(ScreenReaderOutputEventArgs e)
         {
-            
+
             EventHandler<ScreenReaderOutputEventArgs> handler = ScreenReaderOutput;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, e);
             } // End event callback.
         } // End onScreenReaderOutput method.
 
-        public void fireOnScreenReaderOutputEvent(string gaugeName = "",string gaugeValue = "",bool isGauge = false,string output = "", bool textOutput = true, bool useSAPI = false, bool interruptSpeech = false)
+        public void fireOnScreenReaderOutputEvent(string gaugeName = "", string gaugeValue = "", bool isGauge = false, string output = "", bool textOutput = true, bool useSAPI = false, bool interruptSpeech = false)
         {
             ScreenReaderOutputEventArgs args = new ScreenReaderOutputEventArgs();
             args.output = output;
@@ -73,7 +73,7 @@ namespace tfm
 
 
 
-        
+
         // timers
         private static System.Timers.Timer RunwayGuidanceTimer;
         private static System.Timers.Timer GroundSpeedTimer = new System.Timers.Timer(3000); // 3 seconds;
@@ -83,7 +83,7 @@ namespace tfm
         private static System.Timers.Timer waypointTransitionTimer = new System.Timers.Timer(5000);
         private double HdgRight;
         private double HdgLeft;
-        
+
         // Audio objects
         IWavePlayer driverOut;
         SignalGenerator wg;
@@ -692,9 +692,9 @@ namespace tfm
         }
 
         public bool CommandKeyEnabled = true;
-        
+
         private int attitudeModeSelect;
-        
+
         private int RunwayGuidanceModeSelect;
         private double oldPitch;
         private string oldTimezone;
@@ -710,12 +710,12 @@ namespace tfm
 
         public Instrumentation()
         {
-            
+
             Logger.Debug("initializing screen reader driver");
             Tolk.TrySAPI(true);
             Tolk.Load();
             var version = typeof(Instrumentation).Assembly.GetName().Version.Build;
-            fireOnScreenReaderOutputEvent(textOutput:false, output: $"Talking Flight Monitor test build {version}");
+            fireOnScreenReaderOutputEvent(textOutput: false, output: $"Talking Flight Monitor test build {version}");
             HotkeyManager.Current.AddOrReplace("Command_Key", (Keys)Properties.Hotkeys.Default.Command_Key, commandMode);
             //      HotkeyManager.Current.AddOrReplace("test", Keys.Q, OffsetTest);
             runwayGuidanceEnabled = false;
@@ -763,7 +763,7 @@ namespace tfm
         private void onFlightFollowingTimerTick(object sender, ElapsedEventArgs e)
         {
             // this just reads the flight following info, same as the hotkey
-            
+
             if (Properties.Settings.Default.GeonamesUsername == "") return;
             onCityKey();
         }
@@ -783,7 +783,7 @@ namespace tfm
                 // Read when aircraft changes
                 if (Aircraft.AircraftName.ValueChanged)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output:"Current aircraft: " + Aircraft.AircraftName.Value);
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Current aircraft: " + Aircraft.AircraftName.Value);
                     DetectFuelTanks();
                 }
 
@@ -830,7 +830,7 @@ namespace tfm
                 ReadLights();
                 ReadDoors();
                 if (Properties.Settings.Default.ReadILS) ReadILSInfo();
-                ReadSimulationRate(TriggeredByKey : false);
+                ReadSimulationRate(TriggeredByKey: false);
                 readAPU();
                 readOnGround();
                 // TODO: engine select
@@ -842,7 +842,7 @@ namespace tfm
                 FirstRun = false;
             }
         }
-        
+
         public void ReadLowPriorityInstruments()
         {
             ReadToggle(Aircraft.Eng1Starter, Aircraft.Eng1Starter.Value > 0, "Number 1 starter", "engaged", "off");
@@ -892,7 +892,7 @@ namespace tfm
                     apuOff = false;
                 }
                 if (apuPercent == 100 && apuStarting == true)
-                    {
+                {
                     apuStarting = false;
                     apuRunning = true;
                     fireOnScreenReaderOutputEvent(isGauge: false, output: "A P U at 100 percent. ");
@@ -924,9 +924,9 @@ namespace tfm
 
             for (int i = 1000; i < 65000; i += 1000)
             {
-                if (alt >= i-10 && alt <= i+10 && altitudeCalloutFlags[i] == false)
+                if (alt >= i - 10 && alt <= i + 10 && altitudeCalloutFlags[i] == false)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge:false, output:$"{i} feet. ");
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{i} feet. ");
                     altitudeCalloutFlags[i] = true;
 
                 }
@@ -1094,7 +1094,7 @@ namespace tfm
 
         private void ReadTransponder()
         {
-            
+
             FsTransponderCode txHelper = new FsTransponderCode(Aircraft.Transponder.Value);
             if (Aircraft.Transponder.ValueChanged)
             {
@@ -1107,12 +1107,12 @@ namespace tfm
             Transponder = txHelper.ToInteger();
 
         }
-        
+
         private void NextWaypoint()
         {
             // convert distance to nautical miles
             double dist = Aircraft.NextWPDistance.Value * 0.00053995D;
-            
+
             if (waypointTransition == false && readWaypointFlag == true)
             {
                 ReadWayPoint();
@@ -1124,29 +1124,29 @@ namespace tfm
                 waypointTransitionTimer.Start();
 
             }
-            
+
         }
-        
+
         private void ReadWayPoint()
-            {
+        {
             double dist = Aircraft.NextWPDistance.Value * 0.00053995D;
             string name = Aircraft.NextWPName.Value;
-                string strDist = dist.ToString("F0");
-                TimeSpan TimeEnroute = TimeSpan.FromSeconds(Aircraft.NextWPETE.Value);
-                double baring = Aircraft.ConvertRadiansToDegrees((double)Aircraft.NextWPBaring.Value);
-                string strBaring = baring.ToString("F0");
-                string strTime = string.Format("{0:%h} hours, {0:%m} minutes, {0:%s} seconds", TimeEnroute);
+            string strDist = dist.ToString("F0");
+            TimeSpan TimeEnroute = TimeSpan.FromSeconds(Aircraft.NextWPETE.Value);
+            double baring = Aircraft.ConvertRadiansToDegrees((double)Aircraft.NextWPBaring.Value);
+            string strBaring = baring.ToString("F0");
+            string strTime = string.Format("{0:%h} hours, {0:%m} minutes, {0:%s} seconds", TimeEnroute);
             readWaypointFlag = false;
-                if (TimeEnroute.Hours == 0)
-                {
-                    strTime = string.Format("{0:%m} minutes, {0:%s} seconds", TimeEnroute);
-                }
-                if (TimeEnroute.Minutes == 0 && TimeEnroute.Hours == 0)
-                {
-                    strTime = string.Format("{0:%s} seconds", TimeEnroute);
-                }
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Next waypoint: {name}.\nDistance: {strDist} nautical miles.\nBaring: {strBaring} degrees.\n{strTime}");
+            if (TimeEnroute.Hours == 0)
+            {
+                strTime = string.Format("{0:%m} minutes, {0:%s} seconds", TimeEnroute);
             }
+            if (TimeEnroute.Minutes == 0 && TimeEnroute.Hours == 0)
+            {
+                strTime = string.Format("{0:%s} seconds", TimeEnroute);
+            }
+            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Next waypoint: {name}.\nDistance: {strDist} nautical miles.\nBaring: {strBaring} degrees.\n{strTime}");
+        }
         private void ReadLights()
         {
             // read when aircraft lights change
@@ -1184,11 +1184,11 @@ namespace tfm
             }
 
         }
-        
+
         private void ReadILSInfo()
         {
             double vspeed = (double)Aircraft.VerticalSpeed.Value * 3.28084d * -1;
-            if (Properties.Settings.Default.ReadILS && Aircraft.OnGround.Value == 0 && vspeed < 200 )
+            if (Properties.Settings.Default.ReadILS && Aircraft.OnGround.Value == 0 && vspeed < 200)
             {
                 if (Aircraft.Nav1GS.Value == 1 && gsDetected == false)
                 {
@@ -1354,7 +1354,7 @@ namespace tfm
                     gaugeValue = "down. ";
                     fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
                 }
-                
+
             }
         }
         // read autopilot settings
@@ -1412,9 +1412,9 @@ namespace tfm
                         groundSpeedActive = true;
                         GroundSpeedTimer.AutoReset = true;
                         GroundSpeedTimer.Enabled = true;
-                        
+
                     }
-                    
+
 
 
                 }
@@ -1424,10 +1424,10 @@ namespace tfm
 
         private void onGroundSpeedTimerTick(object sender, ElapsedEventArgs e)
         {
-            
+
             if (GroundSpeed > 10)
             {
-                fireOnScreenReaderOutputEvent(textOutput: false, isGauge: false, useSAPI: true, output:$"{GroundSpeed} knotts. ");
+                fireOnScreenReaderOutputEvent(textOutput: false, isGauge: false, useSAPI: true, output: $"{GroundSpeed} knotts. ");
             }
             if (GroundSpeed < 10 || Aircraft.OnGround.Value == 0)
             {
@@ -1448,7 +1448,7 @@ namespace tfm
                         if (Aircraft.textMenu.ToString() == "") return;
                         string menu = Aircraft.textMenu.MenuTitleText + "\r\n";
                         menu += Aircraft.textMenu.MenuPromptText + "\r\n";
-                        
+
                         int count = 1;
                         foreach (string item in Aircraft.textMenu.MenuItems)
                         {
@@ -1467,14 +1467,14 @@ namespace tfm
                 OldSimConnectMessage = Aircraft.textMenu.ToString();
             }
         }
-        
+
         private void ReadToggle(Offset instrument, bool toggleStateOn, string name, string OnMsg, string OffMsg)
         {
             if (instrument.ValueChanged)
             {
                 if (toggleStateOn)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge:false, output:$"{name} {OnMsg}");
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {OnMsg}");
                 }
                 else
                 {
@@ -1511,7 +1511,7 @@ namespace tfm
 
                 }
                 // hotkey definitions
-                    
+
 
 
             }
@@ -1527,7 +1527,7 @@ namespace tfm
         {
 
             e.Handled = true;
-            
+
             switch (e.Name)
             {
                 case "ASL_Altitude":
@@ -1959,7 +1959,7 @@ namespace tfm
         }
 
 
-        
+
         private void onToggleFlapsAnnouncementKey()
         {
             if (Properties.Settings.Default.ReadFlaps)
@@ -2004,7 +2004,7 @@ namespace tfm
         {
             if (Properties.Settings.Default.ReadAutopilot)
             {
-             Properties.Settings.Default.ReadAutopilot = false;
+                Properties.Settings.Default.ReadAutopilot = false;
                 fireOnScreenReaderOutputEvent(isGauge: false, output: "read autopilot instruments disabled");
             }
             else
@@ -2087,7 +2087,7 @@ namespace tfm
                     pitchSineProvider.Frequency = freq;
                 }
 
-            }            
+            }
             // pitch up
             if (Pitch < 0 && Pitch > -20)
             {
@@ -2113,7 +2113,7 @@ namespace tfm
                     pitchSineProvider.Frequency = freq;
                 }
 
-            }            
+            }
             // bank left
             if (Bank > 0 && Bank < 90)
             {
@@ -2204,7 +2204,7 @@ namespace tfm
             {
                 strTime = string.Format("{0:%s} seconds", TimeEnroute);
             }
-            fireOnScreenReaderOutputEvent(isGauge:false, output:$"Time enroute to destination, {strTime}. ");
+            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Time enroute to destination, {strTime}. ");
 
 
         }
@@ -2240,7 +2240,7 @@ namespace tfm
             {
                 try
                 {
-                    
+
                     var xmlNearby = XElement.Load($"http://api.geonames.org/findNearbyPlaceName?style=long&lat={lat}&lng={lon}&username={geonamesUser}&cities=cities1000&radius=200");
                     var locations = xmlNearby.Descendants("geoname").Select(g => new
                     {
@@ -2268,7 +2268,10 @@ namespace tfm
                         fireOnScreenReaderOutputEvent(isGauge: false, output: $"{location.Name} {location.admin1}, {location.countryName}. ");
                         fireOnScreenReaderOutputEvent(isGauge: false, output: $"{distanceNM} nautical miles, {strBearing} degrees.");
                     }
-
+                    else
+                    {
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"No city nearby.");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -2314,7 +2317,7 @@ namespace tfm
 
                             Logger.Debug($"cannot convert timezone: {currentTimezone.Name}");
                         }
-                        
+
                         oldTimezone = currentTimezone.Name;
                     }
 
@@ -2395,7 +2398,7 @@ namespace tfm
             var gaugeValue = mach.ToString("F2");
             fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
 
-    }
+        }
 
         private void onTASKey()
         {
@@ -2417,7 +2420,7 @@ namespace tfm
 
         private void onHeadingKey()
         {
-            fireOnScreenReaderOutputEvent(isGauge: false,  output: "heading: " + Math.Round(Aircraft.CompassHeading.Value));
+            fireOnScreenReaderOutputEvent(isGauge: false, output: "heading: " + Math.Round(Aircraft.CompassHeading.Value));
             ResetHotkeys();
         }
 
@@ -2442,7 +2445,7 @@ namespace tfm
             {
                 HotkeyManager.Current.AddOrReplace("Command_Key", (Keys)Properties.Hotkeys.Default.Command_Key, commandMode);
             }
-            
+
         }
 
 
@@ -2625,7 +2628,7 @@ namespace tfm
         {
             var database = FSUIPCConnection.AirportsDatabase;
             database.SetReferenceLocation();
-                        FsGate currentGate = null;
+            FsGate currentGate = null;
             FsTaxiway currentTaxiWay = null;
             FsRunway currentRunway = null;
 
@@ -2642,7 +2645,7 @@ namespace tfm
                 foreach (FsRunway runway in airport.Runways)
                 {
                     if (runway.IsPlayerOnRunway)
-                                            {
+                    {
                         currentRunway = runway;
                         break;
                     }
@@ -2656,16 +2659,16 @@ namespace tfm
                     }
                 } // Loop through taxiways.
             } // loop through airports.
-            
-            if(currentTaxiWay != null && currentGate == null)
+
+            if (currentTaxiWay != null && currentGate == null)
             {
                 fireOnScreenReaderOutputEvent(isGauge: false, output: $"taxi way {currentTaxiWay.Name}@{currentTaxiWay.Airport.ICAO}");
             }
-            else if(currentRunway != null)
+            else if (currentRunway != null)
             {
                 fireOnScreenReaderOutputEvent(isGauge: false, output: $"runway {currentRunway.ID.ToString()}@{currentRunway.Airport.ICAO}");
             }
-            else if(currentGate != null)
+            else if (currentGate != null)
             {
                 fireOnScreenReaderOutputEvent(isGauge: false, output: $"gate {currentGate.ID}@{currentGate.Airport.ICAO}");
             }
@@ -2673,6 +2676,6 @@ namespace tfm
             {
                 fireOnScreenReaderOutputEvent(isGauge: false, output: $"{Aircraft.aircraftLat.Value}, {Aircraft.aircraftLon.Value}");
             }
-        }                    
-                    }
+        }
+    }
 }

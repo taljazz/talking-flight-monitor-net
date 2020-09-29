@@ -730,5 +730,98 @@ namespace tfm.Properties {
                 this["Read_Flaps_Angle"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("M")]
+        public global::System.Windows.Forms.Keys ap_Get_Mach_Speed {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Mach_Speed"]));
+            }
+            set {
+                this["ap_Get_Mach_Speed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+M")]
+        public global::System.Windows.Forms.Keys ap_Set_Mach_Speed {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Mach_Speed"]));
+            }
+            set {
+                this["ap_Set_Mach_Speed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("V")]
+        public global::System.Windows.Forms.Keys ap_Get_Vertical_Speed {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Vertical_Speed"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+V")]
+        public global::System.Windows.Forms.Keys ap_Set_Vertical_Speed {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Vertical_Speed"]));
+            }
+            set {
+                this["ap_Set_Vertical_Speed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C")]
+        public global::System.Windows.Forms.Keys ap_Get_Com_Radios {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Com_Radios"]));
+            }
+            set {
+                this["ap_Get_Com_Radios"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+C")]
+        public global::System.Windows.Forms.Keys ap_Set_Com_Radios {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Com_Radios"]));
+            }
+            set {
+                this["ap_Set_Com_Radios"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("N")]
+        public global::System.Windows.Forms.Keys ap_Get_Nav_Radios {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Nav_Radios"]));
+            }
+            set {
+                this["ap_Get_Nav_Radios"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+N")]
+        public global::System.Windows.Forms.Keys ap_Set_Nav_Radios {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Nav_Radios"]));
+            }
+            set {
+                this["ap_Set_Nav_Radios"] = value;
+            }
+        }
     }
 }

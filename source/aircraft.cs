@@ -16,8 +16,10 @@ namespace tfm
         // DECLARE OFFSETS YOU WANT TO USE HERE
         // =====================================
         public static  Offset<ushort> Com1Freq = new Offset<ushort>(0x034e);
+        public static  Offset<ushort> Com1StandbyFreq = new Offset<ushort>(0x311a);
         public static  Offset<ushort> Com2Freq = new Offset<ushort>(0x3118);
-        public static  Offset<byte> RadioActive = new Offset<byte>(0x3122);
+        public static  Offset<ushort> Com2StandbyFreq = new Offset<ushort>(0x311c);
+        public static  Offset<FsBitArray> RadioAudio = new Offset<FsBitArray>(0x3122, 1);
         public static Offset<ushort> Nav1Freq = new Offset<ushort>(0x0350);
         public static Offset<ushort> Nav2Freq = new Offset<ushort>(0x0352);
         // ADF frequencies are split over 2 offsets, the 'main' and 'extended'.

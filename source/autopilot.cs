@@ -303,6 +303,34 @@ namespace tfm
                 }
             }
         }
+        
+        private decimal com1StandbyFreq;
+        [DisplayName("com 1 Standby")]
+        [Category("communications")]
+        public decimal Com1StandbyFreq
+        {
+            get
+            {
+                FsFrequencyCOM com1StandbyHelper = new FsFrequencyCOM(Aircraft.Com1StandbyFreq.Value);
+                com1StandbyFreq = com1StandbyHelper.ToDecimal();
+                return com1StandbyFreq;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    // 1. Create a new instance of the COM helper class using the decimal value entered
+                    FsFrequencyCOM com1StandbyHelper = new FsFrequencyCOM(value);
+                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                    Aircraft.Com1StandbyFreq.Value = com1StandbyHelper.ToBCD();
+                    com1StandbyFreq = value;
+                }
+                else
+                {
+                    throw new ArgumentException("com 1 standby frequency must be greater than 0");
+                }
+            }
+        }
 
         private decimal com2Freq;
         [DisplayName("com 2")]

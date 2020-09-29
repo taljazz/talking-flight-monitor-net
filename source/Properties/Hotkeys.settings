@@ -179,5 +179,29 @@
     <Setting Name="Read_Flaps_Angle" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">L</Value>
     </Setting>
+    <Setting Name="ap_Get_Mach_Speed" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">M</Value>
+    </Setting>
+    <Setting Name="ap_Set_Mach_Speed" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+M</Value>
+    </Setting>
+    <Setting Name="ap_Get_Vertical_Speed" Type="System.Windows.Forms.Keys" Scope="Application">
+      <Value Profile="(Default)">V</Value>
+    </Setting>
+    <Setting Name="ap_Set_Vertical_Speed" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+V</Value>
+    </Setting>
+    <Setting Name="ap_Get_Com_Radios" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">C</Value>
+    </Setting>
+    <Setting Name="ap_Set_Com_Radios" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+C</Value>
+    </Setting>
+    <Setting Name="ap_Get_Nav_Radios" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">N</Value>
+    </Setting>
+    <Setting Name="ap_Set_Nav_Radios" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+N</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -1094,6 +1094,7 @@ namespace tfm
         private void onAutopilotKeyPressed(object sender, HotkeyEventArgs e)
         {
             frmAutopilot ap;
+            frmComRadios com;
             string gaugeName;
             string gaugeValue;
             bool isGauge = true;
@@ -1119,6 +1120,44 @@ namespace tfm
                 case "ap_Set_Heading":
                     ap = new frmAutopilot("Heading");
                     ap.ShowDialog();
+                    break;
+
+                case "ap_Get_Airspeed":
+                    gaugeName = "AP airspeed";
+                    gaugeValue = Autopilot.ApAirspeed.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    break;
+
+                case "ap_Set_Airspeed":
+                    ap = new frmAutopilot("Airspeed");
+                    ap.ShowDialog();
+                    break;
+
+                case "ap_Get_Mach_Speed":
+                    gaugeName = "AP mach";
+                    gaugeValue = Autopilot.ApMachSpeed.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    break;
+
+                case "ap_Set_Mach_Speed":
+                    ap = new frmAutopilot("Mach");
+                    ap.ShowDialog();
+                    break;
+
+                case "ap_Get_Vertical_Speed":
+                    gaugeName = "AP vertical speed";
+                    gaugeValue = Autopilot.ApVerticalSpeed.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    break;
+
+                case "ap_Set_Vertical_Speed":
+                    ap = new frmAutopilot("Vertical speed");
+                    ap.ShowDialog();
+                    break;
+
+                case "ap_Set_Com_Radios":
+                    com = new frmComRadios();
+                    com.ShowDialog();
                     break;
 
                 default:

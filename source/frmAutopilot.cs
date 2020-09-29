@@ -71,6 +71,20 @@ namespace tfm
                     }
                     break;
 
+                    case "Mach":
+                    if (double.TryParse(txtSetting.Text, out double mach))
+                    {
+                        ap.ApMachSpeed = mach;
+                    }
+                    break;
+
+                    case "Vertical speed":
+                    if (double.TryParse(txtSetting.Text, out double verticalSpeed))
+                    {
+                        ap.ApVerticalSpeed = verticalSpeed;
+                    }
+                    break;
+
 
             }
         }

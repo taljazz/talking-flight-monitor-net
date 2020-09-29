@@ -688,6 +688,12 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
 
+                    case "AP mach":
+                        speak($"Mach {e.gaugeValue}");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        break;
+
                     case "AP vertical speed":
                         speak($"{e.gaugeValue} feet per minute. ");
                         braille($"{e.gaugeValue} FPM\n");

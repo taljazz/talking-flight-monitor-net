@@ -108,11 +108,23 @@
     <Compile Include="frmAutopilot.Designer.cs">
       <DependentUpon>frmAutopilot.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmComRadios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmComRadios.Designer.cs">
+      <DependentUpon>frmComRadios.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmKeyboardHelp.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmKeyboardHelp.Designer.cs">
       <DependentUpon>frmKeyboardHelp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNavRadios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNavRadios.Designer.cs">
+      <DependentUpon>frmNavRadios.cs</DependentUpon>
     </Compile>
     <Compile Include="Keyboard manager\frmKeyboardManager.cs">
       <SubType>Form</SubType>
@@ -179,8 +191,14 @@
     <EmbeddedResource Include="frmAutopilot.resx">
       <DependentUpon>frmAutopilot.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmComRadios.resx">
+      <DependentUpon>frmComRadios.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmKeyboardHelp.resx">
       <DependentUpon>frmKeyboardHelp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNavRadios.resx">
+      <DependentUpon>frmNavRadios.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Keyboard manager\frmKeyboardManager.resx">
       <DependentUpon>frmKeyboardManager.cs</DependentUpon>

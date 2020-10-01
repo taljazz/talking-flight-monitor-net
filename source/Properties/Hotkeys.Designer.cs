@@ -637,6 +637,90 @@ namespace tfm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("A")]
+        public global::System.Windows.Forms.Keys ap_Get_Altitude {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Altitude"]));
+            }
+            set {
+                this["ap_Get_Altitude"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+A")]
+        public global::System.Windows.Forms.Keys ap_Set_Altitude {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Altitude"]));
+            }
+            set {
+                this["ap_Set_Altitude"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("OemOpenBrackets")]
+        public global::System.Windows.Forms.Keys ap_Command_Key {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Command_Key"]));
+            }
+            set {
+                this["ap_Command_Key"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("H")]
+        public global::System.Windows.Forms.Keys ap_Get_Heading {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Heading"]));
+            }
+            set {
+                this["ap_Get_Heading"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+H")]
+        public global::System.Windows.Forms.Keys ap_Set_Heading {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Heading"]));
+            }
+            set {
+                this["ap_Set_Heading"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("S")]
+        public global::System.Windows.Forms.Keys ap_Get_Airspeed {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Airspeed"]));
+            }
+            set {
+                this["ap_Get_Airspeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+S")]
+        public global::System.Windows.Forms.Keys ap_Set_Airspeed {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Airspeed"]));
+            }
+            set {
+                this["ap_Set_Airspeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("L")]
         public global::System.Windows.Forms.Keys Read_Flaps_Angle {
             get {
@@ -644,6 +728,99 @@ namespace tfm.Properties {
             }
             set {
                 this["Read_Flaps_Angle"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("M")]
+        public global::System.Windows.Forms.Keys ap_Get_Mach_Speed {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Mach_Speed"]));
+            }
+            set {
+                this["ap_Get_Mach_Speed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+M")]
+        public global::System.Windows.Forms.Keys ap_Set_Mach_Speed {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Mach_Speed"]));
+            }
+            set {
+                this["ap_Set_Mach_Speed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("V")]
+        public global::System.Windows.Forms.Keys ap_Get_Vertical_Speed {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Vertical_Speed"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+V")]
+        public global::System.Windows.Forms.Keys ap_Set_Vertical_Speed {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Vertical_Speed"]));
+            }
+            set {
+                this["ap_Set_Vertical_Speed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C")]
+        public global::System.Windows.Forms.Keys ap_Get_Com_Radios {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Com_Radios"]));
+            }
+            set {
+                this["ap_Get_Com_Radios"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+C")]
+        public global::System.Windows.Forms.Keys ap_Set_Com_Radios {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Com_Radios"]));
+            }
+            set {
+                this["ap_Set_Com_Radios"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("N")]
+        public global::System.Windows.Forms.Keys ap_Get_Nav_Radios {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Nav_Radios"]));
+            }
+            set {
+                this["ap_Get_Nav_Radios"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+N")]
+        public global::System.Windows.Forms.Keys ap_Set_Nav_Radios {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Nav_Radios"]));
+            }
+            set {
+                this["ap_Set_Nav_Radios"] = value;
             }
         }
     }

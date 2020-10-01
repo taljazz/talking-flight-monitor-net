@@ -16,8 +16,10 @@ namespace tfm
         // DECLARE OFFSETS YOU WANT TO USE HERE
         // =====================================
         public static  Offset<ushort> Com1Freq = new Offset<ushort>(0x034e);
+        public static  Offset<ushort> Com1StandbyFreq = new Offset<ushort>(0x311a);
         public static  Offset<ushort> Com2Freq = new Offset<ushort>(0x3118);
-        public static  Offset<byte> RadioActive = new Offset<byte>(0x3122);
+        public static  Offset<ushort> Com2StandbyFreq = new Offset<ushort>(0x311c);
+        public static  Offset<FsBitArray> RadioAudio = new Offset<FsBitArray>(0x3122, 1);
         public static Offset<ushort> Nav1Freq = new Offset<ushort>(0x0350);
         public static Offset<ushort> Nav2Freq = new Offset<ushort>(0x0352);
         // ADF frequencies are split over 2 offsets, the 'main' and 'extended'.
@@ -91,8 +93,13 @@ namespace tfm
         public static  Offset<short> VerticalSpeed = new Offset<short>(0x0842);
         public static  Offset<short> AirTemp = new Offset<short>(0x0e8c);
         public static  Offset<byte> Nav1GS = new Offset<byte>(0x0c4c);
+        public static  Offset<short> Nav1LocaliserInverseRunwayHeading = new Offset<short>(0x0870);
+
         public static Offset<sbyte> Nav1GSNeedle = new Offset<sbyte>(0x0c49);
         public static Offset<sbyte> Nav1LocNeedle = new Offset<sbyte>(0x0c48);
+        public static Offset<string> Vor1ID = new Offset<string>(0x3000, 6);
+        public static Offset<string> Vor1Name = new Offset<string>(0x3006, 25);
+        public static Offset<ushort> Nav1GSInclination = new Offset<ushort>(0x0872);
 
         public static  Offset<FsBitArray> Nav1Flags = new Offset<FsBitArray>(0x0c4d, 1);
         public enum NavFlag
@@ -108,6 +115,23 @@ namespace tfm
         }
 
         public static  Offset<uint> Nav1Signal = new Offset<uint>(0x0c52);
+
+        /* Additional radio and autopilot status indicators (read only access). Allocation by bits which are set when true. Bit 0 = least significant (value 1):
+0  = reserved
+1  = good NAV1
+2  = good NAV2
+3  = good ADF1
+4  = NAV1 has DME
+5  = NAV2 has DME
+6  = NAV1 is ILS
+7  = AP NAV1 radial acquired
+8  = AP ILS LOC acquired (incl BC—see 10)
+9  = AP ILS GS acquired
+10=AP ILS LOC is BC
+11=good ADF2
+12=NAV2 is ILS
+13–15 reserved */
+        public static Offset<FsBitArray> AutopilotRadioStatus = new Offset<FsBitArray>(0x3300, 2);
         public static  Offset<ushort> Altimeter = new Offset<ushort>(0x0330);
         public static  Offset<FsBitArray> Doors = new Offset<FsBitArray>(0x3367, 1);
         public static  Offset<byte> APUGenerator = new Offset<byte>("LowPriority", 0x0b51);

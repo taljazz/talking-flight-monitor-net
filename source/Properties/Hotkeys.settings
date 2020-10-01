@@ -155,8 +155,53 @@
     <Setting Name="Toggle_Braille_output" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+B</Value>
     </Setting>
+    <Setting Name="ap_Get_Altitude" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">A</Value>
+    </Setting>
+    <Setting Name="ap_Set_Altitude" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+A</Value>
+    </Setting>
+    <Setting Name="ap_Command_Key" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">OemOpenBrackets</Value>
+    </Setting>
+    <Setting Name="ap_Get_Heading" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">H</Value>
+    </Setting>
+    <Setting Name="ap_Set_Heading" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+H</Value>
+    </Setting>
+    <Setting Name="ap_Get_Airspeed" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">S</Value>
+    </Setting>
+    <Setting Name="ap_Set_Airspeed" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+S</Value>
+    </Setting>
     <Setting Name="Read_Flaps_Angle" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">L</Value>
+    </Setting>
+    <Setting Name="ap_Get_Mach_Speed" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">M</Value>
+    </Setting>
+    <Setting Name="ap_Set_Mach_Speed" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+M</Value>
+    </Setting>
+    <Setting Name="ap_Get_Vertical_Speed" Type="System.Windows.Forms.Keys" Scope="Application">
+      <Value Profile="(Default)">V</Value>
+    </Setting>
+    <Setting Name="ap_Set_Vertical_Speed" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+V</Value>
+    </Setting>
+    <Setting Name="ap_Get_Com_Radios" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">C</Value>
+    </Setting>
+    <Setting Name="ap_Set_Com_Radios" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+C</Value>
+    </Setting>
+    <Setting Name="ap_Get_Nav_Radios" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">N</Value>
+    </Setting>
+    <Setting Name="ap_Set_Nav_Radios" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+N</Value>
     </Setting>
   </Settings>
 </SettingsFile>

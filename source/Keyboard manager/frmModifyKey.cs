@@ -16,11 +16,13 @@ namespace tfm.Keyboard_manager
         KeysConverter kc = new KeysConverter();
         private Keys newKey;
         private string name;
-        public frmModifyKey(string name)
+        private string tab;
+        public frmModifyKey(string name, string tab)
         {
             InitializeComponent();
             txtKey.Text = kc.ConvertToString(Properties.Hotkeys.Default[name]);
             this.name = name;
+            this.tab = tab;
         }
 
 
@@ -37,11 +39,19 @@ namespace tfm.Keyboard_manager
             foreach (SettingsPropertyValue s in Properties.Hotkeys.Default.PropertyValues)
             {
                 string k = s.PropertyValue.ToString();
-                if (e.KeyData.ToString() == k)
+                if (e.KeyData.ToString() == k && tab == "tabAutopilot")
                 {
+                    if (!s.Name.StartsWith("ap_")) continue;
                     MessageBox.Show($"This key is already assigned to {s.Name}");
                     return;
                 }
+                if (e.KeyData.ToString() == k && tab == "tabGeneral")
+                {
+                    if (s.Name.StartsWith("ap_")) continue;
+                    MessageBox.Show($"This key is already assigned to {s.Name}");
+                    return;
+                }
+
             }
             txtKey.Text = kc.ConvertToString(e.KeyData);
             newKey = e.KeyData;

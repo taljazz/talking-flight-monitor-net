@@ -45,6 +45,7 @@
             this.SettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.KeyManagerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CommandKeyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ConnectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ReportIssueMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -241,6 +242,16 @@
             this.CommandKeyMenuItem.Text = "Enable/Disable command key";
             this.CommandKeyMenuItem.Click += new System.EventHandler(this.CommandKeyMenuItem_Click);
             // 
+            // ConnectMenuItem
+            // 
+            this.ConnectMenuItem.AccessibleName = "Connect to simulator";
+            this.ConnectMenuItem.Name = "ConnectMenuItem";
+            this.ConnectMenuItem.ShortcutKeyDisplayString = "CTRL+R";
+            this.ConnectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
+            this.ConnectMenuItem.Size = new System.Drawing.Size(450, 30);
+            this.ConnectMenuItem.Text = "&Connect to simulator";
+            this.ConnectMenuItem.Click += new System.EventHandler(this.ConnectMenuItem_Click);
+            // 
             // HelpMenu
             // 
             this.HelpMenu.AccessibleDescription = "";
@@ -375,7 +386,7 @@
             this.LockGageCheckBox.AccessibleRole = System.Windows.Forms.AccessibleRole.CheckButton;
             this.LockGageCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
             this.LockGageCheckBox.AutoSize = true;
-            this.LockGageCheckBox.Location = new System.Drawing.Point(381, 85);
+            this.LockGageCheckBox.Location = new System.Drawing.Point(381, 86);
             this.LockGageCheckBox.Name = "LockGageCheckBox";
             this.LockGageCheckBox.Size = new System.Drawing.Size(72, 37);
             this.LockGageCheckBox.TabIndex = 2;
@@ -425,6 +436,7 @@
             this.AvionicsExplorationTabPage.Location = new System.Drawing.Point(4, 36);
             this.AvionicsExplorationTabPage.Name = "AvionicsExplorationTabPage";
             this.AvionicsExplorationTabPage.Size = new System.Drawing.Size(476, 188);
+
             this.AvionicsExplorationTabPage.TabIndex = 4;
             this.AvionicsExplorationTabPage.Text = "Autopilot instrument panel";
             this.AvionicsExplorationTabPage.UseVisualStyleBackColor = true;

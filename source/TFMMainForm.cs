@@ -32,6 +32,7 @@ namespace tfm
 
         
         public Instrumentation inst = new Instrumentation();
+        public Autopilot Autopilot = new Autopilot();
         
         public TFMMainForm()
         {
@@ -103,29 +104,29 @@ namespace tfm
                 inst.ReadAircraftState();
                 // Keeps track of the autopilot master switch in the simplified avionics tab.
                 if (Properties.Settings.Default.avionics_tab == "simplified") { 
-                AutopilotCheckBox.Checked = inst.ApMaster;
+                AutopilotCheckBox.Checked = Autopilot.ApMaster;
 
                 // Keep track of the locks/holds on each autopilot gage.
                 var apGage = GageComboBox.SelectedItem.ToString();
                 switch (apGage)
                 {
                     case "Heading":
-                        LockGageCheckBox.Checked = inst.ApHeadingLock;
+                        LockGageCheckBox.Checked = Autopilot.ApHeadingLock;
                         break;
                     case "Air speed":
-                        LockGageCheckBox.Checked = inst.ApAirspeedHold;
+                        LockGageCheckBox.Checked = Autopilot.ApAirspeedHold;
                         break;
                     case "Altitude":
-                        LockGageCheckBox.Checked = inst.ApAltitudeLock;
+                        LockGageCheckBox.Checked = Autopilot.ApAltitudeLock;
                         break;
                     case "Mach":
-                        LockGageCheckBox.Checked = inst.ApMachHold;
+                        LockGageCheckBox.Checked = Autopilot.ApMachHold;
                         break;
                     case "Vertical speed":
-                        LockGageCheckBox.Checked = inst.ApVerticalSpeedHold;
+                        LockGageCheckBox.Checked = Autopilot.ApVerticalSpeedHold;
                         break;
                     case "Nav 1":
-                        LockGageCheckBox.Checked = inst.ApNavLock;
+                        LockGageCheckBox.Checked = Autopilot.ApNavLock;
                         break;
                     case "default":
                         break;
@@ -242,61 +243,61 @@ namespace tfm
                 switch(item)
                 {
                     case "ADF":
-                    GageValueTextBox.Text = inst.Adf1Freq.ToString();
+                    GageValueTextBox.Text = Autopilot.Adf1Freq.ToString();
                         LockGageCheckBox.Visible = false;
                         break;
                 case "Air speed":
-                    GageValueTextBox.Text = inst.ApAirspeed.ToString();
+                    GageValueTextBox.Text = Autopilot.ApAirspeed.ToString();
                     LockGageCheckBox.Visible = true;
-                    LockGageCheckBox.Checked = inst.ApAirspeedHold;
+                    LockGageCheckBox.Checked = Autopilot.ApAirspeedHold;
                     break;
                 case "Vertical speed":
-                    GageValueTextBox.Text = inst.ApVerticalSpeed.ToString();
+                    GageValueTextBox.Text = Autopilot.ApVerticalSpeed.ToString();
                     LockGageCheckBox.Visible = true;
-                    LockGageCheckBox.Checked = inst.ApVerticalSpeedHold;
+                    LockGageCheckBox.Checked = Autopilot.ApVerticalSpeedHold;
                     break;
                 case "Mach":
-                    GageValueTextBox.Text = inst.ApMachSpeed.ToString();
+                    GageValueTextBox.Text = Autopilot.ApMachSpeed.ToString();
                     LockGageCheckBox.Visible = true;
-                    LockGageCheckBox.Checked = inst.ApMachHold;
+                    LockGageCheckBox.Checked = Autopilot.ApMachHold;
                     break;
                 case "Altitude":
-                    GageValueTextBox.Text = inst.ApAltitude.ToString();
+                    GageValueTextBox.Text = Autopilot.ApAltitude.ToString();
                     LockGageCheckBox.Visible = true;
-                    LockGageCheckBox.Checked = inst.ApAltitudeLock;
+                    LockGageCheckBox.Checked = Autopilot.ApAltitudeLock;
                     break;
                 case "Heading":
-                    GageValueTextBox.Text = inst.ApHeading.ToString();
+                    GageValueTextBox.Text = Autopilot.ApHeading.ToString();
                     LockGageCheckBox.Visible = true;
-                    LockGageCheckBox.Checked = inst.ApHeadingLock;
+                    LockGageCheckBox.Checked = Autopilot.ApHeadingLock;
                     break;
                 case "Com 1":
-                    GageValueTextBox.Text = inst.Com1Freq.ToString();
+                    GageValueTextBox.Text = Autopilot.Com1Freq.ToString();
                     LockGageCheckBox.Visible = false;
                     break;
                 case "Com 2":
-                    GageValueTextBox.Text = inst.Com2Freq.ToString();
+                    GageValueTextBox.Text = Autopilot.Com2Freq.ToString();
                     LockGageCheckBox.Checked = false;
                     break;
                 case "Transponder":
-                    GageValueTextBox.Text = inst.Transponder.ToString();
+                    GageValueTextBox.Text = Autopilot.Transponder.ToString();
                     LockGageCheckBox.Visible = false;
                     break;
                 case "Altimeter [inches]":
-                    GageValueTextBox.Text = inst.AltimeterInches.ToString();
+                    GageValueTextBox.Text = Autopilot.AltimeterInches.ToString();
                     LockGageCheckBox.Visible = false;
                     break;
                 case "Altimeter [QNH]":
-                    GageValueTextBox.Text = inst.AltimeterQNH.ToString();
+                    GageValueTextBox.Text = Autopilot.AltimeterQNH.ToString();
                     LockGageCheckBox.Visible = false;
                     break;
                 case "Nav 1":
-                    GageValueTextBox.Text = inst.Nav1Freq.ToString();
+                    GageValueTextBox.Text = Autopilot.Nav1Freq.ToString();
                     LockGageCheckBox.Visible = true;
-                    LockGageCheckBox.Checked = inst.ApNavLock;
+                    LockGageCheckBox.Checked = Autopilot.ApNavLock;
                     break;
                 case "Nav 2":
-                    GageValueTextBox.Text = inst.Nav2Freq.ToString();
+                    GageValueTextBox.Text = Autopilot.Nav2Freq.ToString();
                     LockGageCheckBox.Visible = false;
                     break;
                 case "default":
@@ -327,7 +328,7 @@ namespace tfm
                 
         private void AutopilotCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            inst.ApMaster = AutopilotCheckBox.Checked;
+            Autopilot.ApMaster = AutopilotCheckBox.Checked;
             if (AutopilotCheckBox.Checked == true)
             {
                 AutopilotCheckBox.ForeColor = Color.Green;
@@ -365,14 +366,14 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                 GageComboBox.SelectedIndex = 0;
                 FlyModeComboBox.SelectedIndex = 0;
                 GageComboBox.Focus();
-                AutopilotCheckBox.Checked = inst.ApMaster;
+                AutopilotCheckBox.Checked = Autopilot.ApMaster;
             }
             else
             {
                                 //Following code is expiremental.
 
                 TFMTabControl.TabPages.Remove(AvionicsTabPage);
-                                AutopilotPropertyGrid.SelectedObject = inst;
+                                AutopilotPropertyGrid.SelectedObject = Autopilot;
             }
                     }
 
@@ -403,8 +404,8 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     case "Air speed":
                         if (Double.TryParse(GageValueTextBox.Text, out double airSpeed) && airSpeed > 0)
                         {
-                            inst.ApAirspeed = airSpeed;
-                            GageValueTextBox.Text = inst.ApAirspeed.ToString();
+                            Autopilot.ApAirspeed = airSpeed;
+                            GageValueTextBox.Text = Autopilot.ApAirspeed.ToString();
                         } else
                         {
                             GageValueTextBox.Text = string.Empty;
@@ -414,8 +415,8 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     case "Vertical speed":
                         if (Double.TryParse(GageValueTextBox.Text, out double verticalSpeed))
                         {
-                            inst.ApVerticalSpeed = verticalSpeed;
-                            GageValueTextBox.Text = inst.ApVerticalSpeed.ToString();
+                            Autopilot.ApVerticalSpeed = verticalSpeed;
+                            GageValueTextBox.Text = Autopilot.ApVerticalSpeed.ToString();
                         } else
                         {
                             GageValueTextBox.Text = string.Empty;
@@ -425,8 +426,8 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     case "Mach":
                         if(Double.TryParse(GageValueTextBox.Text, out double machSpeed))
                         {
-                            inst.ApMachSpeed = machSpeed;
-                            GageValueTextBox.Text = inst.ApMachSpeed.ToString();
+                            Autopilot.ApMachSpeed = machSpeed;
+                            GageValueTextBox.Text = Autopilot.ApMachSpeed.ToString();
                         } else
                         {
                             GageValueTextBox.Text = string.Empty;
@@ -436,8 +437,8 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     case "Altitude":
                         if(Double.TryParse(GageValueTextBox.Text, out double altitude))
                         {
-                            inst.ApAltitude = altitude;
-                            GageValueTextBox.Text = inst.ApAltitude.ToString();
+                            Autopilot.ApAltitude = altitude;
+                            GageValueTextBox.Text = Autopilot.ApAltitude.ToString();
                         } else
                         {
                             GageValueTextBox.Text = string.Empty;
@@ -447,8 +448,8 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     case "Heading":
                         if(Double.TryParse(GageValueTextBox.Text, out Double heading) && heading <= 359)
                         {
-                            inst.ApHeading = heading;
-                            GageValueTextBox.Text = inst.ApHeading.ToString();
+                            Autopilot.ApHeading = heading;
+                            GageValueTextBox.Text = Autopilot.ApHeading.ToString();
                         } else
                         {
                             GageValueTextBox.Text = string.Empty;
@@ -458,8 +459,8 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     case "Com 1":
                         if(Decimal.TryParse(GageValueTextBox.Text, out decimal com1))
                         {
-                            inst.Com1Freq = com1;
-                            GageValueTextBox.Text = inst.Com1Freq.ToString();
+                            Autopilot.Com1Freq = com1;
+                            GageValueTextBox.Text = Autopilot.Com1Freq.ToString();
                         } else
                         {
                             GageValueTextBox.Text = string.Empty;
@@ -469,8 +470,8 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     case "Com 2":
                         if(Decimal.TryParse(GageValueTextBox.Text, out decimal com2))
                         {
-                            inst.Com2Freq = com2;
-                            GageValueTextBox.Text = inst.Com2Freq.ToString();
+                            Autopilot.Com2Freq = com2;
+                            GageValueTextBox.Text = Autopilot.Com2Freq.ToString();
                         } else
                         {
                             GageValueTextBox.Text = string.Empty;
@@ -480,8 +481,8 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     case "Transponder":
                         if(int.TryParse(GageValueTextBox.Text, out int transponder) && transponder < 9999)
                         {
-                            inst.Transponder = transponder;
-                            GageValueTextBox.Text = inst.Transponder.ToString();
+                            Autopilot.Transponder = transponder;
+                            GageValueTextBox.Text = Autopilot.Transponder.ToString();
                         } else
                         {
                             GageValueTextBox.Text = string.Empty;
@@ -491,8 +492,8 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     case "Altimeter[inches]":
                         if(Double.TryParse(GageValueTextBox.Text, out double altimeterInches))
                         {
-                            inst.AltimeterInches = altimeterInches;
-                            GageValueTextBox.Text = inst.AltimeterInches.ToString();
+                            Autopilot.AltimeterInches = altimeterInches;
+                            GageValueTextBox.Text = Autopilot.AltimeterInches.ToString();
                         } else
                         {
                             GageValueTextBox.Text = string.Empty;
@@ -502,8 +503,8 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     case "Altimeter[QNH]":
                         if(double.TryParse(GageValueTextBox.Text, out double altimeterQNH))
                         {
-                            inst.AltimeterQNH = altimeterQNH;
-                            GageValueTextBox.Text = inst.AltimeterQNH.ToString();
+                            Autopilot.AltimeterQNH = altimeterQNH;
+                            GageValueTextBox.Text = Autopilot.AltimeterQNH.ToString();
                         } else
                         {
                             GageValueTextBox.Text = string.Empty;
@@ -513,19 +514,19 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     case "Nav 1":
                         if(Decimal.TryParse(GageValueTextBox.Text, out decimal nav1))
                         {
-                            inst.Nav1Freq = nav1;
-                            GageValueTextBox.Text = inst.Nav1Freq.ToString();
+                            Autopilot.Nav1Freq = nav1;
+                            GageValueTextBox.Text = Autopilot.Nav1Freq.ToString();
                         } else
                         {
                             GageValueTextBox.Text = string.Empty;
-                            GageValueTextBox.Text = inst.Nav1Freq.ToString();
+                            GageValueTextBox.Text = Autopilot.Nav1Freq.ToString();
                         }
                         break;
                     case "Nav 2":
                         if(Decimal.TryParse(GageValueTextBox.Text, out decimal nav2))
                         {
-                            inst.Nav2Freq = nav2;
-                            GageValueTextBox.Text = inst.Nav2Freq.ToString();
+                            Autopilot.Nav2Freq = nav2;
+                            GageValueTextBox.Text = Autopilot.Nav2Freq.ToString();
                         } else
                         {
                             GageValueTextBox.Text = string.Empty;
@@ -535,8 +536,8 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     case "ADF":
                         if(Decimal.TryParse(GageValueTextBox.Text, out decimal adf))
                         {
-                            inst.Adf1Freq = adf;
-                            GageValueTextBox.Text = inst.Adf1Freq.ToString();
+                            Autopilot.Adf1Freq = adf;
+                            GageValueTextBox.Text = Autopilot.Adf1Freq.ToString();
                         } else
                         {
                             GageValueTextBox.Text = string.Empty;
@@ -683,6 +684,12 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
 
                     case "AP airspeed":
                         speak($"{e.gaugeValue} knotts. ");
+                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
+                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        break;
+
+                    case "AP mach":
+                        speak($"Mach {e.gaugeValue}");
                         braille($"{e.gaugeName}: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;

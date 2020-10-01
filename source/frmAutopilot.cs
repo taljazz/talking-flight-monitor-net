@@ -24,6 +24,7 @@ namespace tfm
         private void frmAutopilot_Load(object sender, EventArgs e)
         {
             this.Activate();
+            this.Text = $"set autopilot {instrument}";
             lblSetting.Text = $"Enter {this.instrument}: ";
             switch (this.instrument)
             {
@@ -48,45 +49,55 @@ namespace tfm
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            switch (this.instrument)
+
+            try
             {
-                case "Altitude":
-                    if (double.TryParse(txtSetting.Text, out double altitude))
-                    {
-                        ap.ApAltitude = altitude;
-                    }
-                    break;
+                switch (this.instrument)
+                {
+                    case "Altitude":
+                        if (double.TryParse(txtSetting.Text, out double altitude))
+                        {
+                            ap.ApAltitude = altitude;
+                        }
+                        break;
 
-                case "Heading":
-                    if (double.TryParse(txtSetting.Text, out double heading))
-                    {
-                        ap.ApHeading = heading;
-                    }
-                    break;
+                    case "Heading":
+                        if (double.TryParse(txtSetting.Text, out double heading))
+                        {
+                            ap.ApHeading = heading;
+                        }
+                        break;
 
-                case "Airspeed":
-                    if (double.TryParse(txtSetting.Text, out double airspeed))
-                    {
-                        ap.ApAirspeed = airspeed;
-                    }
-                    break;
+                    case "Airspeed":
+                        if (double.TryParse(txtSetting.Text, out double airspeed))
+                        {
+                            ap.ApAirspeed = airspeed;
+                        }
+                        break;
 
                     case "Mach":
-                    if (double.TryParse(txtSetting.Text, out double mach))
-                    {
-                        ap.ApMachSpeed = mach;
-                    }
-                    break;
+                        if (double.TryParse(txtSetting.Text, out double mach))
+                        {
+                            ap.ApMachSpeed = mach;
+                        }
+                        break;
 
                     case "Vertical speed":
-                    if (double.TryParse(txtSetting.Text, out double verticalSpeed))
-                    {
-                        ap.ApVerticalSpeed = verticalSpeed;
-                    }
-                    break;
+                        if (double.TryParse(txtSetting.Text, out double verticalSpeed))
+                        {
+                            ap.ApVerticalSpeed = verticalSpeed;
+                        }
+                        break;
 
+
+                }
 
             }
-        }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "error", MessageBoxButtons.OK);
+
+                
+            }        }
     }
 }

@@ -738,7 +738,13 @@ namespace tfm
                 }
                 if (Aircraft.Nav1Signal.Value == 256 && localiserDetected == false && Aircraft.Nav1Flags.Value[7])
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "Localiser is alive. ");
+                    
+                    double hdgTrue = (double)Aircraft.Heading.Value * 360d / (65536d * 65536d);
+                    double magvar = (double)Aircraft.MagneticVariation.Value * 360d / 65536d;
+                    double magHeading = hdgTrue - magvar;
+                    double rwyHeading = (double)Aircraft.Nav1LocaliserInverseRunwayHeading.Value * 360d / 65536d + 180d - magvar;
+                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "Localiser is alive. Runway heading" + rwyHeading.ToString("F0"));
+                    
                     localiserDetected = true;
                     ilsTimer.AutoReset = true;
                     ilsTimer.Enabled = true;
@@ -1155,10 +1161,39 @@ namespace tfm
                     ap.ShowDialog();
                     break;
 
+                case "ap_Get_Com_Radios":
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"com 1: {Autopilot.Com1Freq.ToString()}. ");
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"com 2: {Autopilot.Com2Freq.ToString()}. ");
+                    break;
+
+
                 case "ap_Set_Com_Radios":
                     com = new frmComRadios();
                     com.ShowDialog();
                     break;
+
+                case "ap_Get_Nav_Radios":
+                    string navInfo = null;
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"nav 1: {Autopilot.Nav1Freq.ToString()}. ");
+                    if (Aircraft.AutopilotRadioStatus.Value[6])
+                    {
+                        // nav 1 has ILS
+                        navInfo += "ILS. \n";
+                        double gsInclination = (double)Aircraft.Nav1GSInclination.Value * 360d / 65536d - 360d;
+                        navInfo += "Glide slope angle: " + gsInclination.ToString("F1") + "degrees. \n";
+                        navInfo += $"{Aircraft.Vor1Name.Value}. \n";
+                        double magvar = (double)Aircraft.MagneticVariation.Value * 360d / 65536d;
+                        double rwyHeading = (double)Aircraft.Nav1LocaliserInverseRunwayHeading.Value * 360d / 65536d + 180d - magvar;
+                        navInfo += "localiser heading: " + rwyHeading.ToString("F0");
+                    }
+                    else
+                    {
+                        navInfo += $"VOR ID: {Aircraft.Vor1ID.Value}. ";
+
+                    }
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: navInfo);
+                    break;
+
 
                 default:
                     Tolk.Output("key not defined");
@@ -2061,6 +2096,12 @@ namespace tfm
 
         private void onHeadingKey()
         {
+            double hdgTrue = (double)Aircraft.Heading.Value * 360d / (65536d * 65536d);
+            if (localiserDetected)
+            {
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "heading: " + hdgTrue.ToString("F0") + "true, " + Aircraft.CompassHeading.Value.ToString("F0") + " Magnetic. ");
+
+            }
             fireOnScreenReaderOutputEvent(isGauge: false,  output: "heading: " + Math.Round(Aircraft.CompassHeading.Value));
             ResetHotkeys();
         }

@@ -29,32 +29,32 @@
         private void InitializeComponent()
         {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tcKeys = new System.Windows.Forms.TabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
-            this.tabAutopilot = new System.Windows.Forms.TabPage();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.tabA2A = new System.Windows.Forms.TabPage();
             this.lvKeys = new System.Windows.Forms.ListView();
+            this.hdrName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.hdrKey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabAutopilot = new System.Windows.Forms.TabPage();
             this.lvAutopilotKeys = new System.Windows.Forms.ListView();
+            this.hdrApName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.hdrApKey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabA2A = new System.Windows.Forms.TabPage();
             this.lvA2AKeys = new System.Windows.Forms.ListView();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnModify = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.hdrName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.hdrKey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.hdrApName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.hdrApKey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.flowLayoutPanel1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.tcKeys.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.tabAutopilot.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
             this.tabA2A.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Controls.Add(this.tabControl1);
+            this.flowLayoutPanel1.Controls.Add(this.tcKeys);
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel2);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -63,17 +63,19 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(800, 450);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
-            // tabControl1
+            // tcKeys
             // 
-            this.tabControl1.AccessibleRole = System.Windows.Forms.AccessibleRole.PageTab;
-            this.tabControl1.Controls.Add(this.tabGeneral);
-            this.tabControl1.Controls.Add(this.tabAutopilot);
-            this.tabControl1.Controls.Add(this.tabA2A);
-            this.tabControl1.Location = new System.Drawing.Point(3, 3);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(200, 100);
-            this.tabControl1.TabIndex = 0;
+            this.tcKeys.AccessibleRole = System.Windows.Forms.AccessibleRole.PageTab;
+            this.tcKeys.Controls.Add(this.tabGeneral);
+            this.tcKeys.Controls.Add(this.tabAutopilot);
+            this.tcKeys.Controls.Add(this.tabA2A);
+            this.tcKeys.Location = new System.Drawing.Point(3, 3);
+            this.tcKeys.Name = "tcKeys";
+            this.tcKeys.SelectedIndex = 0;
+            this.tcKeys.Size = new System.Drawing.Size(200, 100);
+            this.tcKeys.TabIndex = 0;
+            this.tcKeys.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.tcKeys.Selected += new System.Windows.Forms.TabControlEventHandler(this.tcKeys_Selected);
             // 
             // tabGeneral
             // 
@@ -86,39 +88,6 @@
             this.tabGeneral.Text = "General";
             this.tabGeneral.UseVisualStyleBackColor = true;
             this.tabGeneral.Click += new System.EventHandler(this.tabGeneral_Click);
-            // 
-            // tabAutopilot
-            // 
-            this.tabAutopilot.Controls.Add(this.lvAutopilotKeys);
-            this.tabAutopilot.Location = new System.Drawing.Point(4, 22);
-            this.tabAutopilot.Name = "tabAutopilot";
-            this.tabAutopilot.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAutopilot.Size = new System.Drawing.Size(192, 74);
-            this.tabAutopilot.TabIndex = 1;
-            this.tabAutopilot.Text = "Autopilot";
-            this.tabAutopilot.UseVisualStyleBackColor = true;
-            // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.Controls.Add(this.btnModify);
-            this.flowLayoutPanel2.Controls.Add(this.btnOk);
-            this.flowLayoutPanel2.Controls.Add(this.btnCancel);
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 109);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(200, 100);
-            this.flowLayoutPanel2.TabIndex = 1;
-            // 
-            // tabA2A
-            // 
-            this.tabA2A.Controls.Add(this.lvA2AKeys);
-            this.tabA2A.Location = new System.Drawing.Point(4, 22);
-            this.tabA2A.Name = "tabA2A";
-            this.tabA2A.Padding = new System.Windows.Forms.Padding(3);
-            this.tabA2A.Size = new System.Drawing.Size(192, 74);
-            this.tabA2A.TabIndex = 2;
-            this.tabA2A.Text = "A2A";
-            this.tabA2A.UseVisualStyleBackColor = true;
             // 
             // lvKeys
             // 
@@ -138,6 +107,25 @@
             this.lvKeys.View = System.Windows.Forms.View.Details;
             this.lvKeys.SelectedIndexChanged += new System.EventHandler(this.lvKeys_SelectedIndexChanged);
             // 
+            // hdrName
+            // 
+            this.hdrName.Text = "Name";
+            // 
+            // hdrKey
+            // 
+            this.hdrKey.Text = "Key";
+            // 
+            // tabAutopilot
+            // 
+            this.tabAutopilot.Controls.Add(this.lvAutopilotKeys);
+            this.tabAutopilot.Location = new System.Drawing.Point(4, 22);
+            this.tabAutopilot.Name = "tabAutopilot";
+            this.tabAutopilot.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAutopilot.Size = new System.Drawing.Size(192, 74);
+            this.tabAutopilot.TabIndex = 1;
+            this.tabAutopilot.Text = "Autopilot";
+            this.tabAutopilot.UseVisualStyleBackColor = true;
+            // 
             // lvAutopilotKeys
             // 
             this.lvAutopilotKeys.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -147,10 +135,30 @@
             this.lvAutopilotKeys.Location = new System.Drawing.Point(36, -11);
             this.lvAutopilotKeys.Name = "lvAutopilotKeys";
             this.lvAutopilotKeys.Size = new System.Drawing.Size(121, 97);
+            this.lvAutopilotKeys.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvAutopilotKeys.TabIndex = 1;
             this.lvAutopilotKeys.UseCompatibleStateImageBehavior = false;
             this.lvAutopilotKeys.View = System.Windows.Forms.View.Details;
             this.lvAutopilotKeys.SelectedIndexChanged += new System.EventHandler(this.lvAutopilotKeys_SelectedIndexChanged);
+            // 
+            // hdrApName
+            // 
+            this.hdrApName.Text = "Name";
+            // 
+            // hdrApKey
+            // 
+            this.hdrApKey.Text = "Key";
+            // 
+            // tabA2A
+            // 
+            this.tabA2A.Controls.Add(this.lvA2AKeys);
+            this.tabA2A.Location = new System.Drawing.Point(4, 22);
+            this.tabA2A.Name = "tabA2A";
+            this.tabA2A.Padding = new System.Windows.Forms.Padding(3);
+            this.tabA2A.Size = new System.Drawing.Size(192, 74);
+            this.tabA2A.TabIndex = 2;
+            this.tabA2A.Text = "A2A";
+            this.tabA2A.UseVisualStyleBackColor = true;
             // 
             // lvA2AKeys
             // 
@@ -160,6 +168,17 @@
             this.lvA2AKeys.Size = new System.Drawing.Size(121, 97);
             this.lvA2AKeys.TabIndex = 1;
             this.lvA2AKeys.UseCompatibleStateImageBehavior = false;
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.btnModify);
+            this.flowLayoutPanel2.Controls.Add(this.btnOk);
+            this.flowLayoutPanel2.Controls.Add(this.btnCancel);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 109);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(200, 100);
+            this.flowLayoutPanel2.TabIndex = 1;
             // 
             // btnModify
             // 
@@ -191,22 +210,6 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // hdrName
-            // 
-            this.hdrName.Text = "Name";
-            // 
-            // hdrKey
-            // 
-            this.hdrKey.Text = "Key";
-            // 
-            // hdrApName
-            // 
-            this.hdrApName.Text = "Name";
-            // 
-            // hdrApKey
-            // 
-            this.hdrApKey.Text = "Key";
-            // 
             // frmKeyboardManager
             // 
             this.AcceptButton = this.btnOk;
@@ -222,12 +225,13 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Keyboard Manager";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.frmKeyboardManager_Load);
             this.flowLayoutPanel1.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.tcKeys.ResumeLayout(false);
             this.tabGeneral.ResumeLayout(false);
             this.tabAutopilot.ResumeLayout(false);
-            this.flowLayoutPanel2.ResumeLayout(false);
             this.tabA2A.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -235,7 +239,7 @@
         #endregion
 
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tcKeys;
         private System.Windows.Forms.TabPage tabGeneral;
         private System.Windows.Forms.ListView lvKeys;
         private System.Windows.Forms.TabPage tabAutopilot;

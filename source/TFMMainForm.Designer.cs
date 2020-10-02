@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Sid waypoints", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("In route waypoints", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Star waypoints", System.Windows.Forms.HorizontalAlignment.Left);
             this.timerMain = new System.Windows.Forms.Timer(this.components);
             this.timerConnection = new System.Windows.Forms.Timer(this.components);
             this.TFMMainMenu = new System.Windows.Forms.MenuStrip();
@@ -53,7 +56,6 @@
             this.hotkeyHelpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TFMTabControl = new System.Windows.Forms.TabControl();
             this.AvionicsTabPage = new System.Windows.Forms.TabPage();
-            this.FlyModeComboBox = new System.Windows.Forms.ComboBox();
             this.OutputLogTextBox = new System.Windows.Forms.TextBox();
             this.AutopilotCheckBox = new System.Windows.Forms.CheckBox();
             this.LockGageCheckBox = new System.Windows.Forms.CheckBox();
@@ -62,14 +64,34 @@
             this.AvionicsExplorationTabPage = new System.Windows.Forms.TabPage();
             this.AutopilotPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.FlightPlanTabPage = new System.Windows.Forms.TabPage();
+            this.waypointRestrictionsTextBox = new System.Windows.Forms.TextBox();
+            this.FlyModeComboBox = new System.Windows.Forms.ComboBox();
+            this.waypointsListView = new System.Windows.Forms.ListView();
+            this.icaoColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.nameColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.routeColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.altitudeColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.timeColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.fuelColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.frequencyColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ProceduresTabPage = new System.Windows.Forms.TabPage();
             this.FindTabPage = new System.Windows.Forms.TabPage();
             this.dbLoadWorker = new System.ComponentModel.BackgroundWorker();
             this.timerLowPriority = new System.Windows.Forms.Timer(this.components);
-                        this.TFMMainMenu.SuspendLayout();
+            this.waypointsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addWaypointContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeWaypointContextMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.directToHereContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.holdContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeAltitudeContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeSpeedContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeVerticalSpeedContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TFMMainMenu.SuspendLayout();
             this.TFMTabControl.SuspendLayout();
             this.AvionicsTabPage.SuspendLayout();
             this.AvionicsExplorationTabPage.SuspendLayout();
+            this.FlightPlanTabPage.SuspendLayout();
+            this.waypointsContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerMain
@@ -245,9 +267,10 @@
             // 
             this.ConnectMenuItem.AccessibleName = "Connect to simulator";
             this.ConnectMenuItem.Name = "ConnectMenuItem";
-            this.ConnectMenuItem.ShortcutKeyDisplayString = "CTRL+R";
-            this.ConnectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.ConnectMenuItem.Size = new System.Drawing.Size(450, 30);
+            this.ConnectMenuItem.ShortcutKeyDisplayString = "CTRL+SHIFT+R";
+            this.ConnectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.R)));
+            this.ConnectMenuItem.Size = new System.Drawing.Size(568, 36);
             this.ConnectMenuItem.Text = "&Connect to simulator";
             this.ConnectMenuItem.Click += new System.EventHandler(this.ConnectMenuItem_Click);
             // 
@@ -272,8 +295,9 @@
             this.WebsiteMenuItem.AccessibleName = "Visit website";
             this.WebsiteMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WebsiteMenuItem.Name = "WebsiteMenuItem";
-            this.WebsiteMenuItem.ShortcutKeyDisplayString = "CONTROL+W";
-            this.WebsiteMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.WebsiteMenuItem.ShortcutKeyDisplayString = "CONTROL+SHIFT+W";
+            this.WebsiteMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.W)));
             this.WebsiteMenuItem.Size = new System.Drawing.Size(415, 36);
             this.WebsiteMenuItem.Text = "Visit &website";
             this.WebsiteMenuItem.Click += new System.EventHandler(this.WebsiteMenuItem_Click);
@@ -327,7 +351,6 @@
             // AvionicsTabPage
             // 
             this.AvionicsTabPage.AccessibleName = "Avionics";
-            this.AvionicsTabPage.Controls.Add(this.FlyModeComboBox);
             this.AvionicsTabPage.Controls.Add(this.OutputLogTextBox);
             this.AvionicsTabPage.Controls.Add(this.AutopilotCheckBox);
             this.AvionicsTabPage.Controls.Add(this.LockGageCheckBox);
@@ -340,20 +363,6 @@
             this.AvionicsTabPage.TabIndex = 0;
             this.AvionicsTabPage.Text = "Avionics";
             this.AvionicsTabPage.UseVisualStyleBackColor = true;
-            // 
-            // FlyModeComboBox
-            // 
-            this.FlyModeComboBox.AccessibleName = "Fly mode";
-            this.FlyModeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.FlyModeComboBox.FormattingEnabled = true;
-            this.FlyModeComboBox.Items.AddRange(new object[] {
-            "Plan",
-            "Approach"});
-            this.FlyModeComboBox.Location = new System.Drawing.Point(381, 149);
-            this.FlyModeComboBox.Name = "FlyModeComboBox";
-            this.FlyModeComboBox.Size = new System.Drawing.Size(100, 35);
-            this.FlyModeComboBox.TabIndex = 3;
-            this.FlyModeComboBox.SelectedIndexChanged += new System.EventHandler(this.FlyModeComboBox_SelectedIndexChanged);
             // 
             // OutputLogTextBox
             // 
@@ -371,7 +380,7 @@
             this.AutopilotCheckBox.AccessibleRole = System.Windows.Forms.AccessibleRole.CheckButton;
             this.AutopilotCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
             this.AutopilotCheckBox.AutoSize = true;
-            this.AutopilotCheckBox.Location = new System.Drawing.Point(381, 180);
+            this.AutopilotCheckBox.Location = new System.Drawing.Point(381, 163);
             this.AutopilotCheckBox.Name = "AutopilotCheckBox";
             this.AutopilotCheckBox.Size = new System.Drawing.Size(113, 37);
             this.AutopilotCheckBox.TabIndex = 4;
@@ -434,8 +443,7 @@
             this.AvionicsExplorationTabPage.Controls.Add(this.AutopilotPropertyGrid);
             this.AvionicsExplorationTabPage.Location = new System.Drawing.Point(4, 36);
             this.AvionicsExplorationTabPage.Name = "AvionicsExplorationTabPage";
-            this.AvionicsExplorationTabPage.Size = new System.Drawing.Size(476, 188);
-
+            this.AvionicsExplorationTabPage.Size = new System.Drawing.Size(476, 181);
             this.AvionicsExplorationTabPage.TabIndex = 4;
             this.AvionicsExplorationTabPage.Text = "Autopilot instrument panel";
             this.AvionicsExplorationTabPage.UseVisualStyleBackColor = true;
@@ -448,26 +456,112 @@
             this.AutopilotPropertyGrid.LineColor = System.Drawing.SystemColors.ControlDarkDark;
             this.AutopilotPropertyGrid.Location = new System.Drawing.Point(0, 0);
             this.AutopilotPropertyGrid.Name = "AutopilotPropertyGrid";
-            this.AutopilotPropertyGrid.Size = new System.Drawing.Size(130, 188);
+            this.AutopilotPropertyGrid.Size = new System.Drawing.Size(130, 181);
             this.AutopilotPropertyGrid.TabIndex = 2;
             // 
             // FlightPlanTabPage
             // 
             this.FlightPlanTabPage.AccessibleName = "Flight plan";
+            this.FlightPlanTabPage.Controls.Add(this.waypointRestrictionsTextBox);
+            this.FlightPlanTabPage.Controls.Add(this.FlyModeComboBox);
+            this.FlightPlanTabPage.Controls.Add(this.waypointsListView);
             this.FlightPlanTabPage.Location = new System.Drawing.Point(4, 36);
             this.FlightPlanTabPage.Name = "FlightPlanTabPage";
             this.FlightPlanTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.FlightPlanTabPage.Size = new System.Drawing.Size(476, 188);
+            this.FlightPlanTabPage.Size = new System.Drawing.Size(476, 181);
             this.FlightPlanTabPage.TabIndex = 1;
             this.FlightPlanTabPage.Text = "Flight plan";
             this.FlightPlanTabPage.UseVisualStyleBackColor = true;
+            // 
+            // waypointRestrictionsTextBox
+            // 
+            this.waypointRestrictionsTextBox.AccessibleName = "Waypoint restrictions";
+            this.waypointRestrictionsTextBox.Location = new System.Drawing.Point(6, 112);
+            this.waypointRestrictionsTextBox.Multiline = true;
+            this.waypointRestrictionsTextBox.Name = "waypointRestrictionsTextBox";
+            this.waypointRestrictionsTextBox.ReadOnly = true;
+            this.waypointRestrictionsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.waypointRestrictionsTextBox.Size = new System.Drawing.Size(300, 88);
+            this.waypointRestrictionsTextBox.TabIndex = 1;
+            // 
+            // FlyModeComboBox
+            // 
+            this.FlyModeComboBox.AccessibleName = "Fly mode";
+            this.FlyModeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.FlyModeComboBox.FormattingEnabled = true;
+            this.FlyModeComboBox.Items.AddRange(new object[] {
+            "Plan",
+            "Approach"});
+            this.FlyModeComboBox.Location = new System.Drawing.Point(375, 150);
+            this.FlyModeComboBox.Name = "FlyModeComboBox";
+            this.FlyModeComboBox.Size = new System.Drawing.Size(100, 35);
+            this.FlyModeComboBox.TabIndex = 4;
+            // 
+            // waypointsListView
+            // 
+            this.waypointsListView.AccessibleName = "Waypoints";
+            this.waypointsListView.AllowColumnReorder = true;
+            this.waypointsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.icaoColumnHeader,
+            this.nameColumnHeader,
+            this.routeColumnHeader,
+            this.altitudeColumnHeader,
+            this.timeColumnHeader,
+            this.fuelColumnHeader,
+            this.frequencyColumnHeader});
+            this.waypointsListView.ContextMenuStrip = this.waypointsContextMenu;
+            listViewGroup1.Header = "Sid waypoints";
+            listViewGroup1.Name = "sidWaypointsListViewGroup";
+            listViewGroup2.Header = "In route waypoints";
+            listViewGroup2.Name = "inRouteWaypointsListViewGroup";
+            listViewGroup3.Header = "Star waypoints";
+            listViewGroup3.Name = "starWaypointsListViewGroup";
+            this.waypointsListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup1,
+            listViewGroup2,
+            listViewGroup3});
+            this.waypointsListView.HideSelection = false;
+            this.waypointsListView.Location = new System.Drawing.Point(6, 6);
+            this.waypointsListView.Name = "waypointsListView";
+            this.waypointsListView.Size = new System.Drawing.Size(469, 100);
+            this.waypointsListView.TabIndex = 0;
+            this.waypointsListView.UseCompatibleStateImageBehavior = false;
+            this.waypointsListView.View = System.Windows.Forms.View.Details;
+            // 
+            // icaoColumnHeader
+            // 
+            this.icaoColumnHeader.Text = "ICAO";
+            // 
+            // nameColumnHeader
+            // 
+            this.nameColumnHeader.Text = "Name";
+            // 
+            // routeColumnHeader
+            // 
+            this.routeColumnHeader.Text = "Route";
+            // 
+            // altitudeColumnHeader
+            // 
+            this.altitudeColumnHeader.Text = "Altitude";
+            // 
+            // timeColumnHeader
+            // 
+            this.timeColumnHeader.Text = "Time";
+            // 
+            // fuelColumnHeader
+            // 
+            this.fuelColumnHeader.Text = "Fuel";
+            // 
+            // frequencyColumnHeader
+            // 
+            this.frequencyColumnHeader.Text = "Frequency";
             // 
             // ProceduresTabPage
             // 
             this.ProceduresTabPage.AccessibleName = "Procedures";
             this.ProceduresTabPage.Location = new System.Drawing.Point(4, 36);
             this.ProceduresTabPage.Name = "ProceduresTabPage";
-            this.ProceduresTabPage.Size = new System.Drawing.Size(476, 188);
+            this.ProceduresTabPage.Size = new System.Drawing.Size(476, 181);
             this.ProceduresTabPage.TabIndex = 2;
             this.ProceduresTabPage.Text = "Procedures";
             this.ProceduresTabPage.UseVisualStyleBackColor = true;
@@ -477,7 +571,7 @@
             this.FindTabPage.AccessibleName = "Find";
             this.FindTabPage.Location = new System.Drawing.Point(4, 36);
             this.FindTabPage.Name = "FindTabPage";
-            this.FindTabPage.Size = new System.Drawing.Size(476, 188);
+            this.FindTabPage.Size = new System.Drawing.Size(476, 181);
             this.FindTabPage.TabIndex = 3;
             this.FindTabPage.Text = "Find";
             this.FindTabPage.UseVisualStyleBackColor = true;
@@ -491,15 +585,69 @@
             this.timerLowPriority.Interval = 1000;
             this.timerLowPriority.Tick += new System.EventHandler(this.timerLowPriority_Tick);
             // 
-            // ConnectMenuItem
+            // waypointsContextMenu
             // 
-            this.ConnectMenuItem.AccessibleName = "Connect to simulator";
-            this.ConnectMenuItem.Name = "ConnectMenuItem";
-            this.ConnectMenuItem.ShortcutKeyDisplayString = "CTRL+R";
-            this.ConnectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.ConnectMenuItem.Size = new System.Drawing.Size(568, 36);
-            this.ConnectMenuItem.Text = "&Connect to simulator";
-            this.ConnectMenuItem.Click += new System.EventHandler(this.ConnectMenuItem_Click);
+            this.waypointsContextMenu.AccessibleName = "Waypoint menu";
+            this.waypointsContextMenu.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.waypointsContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.waypointsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addWaypointContextMenuItem,
+            this.removeWaypointContextMenu,
+            this.directToHereContextMenuItem,
+            this.holdContextMenuItem,
+            this.changeAltitudeContextMenuItem,
+            this.changeSpeedContextMenuItem,
+            this.changeVerticalSpeedContextMenuItem});
+            this.waypointsContextMenu.Name = "waypointsContextMenu";
+            this.waypointsContextMenu.Size = new System.Drawing.Size(297, 228);
+            // 
+            // addWaypointContextMenuItem
+            // 
+            this.addWaypointContextMenuItem.AccessibleName = "Add waypoint";
+            this.addWaypointContextMenuItem.Name = "addWaypointContextMenuItem";
+            this.addWaypointContextMenuItem.Size = new System.Drawing.Size(296, 32);
+            this.addWaypointContextMenuItem.Text = "&Add waypoint";
+            // 
+            // removeWaypointContextMenu
+            // 
+            this.removeWaypointContextMenu.Name = "removeWaypointContextMenu";
+            this.removeWaypointContextMenu.Size = new System.Drawing.Size(296, 32);
+            this.removeWaypointContextMenu.Text = "&Remove waypoint";
+            // 
+            // directToHereContextMenuItem
+            // 
+            this.directToHereContextMenuItem.AccessibleName = "Direct to here";
+            this.directToHereContextMenuItem.Name = "directToHereContextMenuItem";
+            this.directToHereContextMenuItem.Size = new System.Drawing.Size(296, 32);
+            this.directToHereContextMenuItem.Text = "&Direct to here";
+            // 
+            // holdContextMenuItem
+            // 
+            this.holdContextMenuItem.AccessibleName = "Hold";
+            this.holdContextMenuItem.Name = "holdContextMenuItem";
+            this.holdContextMenuItem.Size = new System.Drawing.Size(296, 32);
+            this.holdContextMenuItem.Text = "&hold";
+            // 
+            // changeAltitudeContextMenuItem
+            // 
+            this.changeAltitudeContextMenuItem.AccessibleName = "Change altitude";
+            this.changeAltitudeContextMenuItem.Name = "changeAltitudeContextMenuItem";
+            this.changeAltitudeContextMenuItem.Size = new System.Drawing.Size(296, 32);
+            this.changeAltitudeContextMenuItem.Text = "Change &altitude";
+            // 
+            // changeSpeedContextMenuItem
+            // 
+            this.changeSpeedContextMenuItem.AccessibleName = "Change speed";
+            this.changeSpeedContextMenuItem.Name = "changeSpeedContextMenuItem";
+            this.changeSpeedContextMenuItem.Size = new System.Drawing.Size(296, 32);
+            this.changeSpeedContextMenuItem.Text = "Change &speed";
+            // 
+            // changeVerticalSpeedContextMenuItem
+            // 
+            this.changeVerticalSpeedContextMenuItem.AccessibleName = "Change vertical speed";
+            this.changeVerticalSpeedContextMenuItem.Name = "changeVerticalSpeedContextMenuItem";
+            this.changeVerticalSpeedContextMenuItem.Size = new System.Drawing.Size(296, 32);
+            this.changeVerticalSpeedContextMenuItem.Text = "Change &vertical speed";
             // 
             // TFMMainForm
             // 
@@ -530,6 +678,9 @@
             this.AvionicsTabPage.ResumeLayout(false);
             this.AvionicsTabPage.PerformLayout();
             this.AvionicsExplorationTabPage.ResumeLayout(false);
+            this.FlightPlanTabPage.ResumeLayout(false);
+            this.FlightPlanTabPage.PerformLayout();
+            this.waypointsContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -564,7 +715,6 @@
         private System.Windows.Forms.TextBox GageValueTextBox;
         private System.Windows.Forms.CheckBox AutopilotCheckBox;
         private System.Windows.Forms.TextBox OutputLogTextBox;
-        private System.Windows.Forms.ComboBox FlyModeComboBox;
         private System.Windows.Forms.TabPage AvionicsExplorationTabPage;
         private System.Windows.Forms.PropertyGrid AutopilotPropertyGrid;
         private System.ComponentModel.BackgroundWorker dbLoadWorker;
@@ -573,6 +723,24 @@
         private System.Windows.Forms.ToolStripMenuItem hotkeyHelpMenuItem;
         private System.Windows.Forms.Timer timerLowPriority;
         private System.Windows.Forms.ToolStripMenuItem ConnectMenuItem;
+        private System.Windows.Forms.ListView waypointsListView;
+        private System.Windows.Forms.ColumnHeader icaoColumnHeader;
+        private System.Windows.Forms.ColumnHeader nameColumnHeader;
+        private System.Windows.Forms.ColumnHeader routeColumnHeader;
+        private System.Windows.Forms.ColumnHeader altitudeColumnHeader;
+        private System.Windows.Forms.ColumnHeader timeColumnHeader;
+        private System.Windows.Forms.ColumnHeader fuelColumnHeader;
+        private System.Windows.Forms.ColumnHeader frequencyColumnHeader;
+        private System.Windows.Forms.TextBox waypointRestrictionsTextBox;
+        private System.Windows.Forms.ComboBox FlyModeComboBox;
+        private System.Windows.Forms.ContextMenuStrip waypointsContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem addWaypointContextMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeWaypointContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem directToHereContextMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem holdContextMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changeAltitudeContextMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changeSpeedContextMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changeVerticalSpeedContextMenuItem;
     }
 }
 

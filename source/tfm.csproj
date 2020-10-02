@@ -96,34 +96,34 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="aircraft.cs" />
-    <Compile Include="AudioPlaybackEngine.cs" />
+    <Compile Include="sounds\AudioPlaybackEngine.cs" />
     <Compile Include="AutoDisposeFileReader.cs" />
-    <Compile Include="autopilot.cs" />
-    <Compile Include="CachedSound.cs" />
-    <Compile Include="CachedSoundSampleProvider.cs" />
+    <Compile Include="Autopilot\autopilot.cs" />
+    <Compile Include="sounds\CachedSound.cs" />
+    <Compile Include="sounds\CachedSoundSampleProvider.cs" />
     <Compile Include="Events\ScreenReaderOutputEventArgs.cs" />
-    <Compile Include="frmAutopilot.cs">
+    <Compile Include="Autopilot\frmAutopilot.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmAutopilot.Designer.cs">
+    <Compile Include="Autopilot\frmAutopilot.Designer.cs">
       <DependentUpon>frmAutopilot.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmComRadios.cs">
+    <Compile Include="Autopilot\frmComRadios.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmComRadios.Designer.cs">
+    <Compile Include="Autopilot\frmComRadios.Designer.cs">
       <DependentUpon>frmComRadios.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmKeyboardHelp.cs">
+    <Compile Include="Keyboard manager\frmKeyboardHelp.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmKeyboardHelp.Designer.cs">
+    <Compile Include="Keyboard manager\frmKeyboardHelp.Designer.cs">
       <DependentUpon>frmKeyboardHelp.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmNavRadios.cs">
+    <Compile Include="Autopilot\frmNavRadios.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmNavRadios.Designer.cs">
+    <Compile Include="Autopilot\frmNavRadios.Designer.cs">
       <DependentUpon>frmNavRadios.cs</DependentUpon>
     </Compile>
     <Compile Include="Keyboard manager\frmKeyboardManager.cs">
@@ -184,20 +184,20 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Hotkeys.settings</DependentUpon>
     </Compile>
-    <Compile Include="SineWaveProvider.cs" />
+    <Compile Include="sounds\SineWaveProvider.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmAutopilot.resx">
+    <EmbeddedResource Include="Autopilot\frmAutopilot.resx">
       <DependentUpon>frmAutopilot.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmComRadios.resx">
+    <EmbeddedResource Include="Autopilot\frmComRadios.resx">
       <DependentUpon>frmComRadios.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmKeyboardHelp.resx">
+    <EmbeddedResource Include="Keyboard manager\frmKeyboardHelp.resx">
       <DependentUpon>frmKeyboardHelp.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmNavRadios.resx">
+    <EmbeddedResource Include="Autopilot\frmNavRadios.resx">
       <DependentUpon>frmNavRadios.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Keyboard manager\frmKeyboardManager.resx">

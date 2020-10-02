@@ -66,8 +66,7 @@
             this.FindTabPage = new System.Windows.Forms.TabPage();
             this.dbLoadWorker = new System.ComponentModel.BackgroundWorker();
             this.timerLowPriority = new System.Windows.Forms.Timer(this.components);
-            this.ConnectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.TFMMainMenu.SuspendLayout();
+                        this.TFMMainMenu.SuspendLayout();
             this.TFMTabControl.SuspendLayout();
             this.AvionicsTabPage.SuspendLayout();
             this.AvionicsExplorationTabPage.SuspendLayout();

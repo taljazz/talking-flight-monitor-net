@@ -1069,6 +1069,8 @@ namespace tfm
         
         private void autopilotCommandMode(object sender, HotkeyEventArgs e)
         {
+            // unregister the right bracket command key so it isn't pressed by accident
+            HotkeyManager.Current.Remove("Command_Key");
             // Check to see if we are connected to the sim
             if (FSUIPCConnection.IsOpen)
             {

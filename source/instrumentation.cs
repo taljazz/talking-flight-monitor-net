@@ -1284,6 +1284,9 @@ namespace tfm
                 case "Read_Flaps_Angle":
                     onFlapsAngleKey();
                     break;
+                case "Read_Gear_State":
+                    onGearState();
+                    break;
 
                 case "Wind_Information":
                     onWindKey();
@@ -1332,7 +1335,7 @@ namespace tfm
                     onFuelTankKey(10);
                     break;
                 case "Nearby_Airborn_Aircraft":
-                    onTCASAir();
+                    onNearbyAircraft();
                     break;
                 case "Nearby_Ground_Aircraft":
                     onTCASGround();
@@ -1371,6 +1374,29 @@ namespace tfm
 
             }
             ResetHotkeys();
+        }
+
+        private void onGearState()
+        {
+            var gaugeName = "Gear";
+            var isGauge = true;
+            string gaugeValue;
+            if (Aircraft.LandingGear.Value == 0)
+            {
+                gaugeValue = "up. ";
+                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+            }
+            if (Aircraft.LandingGear.Value == 16383)
+            {
+                gaugeValue = "down. ";
+                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+            }
+            if (Aircraft.LandingGear.Value > 0 && Aircraft.LandingGear.Value < 16383)
+            {
+                gaugeValue = "moving. ";
+                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+            }
+
         }
 
         private void onFlapsAngleKey()
@@ -1474,9 +1500,25 @@ namespace tfm
         }
 
 
-        private void onTCASAir()
+        private void onNearbyAircraft()
         {
-            Tolk.Output("not yet implemented.");
+            // Get a reference to the AITrafficServices (for easier use)
+            AITrafficServices ts = FSUIPCConnection.AITrafficServices;
+            // Get the latest data from FSUIPC
+            ts.RefreshAITrafficInformation();
+
+            // Get the list of all AI Traffic
+            List<AIPlaneInfo> groundtraffic = ts.GroundTraffic;
+            List<AIPlaneInfo> airbornTraffic = ts.AirborneTraffic;
+            if (groundtraffic.Count == 0 && airbornTraffic.Count == 0)
+            {
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "no traffic available. ");
+            }
+            else
+            {
+                frmNearbyAircraft frm = new frmNearbyAircraft(groundtraffic, airbornTraffic);
+
+            }
         }
 
         private void onTCASGround()

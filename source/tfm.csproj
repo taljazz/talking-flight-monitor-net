@@ -126,6 +126,12 @@
     <Compile Include="frmNavRadios.Designer.cs">
       <DependentUpon>frmNavRadios.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmNearbyAircraft.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNearbyAircraft.Designer.cs">
+      <DependentUpon>frmNearbyAircraft.cs</DependentUpon>
+    </Compile>
     <Compile Include="Keyboard manager\frmKeyboardManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -199,6 +205,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmNavRadios.resx">
       <DependentUpon>frmNavRadios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNearbyAircraft.resx">
+      <DependentUpon>frmNearbyAircraft.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Keyboard manager\frmKeyboardManager.resx">
       <DependentUpon>frmKeyboardManager.cs</DependentUpon>

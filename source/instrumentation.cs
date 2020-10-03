@@ -1504,7 +1504,14 @@ namespace tfm
         {
             // Get a reference to the AITrafficServices (for easier use)
             AITrafficServices ts = FSUIPCConnection.AITrafficServices;
+            ts.UpdateExtendedPlaneIndentifiers(
+                    TailNumber: false,
+                    AirlineAndFlightNumber: true,
+                    AircraftTypeAndModel: true,
+                    AircraftTitle: false);
+
             // Get the latest data from FSUIPC
+            Tolk.Output("please wait... ");
             ts.RefreshAITrafficInformation();
 
             // Get the list of all AI Traffic
@@ -1517,6 +1524,7 @@ namespace tfm
             else
             {
                 frmNearbyAircraft frm = new frmNearbyAircraft(groundtraffic, airbornTraffic);
+                frm.ShowDialog();
 
             }
         }

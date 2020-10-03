@@ -45,6 +45,9 @@ namespace tfm
                     break;
 
             }
+            txtSetting.SelectionStart = 0;
+            txtSetting.SelectionLength = txtSetting.Text.Length;
+
         }
 
         private void btnOk_Click(object sender, EventArgs e)

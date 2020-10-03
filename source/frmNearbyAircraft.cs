@@ -24,6 +24,7 @@ namespace tfm
 
         private void frmNearbyAircraft_Load(object sender, EventArgs e)
         {
+            this.Activate();
             if (Aircraft.OnGround.Value == 0)
             {
                 tcTraffic.SelectedTab = tabAirborn;

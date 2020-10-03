@@ -206,6 +206,14 @@ namespace tfm
             {
                 OutputLogTextBox.Focus();
             } //End output log assignment.
+            if((e.Control) && (e.KeyCode == Keys.W))
+            {
+                this.waypointsListView.Focus();
+            } // End waypoints list assignment.
+            if((e.Control) && (e.KeyCode == Keys.R))
+            {
+                this.waypointRestrictionsTextBox.Focus();
+            }
             if ((e.Control && e.KeyCode == Keys.D1))
             {
                 if (TFMTabControl.TabPages.Contains(AvionicsTabPage)) { 

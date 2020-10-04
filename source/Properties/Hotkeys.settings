@@ -203,5 +203,14 @@
     <Setting Name="ap_Set_Nav_Radios" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+N</Value>
     </Setting>
+    <Setting Name="ap_Get_Transponder" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">T</Value>
+    </Setting>
+    <Setting Name="ap_Set_Transponder" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+T</Value>
+    </Setting>
+    <Setting Name="Fuel_Manager" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Ctrl+F</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

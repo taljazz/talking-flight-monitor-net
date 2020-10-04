@@ -223,6 +223,12 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="aircraft.cs" />
+    <Compile Include="frmFuelManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFuelManager.Designer.cs">
+      <DependentUpon>frmFuelManager.cs</DependentUpon>
+    </Compile>
     <Compile Include="sounds\AudioPlaybackEngine.cs" />
     <Compile Include="AutoDisposeFileReader.cs" />
     <Compile Include="Autopilot\autopilot.cs" />
@@ -353,6 +359,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Autopilot\frmComRadios.resx">
       <DependentUpon>frmComRadios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFuelManager.resx">
+      <DependentUpon>frmFuelManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Keyboard manager\frmKeyboardHelp.resx">
       <DependentUpon>frmKeyboardHelp.cs</DependentUpon>

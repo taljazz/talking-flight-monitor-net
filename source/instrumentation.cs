@@ -1114,6 +1114,7 @@ namespace tfm
                 case "ap_Get_Altitude":
                     gaugeName = "AP altitude";
                     gaugeValue = Autopilot.ApAltitude.ToString();
+                    if (Autopilot.ApAltitudeLock) gaugeValue = " hold " + gaugeValue;
                     fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
                     break;
                 case "ap_Set_Altitude":
@@ -1123,6 +1124,7 @@ namespace tfm
                 case "ap_Get_Heading":
                     gaugeName = "AP heading";
                     gaugeValue = Autopilot.ApHeading.ToString();
+                    if (Autopilot.ApHeadingLock) gaugeValue = " hold " + gaugeValue;
                     fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
                     break;
                 case "ap_Set_Heading":
@@ -1133,6 +1135,7 @@ namespace tfm
                 case "ap_Get_Airspeed":
                     gaugeName = "AP airspeed";
                     gaugeValue = Autopilot.ApAirspeed.ToString();
+                    if (Autopilot.ApAirspeedHold) gaugeValue = " hold " + gaugeValue;
                     fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
                     break;
 
@@ -1144,6 +1147,7 @@ namespace tfm
                 case "ap_Get_Mach_Speed":
                     gaugeName = "AP mach";
                     gaugeValue = Autopilot.ApMachSpeed.ToString();
+                    if (Autopilot.ApMachHold) gaugeValue = " hold " + gaugeValue;
                     fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
                     break;
 
@@ -1155,6 +1159,7 @@ namespace tfm
                 case "ap_Get_Vertical_Speed":
                     gaugeName = "AP vertical speed";
                     gaugeValue = Autopilot.ApVerticalSpeed.ToString();
+                    if (Autopilot.ApVerticalSpeedHold) gaugeValue = " hold " + gaugeValue;
                     fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
                     break;
 
@@ -1196,6 +1201,15 @@ namespace tfm
                     fireOnScreenReaderOutputEvent(isGauge: false, output: navInfo);
                     break;
 
+                case "ap_Get_Transponder":
+                    gaugeName = "Transponder";
+                    gaugeValue = Autopilot.Transponder.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    break;
+                case "ap_Set_Transponder":
+                    ap = new frmAutopilot("Transponder");
+                    ap.ShowDialog();
+                    break;
 
                 default:
                     Tolk.Output("key not defined");
@@ -1214,6 +1228,11 @@ namespace tfm
                 case "ASL_Altitude":
                     onASLKey();
                     break;
+                case "Fuel_Manager":
+                    frmFuelManager frm = new frmFuelManager();
+                    frm.ShowDialog();
+                    break;
+
                 case "Current_Location":
                     onCurrentLocation();
                     break;
@@ -1548,13 +1567,30 @@ namespace tfm
                 tank = tank - 1;
                 string name = ActiveTanks[tank].Tank.ToString();
                 string pct = ActiveTanks[tank].LevelPercentage.ToString("F0");
-                string weight = ActiveTanks[tank].WeightLbs.ToString("F0");
+                string weight = null;
+                if (Properties.Settings.Default.UseMetric)
+                {
+                    weight = ActiveTanks[tank].WeightKgs.ToString("F0");
+                }
+                else
+                {
+                    weight = ActiveTanks[tank].WeightLbs.ToString("F0");
+                }
+                
                 string gal = ActiveTanks[tank].LevelUSGallons.ToString("F0");
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name}.  {pct} percent, {weight} pounds, {gal} gallons.");
+                if (Properties.Settings.Default.UseMetric)
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name}.  {pct} percent, {weight} kilograms, {gal} gallons.");
+                }
+                else
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name}.  {pct} percent, {weight} pounds, {gal} gallons.");
+                }
+                
             }
         }
 
-        private void onFuelFlowKey()
+        private void onFuelFlowKey()    
         {
             int NumEngines = Aircraft.num_engines.Value;
             double eng1 = Math.Round(Aircraft.eng1_fuel_flow.Value);
@@ -1600,19 +1636,38 @@ namespace tfm
             PayloadServices ps = FSUIPCConnection.PayloadServices;
             // Refresh the current payload data
             ps.RefreshData();
-            string GrossWeight = ps.GrossWeightLbs.ToString("F0");
-            string EmptyWeight = ps.EmptyWeightLbs.ToString("F0");
-            string FuelWeight = ps.FuelWeightLbs.ToString("F0");
-            string PayloadWeight = ps.PayloadWeightLbs.ToString("F0");
-            string MaxGrossWeight = ps.MaxGrossWeightLbs.ToString("F0");
-            if (ps.GrossWeightLbs > ps.MaxGrossWeightLbs)
+            if (Properties.Settings.Default.UseMetric)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "Overweight warning! ");
-            }
-            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Fuel Weight: {FuelWeight} pounds");
-            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Payload Weight: {PayloadWeight} pounds. ");
-            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Gross Weight: {GrossWeight} of {MaxGrossWeight} pounds maximum.");
+                string GrossWeight = ps.GrossWeightKgs.ToString("F0");
+                string EmptyWeight = ps.EmptyWeightKgs.ToString("F0");
+                string FuelWeight = ps.FuelWeightKgs.ToString("F0");
+                string PayloadWeight = ps.PayloadWeightKgs.ToString("F0");
+                string MaxGrossWeight = ps.MaxGrossWeightKgs.ToString("F0");
+                if (ps.GrossWeightKgs > ps.MaxGrossWeightKgs)
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Overweight warning! ");
+                }
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Fuel Weight: {FuelWeight} Kilograms");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Payload Weight: {PayloadWeight} kilograms. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Gross Weight: {GrossWeight} of {MaxGrossWeight} kilograms maximum.");
 
+            }
+            else
+            {
+                string GrossWeight = ps.GrossWeightLbs.ToString("F0");
+                string EmptyWeight = ps.EmptyWeightLbs.ToString("F0");
+                string FuelWeight = ps.FuelWeightLbs.ToString("F0");
+                string PayloadWeight = ps.PayloadWeightLbs.ToString("F0");
+                string MaxGrossWeight = ps.MaxGrossWeightLbs.ToString("F0");
+                if (ps.GrossWeightLbs > ps.MaxGrossWeightLbs)
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Overweight warning! ");
+                }
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Fuel Weight: {FuelWeight} pounds");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Payload Weight: {PayloadWeight} pounds. ");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Gross Weight: {GrossWeight} of {MaxGrossWeight} pounds maximum.");
+
+            }
         }
         private void onRunwayGuidanceKey()
         {

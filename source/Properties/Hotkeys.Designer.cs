@@ -823,5 +823,41 @@ namespace tfm.Properties {
                 this["ap_Set_Nav_Radios"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("T")]
+        public global::System.Windows.Forms.Keys ap_Get_Transponder {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Transponder"]));
+            }
+            set {
+                this["ap_Get_Transponder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+T")]
+        public global::System.Windows.Forms.Keys ap_Set_Transponder {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Transponder"]));
+            }
+            set {
+                this["ap_Set_Transponder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+F")]
+        public global::System.Windows.Forms.Keys Fuel_Manager {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Fuel_Manager"]));
+            }
+            set {
+                this["Fuel_Manager"] = value;
+            }
+        }
     }
 }

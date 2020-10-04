@@ -24,24 +24,46 @@ namespace tfm
         private void frmAutopilot_Load(object sender, EventArgs e)
         {
             this.Activate();
-            this.Text = $"set autopilot {instrument}";
+            if (instrument == "Transponder")
+            {
+                this.Text = "set transponder";
+            }
+            else
+            {
+                this.Text = $"set autopilot {instrument}";
+            }
+            
             lblSetting.Text = $"Enter {this.instrument}: ";
             switch (this.instrument)
             {
                 case "Altitude":
                     txtSetting.Text = ap.ApAltitude.ToString();
+                    chkLock.AccessibleName = "Altitude lock";
+                    chkLock.Checked = ap.ApAltitudeLock;
                     break;
                 case "Heading":
                     txtSetting.Text = ap.ApHeading.ToString();
+                    chkLock.AccessibleName = "heading lock";
+                    chkLock.Checked = ap.ApHeadingLock;
                     break;
                 case "Airspeed":
                     txtSetting.Text = ap.ApAirspeed.ToString();
+                    chkLock.AccessibleName = "airspeed hold";
+                    chkLock.Checked = ap.ApAirspeedHold;
                     break;
                 case "Mach":
                     txtSetting.Text = ap.ApMachSpeed.ToString();
+                    chkLock.AccessibleName = "mach hold";
+                    chkLock.Checked = ap.ApMachHold;
                     break;
                 case "Vertical speed":
                     txtSetting.Text = ap.ApVerticalSpeed.ToString();
+                    chkLock.AccessibleName = "vertical speed hold";
+                    chkLock.Checked = ap.ApVerticalSpeedHold;
+                    break;
+                case "Transponder":
+                    txtSetting.Text = ap.Transponder.ToString();
+                    chkLock.Visible = false;
                     break;
 
             }
@@ -62,6 +84,7 @@ namespace tfm
                         {
                             ap.ApAltitude = altitude;
                         }
+                        ap.ApAltitudeLock = chkLock.Checked;
                         break;
 
                     case "Heading":
@@ -69,6 +92,7 @@ namespace tfm
                         {
                             ap.ApHeading = heading;
                         }
+                        ap.ApHeadingLock = chkLock.Checked;
                         break;
 
                     case "Airspeed":
@@ -76,6 +100,7 @@ namespace tfm
                         {
                             ap.ApAirspeed = airspeed;
                         }
+                        ap.ApAirspeedHold = chkLock.Checked;
                         break;
 
                     case "Mach":
@@ -83,12 +108,20 @@ namespace tfm
                         {
                             ap.ApMachSpeed = mach;
                         }
+                        ap.ApMachHold = chkLock.Checked;
                         break;
 
                     case "Vertical speed":
                         if (double.TryParse(txtSetting.Text, out double verticalSpeed))
                         {
                             ap.ApVerticalSpeed = verticalSpeed;
+                        }
+                        ap.ApVerticalSpeedHold = chkLock.Checked;
+                        break;
+                    case "Transponder":
+                        if (int.TryParse(txtSetting.Text, out int transponder))
+                        {
+                            ap.Transponder = transponder;
                         }
                         break;
 

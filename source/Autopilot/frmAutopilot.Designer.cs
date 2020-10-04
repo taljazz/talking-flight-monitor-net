@@ -35,6 +35,7 @@
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.chkLock = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
@@ -54,6 +55,7 @@
             // 
             this.flowLayoutPanel2.Controls.Add(this.lblSetting);
             this.flowLayoutPanel2.Controls.Add(this.txtSetting);
+            this.flowLayoutPanel2.Controls.Add(this.chkLock);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(200, 100);
@@ -106,6 +108,16 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
+            // chkLock
+            // 
+            this.chkLock.AutoSize = true;
+            this.chkLock.Location = new System.Drawing.Point(3, 29);
+            this.chkLock.Name = "chkLock";
+            this.chkLock.Size = new System.Drawing.Size(80, 17);
+            this.chkLock.TabIndex = 2;
+            this.chkLock.Text = "checkBox1";
+            this.chkLock.UseVisualStyleBackColor = true;
+            // 
             // frmAutopilot
             // 
             this.AcceptButton = this.btnOk;
@@ -138,5 +150,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.CheckBox chkLock;
     }
 }

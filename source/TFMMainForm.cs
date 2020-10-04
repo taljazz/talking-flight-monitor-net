@@ -740,7 +740,7 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                         break;
 
                     case "Transponder":
-                        speak($"squawk: {e.gaugeValue}. ");
+                        speak($"squawk {e.gaugeValue}. ");
                         braille($"Squawk: {e.gaugeValue}\n");
                         OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
                         break;
@@ -863,6 +863,20 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             connectionCounter = 0;
             Tolk.Output("Attempting to connect...");
             this.timerConnection.Start();
+        }
+
+        private void FuelMenuItem_Click(object sender, EventArgs e)
+        {
+            if (FSUIPCConnection.IsOpen == true)
+            {
+                frmFuelManager frm = new frmFuelManager();
+                frm.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Fuel and Payload services are only available while connected to the simulator", "Error", MessageBoxButtons.OK);
+
+            }
         }
     }//End TFMMainForm class.
 } //End TFM namespace.

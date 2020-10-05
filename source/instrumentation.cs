@@ -242,6 +242,7 @@ namespace tfm
         private bool apuRunning;
         private bool apuShuttingDown;
         private bool apuOff = true;
+        private bool fuelManagerActive;
 
         public Instrumentation()
         {
@@ -1222,15 +1223,22 @@ namespace tfm
         {
 
             e.Handled = true;
-
+            ResetHotkeys();
             switch (e.Name)
             {
                 case "ASL_Altitude":
                     onASLKey();
                     break;
                 case "Fuel_Manager":
+                    if (fuelManagerActive)
+                    {
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel manager already open");
+                        break;
+                    }
                     frmFuelManager frm = new frmFuelManager();
+                    fuelManagerActive = true;
                     frm.ShowDialog();
+                    fuelManagerActive = false;
                     break;
 
                 case "Current_Location":
@@ -1394,7 +1402,7 @@ namespace tfm
                     break;
 
             }
-            ResetHotkeys();
+            
         }
 
         private void onGearState()

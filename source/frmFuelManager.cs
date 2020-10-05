@@ -31,6 +31,7 @@ namespace tfm
         private void frmFuelManager_Load(object sender, EventArgs e)
         {
             txtTankWeight.Enabled = false;
+            btnSetFuelTank.Enabled = false;
             this.Activate();
             getLoadData();
             refreshTankList();
@@ -62,7 +63,9 @@ namespace tfm
                     // add to the list
                     this.lvPayload.Items.Add(newItem);
             }
-        }
+                // select the first item in the list
+                lvPayload.Items[0].Selected = true;
+            }
 
     }
 
@@ -105,7 +108,7 @@ private void refreshTankList()
                 newItem.SubItems.Add(tank.LevelPercentage.ToString("F1"));
                 lvFuel.Items.Add(newItem);
             }
-            
+            lvFuel.Items[0].Selected = true;
         }
         private void btnCalculate_Click(object sender, EventArgs e)
         {
@@ -128,6 +131,7 @@ private void refreshTankList()
             if (this.lvFuel.SelectedIndices.Count > 0)
             {
                 txtTankWeight.Enabled = true;
+                btnSetFuelTank.Enabled = true;
                 int index = this.lvFuel.SelectedIndices[0];
                 FsFuelTank tank = ActiveTanks[index];
                 lblTankWeight.Text = lvFuel.SelectedItems[0].Text;

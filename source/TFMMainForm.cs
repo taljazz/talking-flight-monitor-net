@@ -181,7 +181,8 @@ namespace tfm
         private void TFMMainForm_KeyDown(object sender, KeyEventArgs e)
         {
             // Manually define keyboard shortcuts for the Gages list and the gage value textbox.
-            if ((e.Control && e.KeyCode == Keys.E))
+            // Discontinue support because this will be removed in the future.
+/*            if ((e.Control && e.KeyCode == Keys.E))
             {
                 GageValueTextBox.Focus();
             }// End Gage textfield assignment.
@@ -236,7 +237,7 @@ namespace tfm
             if((e.Control && e.KeyCode == Keys.D4))
             {
                 TFMTabControl.SelectedTab = FindTabPage;
-            } //End Find assignment.
+            } //End Find assignment.*/
                     } //End KeyDown event.
 
         private void GageComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -361,7 +362,7 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
 
         private void TFMMainForm_Load(object sender, EventArgs e)
         {
-            //Move to a configure function when implementing settings.
+                        //Move to a configure function when implementing settings.
             if (Properties.Settings.Default.AvionicsTabChangeFlag)
             {
                 Properties.Settings.Default.avionics_tab = Properties.Settings.Default.NewAvionicsTab;
@@ -877,6 +878,12 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                 MessageBox.Show("Fuel and Payload services are only available while connected to the simulator", "Error", MessageBoxButtons.OK);
 
             }
+        }
+
+        private void flightPlannerMenuItem_Click(object sender, EventArgs e)
+        {
+                        FlightPlanForm flightPlanner = new FlightPlanForm();
+            flightPlanner.ShowDialog();
         }
     }//End TFMMainForm class.
 } //End TFM namespace.

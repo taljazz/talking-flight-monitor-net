@@ -859,5 +859,17 @@ namespace tfm.Properties {
                 this["Fuel_Manager"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+P")]
+        public global::System.Windows.Forms.Keys flight_planner {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["flight_planner"]));
+            }
+            set {
+                this["flight_planner"] = value;
+            }
+        }
     }
 }

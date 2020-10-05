@@ -243,6 +243,7 @@ namespace tfm
         private bool apuShuttingDown;
         private bool apuOff = true;
         private bool fuelManagerActive;
+        private bool flightPlannerActive;
 
         public Instrumentation()
         {
@@ -1240,7 +1241,17 @@ namespace tfm
                     frm.ShowDialog();
                     fuelManagerActive = false;
                     break;
-
+                case "flight_planner":
+                    if(flightPlannerActive)
+                    {
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Flight planner already active!");
+                        break;
+                    }
+                    FlightPlanForm flightPlanner = new FlightPlanForm();
+                    flightPlannerActive = true;
+                    flightPlanner.ShowDialog();
+                    flightPlannerActive = false;
+                    break;
                 case "Current_Location":
                     onCurrentLocation();
                     break;

@@ -42,6 +42,9 @@
             this.colCapacity = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colpercent = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pnlTankEntry = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblTankWeight = new System.Windows.Forms.Label();
+            this.txtTankWeight = new System.Windows.Forms.TextBox();
+            this.btnSetFuelTank = new System.Windows.Forms.Button();
             this.tabPayload = new System.Windows.Forms.TabPage();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.lvPayload = new System.Windows.Forms.ListView();
@@ -51,9 +54,6 @@
             this.lblStation = new System.Windows.Forms.Label();
             this.txtStationWeight = new System.Windows.Forms.TextBox();
             this.btnSetStation = new System.Windows.Forms.Button();
-            this.lblTankWeight = new System.Windows.Forms.Label();
-            this.txtTankWeight = new System.Windows.Forms.TextBox();
-            this.btnSetFuelTank = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -128,7 +128,6 @@
             this.label1.Size = new System.Drawing.Size(57, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Block fuel:";
-            this.label1.Visible = false;
             // 
             // txtBlockWeight
             // 
@@ -136,18 +135,16 @@
             this.txtBlockWeight.Name = "txtBlockWeight";
             this.txtBlockWeight.Size = new System.Drawing.Size(100, 20);
             this.txtBlockWeight.TabIndex = 1;
-            this.txtBlockWeight.Visible = false;
             // 
             // btnCalculate
             // 
-            this.btnCalculate.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCalculate.Location = new System.Drawing.Point(3, 29);
             this.btnCalculate.Name = "btnCalculate";
             this.btnCalculate.Size = new System.Drawing.Size(75, 23);
             this.btnCalculate.TabIndex = 2;
-            this.btnCalculate.Text = "&Calculate";
+            this.btnCalculate.Text = "C&alculate";
             this.btnCalculate.UseVisualStyleBackColor = true;
-            this.btnCalculate.Visible = false;
+            this.btnCalculate.Click += new System.EventHandler(this.btnCalculate_Click);
             // 
             // lvFuel
             // 
@@ -191,6 +188,32 @@
             this.pnlTankEntry.Name = "pnlTankEntry";
             this.pnlTankEntry.Size = new System.Drawing.Size(200, 100);
             this.pnlTankEntry.TabIndex = 4;
+            // 
+            // lblTankWeight
+            // 
+            this.lblTankWeight.AutoSize = true;
+            this.lblTankWeight.Location = new System.Drawing.Point(3, 0);
+            this.lblTankWeight.Name = "lblTankWeight";
+            this.lblTankWeight.Size = new System.Drawing.Size(35, 13);
+            this.lblTankWeight.TabIndex = 0;
+            this.lblTankWeight.Text = "label2";
+            // 
+            // txtTankWeight
+            // 
+            this.txtTankWeight.Location = new System.Drawing.Point(44, 3);
+            this.txtTankWeight.Name = "txtTankWeight";
+            this.txtTankWeight.Size = new System.Drawing.Size(100, 20);
+            this.txtTankWeight.TabIndex = 1;
+            // 
+            // btnSetFuelTank
+            // 
+            this.btnSetFuelTank.Location = new System.Drawing.Point(3, 29);
+            this.btnSetFuelTank.Name = "btnSetFuelTank";
+            this.btnSetFuelTank.Size = new System.Drawing.Size(75, 23);
+            this.btnSetFuelTank.TabIndex = 2;
+            this.btnSetFuelTank.Text = "Set Fuel Tank";
+            this.btnSetFuelTank.UseVisualStyleBackColor = true;
+            this.btnSetFuelTank.Click += new System.EventHandler(this.btnSetFuelTank_Click);
             // 
             // tabPayload
             // 
@@ -272,32 +295,6 @@
             this.btnSetStation.Text = "Set Payload Station";
             this.btnSetStation.UseVisualStyleBackColor = true;
             this.btnSetStation.Click += new System.EventHandler(this.btnSetStation_Click);
-            // 
-            // lblTankWeight
-            // 
-            this.lblTankWeight.AutoSize = true;
-            this.lblTankWeight.Location = new System.Drawing.Point(3, 0);
-            this.lblTankWeight.Name = "lblTankWeight";
-            this.lblTankWeight.Size = new System.Drawing.Size(35, 13);
-            this.lblTankWeight.TabIndex = 0;
-            this.lblTankWeight.Text = "label2";
-            // 
-            // txtTankWeight
-            // 
-            this.txtTankWeight.Location = new System.Drawing.Point(44, 3);
-            this.txtTankWeight.Name = "txtTankWeight";
-            this.txtTankWeight.Size = new System.Drawing.Size(100, 20);
-            this.txtTankWeight.TabIndex = 1;
-            // 
-            // btnSetFuelTank
-            // 
-            this.btnSetFuelTank.Location = new System.Drawing.Point(3, 29);
-            this.btnSetFuelTank.Name = "btnSetFuelTank";
-            this.btnSetFuelTank.Size = new System.Drawing.Size(75, 23);
-            this.btnSetFuelTank.TabIndex = 2;
-            this.btnSetFuelTank.Text = "Set Fuel Tank";
-            this.btnSetFuelTank.UseVisualStyleBackColor = true;
-            this.btnSetFuelTank.Click += new System.EventHandler(this.btnSetFuelTank_Click);
             // 
             // btnClose
             // 

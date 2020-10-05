@@ -113,17 +113,46 @@ private void refreshTankList()
         private void btnCalculate_Click(object sender, EventArgs e)
         {
             double blockWeight = double.Parse(txtBlockWeight.Text);
-            if (ActiveTanks.Count == 2)
+            if (Properties.Settings.Default.UseMetric)
             {
-                double weight = blockWeight / 2;
-                foreach (FsFuelTank tank in ActiveTanks)
+                double fuelOver = ps.LoadFuelKgs(blockWeight, true);
+                if (fuelOver > 0)
                 {
-                    tank.WeightLbs = weight;
+                    MessageBox.Show("Over capacity by " + fuelOver.ToString("F1") + " kilograms. ", "warning", MessageBoxButtons.OK);
                 }
+            }
+            else
+            {
+                double fuelOver = ps.LoadFuelLbs(blockWeight, true);
+                if (fuelOver > 0)
+                {
+                    MessageBox.Show("Over capacity by " + fuelOver.ToString("F1") + " pounds.", "warning", MessageBoxButtons.OK);
+                }
+                checkWeight();
 
-                refreshTankList(); 
             }
 
+            refreshTankList(); 
+
+        }
+
+        private void checkWeight()
+        {
+            if (ps.GrossWeightKgs > ps.MaxGrossWeightKgs)
+            {
+                if (Properties.Settings.Default.UseMetric)
+                {
+                    double overage = ps.GrossWeightKgs - ps.MaxGrossWeightKgs;
+                    MessageBox.Show("aircraft overweight by " + overage.ToString("F1") + " kilograms. ", "warning", MessageBoxButtons.OK);
+
+                }
+                else
+                {
+                    double overage = ps.GrossWeightLbs - ps.MaxGrossWeightLbs;
+                    MessageBox.Show("aircraft overweight by " + overage.ToString("F1") + " pounds. ", "warning", MessageBoxButtons.OK);
+
+                }
+            }
         }
 
         private void lvFuel_SelectedIndexChanged(object sender, EventArgs e)
@@ -160,10 +189,12 @@ private void refreshTankList()
             {
                 tank.WeightLbs = double.Parse(txtTankWeight.Text);
             }
-            
+            ps.WriteChanges();
+            checkWeight();
+
             refreshTankList();
             lvFuel.Focus();
-            ps.WriteChanges();
+            
         }
 
         private void lvPayload_SelectedIndexChanged(object sender, EventArgs e)
@@ -199,10 +230,10 @@ private void refreshTankList()
             {
                 station.WeightLbs = double.Parse(txtStationWeight.Text);
             }
-            
+            ps.WriteChanges();
+            checkWeight();
             refreshPayloadList();   
             lvPayload.Focus();
-            ps.WriteChanges();
 
         }
     }

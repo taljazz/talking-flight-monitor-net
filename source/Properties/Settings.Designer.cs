@@ -286,5 +286,17 @@ namespace tfm.Properties {
                 this["OutputBraille"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public decimal OutputHistoryLength {
+            get {
+                return ((decimal)(this["OutputHistoryLength"]));
+            }
+            set {
+                this["OutputHistoryLength"] = value;
+            }
+        }
     }
 }

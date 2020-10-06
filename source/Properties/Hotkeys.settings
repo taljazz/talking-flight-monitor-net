@@ -212,5 +212,8 @@
     <Setting Name="Fuel_Manager" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+F</Value>
     </Setting>
+    <Setting Name="Output_History" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Ctrl+S</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

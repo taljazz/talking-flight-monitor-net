@@ -859,5 +859,17 @@ namespace tfm.Properties {
                 this["Fuel_Manager"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+S")]
+        public global::System.Windows.Forms.Keys Output_History {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Output_History"]));
+            }
+            set {
+                this["Output_History"] = value;
+            }
+        }
     }
 }

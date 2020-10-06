@@ -33,7 +33,7 @@ using tfm.Properties;
 
 namespace tfm
 {
-    public class Instrumentation
+    public class IOSubsystem
     {
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
         // get a logger object for this class
@@ -94,13 +94,14 @@ namespace tfm
 
         // initialize sound objects
         readonly SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
+        readonly SoundPlayer apCmdSound = new SoundPlayer(@"sounds\ap_command.wav");
         // list to store registered hotkey identifiers
         List<string> hotkeys = new List<string>();
         List<string> autopilotHotkeys = new List<string>();
         FsFuelTanksCollection FuelTanks = null;
         // list to store fuel tanks present on the aircraft
         List<FsFuelTank> ActiveTanks = new List<FsFuelTank>();
-        Autopilot Autopilot = new Autopilot();
+        InstrumentPanel Autopilot = new InstrumentPanel();
         // dictionaries for altitude and GPWS callouts
         private Dictionary<int, bool> altitudeCalloutFlags = new Dictionary<int, bool>();
         private Dictionary<int, bool> gpwsFlags = new Dictionary<int, bool>() {
@@ -243,18 +244,20 @@ namespace tfm
         private bool apuShuttingDown;
         private bool apuOff = true;
         private bool fuelManagerActive;
+        OutputHistory history = new OutputHistory();
 
-        public Instrumentation()
+        public IOSubsystem()
         {
 
             Logger.Debug("initializing screen reader driver");
             Tolk.TrySAPI(true);
             Tolk.Load();
-            var version = typeof(Instrumentation).Assembly.GetName().Version.Build;
+            var version = typeof(IOSubsystem).Assembly.GetName().Version.Build;
             fireOnScreenReaderOutputEvent(textOutput: false, output: $"Talking Flight Monitor test build {version}");
             HotkeyManager.Current.AddOrReplace("Command_Key", (Keys)Properties.Hotkeys.Default.Command_Key, commandMode);
             HotkeyManager.Current.AddOrReplace("ap_Command_Key", (Keys)Properties.Hotkeys.Default.ap_Command_Key, autopilotCommandMode);
             // HotkeyManager.Current.AddOrReplace("test", Keys.Q, OffsetTest);
+
             runwayGuidanceEnabled = false;
 
 
@@ -307,9 +310,12 @@ namespace tfm
 
         private void OffsetTest(object sender, HotkeyEventArgs e)
         {
-            frmAutopilot ap = new frmAutopilot("Altitude");
-            ap.ShowDialog();
-
+            List<string> lstHistory = history.GetItems();
+            Tolk.Output(lstHistory.Count.ToString());
+            foreach (string item in lstHistory)
+            {
+                Tolk.Output(item);
+            }
         }
 
         public void ReadAircraftState()
@@ -1077,7 +1083,7 @@ namespace tfm
             {
                 // play the command sound
                 // AudioPlaybackEngine.Instance.PlaySound(cmdSound);
-                cmdSound.Play();
+                apCmdSound.Play();
                 // populate a list of hotkeys, so we can clear them later.
                 foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
                 {
@@ -1286,6 +1292,11 @@ namespace tfm
                 case "Repeat_Last_Simconnect_Message":
                     onRepeatLastSimconnectMessage();
                     break;
+                case "Output_History":
+                    frmOutputHistory frmHistory = new frmOutputHistory();
+                    frmHistory.ShowDialog();
+                    break;
+
                 case "Nearest_City":
                     onCityKey();
                     break;
@@ -2220,8 +2231,7 @@ namespace tfm
                 fireOnScreenReaderOutputEvent(isGauge: false, output: "heading: " + hdgTrue.ToString("F0") + "true, " + Aircraft.CompassHeading.Value.ToString("F0") + " Magnetic. ");
 
             }
-            fireOnScreenReaderOutputEvent(isGauge: false,  output: "heading: " + Math.Round(Aircraft.CompassHeading.Value));
-            fireOnScreenReaderOutputEvent(isGauge: false, output: "heading: " + Math.Round(Aircraft.CompassHeading.Value));
+            fireOnScreenReaderOutputEvent(isGauge: false, output: "heading: " + Autopilot.Heading);
             ResetHotkeys();
         }
 

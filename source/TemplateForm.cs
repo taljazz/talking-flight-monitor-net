@@ -13,7 +13,7 @@ namespace tfm
 {
     public partial class TemplateForm : Form
     {
-        public Instrumentation inst = new Instrumentation();
+        public IOSubsystem inst = new IOSubsystem();
         public TemplateForm()
         {
             InitializeComponent();

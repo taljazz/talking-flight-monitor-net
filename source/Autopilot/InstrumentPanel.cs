@@ -8,8 +8,93 @@ using System.Threading.Tasks;
 
 namespace tfm
 {
-    public class Autopilot
+    public class InstrumentPanel
     {
+        private double aslAltitude;
+        public double AslAltitude
+        {
+            get
+            {
+                aslAltitude = Math.Round((double)Aircraft.Altitude.Value, 0);
+                return aslAltitude;
+            }
+        }
+        private double heading;
+        public double Heading
+        {
+            get
+            {
+                heading = (double)Math.Round(Aircraft.CompassHeading.Value);
+                return heading;
+            }
+        }
+        private double aglAltitude;
+        public double AglAltitude
+        {
+            get
+            {
+                double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
+                aglAltitude = (double)Aircraft.Altitude.Value - groundAlt;
+                return Math.Round(aglAltitude);
+            }
+        }
+        private double indicatedAirspeed;
+        public double IndicatedAirspeed
+        {
+            get
+            {
+                indicatedAirspeed = (double)Aircraft.AirspeedIndicated.Value / 128d;
+                return Math.Round(indicatedAirspeed);
+            }
+        }
+        private double trueAirspeed;
+        public double TrueAirspeed
+        {
+            get
+            {
+                trueAirspeed = (double)Aircraft.AirspeedTrue.Value / 128d;
+                return Math.Round(trueAirspeed);
+            }
+        }
+        private double machSpeed;
+        public double MachSpeed
+        {
+            get
+            {
+                machSpeed = (double)Aircraft.AirspeedMach.Value / 20480d;
+                return Math.Round(machSpeed, 2);
+            }
+        }
+        private double latitude;
+        public double Latitude
+        {
+            get
+            {
+                latitude = Aircraft.aircraftLat.Value.DecimalDegrees;
+                return latitude;
+            }
+        }
+        
+        private double longitude;
+        public double Longitude
+        {
+            get
+            {
+                longitude = Aircraft.aircraftLon.Value.DecimalDegrees;
+                return longitude;
+            }
+        }
+        
+        private double verticalSpeed;
+        public double VerticalSpeed
+        {
+            get
+            {
+                verticalSpeed = (double)Aircraft.VerticalSpeed.Value * 3.28084d * -1;
+                return Math.Round(verticalSpeed);
+            }
+        }
+
         private bool apMaster;
 
         [DisplayName("autopilot master switch")]

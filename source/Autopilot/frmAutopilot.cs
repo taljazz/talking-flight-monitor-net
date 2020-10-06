@@ -12,7 +12,7 @@ namespace tfm
 {
     public partial class frmAutopilot : Form
     {
-        Autopilot ap = new Autopilot();
+        InstrumentPanel ap = new InstrumentPanel();
         string instrument;
         public frmAutopilot(string instrument)
         {

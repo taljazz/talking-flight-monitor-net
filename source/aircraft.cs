@@ -235,7 +235,7 @@ namespace tfm
         public static Offset<double> Engine2EGT = new Offset<double>(0x3ab0);
         public static Offset<double> Engine3EGT = new Offset<double>(0x39f0);
         public static Offset<double> Engine4EGT = new Offset<double>(0x3930);
-
+        public static Offset<double> CenterOfGravity = new Offset<double>("Payload", 0x2ef8);
         // atitude mode offsets
         public static Offset<int> AttitudePitch = new Offset<int>("attitude", 0x0578);
         public static Offset<int> AttitudeBank = new Offset<int>("attitude", 0x057c);

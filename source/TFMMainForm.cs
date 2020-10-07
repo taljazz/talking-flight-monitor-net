@@ -31,9 +31,9 @@ namespace tfm
         private int connectionCounter = 0;
 
         
-        public Instrumentation inst = new Instrumentation();
-        public Autopilot Autopilot = new Autopilot();
-        
+        private IOSubsystem inst = new IOSubsystem();
+        private InstrumentPanel Autopilot = new InstrumentPanel();
+        private OutputHistory history = new OutputHistory();
         public TFMMainForm()
         {
             InitializeComponent();
@@ -614,47 +614,48 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                         
                         speak($"{e.gaugeValue} feet per minute.");
                         braille($"VSPD {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
+                        
                         break;
                     case "Outside temperature":
                         speak($"{e.gaugeValue} degrees");
                         braille($"temp {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
                     case "ASL altitude":
                         speak($"{e.gaugeValue} feet ASL.");
                         braille($"ASL  {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
                         
                     case "AGL altitude":
                         speak($"{e.gaugeValue} feet AGL.");
                         braille($"AGL {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
                         
                     case "Airspeed true":
                         speak($"{e.gaugeValue} knotts true");
                         braille($"TAS {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
                         
                     case "Airspeed indicated":
                         speak($"{e.gaugeValue} knotts indicated");
                         braille($"IAS {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
                     
                     case "Ground speed":
                         speak($"{e.gaugeValue} knotts ground speed");
                         braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"gnd: {e.gaugeValue}\n";
+                        history.AddItem ($"gnd: {e.gaugeValue}\n");
                         break;
                         
                     case "Mach":
                         speak($"Mach {e.gaugeValue}. ");
                         braille($"mach{e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
 
                     case "Localiser":
@@ -670,80 +671,80 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     case "Altimeter":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
                         braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
                     
                     case "Flaps":
                         speak($"{e.gaugeName} {e.gaugeValue}. ");
                         braille($"{e.gaugeName} {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
                     
                     case "Gear":
                         speak($"{e.gaugeName} {e.gaugeValue}. ");
                         braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
 
                     case "AP heading":
                         speak($"heading {e.gaugeValue}. ");
                         braille($"hdg: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
 
                     case "AP airspeed":
                         speak($"{e.gaugeValue} knotts. ");
                         braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
 
                     case "AP mach":
                         speak($"Mach {e.gaugeValue}");
                         braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
 
                     case "AP vertical speed":
                         speak($"{e.gaugeValue} feet per minute. ");
                         braille($"{e.gaugeValue} FPM\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
 
                     case "AP altitude":
                         speak($"{e.gaugeName}: {e.gaugeValue} feet. ");
                         braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
 
 
                     case "Com1":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
                         braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
 
                     case "Com2":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
                         braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
 
                     case "Nav1":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
                         braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
 
                     case "Nav2":
                         speak($"{e.gaugeName}: {e.gaugeValue}. ");
                         braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
 
                     case "Transponder":
                         speak($"squawk {e.gaugeValue}. ");
                         braille($"Squawk: {e.gaugeValue}\n");
-                        OutputLogTextBox.Text += $"{e.gaugeName}: {e.gaugeValue}\n";
+                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
                         break;
 
 
@@ -767,7 +768,7 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                 }
                 if (e.textOutput == true)
                 {
-                    OutputLogTextBox.Text += $"{e.output}\n";
+                    history.AddItem ($"{e.output}\n");
                 }
 
             } // end generic output

@@ -13,7 +13,7 @@ namespace tfm
     public partial class frmComRadios : Form
     {
         // get instance of Autopilot class.
-        Autopilot ap = new Autopilot();
+        InstrumentPanel ap = new InstrumentPanel();
         public frmComRadios()
         {
             InitializeComponent();

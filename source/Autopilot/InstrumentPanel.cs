@@ -104,7 +104,7 @@ namespace tfm
             {
                 apMaster = Aircraft.ApMaster.Value != 0;
                 return apMaster;
-            }
+            }   
             set
             {
                 Aircraft.ApMaster.Value = (value) ? (uint)1 : (uint)0;
@@ -185,16 +185,9 @@ namespace tfm
             }
             set
             {
-                if (value > 0 && value < 360)
-                {
-                    // convert the supplied heading into the proper FSUIPC format(degrees*65536/360)
-                    Aircraft.ApHeading.Value = (ushort)(value * 65536 / 360);
-                    apHeading = value;
-                }
-                else
-                {
-                    throw new ArgumentException("Heading values must be between 0 and 360");
-                }
+                // convert the supplied heading into the proper FSUIPC format(degrees*65536/360)
+                Aircraft.ApHeading.Value = (ushort)(value * 65536 / 360);
+                apHeading = value;
             }
         }
         private bool apHeadingLock;
@@ -223,15 +216,8 @@ namespace tfm
             }
             set
             {
-                if (value > 0)
-                {
                     Aircraft.ApAltitude.Value = (uint)(value / 3.28084 * 65536);
                     apAltitude = value;
-                }
-                else
-                {
-                    throw new ArgumentException("altitude must be greter than 0");
-                }
             }
         }
         private bool apAltitudeLock;
@@ -261,15 +247,8 @@ namespace tfm
             }
             set
             {
-                if (value > 0)
-                {
                     Aircraft.ApAirspeed.Value = (short)value;
                     apAirspeed = value;
-                }
-                else
-                {
-                    throw new ArgumentException("speed must be greater than 0");
-                }
             }
         }
         private bool apAirspeedHold;
@@ -301,16 +280,9 @@ namespace tfm
             }
             set
             {
-                if (value > 0)
-                {
                     // FSUIPC needs the mach multiplied by 65536            }
                     Aircraft.ApMach.Value = (uint)(value * 65536);
                     apMachSpeed = value;
-                }
-                else
-                {
-                    throw new ArgumentException("Mach must be greater than 0");
-                }
             }
         }
         private bool apMachHold;
@@ -374,18 +346,11 @@ namespace tfm
             }
             set
             {
-                if (value > 0)
-                {
                     // 1. Create a new instance of the COM helper class using the decimal value entered
                     FsFrequencyCOM com1Helper = new FsFrequencyCOM(value);
                     // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
                     Aircraft.Com1Freq.Value = com1Helper.ToBCD();
                     com1Freq = value;
-                }
-                else
-                {
-                    throw new ArgumentException("com 1 frequency must be greater than 0");
-                }
             }
         }
         
@@ -402,18 +367,11 @@ namespace tfm
             }
             set
             {
-                if (value > 0)
-                {
                     // 1. Create a new instance of the COM helper class using the decimal value entered
                     FsFrequencyCOM com1StandbyHelper = new FsFrequencyCOM(value);
                     // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
                     Aircraft.Com1StandbyFreq.Value = com1StandbyHelper.ToBCD();
                     com1StandbyFreq = value;
-                }
-                else
-                {
-                    throw new ArgumentException("com 1 standby frequency must be greater than 0");
-                }
             }
         }
 
@@ -430,18 +388,11 @@ namespace tfm
             }
             set
             {
-                if (value > 0)
-                {
                     // 1. Create a new instance of the COM helper class using the decimal value entered
                     FsFrequencyCOM com2Helper = new FsFrequencyCOM(value);
                     // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
                     Aircraft.Com2Freq.Value = com2Helper.ToBCD();
                     com2Freq = value;
-                }
-                else
-                {
-                    throw new ArgumentException("com 2 frequency must be greater than 0");
-                }
             }
         }
         private int transponder;
@@ -457,19 +408,12 @@ namespace tfm
             }
             set
             {
-                if (value > 0)
-                {
                     // 1. Create a new instance of the Transponder helper class using the integer that was entered
                     //    Note the number box always returns the value as a 'decimal' type. So we have to cast to Int32
                     FsTransponderCode txHelper = new FsTransponderCode((int)value);
                     // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
                     Aircraft.Transponder.Value = txHelper.ToBCD();
                     transponder = value;
-                }
-                else
-                {
-                    throw new ArgumentException("Transponder values mush be greater than 0");
-                }
             }
         }
         private decimal adf1Freq;
@@ -488,8 +432,6 @@ namespace tfm
             }
             set
             {
-                if (value > 0)
-                {
                     // 1. Create a new instance of the ADF helper class using the decimal value entered
                     FsFrequencyADF adf1Helper = new FsFrequencyADF(value);
                     // 2. Now use the helper class to get the two BCD values required by FSUIPC (main and extended)
@@ -497,11 +439,6 @@ namespace tfm
                     Aircraft.adf1Main.Value = adf1Helper.ToBCDMain();
                     Aircraft.adf1Extended.Value = adf1Helper.ToBCDExtended();
                     adf1Freq = value;
-                }
-                else
-                {
-                    throw new ArgumentException("aDF frequency must be greater than 0");
-                }
             }
         }
         private double altimeterQNH;
@@ -553,18 +490,11 @@ namespace tfm
             }
             set
             {
-                if (value > 0)
-                {
                     // 1. Create a new instance of the COM helper class using the decimal value entered
                     FsFrequencyNAV nav1Helper = new FsFrequencyNAV(value);
                     // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
                     Aircraft.Nav1Freq.Value = nav1Helper.ToBCD();
                     nav1Freq = value;
-                }
-                else
-                {
-                    throw new ArgumentException("nav 1 frequency must be greater than 0");
-                }
             }
         }
         private decimal nav2Freq;
@@ -580,18 +510,11 @@ namespace tfm
             }
             set
             {
-                if (value > 0)
-                {
                     // 1. Create a new instance of the NAV helper class using the decimal value entered
                     FsFrequencyNAV nav2Helper = new FsFrequencyNAV(value);
                     // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
                     Aircraft.Nav2Freq.Value = nav2Helper.ToBCD();
                     nav2Freq = value;
-                }
-                else
-                {
-                    throw new ArgumentException("nav 2 frequency must be greater than 0");
-                }
             }
         }
 

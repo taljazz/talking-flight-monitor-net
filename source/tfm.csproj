@@ -236,6 +236,12 @@
       <DependentUpon>frmOutputHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="OutputHistory\OutputHistory.cs" />
+    <Compile Include="Settings panels\ctlUserInterface.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings panels\ctlUserInterface.Designer.cs">
+      <DependentUpon>ctlUserInterface.cs</DependentUpon>
+    </Compile>
     <Compile Include="sounds\AudioPlaybackEngine.cs" />
     <Compile Include="AutoDisposeFileReader.cs" />
     <Compile Include="Autopilot\InstrumentPanel.cs" />
@@ -396,6 +402,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\ctlTiming.resx">
       <DependentUpon>ctlTiming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings panels\ctlUserInterface.resx">
+      <DependentUpon>ctlUserInterface.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\frmSettings.resx">
       <DependentUpon>frmSettings.cs</DependentUpon>

@@ -71,5 +71,8 @@
     <Setting Name="OutputHistoryLength" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">50</Value>
     </Setting>
+    <Setting Name="sendToTray" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

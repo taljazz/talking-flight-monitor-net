@@ -879,5 +879,26 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
 
             }
         }
+
+        private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+                        this.WindowState = FormWindowState.Normal;            
+            this.Show();
+            this.Focus();
+            trayIcon.Visible = false;
+                    }
+
+        private void TFMMainForm_Resize(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.sendToTray)
+            {
+                if (this.WindowState == FormWindowState.Minimized)
+                {
+                    trayIcon.Visible = true;
+                                        trayIcon.ShowBalloonTip(500);
+                    this.Hide();
+                }
+            }
+        }
     }//End TFMMainForm class.
 } //End TFM namespace.

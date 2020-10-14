@@ -298,5 +298,17 @@ namespace tfm.Properties {
                 this["OutputHistoryLength"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool sendToTray {
+            get {
+                return ((bool)(this["sendToTray"]));
+            }
+            set {
+                this["sendToTray"] = value;
+            }
+        }
     }
 }

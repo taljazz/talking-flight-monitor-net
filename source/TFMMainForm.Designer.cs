@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Sid waypoints", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup("In route waypoints", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup6 = new System.Windows.Forms.ListViewGroup("Star waypoints", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Sid waypoints", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("In route waypoints", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Star waypoints", System.Windows.Forms.HorizontalAlignment.Left);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TFMMainForm));
             this.timerMain = new System.Windows.Forms.Timer(this.components);
             this.timerConnection = new System.Windows.Forms.Timer(this.components);
             this.TFMMainMenu = new System.Windows.Forms.MenuStrip();
@@ -49,6 +50,7 @@
             this.KeyManagerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CommandKeyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ConnectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FuelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ReportIssueMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,7 +88,7 @@
             this.FindTabPage = new System.Windows.Forms.TabPage();
             this.dbLoadWorker = new System.ComponentModel.BackgroundWorker();
             this.timerLowPriority = new System.Windows.Forms.Timer(this.components);
-            this.FuelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.TFMMainMenu.SuspendLayout();
             this.TFMTabControl.SuspendLayout();
             this.AvionicsTabPage.SuspendLayout();
@@ -116,7 +118,7 @@
             this.HelpMenu});
             this.TFMMainMenu.Location = new System.Drawing.Point(0, 0);
             this.TFMMainMenu.Name = "TFMMainMenu";
-            this.TFMMainMenu.Size = new System.Drawing.Size(484, 33);
+            this.TFMMainMenu.Size = new System.Drawing.Size(484, 40);
             this.TFMMainMenu.TabIndex = 0;
             this.TFMMainMenu.Text = "Main menu";
             // 
@@ -134,7 +136,7 @@
             this.PlanMenu.Name = "PlanMenu";
             this.PlanMenu.ShortcutKeyDisplayString = "ALT+P";
             this.PlanMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.P)));
-            this.PlanMenu.Size = new System.Drawing.Size(61, 29);
+            this.PlanMenu.Size = new System.Drawing.Size(74, 36);
             this.PlanMenu.Text = "&Plan";
             this.PlanMenu.ToolTipText = "Load and save flight plans.";
             // 
@@ -146,13 +148,13 @@
             this.OpenPlanMenuItem.Name = "OpenPlanMenuItem";
             this.OpenPlanMenuItem.ShortcutKeyDisplayString = "CONTROL+O";
             this.OpenPlanMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.OpenPlanMenuItem.Size = new System.Drawing.Size(296, 26);
+            this.OpenPlanMenuItem.Size = new System.Drawing.Size(365, 32);
             this.OpenPlanMenuItem.Text = "&Open...";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(293, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(362, 6);
             // 
             // SavePlanMenuItem
             // 
@@ -162,7 +164,7 @@
             this.SavePlanMenuItem.Name = "SavePlanMenuItem";
             this.SavePlanMenuItem.ShortcutKeyDisplayString = "CONTROL+S";
             this.SavePlanMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.SavePlanMenuItem.Size = new System.Drawing.Size(296, 26);
+            this.SavePlanMenuItem.Size = new System.Drawing.Size(365, 32);
             this.SavePlanMenuItem.Text = "&Save...";
             // 
             // SavePlanAsMenuItem
@@ -174,13 +176,13 @@
             this.SavePlanAsMenuItem.ShortcutKeyDisplayString = "CONTROL+SHIFT+S";
             this.SavePlanAsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
-            this.SavePlanAsMenuItem.Size = new System.Drawing.Size(296, 26);
+            this.SavePlanAsMenuItem.Size = new System.Drawing.Size(365, 32);
             this.SavePlanAsMenuItem.Text = "&Save as...";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(293, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(362, 6);
             // 
             // QuitMenuItem
             // 
@@ -190,7 +192,7 @@
             this.QuitMenuItem.Name = "QuitMenuItem";
             this.QuitMenuItem.ShortcutKeyDisplayString = "ALT+F4";
             this.QuitMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.QuitMenuItem.Size = new System.Drawing.Size(296, 26);
+            this.QuitMenuItem.Size = new System.Drawing.Size(365, 32);
             this.QuitMenuItem.Text = "&Quit";
             this.QuitMenuItem.Click += new System.EventHandler(this.QuitMenuItem_Click);
             // 
@@ -209,7 +211,7 @@
             this.ToolsMenu.Name = "ToolsMenu";
             this.ToolsMenu.ShortcutKeyDisplayString = "ALT+T";
             this.ToolsMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.T)));
-            this.ToolsMenu.Size = new System.Drawing.Size(67, 29);
+            this.ToolsMenu.Size = new System.Drawing.Size(84, 36);
             this.ToolsMenu.Text = "&Tools";
             this.ToolsMenu.Click += new System.EventHandler(this.ToolsMenu_Click);
             // 
@@ -221,7 +223,7 @@
             this.A2AManagerMenuItem.Name = "A2AManagerMenuItem";
             this.A2AManagerMenuItem.ShortcutKeyDisplayString = "CONTROL+M";
             this.A2AManagerMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.A2AManagerMenuItem.Size = new System.Drawing.Size(450, 30);
+            this.A2AManagerMenuItem.Size = new System.Drawing.Size(568, 36);
             this.A2AManagerMenuItem.Text = "A2A aircraft &manager";
             // 
             // AircraftMenuItem
@@ -232,7 +234,7 @@
             this.AircraftMenuItem.Name = "AircraftMenuItem";
             this.AircraftMenuItem.ShortcutKeyDisplayString = "CONTROL+I";
             this.AircraftMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.AircraftMenuItem.Size = new System.Drawing.Size(450, 30);
+            this.AircraftMenuItem.Size = new System.Drawing.Size(568, 36);
             this.AircraftMenuItem.Text = "A&ircraft...";
             // 
             // SettingsMenuItem
@@ -243,7 +245,7 @@
             this.SettingsMenuItem.Name = "SettingsMenuItem";
             this.SettingsMenuItem.ShortcutKeyDisplayString = "CONTROL+,";
             this.SettingsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemcomma)));
-            this.SettingsMenuItem.Size = new System.Drawing.Size(450, 30);
+            this.SettingsMenuItem.Size = new System.Drawing.Size(568, 36);
             this.SettingsMenuItem.Text = "&Settings...";
             this.SettingsMenuItem.Click += new System.EventHandler(this.SettingsMenuItem_Click);
             // 
@@ -251,7 +253,7 @@
             // 
             this.KeyManagerMenuItem.Name = "KeyManagerMenuItem";
             this.KeyManagerMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
-            this.KeyManagerMenuItem.Size = new System.Drawing.Size(450, 30);
+            this.KeyManagerMenuItem.Size = new System.Drawing.Size(568, 36);
             this.KeyManagerMenuItem.Text = "&Keyboard Manager";
             this.KeyManagerMenuItem.Click += new System.EventHandler(this.KeyManagerMenuItem_Click);
             // 
@@ -261,7 +263,7 @@
             this.CommandKeyMenuItem.Name = "CommandKeyMenuItem";
             this.CommandKeyMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.C)));
-            this.CommandKeyMenuItem.Size = new System.Drawing.Size(450, 30);
+            this.CommandKeyMenuItem.Size = new System.Drawing.Size(568, 36);
             this.CommandKeyMenuItem.Text = "Enable/Disable command key";
             this.CommandKeyMenuItem.Click += new System.EventHandler(this.CommandKeyMenuItem_Click);
             // 
@@ -272,9 +274,17 @@
             this.ConnectMenuItem.ShortcutKeyDisplayString = "CTRL+SHIFT+R";
             this.ConnectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.R)));
-            this.ConnectMenuItem.Size = new System.Drawing.Size(450, 30);
+            this.ConnectMenuItem.Size = new System.Drawing.Size(568, 36);
             this.ConnectMenuItem.Text = "&Connect to simulator";
             this.ConnectMenuItem.Click += new System.EventHandler(this.ConnectMenuItem_Click);
+            // 
+            // FuelMenuItem
+            // 
+            this.FuelMenuItem.Name = "FuelMenuItem";
+            this.FuelMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.FuelMenuItem.Size = new System.Drawing.Size(568, 36);
+            this.FuelMenuItem.Text = "&Fuel Manager";
+            this.FuelMenuItem.Click += new System.EventHandler(this.FuelMenuItem_Click);
             // 
             // HelpMenu
             // 
@@ -288,7 +298,7 @@
             this.HelpMenu.Name = "HelpMenu";
             this.HelpMenu.ShortcutKeyDisplayString = "ALT+H";
             this.HelpMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.H)));
-            this.HelpMenu.Size = new System.Drawing.Size(63, 29);
+            this.HelpMenu.Size = new System.Drawing.Size(79, 36);
             this.HelpMenu.Text = "Help";
             // 
             // WebsiteMenuItem
@@ -300,7 +310,7 @@
             this.WebsiteMenuItem.ShortcutKeyDisplayString = "CONTROL+SHIFT+W";
             this.WebsiteMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.W)));
-            this.WebsiteMenuItem.Size = new System.Drawing.Size(337, 30);
+            this.WebsiteMenuItem.Size = new System.Drawing.Size(415, 36);
             this.WebsiteMenuItem.Text = "Visit &website";
             this.WebsiteMenuItem.Click += new System.EventHandler(this.WebsiteMenuItem_Click);
             // 
@@ -313,7 +323,7 @@
             this.ReportIssueMenuItem.ShortcutKeyDisplayString = "CONTROL+SHIFT+I";
             this.ReportIssueMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.I)));
-            this.ReportIssueMenuItem.Size = new System.Drawing.Size(337, 30);
+            this.ReportIssueMenuItem.Size = new System.Drawing.Size(415, 36);
             this.ReportIssueMenuItem.Text = "Report an &issue";
             this.ReportIssueMenuItem.Click += new System.EventHandler(this.ReportIssueMenuItem_Click);
             // 
@@ -323,7 +333,7 @@
             this.AboutMenuItem.AccessibleName = "About...";
             this.AboutMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AboutMenuItem.Name = "AboutMenuItem";
-            this.AboutMenuItem.Size = new System.Drawing.Size(337, 30);
+            this.AboutMenuItem.Size = new System.Drawing.Size(415, 36);
             this.AboutMenuItem.Text = "&About...";
             this.AboutMenuItem.Click += new System.EventHandler(this.AboutMenuItem_Click);
             // 
@@ -331,7 +341,7 @@
             // 
             this.hotkeyHelpMenuItem.Name = "hotkeyHelpMenuItem";
             this.hotkeyHelpMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F1)));
-            this.hotkeyHelpMenuItem.Size = new System.Drawing.Size(337, 30);
+            this.hotkeyHelpMenuItem.Size = new System.Drawing.Size(415, 36);
             this.hotkeyHelpMenuItem.Text = "Hotkey help";
             this.hotkeyHelpMenuItem.Click += new System.EventHandler(this.hotkeyHelpMenuItem_Click);
             // 
@@ -344,10 +354,10 @@
             this.TFMTabControl.Controls.Add(this.ProceduresTabPage);
             this.TFMTabControl.Controls.Add(this.FindTabPage);
             this.TFMTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TFMTabControl.Location = new System.Drawing.Point(0, 33);
+            this.TFMTabControl.Location = new System.Drawing.Point(0, 40);
             this.TFMTabControl.Name = "TFMTabControl";
             this.TFMTabControl.SelectedIndex = 0;
-            this.TFMTabControl.Size = new System.Drawing.Size(484, 228);
+            this.TFMTabControl.Size = new System.Drawing.Size(484, 221);
             this.TFMTabControl.TabIndex = 1;
             // 
             // AvionicsTabPage
@@ -358,10 +368,10 @@
             this.AvionicsTabPage.Controls.Add(this.LockGageCheckBox);
             this.AvionicsTabPage.Controls.Add(this.GageValueTextBox);
             this.AvionicsTabPage.Controls.Add(this.GageComboBox);
-            this.AvionicsTabPage.Location = new System.Drawing.Point(4, 30);
+            this.AvionicsTabPage.Location = new System.Drawing.Point(4, 36);
             this.AvionicsTabPage.Name = "AvionicsTabPage";
             this.AvionicsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.AvionicsTabPage.Size = new System.Drawing.Size(476, 194);
+            this.AvionicsTabPage.Size = new System.Drawing.Size(476, 181);
             this.AvionicsTabPage.TabIndex = 0;
             this.AvionicsTabPage.Text = "Avionics";
             this.AvionicsTabPage.UseVisualStyleBackColor = true;
@@ -384,7 +394,7 @@
             this.AutopilotCheckBox.AutoSize = true;
             this.AutopilotCheckBox.Location = new System.Drawing.Point(381, 163);
             this.AutopilotCheckBox.Name = "AutopilotCheckBox";
-            this.AutopilotCheckBox.Size = new System.Drawing.Size(90, 31);
+            this.AutopilotCheckBox.Size = new System.Drawing.Size(113, 37);
             this.AutopilotCheckBox.TabIndex = 4;
             this.AutopilotCheckBox.Text = "Autopilot";
             this.AutopilotCheckBox.UseVisualStyleBackColor = true;
@@ -398,7 +408,7 @@
             this.LockGageCheckBox.AutoSize = true;
             this.LockGageCheckBox.Location = new System.Drawing.Point(381, 86);
             this.LockGageCheckBox.Name = "LockGageCheckBox";
-            this.LockGageCheckBox.Size = new System.Drawing.Size(59, 31);
+            this.LockGageCheckBox.Size = new System.Drawing.Size(72, 37);
             this.LockGageCheckBox.TabIndex = 2;
             this.LockGageCheckBox.Text = "Lock";
             this.LockGageCheckBox.UseVisualStyleBackColor = true;
@@ -409,7 +419,7 @@
             this.GageValueTextBox.AcceptsReturn = true;
             this.GageValueTextBox.Location = new System.Drawing.Point(249, 83);
             this.GageValueTextBox.Name = "GageValueTextBox";
-            this.GageValueTextBox.Size = new System.Drawing.Size(100, 29);
+            this.GageValueTextBox.Size = new System.Drawing.Size(100, 35);
             this.GageValueTextBox.TabIndex = 1;
             this.GageValueTextBox.WordWrap = false;
             this.GageValueTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GageValueTextBox_KeyDown);
@@ -435,7 +445,7 @@
             "ADF"});
             this.GageComboBox.Location = new System.Drawing.Point(10, 82);
             this.GageComboBox.Name = "GageComboBox";
-            this.GageComboBox.Size = new System.Drawing.Size(121, 29);
+            this.GageComboBox.Size = new System.Drawing.Size(121, 35);
             this.GageComboBox.TabIndex = 0;
             this.GageComboBox.SelectedIndexChanged += new System.EventHandler(this.GageComboBox_SelectedIndexChanged);
             // 
@@ -443,9 +453,9 @@
             // 
             this.AvionicsExplorationTabPage.AccessibleName = "Avionics (exploration)";
             this.AvionicsExplorationTabPage.Controls.Add(this.AutopilotPropertyGrid);
-            this.AvionicsExplorationTabPage.Location = new System.Drawing.Point(4, 30);
+            this.AvionicsExplorationTabPage.Location = new System.Drawing.Point(4, 36);
             this.AvionicsExplorationTabPage.Name = "AvionicsExplorationTabPage";
-            this.AvionicsExplorationTabPage.Size = new System.Drawing.Size(476, 187);
+            this.AvionicsExplorationTabPage.Size = new System.Drawing.Size(476, 181);
             this.AvionicsExplorationTabPage.TabIndex = 4;
             this.AvionicsExplorationTabPage.Text = "Autopilot instrument panel";
             this.AvionicsExplorationTabPage.UseVisualStyleBackColor = true;
@@ -458,7 +468,7 @@
             this.AutopilotPropertyGrid.LineColor = System.Drawing.SystemColors.ControlDarkDark;
             this.AutopilotPropertyGrid.Location = new System.Drawing.Point(0, 0);
             this.AutopilotPropertyGrid.Name = "AutopilotPropertyGrid";
-            this.AutopilotPropertyGrid.Size = new System.Drawing.Size(130, 187);
+            this.AutopilotPropertyGrid.Size = new System.Drawing.Size(130, 181);
             this.AutopilotPropertyGrid.TabIndex = 2;
             // 
             // FlightPlanTabPage
@@ -467,10 +477,10 @@
             this.FlightPlanTabPage.Controls.Add(this.waypointRestrictionsTextBox);
             this.FlightPlanTabPage.Controls.Add(this.FlyModeComboBox);
             this.FlightPlanTabPage.Controls.Add(this.waypointsListView);
-            this.FlightPlanTabPage.Location = new System.Drawing.Point(4, 30);
+            this.FlightPlanTabPage.Location = new System.Drawing.Point(4, 36);
             this.FlightPlanTabPage.Name = "FlightPlanTabPage";
             this.FlightPlanTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.FlightPlanTabPage.Size = new System.Drawing.Size(476, 187);
+            this.FlightPlanTabPage.Size = new System.Drawing.Size(476, 181);
             this.FlightPlanTabPage.TabIndex = 1;
             this.FlightPlanTabPage.Text = "Flight plan";
             this.FlightPlanTabPage.UseVisualStyleBackColor = true;
@@ -496,7 +506,7 @@
             "Approach"});
             this.FlyModeComboBox.Location = new System.Drawing.Point(375, 150);
             this.FlyModeComboBox.Name = "FlyModeComboBox";
-            this.FlyModeComboBox.Size = new System.Drawing.Size(100, 29);
+            this.FlyModeComboBox.Size = new System.Drawing.Size(100, 35);
             this.FlyModeComboBox.TabIndex = 4;
             // 
             // waypointsListView
@@ -512,16 +522,16 @@
             this.fuelColumnHeader,
             this.frequencyColumnHeader});
             this.waypointsListView.ContextMenuStrip = this.waypointsContextMenu;
-            listViewGroup4.Header = "Sid waypoints";
-            listViewGroup4.Name = "sidWaypointsListViewGroup";
-            listViewGroup5.Header = "In route waypoints";
-            listViewGroup5.Name = "inRouteWaypointsListViewGroup";
-            listViewGroup6.Header = "Star waypoints";
-            listViewGroup6.Name = "starWaypointsListViewGroup";
+            listViewGroup1.Header = "Sid waypoints";
+            listViewGroup1.Name = "sidWaypointsListViewGroup";
+            listViewGroup2.Header = "In route waypoints";
+            listViewGroup2.Name = "inRouteWaypointsListViewGroup";
+            listViewGroup3.Header = "Star waypoints";
+            listViewGroup3.Name = "starWaypointsListViewGroup";
             this.waypointsListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup4,
-            listViewGroup5,
-            listViewGroup6});
+            listViewGroup1,
+            listViewGroup2,
+            listViewGroup3});
             this.waypointsListView.HideSelection = false;
             this.waypointsListView.Location = new System.Drawing.Point(6, 6);
             this.waypointsListView.Name = "waypointsListView";
@@ -572,62 +582,62 @@
             this.changeSpeedContextMenuItem,
             this.changeVerticalSpeedContextMenuItem});
             this.waypointsContextMenu.Name = "waypointsContextMenu";
-            this.waypointsContextMenu.Size = new System.Drawing.Size(244, 186);
+            this.waypointsContextMenu.Size = new System.Drawing.Size(297, 228);
             // 
             // addWaypointContextMenuItem
             // 
             this.addWaypointContextMenuItem.AccessibleName = "Add waypoint";
             this.addWaypointContextMenuItem.Name = "addWaypointContextMenuItem";
-            this.addWaypointContextMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.addWaypointContextMenuItem.Size = new System.Drawing.Size(296, 32);
             this.addWaypointContextMenuItem.Text = "&Add waypoint";
             // 
             // removeWaypointContextMenu
             // 
             this.removeWaypointContextMenu.Name = "removeWaypointContextMenu";
-            this.removeWaypointContextMenu.Size = new System.Drawing.Size(243, 26);
+            this.removeWaypointContextMenu.Size = new System.Drawing.Size(296, 32);
             this.removeWaypointContextMenu.Text = "&Remove waypoint";
             // 
             // directToHereContextMenuItem
             // 
             this.directToHereContextMenuItem.AccessibleName = "Direct to here";
             this.directToHereContextMenuItem.Name = "directToHereContextMenuItem";
-            this.directToHereContextMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.directToHereContextMenuItem.Size = new System.Drawing.Size(296, 32);
             this.directToHereContextMenuItem.Text = "&Direct to here";
             // 
             // holdContextMenuItem
             // 
             this.holdContextMenuItem.AccessibleName = "Hold";
             this.holdContextMenuItem.Name = "holdContextMenuItem";
-            this.holdContextMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.holdContextMenuItem.Size = new System.Drawing.Size(296, 32);
             this.holdContextMenuItem.Text = "&hold";
             // 
             // changeAltitudeContextMenuItem
             // 
             this.changeAltitudeContextMenuItem.AccessibleName = "Change altitude";
             this.changeAltitudeContextMenuItem.Name = "changeAltitudeContextMenuItem";
-            this.changeAltitudeContextMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.changeAltitudeContextMenuItem.Size = new System.Drawing.Size(296, 32);
             this.changeAltitudeContextMenuItem.Text = "Change &altitude";
             // 
             // changeSpeedContextMenuItem
             // 
             this.changeSpeedContextMenuItem.AccessibleName = "Change speed";
             this.changeSpeedContextMenuItem.Name = "changeSpeedContextMenuItem";
-            this.changeSpeedContextMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.changeSpeedContextMenuItem.Size = new System.Drawing.Size(296, 32);
             this.changeSpeedContextMenuItem.Text = "Change &speed";
             // 
             // changeVerticalSpeedContextMenuItem
             // 
             this.changeVerticalSpeedContextMenuItem.AccessibleName = "Change vertical speed";
             this.changeVerticalSpeedContextMenuItem.Name = "changeVerticalSpeedContextMenuItem";
-            this.changeVerticalSpeedContextMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.changeVerticalSpeedContextMenuItem.Size = new System.Drawing.Size(296, 32);
             this.changeVerticalSpeedContextMenuItem.Text = "Change &vertical speed";
             // 
             // ProceduresTabPage
             // 
             this.ProceduresTabPage.AccessibleName = "Procedures";
-            this.ProceduresTabPage.Location = new System.Drawing.Point(4, 30);
+            this.ProceduresTabPage.Location = new System.Drawing.Point(4, 36);
             this.ProceduresTabPage.Name = "ProceduresTabPage";
-            this.ProceduresTabPage.Size = new System.Drawing.Size(476, 187);
+            this.ProceduresTabPage.Size = new System.Drawing.Size(476, 181);
             this.ProceduresTabPage.TabIndex = 2;
             this.ProceduresTabPage.Text = "Procedures";
             this.ProceduresTabPage.UseVisualStyleBackColor = true;
@@ -635,9 +645,9 @@
             // FindTabPage
             // 
             this.FindTabPage.AccessibleName = "Find";
-            this.FindTabPage.Location = new System.Drawing.Point(4, 30);
+            this.FindTabPage.Location = new System.Drawing.Point(4, 36);
             this.FindTabPage.Name = "FindTabPage";
-            this.FindTabPage.Size = new System.Drawing.Size(476, 187);
+            this.FindTabPage.Size = new System.Drawing.Size(476, 181);
             this.FindTabPage.TabIndex = 3;
             this.FindTabPage.Text = "Find";
             this.FindTabPage.UseVisualStyleBackColor = true;
@@ -651,19 +661,20 @@
             this.timerLowPriority.Interval = 1000;
             this.timerLowPriority.Tick += new System.EventHandler(this.timerLowPriority_Tick);
             // 
-            // FuelMenuItem
+            // trayIcon
             // 
-            this.FuelMenuItem.Name = "FuelMenuItem";
-            this.FuelMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.FuelMenuItem.Size = new System.Drawing.Size(450, 30);
-            this.FuelMenuItem.Text = "&Fuel Manager";
-            this.FuelMenuItem.Click += new System.EventHandler(this.FuelMenuItem_Click);
+            this.trayIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.trayIcon.BalloonTipText = "TFM is minimized to the system tray.";
+            this.trayIcon.BalloonTipTitle = "TFM notification";
+            this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
+            this.trayIcon.Text = "TFM";
+            this.trayIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseDoubleClick);
             // 
             // TFMMainForm
             // 
             this.AccessibleDescription = "";
             this.AccessibleName = "Talking flight moniter";
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -682,6 +693,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.TFMMainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TFMMainForm_KeyDown);
+            this.Resize += new System.EventHandler(this.TFMMainForm_Resize);
             this.TFMMainMenu.ResumeLayout(false);
             this.TFMMainMenu.PerformLayout();
             this.TFMTabControl.ResumeLayout(false);
@@ -752,6 +764,7 @@
         private System.Windows.Forms.ToolStripMenuItem changeSpeedContextMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changeVerticalSpeedContextMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FuelMenuItem;
+        private System.Windows.Forms.NotifyIcon trayIcon;
     }
 }
 

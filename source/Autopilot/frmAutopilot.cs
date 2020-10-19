@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DavyKager;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -74,66 +75,109 @@ namespace tfm
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-
-            try
+            switch (this.instrument)
             {
-                switch (this.instrument)
-                {
-                    case "Altitude":
-                        if (double.TryParse(txtSetting.Text, out double altitude))
-                        {
-                            ap.ApAltitude = altitude;
-                        }
+                case "Altitude":
+                    if (double.TryParse(txtSetting.Text, out double altitude))
+                    {
+                        ap.ApAltitude = altitude;
                         ap.ApAltitudeLock = chkLock.Checked;
-                        break;
+                        this.DialogResult = DialogResult.OK;
+                    }
+                    else
+                    {
+                        Tolk.Output("invalid altitude");
+                        txtSetting.Text = string.Empty;
+                        txtSetting.Focus();
+                    }
+                    
+                    break;
 
-                    case "Heading":
-                        if (double.TryParse(txtSetting.Text, out double heading))
-                        {
-                            ap.ApHeading = heading;
-                        }
+                case "Heading":
+                    if (double.TryParse(txtSetting.Text, out double heading) && heading >= 0 && heading <= 360)
+                    {
+                        ap.ApHeading = heading;
                         ap.ApHeadingLock = chkLock.Checked;
-                        break;
+                        this.DialogResult = DialogResult.OK;
+                    }
+                    else
+                    {
+                        Tolk.Output("invalid heading");
+                        txtSetting.Text = string.Empty;
+                        txtSetting.Focus();
+                    }
 
-                    case "Airspeed":
-                        if (double.TryParse(txtSetting.Text, out double airspeed))
-                        {
-                            ap.ApAirspeed = airspeed;
-                        }
+
+                    
+                    break;
+
+                case "Airspeed":
+                    if (double.TryParse(txtSetting.Text, out double airspeed))
+                    {
+                        ap.ApAirspeed = airspeed;
                         ap.ApAirspeedHold = chkLock.Checked;
-                        break;
+                        this.DialogResult = DialogResult.OK;
+                    }
+                    else
+                    {
+                        Tolk.Output("invalid airspeed");
+                        txtSetting.Text = string.Empty;
+                        txtSetting.Focus();
+                    }
 
-                    case "Mach":
-                        if (double.TryParse(txtSetting.Text, out double mach))
-                        {
-                            ap.ApMachSpeed = mach;
-                        }
+                    break;
+
+                case "Mach":
+                    if (double.TryParse(txtSetting.Text, out double mach))
+                    {
+                        ap.ApMachSpeed = mach;
                         ap.ApMachHold = chkLock.Checked;
-                        break;
+                        this.DialogResult = DialogResult.OK;
+                    }
+                    else
+                    {
+                        Tolk.Output("invalid mach speed");
+                        txtSetting.Text = string.Empty;
+                        txtSetting.Focus();
+                    }
 
-                    case "Vertical speed":
-                        if (double.TryParse(txtSetting.Text, out double verticalSpeed))
-                        {
-                            ap.ApVerticalSpeed = verticalSpeed;
-                        }
+                    break;
+
+                case "Vertical speed":
+                    if (double.TryParse(txtSetting.Text, out double verticalSpeed))
+                    {
+                        ap.ApVerticalSpeed = verticalSpeed;
                         ap.ApVerticalSpeedHold = chkLock.Checked;
-                        break;
-                    case "Transponder":
-                        if (int.TryParse(txtSetting.Text, out int transponder))
-                        {
-                            ap.Transponder = transponder;
-                        }
-                        break;
+                        this.DialogResult = DialogResult.OK;
+                    }
+                    else
+                    {
+                        Tolk.Output("invalid vertical speed");
+                        txtSetting.Text = string.Empty;
+                        txtSetting.Focus();
+                    }
 
+                    break;
+                case "Transponder":
+                    if (int.TryParse(txtSetting.Text, out int transponder))
+                    {
+                        ap.Transponder = transponder;
+                        this.DialogResult = DialogResult.OK;
+                    }
+                    else
+                    {
+                        Tolk.Output("invalid transponder setting");
+                        txtSetting.Text = string.Empty;
+                        txtSetting.Focus();
+                    }
 
-                }
+                    break;
+
 
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "error", MessageBoxButtons.OK);
+
 
                 
-            }        }
+    }
     }
 }

@@ -1,7 +1,7 @@
 # Talking Flight Monitor (TFM)
 An accessibility layer for Microsoft FSX and Lockhede Martin Prepar3d.
 ## downloading
-* The latest snapshot build of tfm can be found on the [TFM snapshots page](http://www.bvipilots.net/tfm-snapshots)
+* The latest snapshot build of tfm can be found on the [TFM snapshots page](http://www.talkingflightmonitor.net/snapshots)
 
 ## features
 * reads closest city to the aircraft based on simulator GPS position

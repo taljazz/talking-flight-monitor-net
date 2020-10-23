@@ -25,10 +25,10 @@ deploy:
 - provider: FTP
   host: vps.fayre.me
   protocol: sftp
-  username: bvipilots
+  username: talkingflightmonitor
   password:
     secure: gsDOGtodux/gAPPDTybI5w==
-  folder: /public_html/tfm-snapshots
+  folder: /public_html/snapshots
 notifications:
 - provider: Email
   to:

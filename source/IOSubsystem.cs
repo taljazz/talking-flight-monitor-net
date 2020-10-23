@@ -500,6 +500,8 @@ namespace tfm
 
         private void DetectFuelTanks()
         {
+            // clear fuel tank data
+            ActiveTanks.Clear();
             // grab fuel tank data from the sim
             FSUIPCConnection.PayloadServices.RefreshData();
             // Assign the fuel tanks to our class level variable for easier access
@@ -695,6 +697,7 @@ namespace tfm
             // read when aircraft lights change
             if (Aircraft.Lights.ValueChanged)
             {
+                string state = null;
                 // loop through each bit and announce which values have changed.
                 FsBitArray lightBits = Aircraft.Lights.Value;
                 for (int i = 0; i < lightBits.Changed.Length; i++)
@@ -702,7 +705,15 @@ namespace tfm
                     if (lightBits.Changed[i])
                     {
                         string name = Enum.GetName(typeof(Aircraft.light), i);
-                        string state = (Aircraft.Lights.Value[i]) ? "off" : "on";
+                        // string state = (Aircraft.Lights.Value[i]) ? "off" : "on";
+                        if (Aircraft.Lights.Value[i] == true)
+                        {
+                            state = "on";
+                        }
+                        else
+                        {
+                            state = "off";
+                        }
                         fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {state}. ");
                     }
                 }

@@ -23,6 +23,8 @@ after_build:
     appveyor PushArtifact ..\..\tfm-pre%APPVEYOR_BUILD_VERSION%.zip
 deploy:
 - provider: FTP
+  on:
+    APPVEYOR_REPO_TAG: true
   host: vps.fayre.me
   protocol: sftp
   username: talkingflightmonitor

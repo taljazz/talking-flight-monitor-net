@@ -4,10 +4,10 @@ branches:
   - master
 nuget:
   project_feed: true
-assembly_info:
-  patch: true
-  file: source\Properties\AssemblyInfo.cs
-  assembly_version: '{version}'
+
+environment:
+  encFileKey:
+    secure: IS92sMB8DjOsUUuLZRWCEHtM3s4a0TWtWojhyOXsxqk=
 
 before_build:
 - cmd: nuget restore source\tfm.sln

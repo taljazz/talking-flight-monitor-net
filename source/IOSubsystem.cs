@@ -83,7 +83,7 @@ namespace tfm
         private static System.Timers.Timer flightFollowingTimer;
         private static System.Timers.Timer ilsTimer = new System.Timers.Timer(TimeSpan.FromSeconds(double.Parse(Properties.Settings.Default.ILSAnnouncementTimeInterval)).TotalMilliseconds);
         private static System.Timers.Timer waypointTransitionTimer = new System.Timers.Timer(5000);
-        private static System.Timers.Timer takeOffAssistantTimer = new System.Timers.Timer(200);
+        private static System.Timers.Timer takeOffAssistantTimer = new System.Timers.Timer(1000);
         private double HdgRight;
         private double HdgLeft;
 
@@ -2568,16 +2568,6 @@ namespace tfm
                 takeOffAssistantTimer.Enabled = true;
                 takeOffAssistantTimer.Start();
 
-                while(true)
-                {
-if(!takeOffAssistantActive)
-                    {
-                        takeOffAssistantTimer.AutoReset = false;
-                        takeOffAssistantTimer.Stop();
-                        break;
-                    }                    
-                                    } // Stop the timer.
-                fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "Takeoff assistant off.");
             } // End takeoff mode is full.
 
         }
@@ -2596,6 +2586,10 @@ if(!takeOffAssistantActive)
                     Autopilot.ApAirspeedHold = true;
                     Autopilot.ApHeadingLock = true;
                     takeOffAssistantActive = false;
+                    takeOffAssistantTimer.Enabled = false;
+                    takeOffAssistantTimer.AutoReset = false;
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "takeoff assistance off.");
+
                                                                                                 } // End initial takeoff sequence.
                             } // End takeOffAssistTimerTick.
     } // End IoSubSystem class.

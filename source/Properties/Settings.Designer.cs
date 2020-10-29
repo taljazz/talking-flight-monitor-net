@@ -310,5 +310,17 @@ namespace tfm.Properties {
                 this["sendToTray"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("full")]
+        public string takeOffAssistMode {
+            get {
+                return ((string)(this["takeOffAssistMode"]));
+            }
+            set {
+                this["takeOffAssistMode"] = value;
+            }
+        }
     }
 }

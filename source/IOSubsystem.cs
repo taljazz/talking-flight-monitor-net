@@ -30,6 +30,8 @@ using System.ServiceModel.Security;
 using System.Drawing.Text;
 using System.Windows.Forms.VisualStyles;
 using tfm.Properties;
+using System.CodeDom;
+using System.Speech.Synthesis;
 
 namespace tfm
 {
@@ -81,6 +83,7 @@ namespace tfm
         private static System.Timers.Timer flightFollowingTimer;
         private static System.Timers.Timer ilsTimer = new System.Timers.Timer(TimeSpan.FromSeconds(double.Parse(Properties.Settings.Default.ILSAnnouncementTimeInterval)).TotalMilliseconds);
         private static System.Timers.Timer waypointTransitionTimer = new System.Timers.Timer(5000);
+        private static System.Timers.Timer takeOffAssistantTimer = new System.Timers.Timer(200);
         private double HdgRight;
         private double HdgLeft;
 
@@ -131,6 +134,7 @@ namespace tfm
         private bool calloutsEnabled;
         private bool ILSEnabled;
         private bool groundSpeedActive;
+        private bool takeOffAssistantActive = false;
         private bool onGround;
         private bool TrimEnabled = true;
         private bool FlapsMoving;
@@ -202,7 +206,7 @@ namespace tfm
                 Aircraft.Engine4ThrottleLever.Value = (short)value;
             }
         }
-        
+
         public double oldBank { get; private set; }
 
         public double CurrentHeading;
@@ -756,13 +760,13 @@ namespace tfm
                 }
                 if (Aircraft.Nav1Signal.Value == 256 && localiserDetected == false && Aircraft.Nav1Flags.Value[7])
                 {
-                    
+
                     double hdgTrue = (double)Aircraft.Heading.Value * 360d / (65536d * 65536d);
                     double magvar = (double)Aircraft.MagneticVariation.Value * 360d / 65536d;
                     double magHeading = hdgTrue - magvar;
                     double rwyHeading = (double)Aircraft.Nav1LocaliserInverseRunwayHeading.Value * 360d / 65536d + 180d - magvar;
                     fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "Localiser is alive. Runway heading" + rwyHeading.ToString("F0"));
-                    
+
                     localiserDetected = true;
                     ilsTimer.AutoReset = true;
                     ilsTimer.Enabled = true;
@@ -1084,7 +1088,7 @@ namespace tfm
             }
 
         }
-        
+
         private void autopilotCommandMode(object sender, HotkeyEventArgs e)
         {
             // unregister the right bracket command key so it isn't pressed by accident
@@ -1243,6 +1247,9 @@ namespace tfm
             ResetHotkeys();
             switch (e.Name)
             {
+                case "takeoff_assist":
+                    onTakeOffAssistant();
+                    break;
                 case "ASL_Altitude":
                     onASLKey();
                     break;
@@ -1424,7 +1431,7 @@ namespace tfm
                     break;
 
             }
-            
+
         }
 
         private void onGearState()
@@ -1606,7 +1613,7 @@ namespace tfm
                 {
                     weight = ActiveTanks[tank].WeightLbs.ToString("F0");
                 }
-                
+
                 string gal = ActiveTanks[tank].LevelUSGallons.ToString("F0");
                 if (Properties.Settings.Default.UseMetric)
                 {
@@ -1616,11 +1623,11 @@ namespace tfm
                 {
                     fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name}.  {pct} percent, {weight} pounds, {gal} gallons.");
                 }
-                
+
             }
         }
 
-        private void onFuelFlowKey()    
+        private void onFuelFlowKey()
         {
             int NumEngines = Aircraft.num_engines.Value;
             double eng1 = Math.Round(Aircraft.eng1_fuel_flow.Value);
@@ -2505,5 +2512,91 @@ namespace tfm
                 fireOnScreenReaderOutputEvent(isGauge: false, output: $"{Aircraft.aircraftLat.Value}, {Aircraft.aircraftLon.Value}");
             }
         }
-    }
-}
+
+        private void onTakeOffAssistant()
+        {
+            if (Properties.Settings.Default.takeOffAssistMode == "off")
+            {
+                fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "Takeoff assist is turned off. Please change it to full or partial in settings.");
+                takeOffAssistantActive = false;
+            } // Takeoff assist is permanently turned off.
+            else if (Properties.Settings.Default.takeOffAssistMode == "full")
+            {
+                takeOffAssistantActive = true;
+                fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "Takeoff assist on.");
+                // Flaps aren't included because flap positions very between planes,
+                // and there isn't a promising way to determine flap positions.
+
+                Aircraft.AutoThrottleArm.Value = 1; // On.
+                Aircraft.AutoBrake.Value = 0; // Rejected takeoff.
+                Aircraft.ApWingLeveler.Value = 1; // On.
+                Aircraft.PitotHeat.Value = 1; // On.
+                Autopilot.ApMaster = true;
+                Autopilot.ApVerticalSpeed = 500; // Keeps most planes from bouncing.
+                Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
+                Autopilot.ApAltitude = 5000; // Reasonable request for a step climb until profiles are implemented.
+                Autopilot.ApAirspeed = 250; // Must be faster than takeoff speed to avoid crashing.
+                Aircraft.ParkingBrake.Value = 0; // Off.
+
+                // Start the engines on the plane.
+                switch (Aircraft.num_engines.Value)
+                {
+                    case 1:
+                        Aircraft.Engine1ThrottleLever.Value = 16388;
+                        break;
+                    case 2:
+                        Aircraft.Engine1ThrottleLever.Value = 16388;
+                        Aircraft.Engine2ThrottleLever.Value = 16388;
+                        break;
+                    case 3:
+                        Aircraft.Engine1ThrottleLever.Value = 16388;
+                        Aircraft.Engine2ThrottleLever.Value = 16388;
+                        Aircraft.Engine3ThrottleLever.Value = 16388;
+                        break;
+                    case 4:
+                        Aircraft.Engine1ThrottleLever.Value = 16388;
+                        Aircraft.Engine2ThrottleLever.Value = 16388;
+                        Aircraft.Engine3ThrottleLever.Value = 16388;
+                        Aircraft.Engine4ThrottleLever.Value = 16388;
+                        break;
+                    case 0:
+                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "The aircraft engines are off, or have problems. Try again later.");
+                        break;
+                } // End throttle engines.
+                takeOffAssistantTimer.Elapsed += takeOffAssistantTimerTick;
+                takeOffAssistantTimer.AutoReset = true;
+                takeOffAssistantTimer.Enabled = true;
+                takeOffAssistantTimer.Start();
+
+                while(true)
+                {
+if(!takeOffAssistantActive)
+                    {
+                        takeOffAssistantTimer.AutoReset = false;
+                        takeOffAssistantTimer.Stop();
+                        break;
+                    }                    
+                                    } // Stop the timer.
+                fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "Takeoff assistant off.");
+            } // End takeoff mode is full.
+
+        }
+        private void takeOffAssistantTimerTick(object source, ElapsedEventArgs e)
+        {
+            //double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
+            //double agl = (double)Math.Round(Aircraft.Altitude.Value - groundAlt);
+                                        if (Aircraft.OnGround.Value == 0 && Autopilot.ApVerticalSpeed >= 500)
+                {
+                    Aircraft.ApWingLeveler.Value = 0; // Off.
+                    Aircraft.ApYawDamper.Value = 1; // On.
+                    Autopilot.ApVerticalSpeedHold = true;
+                    Autopilot.ApVerticalSpeed = 1000; // Slowly increase for smoother transition.
+                    Aircraft.LandingGearControl.Value = 0; // Gear up.
+                    Autopilot.ApAirspeed = 250;
+                    Autopilot.ApAirspeedHold = true;
+                    Autopilot.ApHeadingLock = true;
+                    takeOffAssistantActive = false;
+                                                                                                } // End initial takeoff sequence.
+                            } // End takeOffAssistTimerTick.
+    } // End IoSubSystem class.
+} // End TFM namespace.

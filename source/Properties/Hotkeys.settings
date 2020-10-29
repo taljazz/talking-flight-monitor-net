@@ -215,5 +215,8 @@
     <Setting Name="Output_History" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+S</Value>
     </Setting>
+    <Setting Name="takeoff_assist" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Ctrl+A</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

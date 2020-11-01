@@ -1335,7 +1335,7 @@ namespace tfm
                 case "Read_Flaps_Angle":
                     onFlapsAngleKey();
                     break;
-                case "Read_Gear_State":
+                case "Read_Landing_Gear":
                     onGearState();
                     break;
 
@@ -1427,6 +1427,7 @@ namespace tfm
             
         }
 
+        
         private void onGearState()
         {
             var gaugeName = "Gear";
@@ -1444,7 +1445,7 @@ namespace tfm
             }
             if (Aircraft.LandingGear.Value > 0 && Aircraft.LandingGear.Value < 16383)
             {
-                gaugeValue = "moving. ";
+                gaugeValue = "in motion. ";
                 fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
             }
 

@@ -871,5 +871,17 @@ namespace tfm.Properties {
                 this["Output_History"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+E")]
+        public global::System.Windows.Forms.Keys Read_Landing_Gear {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Read_Landing_Gear"]));
+            }
+            set {
+                this["Read_Landing_Gear"] = value;
+            }
+        }
     }
 }

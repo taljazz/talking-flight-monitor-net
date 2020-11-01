@@ -4,10 +4,10 @@ branches:
   - master
 nuget:
   project_feed: true
-assembly_info:
-  patch: true
-  file: source\Properties\AssemblyInfo.cs
-  assembly_version: '{version}'
+
+environment:
+  encFileKey:
+    secure: IS92sMB8DjOsUUuLZRWCEHtM3s4a0TWtWojhyOXsxqk=
 
 before_build:
 - cmd: nuget restore source\tfm.sln
@@ -16,11 +16,9 @@ build:
   verbosity: minimal
 after_build:
 - cmd: >-
-    cd source\bin\debug
+    makensis installer\tfm.nsi /DVERSION=%APPVEYOR_REPO_TAG_NAME%
 
-    7z a ..\..\tfm-pre%APPVEYOR_BUILD_VERSION%.zip *
-
-    appveyor PushArtifact ..\..\tfm-pre%APPVEYOR_BUILD_VERSION%.zip
+    appveyor PushArtifact installer\tfm-%APPVEYOR_REPO_TAG_NAME%-setup.EXE
 deploy:
 - provider: FTP
   on:

@@ -29,6 +29,10 @@ namespace tfm
             {
                 this.Text = "set transponder";
             }
+            else if (this.instrument == "Throttle")
+            {
+                this.Text = "Set Throttle Percent (min 0, max 100)";
+            }
             else
             {
                 this.Text = $"set autopilot {instrument}";
@@ -66,7 +70,10 @@ namespace tfm
                     txtSetting.Text = ap.Transponder.ToString();
                     chkLock.Visible = false;
                     break;
-
+                case "Throttle":
+                    txtSetting.Text = ap.Engine1ThrottlePercent.ToString();
+                    chkLock.Visible = false;
+                    break;
             }
             txtSetting.SelectionStart = 0;
             txtSetting.SelectionLength = txtSetting.Text.Length;
@@ -173,11 +180,31 @@ namespace tfm
 
                     break;
 
-
+                case "Throttle":
+                    if (Double.TryParse(txtSetting.Text, out double thrPercent))
+                    {
+                        if ((0.0 <= thrPercent) && (thrPercent <= 100.0))
+                        {
+                            ap.Engine1ThrottlePercent = ap.Engine2ThrottlePercent = ap.Engine3ThrottlePercent = ap.Engine4ThrottlePercent = thrPercent;
+                        }
+                        else
+                        {
+                            Tolk.Output("Invalid throttle setting. Must be between 0 and 100.");
+                            txtSetting.Text = String.Empty;
+                            txtSetting.Focus();
+                        }
+                    }
+                    else
+                    {
+                        Tolk.Output("Invalid throttle setting.");
+                        txtSetting.Text = String.Empty;
+                        txtSetting.Focus();
+                    }
+                    break;
+                    }
             }
 
 
                 
     }
     }
-}

@@ -7,7 +7,7 @@ ManifestSupportedOS all
 Name "Talking Flight Monitor"
 Caption "Talking Flight Monitor ${VERSION} Setup"
 
-OutFile "tfm-${VERSION}-setup.exe"
+OutFile "${OUTFILE}"
 InstallDir "$PROGRAMFILES\talking flight monitor"
 InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\talking-flight-monitor" "InstallLocation"
 RequestExecutionLevel admin

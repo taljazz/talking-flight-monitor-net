@@ -15,10 +15,10 @@ build:
   project: source\tfm.sln
   verbosity: minimal
 after_build:
-- cmd: >-
-    makensis installer\tfm.nsi /DVERSION=%APPVEYOR_REPO_TAG_NAME% /DOUTFILE=tfm-%APPVEYOR_REPO_TAG_NAME%-setup.exe
+- ps: >-
+    makensis installer\tfm.nsi /DVERSION=$env:APPVEYOR_REPO_TAG_NAME /DOUTFILE=tfm-$env:APPVEYOR_REPO_TAG_NAME-setup.exe
 
-    appveyor PushArtifact installer\tfm-%APPVEYOR_REPO_TAG_NAME%-setup.EXE
+    appveyor PushArtifact installer\tfm-$env:APPVEYOR_REPO_TAG_NAME-setup.EXE
 deploy:
 - provider: FTP
   on:

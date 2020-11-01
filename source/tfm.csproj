@@ -223,6 +223,12 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="aircraft.cs" />
+    <Compile Include="Autopilot\FrmThrottleValue.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Autopilot\FrmThrottleValue.Designer.cs">
+      <DependentUpon>FrmThrottleValue.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmFuelManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -372,6 +378,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Autopilot\frmComRadios.resx">
       <DependentUpon>frmComRadios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Autopilot\FrmThrottleValue.resx">
+      <DependentUpon>FrmThrottleValue.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmFuelManager.resx">
       <DependentUpon>frmFuelManager.cs</DependentUpon>

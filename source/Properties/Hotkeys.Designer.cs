@@ -871,5 +871,29 @@ namespace tfm.Properties {
                 this["Output_History"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+E")]
+        public global::System.Windows.Forms.Keys Read_Landing_Gear {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Read_Landing_Gear"]));
+            }
+            set {
+                this["Read_Landing_Gear"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+T")]
+        public global::System.Windows.Forms.Keys ap_Set_Throttle {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Throttle"]));
+            }
+            set {
+                this["ap_Set_Throttle"] = value;
+            }
+        }
     }
 }

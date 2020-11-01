@@ -202,7 +202,7 @@ namespace tfm
                 Aircraft.Engine4ThrottleLever.Value = (short)value;
             }
         }
-        
+
         public double oldBank { get; private set; }
 
         public double CurrentHeading;
@@ -756,13 +756,13 @@ namespace tfm
                 }
                 if (Aircraft.Nav1Signal.Value == 256 && localiserDetected == false && Aircraft.Nav1Flags.Value[7])
                 {
-                    
+
                     double hdgTrue = (double)Aircraft.Heading.Value * 360d / (65536d * 65536d);
                     double magvar = (double)Aircraft.MagneticVariation.Value * 360d / 65536d;
                     double magHeading = hdgTrue - magvar;
                     double rwyHeading = (double)Aircraft.Nav1LocaliserInverseRunwayHeading.Value * 360d / 65536d + 180d - magvar;
                     fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "Localiser is alive. Runway heading" + rwyHeading.ToString("F0"));
-                    
+
                     localiserDetected = true;
                     ilsTimer.AutoReset = true;
                     ilsTimer.Enabled = true;
@@ -1084,7 +1084,7 @@ namespace tfm
             }
 
         }
-        
+
         private void autopilotCommandMode(object sender, HotkeyEventArgs e)
         {
             // unregister the right bracket command key so it isn't pressed by accident
@@ -1229,6 +1229,11 @@ namespace tfm
                     ap.ShowDialog();
                     break;
 
+                case "ap_Set_Throttle":
+                    ap = new frmAutopilot("Throttle");
+                    ap.ShowDialog();
+                    break;
+
                 default:
                     Tolk.Output("key not defined");
                     break;
@@ -1335,7 +1340,7 @@ namespace tfm
                 case "Read_Flaps_Angle":
                     onFlapsAngleKey();
                     break;
-                case "Read_Gear_State":
+                case "Read_Landing_Gear":
                     onGearState();
                     break;
 
@@ -1424,8 +1429,9 @@ namespace tfm
                     break;
 
             }
-            
+
         }
+
 
         private void onGearState()
         {
@@ -1444,7 +1450,7 @@ namespace tfm
             }
             if (Aircraft.LandingGear.Value > 0 && Aircraft.LandingGear.Value < 16383)
             {
-                gaugeValue = "moving. ";
+                gaugeValue = "in motion. ";
                 fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
             }
 
@@ -1606,7 +1612,7 @@ namespace tfm
                 {
                     weight = ActiveTanks[tank].WeightLbs.ToString("F0");
                 }
-                
+
                 string gal = ActiveTanks[tank].LevelUSGallons.ToString("F0");
                 if (Properties.Settings.Default.UseMetric)
                 {
@@ -1616,11 +1622,11 @@ namespace tfm
                 {
                     fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name}.  {pct} percent, {weight} pounds, {gal} gallons.");
                 }
-                
+
             }
         }
 
-        private void onFuelFlowKey()    
+        private void onFuelFlowKey()
         {
             int NumEngines = Aircraft.num_engines.Value;
             double eng1 = Math.Round(Aircraft.eng1_fuel_flow.Value);

@@ -215,5 +215,11 @@
     <Setting Name="Output_History" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+S</Value>
     </Setting>
+    <Setting Name="Read_Landing_Gear" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+E</Value>
+    </Setting>
+    <Setting Name="ap_Set_Throttle" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+T</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

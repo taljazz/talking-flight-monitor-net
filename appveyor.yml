@@ -16,7 +16,7 @@ build:
   verbosity: minimal
 after_build:
 - ps: >-
-    makensis installer\tfm.nsi /DVERSION=$env:APPVEYOR_REPO_TAG_NAME /DOUTFILE=tfm-$env:APPVEYOR_REPO_TAG_NAME-setup.exe
+    makensis /DVERSION=$env:APPVEYOR_REPO_TAG_NAME /DOUTFILE=tfm-$env:APPVEYOR_REPO_TAG_NAME-setup.exe installer\tfm.nsi
 
     appveyor PushArtifact installer\tfm-$env:APPVEYOR_REPO_TAG_NAME-setup.EXE
 deploy:

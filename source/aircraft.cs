@@ -15,6 +15,9 @@ namespace tfm
         // =====================================
         // DECLARE OFFSETS YOU WANT TO USE HERE
         // =====================================
+        public static Offset<short> SimPauseControl = new Offset<short>(0x0262);
+        public static Offset<short> SimPauseIndicator = new Offset<short>(0x0264);
+        public static Offset<short> SimSoundFlag = new Offset<short>(0x0b24);
         public static  Offset<ushort> Com1Freq = new Offset<ushort>(0x034e);
         public static  Offset<ushort> Com1StandbyFreq = new Offset<ushort>(0x311a);
         public static  Offset<ushort> Com2Freq = new Offset<ushort>(0x3118);

@@ -256,7 +256,7 @@ namespace tfm
             fireOnScreenReaderOutputEvent(textOutput: false, output: $"Talking Flight Monitor test build {version}");
             HotkeyManager.Current.AddOrReplace("Command_Key", (Keys)Properties.Hotkeys.Default.Command_Key, commandMode);
             HotkeyManager.Current.AddOrReplace("ap_Command_Key", (Keys)Properties.Hotkeys.Default.ap_Command_Key, autopilotCommandMode);
-            // HotkeyManager.Current.AddOrReplace("test", Keys.Q, OffsetTest);
+            // HotkeyManager.Current.AddOrReplace("test", Keys.Z, OffsetTest);
 
             runwayGuidanceEnabled = false;
 
@@ -1070,7 +1070,16 @@ namespace tfm
                     if (s.Name == "Command_Key") continue;
                     if (s.Name.StartsWith("ap_")) continue;
                     hotkeys.Add(s.Name);
-                    HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onKeyPressed);
+                    try
+                    {
+                        HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onKeyPressed);
+                    }
+                    catch (NHotkey.HotkeyAlreadyRegisteredException ex)
+                    {
+                        logger.Debug($"Cannot register {s.Name}. Probably duplicated key.");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"hotkey error in {s.Name}");
+                    }
+                    
                 }
 
 
@@ -1102,7 +1111,16 @@ namespace tfm
                     if (s.Name.StartsWith("ap_"))
                     {
                         autopilotHotkeys.Add(s.Name);
-                        HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onAutopilotKeyPressed);
+                        try
+                        {
+                            HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onAutopilotKeyPressed);
+                        }
+                        catch (NHotkey.HotkeyAlreadyRegisteredException ex)
+                        {
+                            logger.Debug($"Cannot register {s.Name}. Probably duplicated key.");
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: $"hotkey error in {s.Name}");
+
+                        }
                     }
 
                 }

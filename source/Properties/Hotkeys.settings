@@ -219,7 +219,7 @@
       <Value Profile="(Default)">Shift+E</Value>
     </Setting>
     <Setting Name="ap_Set_Throttle" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">Shift+T</Value>
+      <Value Profile="(Default)">Shift+R</Value>
     </Setting>
   </Settings>
 </SettingsFile>

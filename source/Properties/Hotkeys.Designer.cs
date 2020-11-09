@@ -886,7 +886,7 @@ namespace tfm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Shift+T")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+R")]
         public global::System.Windows.Forms.Keys ap_Set_Throttle {
             get {
                 return ((global::System.Windows.Forms.Keys)(this["ap_Set_Throttle"]));

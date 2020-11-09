@@ -101,6 +101,10 @@ namespace tfm
             try
             {
                 FSUIPCConnection.Process();
+                if (Aircraft.AircraftName.Value.Contains("PMDG"))
+                {
+                    FSUIPCConnection.Process("pmdg");
+                }
                 inst.ReadAircraftState();
                 // Keeps track of the autopilot master switch in the simplified avionics tab.
                 if (Properties.Settings.Default.avionics_tab == "simplified") { 
@@ -188,7 +192,13 @@ namespace tfm
                 frm.Show();
 
             }
-                if ((e.Control && e.KeyCode == Keys.E))
+            if ((e.Control && e.KeyCode == Keys.P))
+            {
+                frmCockpitPanels frm = new frmCockpitPanels();
+                frm.Show();
+
+            }
+            if ((e.Control && e.KeyCode == Keys.E))
             {
                 GageValueTextBox.Focus();
             }// End Gage textfield assignment.

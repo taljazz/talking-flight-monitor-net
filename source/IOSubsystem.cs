@@ -380,6 +380,13 @@ namespace tfm
                 readAPU();
                 readOnGround();
                 // TODO: engine select
+                if (Aircraft.AircraftName.Value.Contains("PMDG"))
+                {   
+                    ReadToggle(Aircraft.ELEC_BatSelector, Aircraft.ELEC_BatSelector.Value > 0, "Battery", "active", "off");
+                    ReadToggle(Aircraft.ELEC_annunBAT_DISCHARGE, Aircraft.ELEC_annunBAT_DISCHARGE.Value > 0, "bat discharge light", "on", "off");
+                    ReadToggle(Aircraft.ELEC_annunGRD_POWER_AVAILABLE, Aircraft.ELEC_annunGRD_POWER_AVAILABLE.Value > 0, "ground power", "available", "not available");
+                    
+                }
             }
             else
             {

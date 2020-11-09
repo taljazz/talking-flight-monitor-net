@@ -246,6 +246,19 @@
     <Compile Include="PMDG\PMDG 737\CDUForm.Designer.cs">
       <DependentUpon>CDUForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.Designer.cs">
+      <DependentUpon>ctlElectrical.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\frmCockpitPanels.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\frmCockpitPanels.Designer.cs">
+      <DependentUpon>frmCockpitPanels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\iPanelsPage.cs" />
     <Compile Include="Settings panels\ctlUserInterface.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -406,6 +419,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG 737\CDUForm.resx">
       <DependentUpon>CDUForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.resx">
+      <DependentUpon>ctlElectrical.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\frmCockpitPanels.resx">
+      <DependentUpon>frmCockpitPanels.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\ctlGeneral.resx">
       <DependentUpon>ctlGeneral.cs</DependentUpon>

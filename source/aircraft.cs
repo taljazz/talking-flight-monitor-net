@@ -587,10 +587,14 @@ public static Offset<byte> LTS_InbdDUBrtKnob = new Offset<byte>("pmdg", 0x658E);
         public static Offset<byte> FUEL_FWDBleed = new Offset<byte>("pmdg", 0x6C95);
         public static Offset<byte> FUEL_AFTBleed = new Offset<byte>("pmdg", 0x6C96);
         public static Offset<byte> FUEL_GNDXfr = new Offset<byte>("pmdg", 0x6C97);
+        public static Offset<string> ELEC_MeterDisplayTop = new Offset<string>("pmdg", 0x6c40, 13);
+        public static Offset<string> ELEC_MeterDisplayBottom = new Offset<string>("pmdg", 0x6c4d, 13);
+
         // constants for PMDG mouse click parameters
         public const int ClkL = 536870912;
         public const int ClkR = -2147483648;
-
+        public const int Inc = 16384;
+        public const int Dec = 8192;
 
         public static void InitOffsets()
         {

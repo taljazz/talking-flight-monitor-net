@@ -75,7 +75,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="takeOffAssistMode" Type="System.String" Scope="User">
-      <Value Profile="(Default)">partial</Value>
+      <Value Profile="(Default)">off</Value>
     </Setting>
   </Settings>
 </SettingsFile>

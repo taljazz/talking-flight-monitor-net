@@ -313,7 +313,7 @@ namespace tfm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("partial")]
+        [global::System.Configuration.DefaultSettingValueAttribute("off")]
         public string takeOffAssistMode {
             get {
                 return ((string)(this["takeOffAssistMode"]));

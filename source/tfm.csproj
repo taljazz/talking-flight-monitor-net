@@ -240,6 +240,10 @@
       <DependentUpon>frmOutputHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="OutputHistory\OutputHistory.cs" />
+    <Compile Include="Settings panels\ctlAircraft.cs" />
+    <Compile Include="Settings panels\ctlAircraft.Designer.cs">
+      <DependentUpon>ctlAircraft.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings panels\ctlUserInterface.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -397,6 +401,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="OutputHistory\frmOutputHistory.resx">
       <DependentUpon>frmOutputHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings panels\ctlAircraft.resx">
+      <DependentUpon>ctlAircraft.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\ctlGeneral.resx">
       <DependentUpon>ctlGeneral.cs</DependentUpon>

@@ -895,5 +895,17 @@ namespace tfm.Properties {
                 this["ap_Set_Throttle"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+A")]
+        public global::System.Windows.Forms.Keys takeoff_assist {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["takeoff_assist"]));
+            }
+            set {
+                this["takeoff_assist"] = value;
+            }
+        }
     }
 }

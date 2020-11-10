@@ -32,6 +32,7 @@ using System.Windows.Forms.VisualStyles;
 using tfm.Properties;
 using System.CodeDom;
 using System.Speech.Synthesis;
+using System.ComponentModel.Design;
 
 namespace tfm
 {
@@ -135,6 +136,7 @@ namespace tfm
         private bool ILSEnabled;
         private bool groundSpeedActive;
         private bool takeOffAssistantActive = false;
+        private bool isTakeoffComplete = true; // Always true unless takeoff assist is Active.
         private bool onGround;
         private bool TrimEnabled = true;
         private bool FlapsMoving;
@@ -2563,34 +2565,43 @@ namespace tfm
                         fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "The aircraft engines are off, or have problems. Try again later.");
                         break;
                 } // End throttle engines.
-                takeOffAssistantTimer.Elapsed += takeOffAssistantTimerTick;
-                takeOffAssistantTimer.AutoReset = true;
-                takeOffAssistantTimer.Enabled = true;
-                takeOffAssistantTimer.Start();
 
+                isTakeoffComplete = false;
+                PostTakeOffChecklist();
             } // End takeoff mode is full.
-
+else if(Properties.Settings.Default.takeOffAssistMode == "partial")
+            {
+                takeOffAssistantActive = true;
+                fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "Takeoff assist on.");
+                isTakeoffComplete = false;
+                PostTakeOffChecklist();
+            } // End takeoff assist mode partial.
         }
-        private void takeOffAssistantTimerTick(object source, ElapsedEventArgs e)
+        public bool PostTakeOffChecklist()
         {
-            //double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
-            //double agl = (double)Math.Round(Aircraft.Altitude.Value - groundAlt);
-                                        if (Aircraft.OnGround.Value == 0 && Autopilot.ApVerticalSpeed >= 500)
-                {
-                    Aircraft.ApWingLeveler.Value = 0; // Off.
+          double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
+            double agl = (double)Math.Round(Aircraft.Altitude.Value - groundAlt);
+            if (takeOffAssistantActive && Aircraft.OnGround.Value == 0 && agl >= 100)
+            {
+                    //var airSpeed = Autopilot.ApAirspeed;
+                    //Autopilot.ApAirspeed = airSpeed;
+                    Autopilot.ApAirspeedHold = true;
+                    if (Aircraft.ApWingLeveler.Value == 1) Aircraft.ApWingLeveler.Value = 0; // Off.
+                    if (!Autopilot.ApHeadingLock) Autopilot.ApHeadingLock = true;
+                    Aircraft.AutoBrake.Value = 1; // Off.    
                     Aircraft.ApYawDamper.Value = 1; // On.
                     Autopilot.ApVerticalSpeedHold = true;
-                    Autopilot.ApVerticalSpeed = 1000; // Slowly increase for smoother transition.
+                    Autopilot.ApVerticalSpeed = 2500; // Slowly increase for smoother transition.
                     Aircraft.LandingGearControl.Value = 0; // Gear up.
-                    Autopilot.ApAirspeed = 250;
-                    Autopilot.ApAirspeedHold = true;
-                    Autopilot.ApHeadingLock = true;
                     takeOffAssistantActive = false;
-                    takeOffAssistantTimer.Enabled = false;
-                    takeOffAssistantTimer.AutoReset = false;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "takeoff assistance off.");
-
-                                                                                                } // End initial takeoff sequence.
-                            } // End takeOffAssistTimerTick.
+                    isTakeoffComplete = true;
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Takeoff assist off.");
+                    return isTakeoffComplete;
+                                    } else
+            {
+                return isTakeoffComplete;
+            }
+                            
+        } // End PostTakeoffChecklist.
     } // End IoSubSystem class.
 } // End TFM namespace.

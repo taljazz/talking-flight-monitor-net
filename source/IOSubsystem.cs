@@ -262,7 +262,7 @@ namespace tfm
             fireOnScreenReaderOutputEvent(textOutput: false, output: $"Talking Flight Monitor test build {version}");
             HotkeyManager.Current.AddOrReplace("Command_Key", (Keys)Properties.Hotkeys.Default.Command_Key, commandMode);
             HotkeyManager.Current.AddOrReplace("ap_Command_Key", (Keys)Properties.Hotkeys.Default.ap_Command_Key, autopilotCommandMode);
-            // HotkeyManager.Current.AddOrReplace("test", Keys.Q, OffsetTest);
+            // HotkeyManager.Current.AddOrReplace("test", Keys.Z, OffsetTest);
 
             runwayGuidanceEnabled = false;
 
@@ -338,6 +338,8 @@ namespace tfm
                 }
 
                 // read any instruments that are toggles
+                ReadToggle(Aircraft.SimPauseIndicator, Aircraft.SimPauseIndicator.Value > 0, "", "paused", "unpaused");
+                ReadToggle(Aircraft.SimSoundFlag, Aircraft.SimSoundFlag.Value > 0, "sound", "on", "off");
                 ReadToggle(Aircraft.AvionicsMaster, Aircraft.AvionicsMaster.Value > 0, "avionics master", "active", "off");
                 ReadToggle(Aircraft.SeatbeltSign, Aircraft.SeatbeltSign.Value > 0, "seatbelt sign", "on", "off");
                 ReadToggle(Aircraft.NoSmokingSign, Aircraft.NoSmokingSign.Value > 0, "no smoking sign", "on", "off");
@@ -412,6 +414,7 @@ namespace tfm
             ReadToggle(Aircraft.Eng2FuelValve, Aircraft.Eng2FuelValve.Value > 0, "number 2 fuel valve", "open", "closed");
             ReadToggle(Aircraft.Eng3FuelValve, Aircraft.Eng3FuelValve.Value > 0, "number 3 fuel valve", "open", "closed");
             ReadToggle(Aircraft.Eng4FuelValve, Aircraft.Eng4FuelValve.Value > 0, "number 4 fuel valve", "open", "closed");
+            
 
         }
         private void readOnGround()
@@ -1076,7 +1079,16 @@ namespace tfm
                     if (s.Name == "Command_Key") continue;
                     if (s.Name.StartsWith("ap_")) continue;
                     hotkeys.Add(s.Name);
-                    HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onKeyPressed);
+                    try
+                    {
+                        HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onKeyPressed);
+                    }
+                    catch (NHotkey.HotkeyAlreadyRegisteredException ex)
+                    {
+                        logger.Debug($"Cannot register {s.Name}. Probably duplicated key.");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"hotkey error in {s.Name}");
+                    }
+                    
                 }
 
 
@@ -1108,7 +1120,16 @@ namespace tfm
                     if (s.Name.StartsWith("ap_"))
                     {
                         autopilotHotkeys.Add(s.Name);
-                        HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onAutopilotKeyPressed);
+                        try
+                        {
+                            HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onAutopilotKeyPressed);
+                        }
+                        catch (NHotkey.HotkeyAlreadyRegisteredException ex)
+                        {
+                            logger.Debug($"Cannot register {s.Name}. Probably duplicated key.");
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: $"hotkey error in {s.Name}");
+
+                        }
                     }
 
                 }
@@ -1235,6 +1256,11 @@ namespace tfm
                     ap.ShowDialog();
                     break;
 
+                case "ap_Set_Throttle":
+                    ap = new frmAutopilot("Throttle");
+                    ap.ShowDialog();
+                    break;
+
                 default:
                     Tolk.Output("key not defined");
                     break;
@@ -1344,7 +1370,7 @@ namespace tfm
                 case "Read_Flaps_Angle":
                     onFlapsAngleKey();
                     break;
-                case "Read_Gear_State":
+                case "Read_Landing_Gear":
                     onGearState();
                     break;
 
@@ -1436,6 +1462,7 @@ namespace tfm
 
         }
 
+
         private void onGearState()
         {
             var gaugeName = "Gear";
@@ -1453,7 +1480,7 @@ namespace tfm
             }
             if (Aircraft.LandingGear.Value > 0 && Aircraft.LandingGear.Value < 16383)
             {
-                gaugeValue = "moving. ";
+                gaugeValue = "in motion. ";
                 fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
             }
 

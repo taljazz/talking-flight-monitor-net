@@ -57,6 +57,10 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FSUIPCClient, Version=3.1.22.335, Culture=neutral, PublicKeyToken=7e7559b53e380b17, processorArchitecture=MSIL">
       <HintPath>packages\FSUIPCClientDLL.3.1.22\lib\net40\FSUIPCClient.dll</HintPath>
@@ -236,12 +240,6 @@
       <DependentUpon>frmOutputHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="OutputHistory\OutputHistory.cs" />
-    <Compile Include="Settings panels\ctlAircraft.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Settings panels\ctlAircraft.Designer.cs">
-      <DependentUpon>ctlAircraft.cs</DependentUpon>
-    </Compile>
     <Compile Include="Settings panels\ctlUserInterface.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -400,9 +398,6 @@
     <EmbeddedResource Include="OutputHistory\frmOutputHistory.resx">
       <DependentUpon>frmOutputHistory.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Settings panels\ctlAircraft.resx">
-      <DependentUpon>ctlAircraft.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\ctlGeneral.resx">
       <DependentUpon>ctlGeneral.cs</DependentUpon>
     </EmbeddedResource>
@@ -435,9 +430,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.manifest" />
-    <Content Include="checklists\Takeoff assist - Pretakeoff checklist.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="data\navigraph.s3db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

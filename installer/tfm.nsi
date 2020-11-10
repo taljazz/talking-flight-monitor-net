@@ -4,21 +4,23 @@
 Unicode true
 CRCCheck on
 ManifestSupportedOS all
-XPStyle on
 Name "Talking Flight Monitor"
-OutFile "tfm-setup.exe"
+Caption "Talking Flight Monitor ${VERSION} Setup"
+
+OutFile "${OUTFILE}"
 InstallDir "$PROGRAMFILES\talking flight monitor"
 InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\talking-flight-monitor" "InstallLocation"
 RequestExecutionLevel admin
 SetCompress auto
 SetCompressor /solid lzma
 SetDatablockOptimize on
-VIAddVersionKey ProductName "Talking Flight Monitor"
-VIAddVersionKey LegalCopyright "Copyright 2020 Jason Fayre and Andy Borka."
-VIAddVersionKey ProductVersion "0.95"
-VIAddVersionKey FileVersion "0.95"
-VIProductVersion "0.95.0.0"
-VIFileVersion "0.95.0.0"
+VIProductVersion "0.0.0.0" ;Needs to be here so other version info shows up
+VIAddVersionKey "ProductName" "Talking Flight Monitor"
+VIAddVersionKey "LegalCopyright" "${COPYRIGHT}"
+VIAddVersionKey "FileDescription" "Talking Flight Monitor installer"
+VIAddVersionKey "FileVersion" "${VERSION}"
+VIAddVersionKey "ProductVersion" "${VERSION}"
+
 !insertmacro MUI_PAGE_WELCOME
 !define MUI_LICENSEPAGE_RADIOBUTTONS
 !insertmacro MUI_PAGE_LICENSE "license.txt"
@@ -36,13 +38,13 @@ var StartMenuFolder
 Section
 SetShellVarContext All
 SetOutPath "$INSTDIR"
-File /r source\bin\debug\*
+File /r ..\source\bin\debug\*
 
 CreateShortCut "$DESKTOP\Talking flight Monitor.lnk" "$INSTDIR\tfm.exe"
 !insertmacro MUI_STARTMENU_WRITE_BEGIN startmenu
 CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-CreateShortCut "$SMPROGRAMS\$StartMenuFolder\TWBlue.lnk" "$INSTDIR\TWBlue.exe"
-CreateShortCut "$SMPROGRAMS\$StartMenuFolder\TWBlue on the web.lnk" "http://twblue.es"
+CreateShortCut "$SMPROGRAMS\$StartMenuFolder\tfm.lnk" "$INSTDIR\tfm.exe"
+CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Talking Flight Monitor Website.lnk" "http://www.talkingflightmonitor.net"
 CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
 !insertmacro MUI_STARTMENU_WRITE_END
 WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -51,7 +53,7 @@ WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\tfm" "Unin
 WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall" "InstallLocation" $INSTDIR
 WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall" "Publisher" "Jason Fayre"
 WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\twblue" "DisplayVersion" "0.95"
-WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\twblue" "URLInfoAbout" "http://twblue.es"
+WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\twblue" "URLInfoAbout" "http://www.talkingflightmonitor.net"
 WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\twblue" "VersionMajor" 0
 WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\twblue" "VersionMinor" 95
 WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\twblue" "NoModify" 1
@@ -59,15 +61,15 @@ WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\twblue" 
 SectionEnd
 Section "Uninstall"
 SetShellVarContext All
-DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\twblue"
+DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\tfm"
 RMDir /r /REBOOTOK $INSTDIR
-Delete "$DESKTOP\TWBlue.lnk"
+Delete "$DESKTOP\tfm.lnk"
 !insertmacro MUI_STARTMENU_GETFOLDER startmenu $StartMenuFolder
 RMDir /r "$SMPROGRAMS\$StartMenuFolder"
 SectionEnd
 Function .onInit
 ${If} ${RunningX64}
-StrCpy $instdir "$programfiles64\twblue"
+StrCpy $instdir "$programfiles64\talking flight monitor"
 ${EndIf}
 !insertmacro MUI_LANGDLL_DISPLAY
 FunctionEnd

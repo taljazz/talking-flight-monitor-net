@@ -874,13 +874,25 @@ namespace tfm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+A")]
-        public global::System.Windows.Forms.Keys takeoff_assist {
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+E")]
+        public global::System.Windows.Forms.Keys Read_Landing_Gear {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["takeoff_assist"]));
+                return ((global::System.Windows.Forms.Keys)(this["Read_Landing_Gear"]));
             }
             set {
-                this["takeoff_assist"] = value;
+                this["Read_Landing_Gear"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+R")]
+        public global::System.Windows.Forms.Keys ap_Set_Throttle {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Throttle"]));
+            }
+            set {
+                this["ap_Set_Throttle"] = value;
             }
         }
     }

@@ -518,6 +518,64 @@ namespace tfm
             }
         }
 
+        // engine throttle properties
+        private double engine1ThrottlePercent;
+        public double Engine1ThrottlePercent
+        {
+            get
+            {
+                engine1ThrottlePercent = (double)Aircraft.Engine1ThrottleLever.Value / 16384d * 100d;
+                return engine1ThrottlePercent;
+            }
+            set
+            {
+                value = value / 100 * 16384;
+                Aircraft.Engine1ThrottleLever.Value = (short)value;
+            }
+        }
+        private double engine2ThrottlePercent;
+        public double Engine2ThrottlePercent
+        {
+            get
+            {
+                engine2ThrottlePercent = (double)Aircraft.Engine2ThrottleLever.Value / 16384d * 100d;
+                return engine2ThrottlePercent;
+            }
+            set
+            {
+                value = value / 100 * 16384;
+                Aircraft.Engine2ThrottleLever.Value = (short)value;
+            }
+        }
+        private double engine3ThrottlePercent;
+        public double Engine3ThrottlePercent
+        {
+            get
+            {
+                engine3ThrottlePercent = (double)Aircraft.Engine3ThrottleLever.Value / 16384d * 100d;
+                return engine3ThrottlePercent;
+            }
+            set
+            {
+                value = value / 100 * 16384;
+                Aircraft.Engine3ThrottleLever.Value = (short)value;
+            }
+        }
+        private double engine4ThrottlePercent;
+        public double Engine4ThrottlePercent
+        {
+            get
+            {
+                engine4ThrottlePercent = (double)Aircraft.Engine4ThrottleLever.Value / 16384d * 100d;
+                return engine4ThrottlePercent;
+            }
+            set
+            {
+                value = value / 100 * 16384;
+                Aircraft.Engine4ThrottleLever.Value = (short)value;
+            }
+        }
+
 
 
     }

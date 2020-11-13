@@ -15,6 +15,9 @@ namespace tfm
         // =====================================
         // DECLARE OFFSETS YOU WANT TO USE HERE
         // =====================================
+        public static Offset<short> SimPauseControl = new Offset<short>(0x0262);
+        public static Offset<short> SimPauseIndicator = new Offset<short>(0x0264);
+        public static Offset<short> SimSoundFlag = new Offset<short>(0x0b24);
         public static  Offset<ushort> Com1Freq = new Offset<ushort>(0x034e);
         public static  Offset<ushort> Com1StandbyFreq = new Offset<ushort>(0x311a);
         public static  Offset<ushort> Com2Freq = new Offset<ushort>(0x3118);
@@ -32,6 +35,7 @@ namespace tfm
         public static  Offset<short> OnGround = new Offset<short>(0x0366);
         public static  Offset<short> ParkingBrake = new Offset<short>(0x0bc8);
         public static  Offset<uint> LandingGear = new Offset<uint>(0x0bec);
+        public static Offset<uint> LandingGearControl = new Offset<uint>(0x0BE8);
         public static  Offset<int> Altitude = new Offset<int>(0x3324);
         public static  Offset<int> GroundAltitude = new Offset<int>(0x0020);
         public static  Offset<uint> SpoilersArm = new Offset<uint>(0x0bcc);

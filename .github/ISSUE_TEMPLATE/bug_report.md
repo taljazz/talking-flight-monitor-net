@@ -21,7 +21,7 @@ A clear and concise description of what you expected to happen.
  - OS: [e.g. Windows 10]
  - TFM version: 
  - Flight simulator in use: 
-
+- specific aircraft in use:
 
 **Additional context**
 Add any other context about the problem here. What other add-ons were you running at the time, etc.

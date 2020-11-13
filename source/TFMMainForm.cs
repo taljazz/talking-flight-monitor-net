@@ -102,6 +102,10 @@ namespace tfm
             {
                 FSUIPCConnection.Process();
                 inst.ReadAircraftState();
+                if(!inst.PostTakeOffChecklist())
+                {
+                    inst.PostTakeOffChecklist();
+                }
                 // Keeps track of the autopilot master switch in the simplified avionics tab.
                 if (Properties.Settings.Default.avionics_tab == "simplified") { 
                 AutopilotCheckBox.Checked = Autopilot.ApMaster;

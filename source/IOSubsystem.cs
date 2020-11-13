@@ -30,6 +30,9 @@ using System.ServiceModel.Security;
 using System.Drawing.Text;
 using System.Windows.Forms.VisualStyles;
 using tfm.Properties;
+using System.CodeDom;
+using System.Speech.Synthesis;
+using System.ComponentModel.Design;
 
 namespace tfm
 {
@@ -81,6 +84,7 @@ namespace tfm
         private static System.Timers.Timer flightFollowingTimer;
         private static System.Timers.Timer ilsTimer = new System.Timers.Timer(TimeSpan.FromSeconds(double.Parse(Properties.Settings.Default.ILSAnnouncementTimeInterval)).TotalMilliseconds);
         private static System.Timers.Timer waypointTransitionTimer = new System.Timers.Timer(5000);
+        private static System.Timers.Timer takeOffAssistantTimer = new System.Timers.Timer(1000);
         private double HdgRight;
         private double HdgLeft;
 
@@ -131,6 +135,8 @@ namespace tfm
         private bool calloutsEnabled;
         private bool ILSEnabled;
         private bool groundSpeedActive;
+        private bool takeOffAssistantActive = false;
+        private bool isTakeoffComplete = true; // Always true unless takeoff assist is Active.
         private bool onGround;
         private bool TrimEnabled = true;
         private bool FlapsMoving;
@@ -202,7 +208,7 @@ namespace tfm
                 Aircraft.Engine4ThrottleLever.Value = (short)value;
             }
         }
-        
+
         public double oldBank { get; private set; }
 
         public double CurrentHeading;
@@ -256,7 +262,7 @@ namespace tfm
             fireOnScreenReaderOutputEvent(textOutput: false, output: $"Talking Flight Monitor test build {version}");
             HotkeyManager.Current.AddOrReplace("Command_Key", (Keys)Properties.Hotkeys.Default.Command_Key, commandMode);
             HotkeyManager.Current.AddOrReplace("ap_Command_Key", (Keys)Properties.Hotkeys.Default.ap_Command_Key, autopilotCommandMode);
-            // HotkeyManager.Current.AddOrReplace("test", Keys.Q, OffsetTest);
+            // HotkeyManager.Current.AddOrReplace("test", Keys.Z, OffsetTest);
 
             runwayGuidanceEnabled = false;
 
@@ -332,6 +338,8 @@ namespace tfm
                 }
 
                 // read any instruments that are toggles
+                ReadToggle(Aircraft.SimPauseIndicator, Aircraft.SimPauseIndicator.Value > 0, "", "paused", "unpaused");
+                ReadToggle(Aircraft.SimSoundFlag, Aircraft.SimSoundFlag.Value > 0, "sound", "on", "off");
                 ReadToggle(Aircraft.AvionicsMaster, Aircraft.AvionicsMaster.Value > 0, "avionics master", "active", "off");
                 ReadToggle(Aircraft.SeatbeltSign, Aircraft.SeatbeltSign.Value > 0, "seatbelt sign", "on", "off");
                 ReadToggle(Aircraft.NoSmokingSign, Aircraft.NoSmokingSign.Value > 0, "no smoking sign", "on", "off");
@@ -406,6 +414,7 @@ namespace tfm
             ReadToggle(Aircraft.Eng2FuelValve, Aircraft.Eng2FuelValve.Value > 0, "number 2 fuel valve", "open", "closed");
             ReadToggle(Aircraft.Eng3FuelValve, Aircraft.Eng3FuelValve.Value > 0, "number 3 fuel valve", "open", "closed");
             ReadToggle(Aircraft.Eng4FuelValve, Aircraft.Eng4FuelValve.Value > 0, "number 4 fuel valve", "open", "closed");
+            
 
         }
         private void readOnGround()
@@ -500,6 +509,8 @@ namespace tfm
 
         private void DetectFuelTanks()
         {
+            // clear fuel tank data
+            ActiveTanks.Clear();
             // grab fuel tank data from the sim
             FSUIPCConnection.PayloadServices.RefreshData();
             // Assign the fuel tanks to our class level variable for easier access
@@ -695,6 +706,7 @@ namespace tfm
             // read when aircraft lights change
             if (Aircraft.Lights.ValueChanged)
             {
+                string state = null;
                 // loop through each bit and announce which values have changed.
                 FsBitArray lightBits = Aircraft.Lights.Value;
                 for (int i = 0; i < lightBits.Changed.Length; i++)
@@ -702,7 +714,15 @@ namespace tfm
                     if (lightBits.Changed[i])
                     {
                         string name = Enum.GetName(typeof(Aircraft.light), i);
-                        string state = (Aircraft.Lights.Value[i]) ? "off" : "on";
+                        // string state = (Aircraft.Lights.Value[i]) ? "off" : "on";
+                        if (Aircraft.Lights.Value[i] == true)
+                        {
+                            state = "on";
+                        }
+                        else
+                        {
+                            state = "off";
+                        }
                         fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {state}. ");
                     }
                 }
@@ -745,13 +765,13 @@ namespace tfm
                 }
                 if (Aircraft.Nav1Signal.Value == 256 && localiserDetected == false && Aircraft.Nav1Flags.Value[7])
                 {
-                    
+
                     double hdgTrue = (double)Aircraft.Heading.Value * 360d / (65536d * 65536d);
                     double magvar = (double)Aircraft.MagneticVariation.Value * 360d / 65536d;
                     double magHeading = hdgTrue - magvar;
                     double rwyHeading = (double)Aircraft.Nav1LocaliserInverseRunwayHeading.Value * 360d / 65536d + 180d - magvar;
                     fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "Localiser is alive. Runway heading" + rwyHeading.ToString("F0"));
-                    
+
                     localiserDetected = true;
                     ilsTimer.AutoReset = true;
                     ilsTimer.Enabled = true;
@@ -1059,7 +1079,16 @@ namespace tfm
                     if (s.Name == "Command_Key") continue;
                     if (s.Name.StartsWith("ap_")) continue;
                     hotkeys.Add(s.Name);
-                    HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onKeyPressed);
+                    try
+                    {
+                        HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onKeyPressed);
+                    }
+                    catch (NHotkey.HotkeyAlreadyRegisteredException ex)
+                    {
+                        logger.Debug($"Cannot register {s.Name}. Probably duplicated key.");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"hotkey error in {s.Name}");
+                    }
+                    
                 }
 
 
@@ -1073,7 +1102,7 @@ namespace tfm
             }
 
         }
-        
+
         private void autopilotCommandMode(object sender, HotkeyEventArgs e)
         {
             // unregister the right bracket command key so it isn't pressed by accident
@@ -1091,7 +1120,16 @@ namespace tfm
                     if (s.Name.StartsWith("ap_"))
                     {
                         autopilotHotkeys.Add(s.Name);
-                        HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onAutopilotKeyPressed);
+                        try
+                        {
+                            HotkeyManager.Current.AddOrReplace(s.Name, (Keys)Properties.Hotkeys.Default[s.Name], onAutopilotKeyPressed);
+                        }
+                        catch (NHotkey.HotkeyAlreadyRegisteredException ex)
+                        {
+                            logger.Debug($"Cannot register {s.Name}. Probably duplicated key.");
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: $"hotkey error in {s.Name}");
+
+                        }
                     }
 
                 }
@@ -1218,6 +1256,11 @@ namespace tfm
                     ap.ShowDialog();
                     break;
 
+                case "ap_Set_Throttle":
+                    ap = new frmAutopilot("Throttle");
+                    ap.ShowDialog();
+                    break;
+
                 default:
                     Tolk.Output("key not defined");
                     break;
@@ -1232,6 +1275,9 @@ namespace tfm
             ResetHotkeys();
             switch (e.Name)
             {
+                case "takeoff_assist":
+                    onTakeOffAssistant();
+                    break;
                 case "ASL_Altitude":
                     onASLKey();
                     break;
@@ -1324,7 +1370,7 @@ namespace tfm
                 case "Read_Flaps_Angle":
                     onFlapsAngleKey();
                     break;
-                case "Read_Gear_State":
+                case "Read_Landing_Gear":
                     onGearState();
                     break;
 
@@ -1413,8 +1459,9 @@ namespace tfm
                     break;
 
             }
-            
+
         }
+
 
         private void onGearState()
         {
@@ -1433,7 +1480,7 @@ namespace tfm
             }
             if (Aircraft.LandingGear.Value > 0 && Aircraft.LandingGear.Value < 16383)
             {
-                gaugeValue = "moving. ";
+                gaugeValue = "in motion. ";
                 fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
             }
 
@@ -1595,7 +1642,7 @@ namespace tfm
                 {
                     weight = ActiveTanks[tank].WeightLbs.ToString("F0");
                 }
-                
+
                 string gal = ActiveTanks[tank].LevelUSGallons.ToString("F0");
                 if (Properties.Settings.Default.UseMetric)
                 {
@@ -1605,11 +1652,11 @@ namespace tfm
                 {
                     fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name}.  {pct} percent, {weight} pounds, {gal} gallons.");
                 }
-                
+
             }
         }
 
-        private void onFuelFlowKey()    
+        private void onFuelFlowKey()
         {
             int NumEngines = Aircraft.num_engines.Value;
             double eng1 = Math.Round(Aircraft.eng1_fuel_flow.Value);
@@ -2494,5 +2541,94 @@ namespace tfm
                 fireOnScreenReaderOutputEvent(isGauge: false, output: $"{Aircraft.aircraftLat.Value}, {Aircraft.aircraftLon.Value}");
             }
         }
-    }
-}
+
+        private void onTakeOffAssistant()
+        {
+            if (Properties.Settings.Default.takeOffAssistMode == "off")
+            {
+                fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "Takeoff assist is turned off. Please change it to full or partial in settings.");
+                takeOffAssistantActive = false;
+            } // Takeoff assist is permanently turned off.
+            else if (Properties.Settings.Default.takeOffAssistMode == "full")
+            {
+                takeOffAssistantActive = true;
+                fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "Takeoff assist on.");
+                // Flaps aren't included because flap positions very between planes,
+                // and there isn't a promising way to determine flap positions.
+
+                Aircraft.AutoThrottleArm.Value = 1; // On.
+                Aircraft.AutoBrake.Value = 0; // Rejected takeoff.
+                Aircraft.ApWingLeveler.Value = 1; // On.
+                Aircraft.PitotHeat.Value = 1; // On.
+                Autopilot.ApMaster = true;
+                Autopilot.ApVerticalSpeed = 500; // Keeps most planes from bouncing.
+                Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
+                Autopilot.ApAltitude = 5000; // Reasonable request for a step climb until profiles are implemented.
+                Autopilot.ApAirspeed = 250; // Must be faster than takeoff speed to avoid crashing.
+                Aircraft.ParkingBrake.Value = 0; // Off.
+
+                // Start the engines on the plane.
+                switch (Aircraft.num_engines.Value)
+                {
+                    case 1:
+                        Aircraft.Engine1ThrottleLever.Value = 16388;
+                        break;
+                    case 2:
+                        Aircraft.Engine1ThrottleLever.Value = 16388;
+                        Aircraft.Engine2ThrottleLever.Value = 16388;
+                        break;
+                    case 3:
+                        Aircraft.Engine1ThrottleLever.Value = 16388;
+                        Aircraft.Engine2ThrottleLever.Value = 16388;
+                        Aircraft.Engine3ThrottleLever.Value = 16388;
+                        break;
+                    case 4:
+                        Aircraft.Engine1ThrottleLever.Value = 16388;
+                        Aircraft.Engine2ThrottleLever.Value = 16388;
+                        Aircraft.Engine3ThrottleLever.Value = 16388;
+                        Aircraft.Engine4ThrottleLever.Value = 16388;
+                        break;
+                    case 0:
+                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "The aircraft engines are off, or have problems. Try again later.");
+                        break;
+                } // End throttle engines.
+
+                isTakeoffComplete = false;
+                PostTakeOffChecklist();
+            } // End takeoff mode is full.
+else if(Properties.Settings.Default.takeOffAssistMode == "partial")
+            {
+                takeOffAssistantActive = true;
+                fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "Takeoff assist on.");
+                isTakeoffComplete = false;
+                PostTakeOffChecklist();
+            } // End takeoff assist mode partial.
+        }
+        public bool PostTakeOffChecklist()
+        {
+          double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
+            double agl = (double)Math.Round(Aircraft.Altitude.Value - groundAlt);
+            if (takeOffAssistantActive && Aircraft.OnGround.Value == 0 && agl >= 100)
+            {
+                    //var airSpeed = Autopilot.ApAirspeed;
+                    //Autopilot.ApAirspeed = airSpeed;
+                    Autopilot.ApAirspeedHold = true;
+                    if (Aircraft.ApWingLeveler.Value == 1) Aircraft.ApWingLeveler.Value = 0; // Off.
+                    if (!Autopilot.ApHeadingLock) Autopilot.ApHeadingLock = true;
+                    Aircraft.AutoBrake.Value = 1; // Off.    
+                    Aircraft.ApYawDamper.Value = 1; // On.
+                    Autopilot.ApVerticalSpeedHold = true;
+                    Autopilot.ApVerticalSpeed = 2500; // Slowly increase for smoother transition.
+                    Aircraft.LandingGearControl.Value = 0; // Gear up.
+                    takeOffAssistantActive = false;
+                    isTakeoffComplete = true;
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Takeoff assist off.");
+                    return isTakeoffComplete;
+                                    } else
+            {
+                return isTakeoffComplete;
+            }
+                            
+        } // End PostTakeoffChecklist.
+    } // End IoSubSystem class.
+} // End TFM namespace.

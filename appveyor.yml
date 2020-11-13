@@ -4,10 +4,10 @@ branches:
   - master
 nuget:
   project_feed: true
-assembly_info:
-  patch: true
-  file: source\Properties\AssemblyInfo.cs
-  assembly_version: '{version}'
+
+environment:
+  encFileKey:
+    secure: IS92sMB8DjOsUUuLZRWCEHtM3s4a0TWtWojhyOXsxqk=
 
 before_build:
 - cmd: nuget restore source\tfm.sln
@@ -15,20 +15,20 @@ build:
   project: source\tfm.sln
   verbosity: minimal
 after_build:
-- cmd: >-
-    cd source\bin\debug
+- ps: >-
+    makensis /DVERSION=$env:APPVEYOR_REPO_TAG_NAME /DOUTFILE=tfm-$env:APPVEYOR_REPO_TAG_NAME-setup.exe installer\tfm.nsi
 
-    7z a ..\..\tfm-pre%APPVEYOR_BUILD_VERSION%.zip *
-
-    appveyor PushArtifact ..\..\tfm-pre%APPVEYOR_BUILD_VERSION%.zip
+    appveyor PushArtifact installer\tfm-$env:APPVEYOR_REPO_TAG_NAME-setup.EXE
 deploy:
 - provider: FTP
+  on:
+    APPVEYOR_REPO_TAG: true
   host: vps.fayre.me
   protocol: sftp
-  username: bvipilots
+  username: talkingflightmonitor
   password:
     secure: gsDOGtodux/gAPPDTybI5w==
-  folder: /public_html/tfm-snapshots
+  folder: /public_html/snapshots
 notifications:
 - provider: Email
   to:

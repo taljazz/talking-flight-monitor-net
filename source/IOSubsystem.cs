@@ -84,8 +84,7 @@ namespace tfm
         private static System.Timers.Timer flightFollowingTimer;
         private static System.Timers.Timer ilsTimer = new System.Timers.Timer(TimeSpan.FromSeconds(double.Parse(Properties.Settings.Default.ILSAnnouncementTimeInterval)).TotalMilliseconds);
         private static System.Timers.Timer waypointTransitionTimer = new System.Timers.Timer(5000);
-        private static System.Timers.Timer takeOffAssistantTimer = new System.Timers.Timer(1000);
-        private double HdgRight;
+                private double HdgRight;
         private double HdgLeft;
 
         // Audio objects
@@ -1275,6 +1274,30 @@ namespace tfm
             ResetHotkeys();
             switch (e.Name)
             {
+                case "flight_planner":
+                    var isPlannerActive = false;
+                    foreach(Form form in Application.OpenForms)
+                    {
+                        if(form is FlightPlanForm)
+                        {
+                            isPlannerActive = true;
+                                                        break;
+                        }
+                    }
+                    if(isPlannerActive)
+                    {
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Flight planner is already open!");
+                        break;
+                    }
+                    else
+                    {
+                        FlightPlanForm fp = new FlightPlanForm();
+                        fp.ShowDialog();
+                        isPlannerActive = true;
+                        break;
+                    }
+                    isPlannerActive = false;
+                    break;
                 case "takeoff_assist":
                     onTakeOffAssistant();
                     break;

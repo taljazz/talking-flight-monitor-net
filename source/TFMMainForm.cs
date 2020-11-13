@@ -904,5 +904,11 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                 }
             }
         }
+
+        private void flightPlanMenuItem_Click(object sender, EventArgs e)
+        {
+            FlightPlanForm fp = new FlightPlanForm();
+            fp.ShowDialog();
+        }
     }//End TFMMainForm class.
 } //End TFM namespace.

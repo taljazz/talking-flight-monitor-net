@@ -247,6 +247,8 @@ namespace tfm
         // PMDG offsets. These are all read-only. Writing is done via the PMDG control codes.
         // ﻿Aft overhead
         // ADIRU
+        public static Offset<string> IRS_DisplayLeft = new Offset<string>(0x6C5A, 7);
+        public static Offset<string> IRS_DisplayRight = new Offset<string>(0x6c61, 8);
         public static Offset<byte> IRS_DisplaySelector = new Offset<byte>("pmdg", 0x6420);
         public static Offset<byte> IRS_SysDisplay_R = new Offset<byte>("pmdg", 0x6421);
         public static Offset<byte> IRS_annunGPS = new Offset<byte>("pmdg", 0x6422);
@@ -254,7 +256,8 @@ namespace tfm
         public static Offset<byte> IRS_annunON_DC = new Offset<byte>("pmdg", 0x6425);
         public static Offset<byte> IRS_annunFAULT = new Offset<byte>("pmdg", 0x6427);
         public static Offset<byte> IRS_annunDC_FAIL = new Offset<byte>("pmdg", 0x6429);
-        public static Offset<byte> IRS_ModeSelector = new Offset<byte>("pmdg", 0x642B);
+        public static Offset<byte> IRS_ModeSelectorLeft = new Offset<byte>("pmdg", 0x642B);
+        public static Offset<byte> IRS_ModeSelectorRight = new Offset<byte>("pmdg", 0x642C);
         // PSEU
         public static Offset<byte> WARN_annunPSEU = new Offset<byte>("pmdg", 0x642D);
         // SERVICE INTERPHONE
@@ -289,7 +292,7 @@ public static Offset<byte> ENG_annunALTN = new Offset<byte>("pmdg", 0x6436);
         public static Offset<byte> FCTL_annunLOW_QUANTITY = new Offset<byte>("pmdg", 0x644A);
         public static Offset<byte> FCTL_annunLOW_PRESSURE = new Offset<byte>("pmdg", 0x644B);
         public static Offset<byte> FCTL_annunLOW_STBY_RUD_ON = new Offset<byte>("pmdg", 0x644C);
-public static Offset<byte> FCTL_annunFEEL_DIFF_PRESS = new Offset<byte>("pmdg", 0x644D);
+        public static Offset<byte> FCTL_annunFEEL_DIFF_PRESS = new Offset<byte>("pmdg", 0x644D);
         public static Offset<byte> FCTL_annunSPEED_TRIM_FAIL = new Offset<byte>("pmdg", 0x644E);
         public static Offset<byte> FCTL_annunMACH_TRIM_FAIL = new Offset<byte>("pmdg", 0x644F);
         public static Offset<byte> FCTL_annunAUTO_SLAT_FAIL = new Offset<byte>("pmdg", 0x6450);
@@ -306,7 +309,7 @@ public static Offset<byte> FCTL_annunFEEL_DIFF_PRESS = new Offset<byte>("pmdg", 
         public static Offset<byte> FUEL_PumpCtrSw = new Offset<byte>("pmdg", 0x6461);
         public static Offset<byte> FUEL_annunENG_VALVE_CLOSED = new Offset<byte>("pmdg", 0x6463);
         public static Offset<byte> FUEL_annunSPAR_VALVE_CLOSED = new Offset<byte>("pmdg", 0x6465);
-public static Offset<byte> FUEL_annunFILTER_BYPASS = new Offset<byte>("pmdg", 0x6467);
+        public static Offset<byte> FUEL_annunFILTER_BYPASS = new Offset<byte>("pmdg", 0x6467);
         public static Offset<byte> FUEL_annunXFEED_VALVE_OPEN = new Offset<byte>("pmdg", 0x6469);
         public static Offset<byte> FUEL_annunLOWPRESS_Fwd = new Offset<byte>("pmdg", 0x646A);
         public static Offset<byte> FUEL_annunLOWPRESS_Aft = new Offset<byte>("pmdg", 0x646C);
@@ -427,18 +430,23 @@ public static Offset<byte> FUEL_annunFILTER_BYPASS = new Offset<byte>("pmdg", 0x
         public static Offset<byte> EFIS_ModeSel = new Offset<byte>("pmdg", 0x651C);
         public static Offset<byte> EFIS_RangeSel = new Offset<byte>("pmdg", 0x651E);
         // MODE CONTROL PANEL
+        public static Offset<ushort> MCP_CourseL = new Offset<ushort>(0x6520);
+        public static Offset<ushort> MCP_CourseR = new Offset<ushort>(0x6522);
         public static Offset<byte> MCP_IASBlank = new Offset<byte>("pmdg", 0x6528);
+        public static Offset<float> MCP_IASMach = new Offset<float>(0x6524);
         public static Offset<byte> MCP_IASOverspeedFlash = new Offset<byte>("pmdg", 0x6529);
         public static Offset<byte> MCP_IASUnderspeedFlash = new Offset<byte>("pmdg", 0x652A);
-        public static Offset<byte> MCP_Heading = new Offset<byte>("pmdg", 0x652C);
-        public static Offset<byte> MCP_Altitude = new Offset<byte>("pmdg", 0x652E);
-        public static Offset<byte> MCP_VertSpeed = new Offset<byte>("pmdg", 0x6530);
+        public static Offset<short> MCP_Heading = new Offset<short>("pmdg", 0x652C);
+        public static Offset<short> MCP_Altitude = new Offset<short>("pmdg", 0x652E);
+        public static Offset<short> MCP_VertSpeed = new Offset<short>("pmdg", 0x6530);
         public static Offset<byte> MCP_VertSpeedBlank = new Offset<byte>("pmdg", 0x6532);
-        public static Offset<byte> MCP_FDSw = new Offset<byte>("pmdg", 0x6533);
+        public static Offset<byte> MCP_FDSwL = new Offset<byte>("pmdg", 0x6533);
+        public static Offset<byte> MCP_FDSwR = new Offset<byte>("pmdg", 0x6534);
         public static Offset<byte> MCP_ATArmSw = new Offset<byte>("pmdg", 0x6535);
         public static Offset<byte> MCP_BankLimitSel = new Offset<byte>("pmdg", 0x6536);
         public static Offset<byte> MCP_DisengageBar = new Offset<byte>("pmdg", 0x6537);
-        public static Offset<byte> MCP_annunFD = new Offset<byte>("pmdg", 0x6538);
+        public static Offset<byte> MCP_annunFDL = new Offset<byte>("pmdg", 0x6538);
+        public static Offset<byte> MCP_annunFDR = new Offset<byte>("pmdg", 0x6539);
         public static Offset<byte> MCP_annunATArm = new Offset<byte>("pmdg", 0x653A);
         public static Offset<byte> MCP_annunN1 = new Offset<byte>("pmdg", 0x653B);
         public static Offset<byte> MCP_annunSPEED = new Offset<byte>("pmdg", 0x653C);

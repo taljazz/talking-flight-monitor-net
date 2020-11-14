@@ -252,6 +252,18 @@
     <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.Designer.cs">
       <DependentUpon>ctlElectrical.cs</DependentUpon>
     </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlInertialReferenceUnit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlInertialReferenceUnit.Designer.cs">
+      <DependentUpon>ctlInertialReferenceUnit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlMCP.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlMCP.Designer.cs">
+      <DependentUpon>ctlMCP.cs</DependentUpon>
+    </Compile>
     <Compile Include="PMDG\PMDG 737\CockpitPanels\frmCockpitPanels.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -422,6 +434,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.resx">
       <DependentUpon>ctlElectrical.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlInertialReferenceUnit.resx">
+      <DependentUpon>ctlInertialReferenceUnit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlMCP.resx">
+      <DependentUpon>ctlMCP.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\frmCockpitPanels.resx">
       <DependentUpon>frmCockpitPanels.cs</DependentUpon>

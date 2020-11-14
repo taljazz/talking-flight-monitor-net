@@ -28,12 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnGroundPower = new System.Windows.Forms.Button();
             this.btnStandbyPower = new System.Windows.Forms.Button();
             this.btnBattery = new System.Windows.Forms.Button();
-            this.btnDCSource = new System.Windows.Forms.Button();
-            this.btnACSource = new System.Windows.Forms.Button();
-            this.btnGalley = new System.Windows.Forms.Button();
             this.btnCabUtil = new System.Windows.Forms.Button();
             this.btnIFE = new System.Windows.Forms.Button();
             this.btnApuGen1 = new System.Windows.Forms.Button();
@@ -42,13 +40,14 @@
             this.btnGen2 = new System.Windows.Forms.Button();
             this.btnBusTransfer = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tmrElectrical = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnGroundPower
             // 
-            this.btnGroundPower.AccessibleRole = System.Windows.Forms.AccessibleRole.TitleBar;
-            this.btnGroundPower.Location = new System.Drawing.Point(93, 32);
+            this.btnGroundPower.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.btnGroundPower.Location = new System.Drawing.Point(121, 41);
             this.btnGroundPower.Name = "btnGroundPower";
             this.btnGroundPower.Size = new System.Drawing.Size(14, 23);
             this.btnGroundPower.TabIndex = 10;
@@ -59,7 +58,7 @@
             // 
             // btnStandbyPower
             // 
-            this.btnStandbyPower.Location = new System.Drawing.Point(3, 32);
+            this.btnStandbyPower.Location = new System.Drawing.Point(3, 41);
             this.btnStandbyPower.Name = "btnStandbyPower";
             this.btnStandbyPower.Size = new System.Drawing.Size(29, 23);
             this.btnStandbyPower.TabIndex = 6;
@@ -71,58 +70,32 @@
             // btnBattery
             // 
             this.btnBattery.AccessibleDescription = "";
+            this.btnBattery.AutoSize = true;
+            this.btnBattery.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnBattery.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBattery.Location = new System.Drawing.Point(3, 3);
             this.btnBattery.Name = "btnBattery";
-            this.btnBattery.Size = new System.Drawing.Size(29, 23);
+            this.btnBattery.Size = new System.Drawing.Size(72, 32);
             this.btnBattery.TabIndex = 0;
             this.btnBattery.Text = "Battery";
             this.btnBattery.UseVisualStyleBackColor = true;
-            this.btnBattery.Click += new System.EventHandler(this.btnBattery_Click);
-            // 
-            // btnDCSource
-            // 
-            this.btnDCSource.Location = new System.Drawing.Point(38, 3);
-            this.btnDCSource.Name = "btnDCSource";
-            this.btnDCSource.Size = new System.Drawing.Size(29, 23);
-            this.btnDCSource.TabIndex = 1;
-            this.btnDCSource.Text = "DC Meter Source";
-            this.btnDCSource.UseVisualStyleBackColor = true;
-            this.btnDCSource.Click += new System.EventHandler(this.btnDCSource_Click);
-            // 
-            // btnACSource
-            // 
-            this.btnACSource.Location = new System.Drawing.Point(73, 3);
-            this.btnACSource.Name = "btnACSource";
-            this.btnACSource.Size = new System.Drawing.Size(14, 23);
-            this.btnACSource.TabIndex = 2;
-            this.btnACSource.Text = "AC Meter Source";
-            this.btnACSource.UseVisualStyleBackColor = true;
-            this.btnACSource.Click += new System.EventHandler(this.btnACSource_Click);
-            // 
-            // btnGalley
-            // 
-            this.btnGalley.Location = new System.Drawing.Point(93, 3);
-            this.btnGalley.Name = "btnGalley";
-            this.btnGalley.Size = new System.Drawing.Size(14, 23);
-            this.btnGalley.TabIndex = 3;
-            this.btnGalley.Text = "Galley";
-            this.btnGalley.UseVisualStyleBackColor = true;
-            this.btnGalley.Click += new System.EventHandler(this.btnGalley_Click);
+            this.btnBattery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnBattery_KeyDown);
+            this.btnBattery.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
             // 
             // btnCabUtil
             // 
-            this.btnCabUtil.Location = new System.Drawing.Point(113, 3);
+            this.btnCabUtil.Location = new System.Drawing.Point(141, 3);
             this.btnCabUtil.Name = "btnCabUtil";
             this.btnCabUtil.Size = new System.Drawing.Size(14, 23);
             this.btnCabUtil.TabIndex = 4;
             this.btnCabUtil.Text = "Cabin Util";
             this.btnCabUtil.UseVisualStyleBackColor = true;
-            this.btnCabUtil.Click += new System.EventHandler(this.btnCabUtil_Click);
+            this.btnCabUtil.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnCabUtil_KeyDown);
+            this.btnCabUtil.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
             // 
             // btnIFE
             // 
-            this.btnIFE.Location = new System.Drawing.Point(133, 3);
+            this.btnIFE.Location = new System.Drawing.Point(161, 3);
             this.btnIFE.Name = "btnIFE";
             this.btnIFE.Size = new System.Drawing.Size(14, 23);
             this.btnIFE.TabIndex = 5;
@@ -132,19 +105,18 @@
             // 
             // btnApuGen1
             // 
-            this.btnApuGen1.Location = new System.Drawing.Point(113, 32);
+            this.btnApuGen1.Location = new System.Drawing.Point(141, 41);
             this.btnApuGen1.Name = "btnApuGen1";
             this.btnApuGen1.Size = new System.Drawing.Size(14, 23);
             this.btnApuGen1.TabIndex = 11;
             this.btnApuGen1.Text = "Apu Gen 1";
             this.btnApuGen1.UseVisualStyleBackColor = true;
-            this.btnApuGen1.Click += new System.EventHandler(this.btnApuGen1_Click);
             this.btnApuGen1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnApuGen1_KeyDown);
             this.btnApuGen1.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
             // 
             // btnApuGen2
             // 
-            this.btnApuGen2.Location = new System.Drawing.Point(133, 32);
+            this.btnApuGen2.Location = new System.Drawing.Point(161, 41);
             this.btnApuGen2.Name = "btnApuGen2";
             this.btnApuGen2.Size = new System.Drawing.Size(14, 23);
             this.btnApuGen2.TabIndex = 12;
@@ -155,27 +127,29 @@
             // 
             // btnGen1
             // 
-            this.btnGen1.Location = new System.Drawing.Point(3, 61);
+            this.btnGen1.Location = new System.Drawing.Point(3, 70);
             this.btnGen1.Name = "btnGen1";
             this.btnGen1.Size = new System.Drawing.Size(14, 14);
             this.btnGen1.TabIndex = 13;
             this.btnGen1.Text = "Gen 1";
             this.btnGen1.UseVisualStyleBackColor = true;
-            this.btnGen1.Click += new System.EventHandler(this.btnGen1_Click);
+            this.btnGen1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnGen1_KeyDown);
+            this.btnGen1.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
             // 
             // btnGen2
             // 
-            this.btnGen2.Location = new System.Drawing.Point(38, 61);
+            this.btnGen2.Location = new System.Drawing.Point(81, 70);
             this.btnGen2.Name = "btnGen2";
             this.btnGen2.Size = new System.Drawing.Size(14, 14);
             this.btnGen2.TabIndex = 14;
             this.btnGen2.Text = "Gen 2";
             this.btnGen2.UseVisualStyleBackColor = true;
-            this.btnGen2.Click += new System.EventHandler(this.btnGen2_Click);
+            this.btnGen2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnGen2_KeyDown);
+            this.btnGen2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
             // 
             // btnBusTransfer
             // 
-            this.btnBusTransfer.Location = new System.Drawing.Point(73, 61);
+            this.btnBusTransfer.Location = new System.Drawing.Point(101, 70);
             this.btnBusTransfer.Name = "btnBusTransfer";
             this.btnBusTransfer.Size = new System.Drawing.Size(14, 14);
             this.btnBusTransfer.TabIndex = 15;
@@ -186,6 +160,7 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel1.ColumnCount = 6;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -200,22 +175,23 @@
             this.tableLayoutPanel1.Controls.Add(this.btnApuGen1, 4, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnIFE, 5, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnCabUtil, 4, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnGalley, 3, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnACSource, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnDCSource, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnBattery, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnStandbyPower, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnGroundPower, 3, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(10, 37);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(150, 78);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(178, 87);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // tmrElectrical
+            // 
+            this.tmrElectrical.Interval = 500;
+            this.tmrElectrical.Tick += new System.EventHandler(this.tmrElectrical_Tick);
             // 
             // ctlElectrical
             // 
@@ -225,9 +201,10 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "ctlElectrical";
-            this.Size = new System.Drawing.Size(1000, 800);
+            this.Size = new System.Drawing.Size(191, 127);
             this.Load += new System.EventHandler(this.ctlElectrical_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -238,9 +215,6 @@
         private System.Windows.Forms.Button btnGroundPower;
         private System.Windows.Forms.Button btnStandbyPower;
         private System.Windows.Forms.Button btnBattery;
-        private System.Windows.Forms.Button btnDCSource;
-        private System.Windows.Forms.Button btnACSource;
-        private System.Windows.Forms.Button btnGalley;
         private System.Windows.Forms.Button btnCabUtil;
         private System.Windows.Forms.Button btnIFE;
         private System.Windows.Forms.Button btnApuGen1;
@@ -249,5 +223,6 @@
         private System.Windows.Forms.Button btnGen2;
         private System.Windows.Forms.Button btnBusTransfer;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Timer tmrElectrical;
     }
 }

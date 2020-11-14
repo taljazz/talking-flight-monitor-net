@@ -25,6 +25,8 @@ namespace tfm
         {
             pages.Add("nodElectrical", new ctlElectrical());
             // pages.Add("nodFuel", new ctlFuel());
+            pages.Add("nodMCP", new ctlMCP());
+            pages.Add("nodIRU", new ctlInertialReferenceUnit());
             // set the parent and hide them all
             foreach (iPanelsPage page in this.pages.Values)
             {

@@ -382,10 +382,54 @@ namespace tfm
                 // TODO: engine select
                 if (Aircraft.AircraftName.Value.Contains("PMDG"))
                 {   
-                    ReadToggle(Aircraft.ELEC_BatSelector, Aircraft.ELEC_BatSelector.Value > 0, "Battery", "active", "off");
+                    // electrical panel
+                            ReadToggle(Aircraft.ELEC_BatSelector, Aircraft.ELEC_BatSelector.Value > 0, "Battery", "active", "off");
                     ReadToggle(Aircraft.ELEC_annunBAT_DISCHARGE, Aircraft.ELEC_annunBAT_DISCHARGE.Value > 0, "bat discharge light", "on", "off");
                     ReadToggle(Aircraft.ELEC_annunGRD_POWER_AVAILABLE, Aircraft.ELEC_annunGRD_POWER_AVAILABLE.Value > 0, "ground power", "available", "not available");
-                    
+                    ReadToggle(Aircraft.ELEC_CabUtilSw, Aircraft.ELEC_CabUtilSw.Value > 0, "cabin utility switch", "on", "off");
+                    ReadToggle(Aircraft.ELEC_IFEPassSeatSw, Aircraft.ELEC_IFEPassSeatSw.Value > 0, "passenger seat power", "on", "off");
+                    ReadToggle(Aircraft.ELEC_annunAPU_GEN_OFF_BUS, Aircraft.ELEC_annunAPU_GEN_OFF_BUS.Value > 0, "APU Gen 1 off bus light", "on", "off");
+                    ReadToggle(Aircraft.ELEC_annunGEN_BUS_OFF, Aircraft.ELEC_annunGEN_BUS_OFF.Value > 0, "engine generator off bus light", "on", "off");
+                    ReadToggle(Aircraft.APU_annunLOW_OIL_PRESSURE, Aircraft.APU_annunLOW_OIL_PRESSURE.Value > 0, "APU low oil pressure light", "on", "off");
+                    // ADIRU
+                    ReadToggle(Aircraft.IRS_aligned, Aircraft.IRS_aligned.Value > 0, "IRS", "aligned", "");
+
+                    // MCP
+
+                    // flight director
+                    ReadToggle(Aircraft.MCP_FDSwL, Aircraft.MCP_FDSwL.Value > 0, "left flight director", "on", "off");
+                    ReadToggle(Aircraft.MCP_FDSwR, Aircraft.MCP_FDSwR.Value > 0, "right flight director", "on", "off");
+                    ReadToggle(Aircraft.MCP_annunFDL, Aircraft.MCP_annunFDL.Value > 0, "left fd master", "on", "off");
+                    ReadToggle(Aircraft.MCP_annunFDR, Aircraft.MCP_annunFDR.Value > 0, "right   fd master", "on", "off");
+                    // auto throttle arm
+                    ReadToggle(Aircraft.MCP_ATArmSw, Aircraft.MCP_ATArmSw.Value > 0, "autothrottle arm switch", "on", "off");
+                    ReadToggle(Aircraft.MCP_annunATArm, Aircraft.MCP_annunATArm.Value > 0, "Auto throttle light", "on", "off");
+                    // N1 button
+                    ReadToggle(Aircraft.MCP_annunN1, Aircraft.MCP_annunN1.Value > 0, "N1 light", "on", "off");
+                    // speed
+                    ReadToggle(Aircraft.MCP_annunSPEED, Aircraft.MCP_annunSPEED.Value > 0, "speed light", "on", "off");
+                    // LNAV
+                    ReadToggle(Aircraft.MCP_annunLNAV, Aircraft.MCP_annunLNAV.Value > 0, "L Nav light", "on", "off");
+                    // VNAV
+                    ReadToggle(Aircraft.MCP_annunVNAV, Aircraft.MCP_annunVNAV.Value > 0, "V Nav light", "on", "off");
+                    // Autopilot CMD buttons
+                    ReadToggle(Aircraft.MCP_annunCMD_A, Aircraft.MCP_annunCMD_A.Value > 0, "CMD A", "on", "off");
+                    ReadToggle(Aircraft.MCP_annunCMD_B, Aircraft.MCP_annunCMD_B.Value > 0, "CMD B", "on", "off");
+                    // autopilot heading select
+                    ReadToggle(Aircraft.MCP_annunHDG_SEL, Aircraft.MCP_annunHDG_SEL.Value > 0, "heading select", "on", "off");
+                    // level change
+                    ReadToggle(Aircraft.MCP_annunLVL_CHG, Aircraft.MCP_annunLVL_CHG.Value > 0, "level change", "on", "off");
+                    // altitude hold
+                    ReadToggle(Aircraft.MCP_annunALT_HOLD, Aircraft.MCP_annunALT_HOLD.Value > 0, "Altitude hold", "on", "off");
+                    // approach mode
+                    ReadToggle(Aircraft.MCP_annunAPP, Aircraft.MCP_annunAPP.Value > 0, "approach", "on", "off");
+                    ReadToggle(Aircraft.MCP_annunVOR_LOC, Aircraft.MCP_annunVOR_LOC.Value > 0, "vor loc", "on", "off");
+                    // CWS mode
+                    ReadToggle(Aircraft.MCP_annunCWS_A, Aircraft.MCP_annunCWS_A.Value > 0, "CWS A", "on", "off");
+                    ReadToggle(Aircraft.MCP_annunCWS_B, Aircraft.MCP_annunCWS_B.Value > 0, "CWS B", "on", "off");
+                    // CDU exec button light
+                    ReadToggle(Aircraft.CDU_annunEXEC, Aircraft.CDU_annunEXEC.Value > 0, "execute key", "available", "off");
+
                 }
             }
             else
@@ -934,12 +978,26 @@ namespace tfm
             string gaugeValue;
             bool isGauge = true;
             // heading
-            if (Aircraft.ApHeading.ValueChanged)
+            if (Aircraft.AircraftName.Value.Contains("PMDG"))
             {
-                gaugeName = "AP heading";
-                gaugeValue = Autopilot.ApHeading.ToString();
-                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                if (Aircraft.MCP_Heading.ValueChanged)
+                {
+                    gaugeName = "AP heading";
+                    gaugeValue = Aircraft.MCP_Heading.Value.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
+                }
             }
+            else
+            {
+                if (Aircraft.ApHeading.ValueChanged)
+                {
+                    gaugeName = "AP heading";
+                    gaugeValue = Autopilot.ApHeading.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                }
+            }
+
             // airspeed
             if (Aircraft.ApAirspeed.ValueChanged)
             {
@@ -960,13 +1018,24 @@ namespace tfm
             // Altitude
             var gaugeName = "AP altitude";
             var isGauge = true;
-
-            if (Aircraft.ApAltitude.ValueChanged)
+            if (Aircraft.AircraftName.Value.Contains("PMDG"))
             {
-                var gaugeValue = Autopilot.ApAltitude.ToString();
-                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                if (Aircraft.MCP_Altitude.ValueChanged)
+                {
+                    var gaugeValue = Aircraft.MCP_Altitude.Value.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
+                }
+            }
+            else
+            {
+                if (Aircraft.ApAltitude.ValueChanged)
+                {
+                    var gaugeValue = Autopilot.ApAltitude.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
 
 
+                }
             }
 
         }

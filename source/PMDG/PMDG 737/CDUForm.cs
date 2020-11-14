@@ -1,4 +1,5 @@
-﻿using FSUIPC;
+﻿using DavyKager;
+using FSUIPC;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,13 +32,23 @@ namespace tfm
         private void RefreshCDU()
         {
             txtCDU.Clear();
-            Thread.Sleep(200);
+            Thread.Sleep(500);
             cdu.RefreshData();
-            int counter = 1;
+            int rowCounter = 1;
+            int lskCounter = 1;
+
             foreach (PMDG_NGX_CDU_Row row in cdu.Rows)
             {
-                txtCDU.Text += $"{counter}: {row.ToString()}\r\n";          
-                counter++;
+                if (new int [] { 3, 5, 7, 9, 11, 13 }.Contains(rowCounter))
+                {
+                    txtCDU.Text += $"{lskCounter}: {row.ToString()}\r\n";
+                    lskCounter++;
+                }
+                else
+                {
+                    txtCDU.Text += $"{row.ToString()}\r\n";
+                }
+                rowCounter++;
             }
         }
 
@@ -50,8 +61,15 @@ namespace tfm
         
         private void btnExec_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_EXEC, Aircraft.ClkL);
-            RefreshCDU();
+            if (Aircraft.CDU_annunEXEC.Value == 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_EXEC, Aircraft.ClkL);
+                RefreshCDU();
+            }
+            else
+            {
+                Tolk.Output("execute key not available");
+            }
         }
 
         private void CDUForm_KeyDown(object sender, KeyEventArgs e)
@@ -344,14 +362,22 @@ namespace tfm
                     case '0':
                         FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_0, Aircraft.ClkL);
                         break;
-
+                    case '.':
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_DOT, Aircraft.ClkL);
+                        break;
 
 
                 }
                 Thread.Sleep(50);
-
+                RefreshCDU();
             }
 
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_CLR, Aircraft.ClkL);
+            RefreshCDU();
         }
     }
 }

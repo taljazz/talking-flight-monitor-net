@@ -33,6 +33,7 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.txtEntry = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
+            this.btnClear = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,16 +43,17 @@
             this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel1.Controls.Add(this.txtCDU);
             this.flowLayoutPanel1.Controls.Add(this.btnRefresh);
+            this.flowLayoutPanel1.Controls.Add(this.btnClear);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(5);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(642, 172);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(723, 172);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // txtCDU
             // 
             this.txtCDU.Location = new System.Drawing.Point(5, 5);
-            this.txtCDU.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.txtCDU.Margin = new System.Windows.Forms.Padding(5);
             this.txtCDU.Multiline = true;
             this.txtCDU.Name = "txtCDU";
             this.txtCDU.ReadOnly = true;
@@ -61,7 +63,7 @@
             // btnRefresh
             // 
             this.btnRefresh.Location = new System.Drawing.Point(512, 5);
-            this.btnRefresh.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(5);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(125, 38);
             this.btnRefresh.TabIndex = 1;
@@ -86,6 +88,16 @@
             this.btnSend.UseVisualStyleBackColor = true;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(645, 3);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(75, 23);
+            this.btnClear.TabIndex = 2;
+            this.btnClear.Text = "Clear Scratchpad";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
             // CDUForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 33F);
@@ -98,7 +110,7 @@
             this.Controls.Add(this.flowLayoutPanel1);
             this.Font = new System.Drawing.Font("Times New Roman", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "CDUForm";
             this.Text = "737 CDU";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CDUForm_KeyDown);
@@ -116,6 +128,7 @@
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.TextBox txtEntry;
         private System.Windows.Forms.Button btnSend;
+        private System.Windows.Forms.Button btnClear;
     }
 }
 

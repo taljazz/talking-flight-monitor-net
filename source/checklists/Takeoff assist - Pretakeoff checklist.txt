@@ -1,0 +1,15 @@
+Takeoff assistant checklist
+Pretakeoff checklist (partial assist mode):
+
+Engines on.
+Autothrottle on.
+Autobreak RTO
+Wing leveler on.
+Pitot heat on.
+Autopilot on.
+Set vertical speed.
+Autopilot altitude lock on (must be locked before setting altitude below).
+Set autopilot altitude.
+Set autopilot airspeed (faster than takeoff speed).
+Turn off parking break.
+Turn on toga or power engines to max power/thrust.

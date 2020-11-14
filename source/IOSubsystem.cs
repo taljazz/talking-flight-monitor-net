@@ -30,6 +30,9 @@ using System.ServiceModel.Security;
 using System.Drawing.Text;
 using System.Windows.Forms.VisualStyles;
 using tfm.Properties;
+using System.CodeDom;
+using System.Speech.Synthesis;
+using System.ComponentModel.Design;
 
 namespace tfm
 {
@@ -81,7 +84,7 @@ namespace tfm
         private static System.Timers.Timer flightFollowingTimer;
         private static System.Timers.Timer ilsTimer = new System.Timers.Timer(TimeSpan.FromSeconds(double.Parse(Properties.Settings.Default.ILSAnnouncementTimeInterval)).TotalMilliseconds);
         private static System.Timers.Timer waypointTransitionTimer = new System.Timers.Timer(5000);
-        private double HdgRight;
+                private double HdgRight;
         private double HdgLeft;
 
         // Audio objects
@@ -131,6 +134,8 @@ namespace tfm
         private bool calloutsEnabled;
         private bool ILSEnabled;
         private bool groundSpeedActive;
+        private bool takeOffAssistantActive = false;
+        private bool isTakeoffComplete = true; // Always true unless takeoff assist is Active.
         private bool onGround;
         private bool TrimEnabled = true;
         private bool FlapsMoving;
@@ -1345,6 +1350,33 @@ namespace tfm
             ResetHotkeys();
             switch (e.Name)
             {
+                case "flight_planner":
+                    var isPlannerActive = false;
+                    foreach(Form form in Application.OpenForms)
+                    {
+                        if(form is FlightPlanForm)
+                        {
+                            isPlannerActive = true;
+                                                        break;
+                        }
+                    }
+                    if(isPlannerActive)
+                    {
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Flight planner is already open!");
+                        break;
+                    }
+                    else
+                    {
+                        FlightPlanForm fp = new FlightPlanForm();
+                        fp.ShowDialog();
+                        isPlannerActive = true;
+                        break;
+                    }
+                    isPlannerActive = false;
+                    break;
+                case "takeoff_assist":
+                    onTakeOffAssistant();
+                    break;
                 case "ASL_Altitude":
                     onASLKey();
                     break;
@@ -2608,5 +2640,94 @@ namespace tfm
                 fireOnScreenReaderOutputEvent(isGauge: false, output: $"{Aircraft.aircraftLat.Value}, {Aircraft.aircraftLon.Value}");
             }
         }
-    }
-}
+
+        private void onTakeOffAssistant()
+        {
+            if (Properties.Settings.Default.takeOffAssistMode == "off")
+            {
+                fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "Takeoff assist is turned off. Please change it to full or partial in settings.");
+                takeOffAssistantActive = false;
+            } // Takeoff assist is permanently turned off.
+            else if (Properties.Settings.Default.takeOffAssistMode == "full")
+            {
+                takeOffAssistantActive = true;
+                fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "Takeoff assist on.");
+                // Flaps aren't included because flap positions very between planes,
+                // and there isn't a promising way to determine flap positions.
+
+                Aircraft.AutoThrottleArm.Value = 1; // On.
+                Aircraft.AutoBrake.Value = 0; // Rejected takeoff.
+                Aircraft.ApWingLeveler.Value = 1; // On.
+                Aircraft.PitotHeat.Value = 1; // On.
+                Autopilot.ApMaster = true;
+                Autopilot.ApVerticalSpeed = 500; // Keeps most planes from bouncing.
+                Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
+                Autopilot.ApAltitude = 5000; // Reasonable request for a step climb until profiles are implemented.
+                Autopilot.ApAirspeed = 250; // Must be faster than takeoff speed to avoid crashing.
+                Aircraft.ParkingBrake.Value = 0; // Off.
+
+                // Start the engines on the plane.
+                switch (Aircraft.num_engines.Value)
+                {
+                    case 1:
+                        Aircraft.Engine1ThrottleLever.Value = 16388;
+                        break;
+                    case 2:
+                        Aircraft.Engine1ThrottleLever.Value = 16388;
+                        Aircraft.Engine2ThrottleLever.Value = 16388;
+                        break;
+                    case 3:
+                        Aircraft.Engine1ThrottleLever.Value = 16388;
+                        Aircraft.Engine2ThrottleLever.Value = 16388;
+                        Aircraft.Engine3ThrottleLever.Value = 16388;
+                        break;
+                    case 4:
+                        Aircraft.Engine1ThrottleLever.Value = 16388;
+                        Aircraft.Engine2ThrottleLever.Value = 16388;
+                        Aircraft.Engine3ThrottleLever.Value = 16388;
+                        Aircraft.Engine4ThrottleLever.Value = 16388;
+                        break;
+                    case 0:
+                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "The aircraft engines are off, or have problems. Try again later.");
+                        break;
+                } // End throttle engines.
+
+                isTakeoffComplete = false;
+                PostTakeOffChecklist();
+            } // End takeoff mode is full.
+else if(Properties.Settings.Default.takeOffAssistMode == "partial")
+            {
+                takeOffAssistantActive = true;
+                fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "Takeoff assist on.");
+                isTakeoffComplete = false;
+                PostTakeOffChecklist();
+            } // End takeoff assist mode partial.
+        }
+        public bool PostTakeOffChecklist()
+        {
+          double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
+            double agl = (double)Math.Round(Aircraft.Altitude.Value - groundAlt);
+            if (takeOffAssistantActive && Aircraft.OnGround.Value == 0 && agl >= 100)
+            {
+                    //var airSpeed = Autopilot.ApAirspeed;
+                    //Autopilot.ApAirspeed = airSpeed;
+                    Autopilot.ApAirspeedHold = true;
+                    if (Aircraft.ApWingLeveler.Value == 1) Aircraft.ApWingLeveler.Value = 0; // Off.
+                    if (!Autopilot.ApHeadingLock) Autopilot.ApHeadingLock = true;
+                    Aircraft.AutoBrake.Value = 1; // Off.    
+                    Aircraft.ApYawDamper.Value = 1; // On.
+                    Autopilot.ApVerticalSpeedHold = true;
+                    Autopilot.ApVerticalSpeed = 2500; // Slowly increase for smoother transition.
+                    Aircraft.LandingGearControl.Value = 0; // Gear up.
+                    takeOffAssistantActive = false;
+                    isTakeoffComplete = true;
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Takeoff assist off.");
+                    return isTakeoffComplete;
+                                    } else
+            {
+                return isTakeoffComplete;
+            }
+                            
+        } // End PostTakeoffChecklist.
+    } // End IoSubSystem class.
+} // End TFM namespace.

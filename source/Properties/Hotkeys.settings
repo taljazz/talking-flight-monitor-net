@@ -221,5 +221,11 @@
     <Setting Name="ap_Set_Throttle" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+R</Value>
     </Setting>
+    <Setting Name="takeoff_assist" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Ctrl+A</Value>
+    </Setting>
+    <Setting Name="flight_planner" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Ctrl+P</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

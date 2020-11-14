@@ -51,6 +51,7 @@
             this.CommandKeyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ConnectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FuelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.flightPlanMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ReportIssueMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -207,7 +208,8 @@
             this.KeyManagerMenuItem,
             this.CommandKeyMenuItem,
             this.ConnectMenuItem,
-            this.FuelMenuItem});
+            this.FuelMenuItem,
+            this.flightPlanMenuItem});
             this.ToolsMenu.Name = "ToolsMenu";
             this.ToolsMenu.ShortcutKeyDisplayString = "ALT+T";
             this.ToolsMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.T)));
@@ -285,6 +287,16 @@
             this.FuelMenuItem.Size = new System.Drawing.Size(568, 36);
             this.FuelMenuItem.Text = "&Fuel Manager";
             this.FuelMenuItem.Click += new System.EventHandler(this.FuelMenuItem_Click);
+            // 
+            // flightPlanMenuItem
+            // 
+            this.flightPlanMenuItem.AccessibleName = "Flight planner";
+            this.flightPlanMenuItem.Name = "flightPlanMenuItem";
+            this.flightPlanMenuItem.ShortcutKeyDisplayString = "Ctrl+P";
+            this.flightPlanMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.flightPlanMenuItem.Size = new System.Drawing.Size(568, 36);
+            this.flightPlanMenuItem.Text = "Flight planner";
+            this.flightPlanMenuItem.Click += new System.EventHandler(this.flightPlanMenuItem_Click);
             // 
             // HelpMenu
             // 
@@ -765,6 +777,7 @@
         private System.Windows.Forms.ToolStripMenuItem changeVerticalSpeedContextMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FuelMenuItem;
         private System.Windows.Forms.NotifyIcon trayIcon;
+        private System.Windows.Forms.ToolStripMenuItem flightPlanMenuItem;
     }
 }
 

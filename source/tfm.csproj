@@ -227,6 +227,13 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="aircraft.cs" />
+    <Compile Include="Flight planning\FlightPlan.cs" />
+    <Compile Include="Flight planning\FlightPlanForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Flight planning\FlightPlanForm.Designer.cs">
+      <DependentUpon>FlightPlanForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmFuelManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -240,37 +247,12 @@
       <DependentUpon>frmOutputHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="OutputHistory\OutputHistory.cs" />
-    <Compile Include="PMDG\PMDG 737\CDUForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CDUForm.Designer.cs">
-      <DependentUpon>CDUForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.cs">
+    <Compile Include="Settings panels\ctlAircraft.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.Designer.cs">
-      <DependentUpon>ctlElectrical.cs</DependentUpon>
+    <Compile Include="Settings panels\ctlAircraft.Designer.cs">
+      <DependentUpon>ctlAircraft.cs</DependentUpon>
     </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlInertialReferenceUnit.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlInertialReferenceUnit.Designer.cs">
-      <DependentUpon>ctlInertialReferenceUnit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlMCP.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlMCP.Designer.cs">
-      <DependentUpon>ctlMCP.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\frmCockpitPanels.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\frmCockpitPanels.Designer.cs">
-      <DependentUpon>frmCockpitPanels.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\iPanelsPage.cs" />
     <Compile Include="Settings panels\ctlUserInterface.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -408,6 +390,9 @@
     <EmbeddedResource Include="Autopilot\frmComRadios.resx">
       <DependentUpon>frmComRadios.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Flight planning\FlightPlanForm.resx">
+      <DependentUpon>FlightPlanForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmFuelManager.resx">
       <DependentUpon>frmFuelManager.cs</DependentUpon>
     </EmbeddedResource>
@@ -429,20 +414,8 @@
     <EmbeddedResource Include="OutputHistory\frmOutputHistory.resx">
       <DependentUpon>frmOutputHistory.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\CDUForm.resx">
-      <DependentUpon>CDUForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.resx">
-      <DependentUpon>ctlElectrical.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlInertialReferenceUnit.resx">
-      <DependentUpon>ctlInertialReferenceUnit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlMCP.resx">
-      <DependentUpon>ctlMCP.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\frmCockpitPanels.resx">
-      <DependentUpon>frmCockpitPanels.cs</DependentUpon>
+    <EmbeddedResource Include="Settings panels\ctlAircraft.resx">
+      <DependentUpon>ctlAircraft.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\ctlGeneral.resx">
       <DependentUpon>ctlGeneral.cs</DependentUpon>

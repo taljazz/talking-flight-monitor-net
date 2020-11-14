@@ -74,5 +74,8 @@
     <Setting Name="sendToTray" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="takeOffAssistMode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">off</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

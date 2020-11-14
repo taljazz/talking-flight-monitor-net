@@ -106,6 +106,10 @@ namespace tfm
                     FSUIPCConnection.Process("pmdg");
                 }
                 inst.ReadAircraftState();
+                if(!inst.PostTakeOffChecklist())
+                {
+                    inst.PostTakeOffChecklist();
+                }
                 // Keeps track of the autopilot master switch in the simplified avionics tab.
                 if (Properties.Settings.Default.avionics_tab == "simplified") { 
                 AutopilotCheckBox.Checked = Autopilot.ApMaster;
@@ -916,6 +920,12 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                     this.Hide();
                 }
             }
+        }
+
+        private void flightPlanMenuItem_Click(object sender, EventArgs e)
+        {
+            FlightPlanForm fp = new FlightPlanForm();
+            fp.ShowDialog();
         }
     }//End TFMMainForm class.
 } //End TFM namespace.

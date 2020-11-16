@@ -210,7 +210,35 @@ namespace tfm
             {
                 btnBattery.AccessibleDescription = "off";
             }
+            if (Aircraft.ELEC_CabUtilSw.Value == 1)
+            {
+                btnCabUtil.AccessibleDescription = "on";
+            }
+            else
+            {
+                btnCabUtil.AccessibleDescription = "off";
+            }
+            if (Aircraft.ELEC_IFEPassSeatSw.Value == 1)
+            {
+                btnIFE.AccessibleDescription = "on";
+            }
+            else
+            {
+                btnIFE.AccessibleDescription = "off";
+            }
+            switch (Aircraft.ELEC_StandbyPowerSelector.Value)
+            {
+                case 0:
+                    btnStandbyPower.AccessibleDescription = "battery";
+                    break;
+                case 1:
+                    btnStandbyPower.AccessibleDescription = "off";
+                    break;
+                case 2:
+                    btnStandbyPower.AccessibleDescription = "auto";
+                    break;
 
+            }
         }
 
         private void btnACSource_KeyDown(object sender, KeyEventArgs e)
@@ -249,6 +277,41 @@ namespace tfm
             }
 
         }
+
+        private void btnIFE_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    if (Aircraft.ELEC_IFEPassSeatSw.Value != 1)
+                    {
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_IFE, Aircraft.ClkL);
+                    }
+                    break;
+                case Keys.Down:
+                    if (Aircraft.ELEC_IFEPassSeatSw.Value != 0)
+                    {
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_IFE, Aircraft.ClkR);
+                    }
+
+                    break;
+            }
+        }
+
+        private void btnBusTransfer_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_BUS_TRANSFER_SWITCH, Aircraft.ClkL);
+                    break;
+                case Keys.Down:
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_BUS_TRANSFER_SWITCH, Aircraft.ClkR);
+                    break;
+            }
+        }
     }
 }
-                
+                    

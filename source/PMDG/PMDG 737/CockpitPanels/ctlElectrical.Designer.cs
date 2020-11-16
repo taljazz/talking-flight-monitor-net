@@ -101,7 +101,8 @@
             this.btnIFE.TabIndex = 5;
             this.btnIFE.Text = "Inflight Entertainment";
             this.btnIFE.UseVisualStyleBackColor = true;
-            this.btnIFE.Click += new System.EventHandler(this.btnIFE_Click);
+            this.btnIFE.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnIFE_KeyDown);
+            this.btnIFE.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
             // 
             // btnApuGen1
             // 
@@ -155,7 +156,8 @@
             this.btnBusTransfer.TabIndex = 15;
             this.btnBusTransfer.Text = "Bus Transfer";
             this.btnBusTransfer.UseVisualStyleBackColor = true;
-            this.btnBusTransfer.Click += new System.EventHandler(this.btnBusTransfer_Click);
+            this.btnBusTransfer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnBusTransfer_KeyDown);
+            this.btnBusTransfer.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
             // 
             // tableLayoutPanel1
             // 

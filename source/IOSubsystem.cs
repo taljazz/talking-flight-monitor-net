@@ -396,6 +396,24 @@ namespace tfm
                     ReadToggle(Aircraft.ELEC_annunAPU_GEN_OFF_BUS, Aircraft.ELEC_annunAPU_GEN_OFF_BUS.Value > 0, "APU Gen 1 off bus light", "on", "off");
                     ReadToggle(Aircraft.ELEC_annunGEN_BUS_OFF, Aircraft.ELEC_annunGEN_BUS_OFF.Value > 0, "engine generator off bus light", "on", "off");
                     ReadToggle(Aircraft.APU_annunLOW_OIL_PRESSURE, Aircraft.APU_annunLOW_OIL_PRESSURE.Value > 0, "APU low oil pressure light", "on", "off");
+                    ReadToggle(Aircraft.ELEC_BusTransSw_AUTO, Aircraft.ELEC_BusTransSw_AUTO.Value > 0, "auto bus transfer", "on", "off");
+                    // standby power switch
+                    if (Aircraft.ELEC_StandbyPowerSelector.ValueChanged)
+                    {
+                        switch (Aircraft.ELEC_StandbyPowerSelector.Value)
+                        {
+                            case 0:
+                                fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Battery");
+                                break;
+                            case 1:
+                                fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Off");
+                                break;
+                            case 2:
+                                fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Auto");
+                                break;
+                        }
+
+                    }
                     // ADIRU
                     ReadToggle(Aircraft.IRS_aligned, Aircraft.IRS_aligned.Value > 0, "IRS", "aligned", "");
 
@@ -434,7 +452,31 @@ namespace tfm
                     ReadToggle(Aircraft.MCP_annunCWS_B, Aircraft.MCP_annunCWS_B.Value > 0, "CWS B", "on", "off");
                     // CDU exec button light
                     ReadToggle(Aircraft.CDU_annunEXEC, Aircraft.CDU_annunEXEC.Value > 0, "execute key", "available", "off");
-
+                    // fuel panel
+                    ReadToggle(Aircraft.FUEL_CrossFeedSw, Aircraft.FUEL_CrossFeedSw.Value > 0, "fuel cross feed", "on", "off");
+                    ReadToggle(Aircraft.FUEL_PumpFwdLeftSw, Aircraft.FUEL_PumpFwdLeftSw.Value > 0, "left forward fuel pump", "on", "off");
+                    ReadToggle(Aircraft.FUEL_PumpFwdRightSw, Aircraft.FUEL_PumpFwdRightSw.Value > 0, "right forward fuel pump", "on", "off");
+                    ReadToggle(Aircraft.FUEL_PumpAftRightSw, Aircraft.FUEL_PumpAftRightSw.Value > 0, "right aft fuel pump", "on", "off");
+                    ReadToggle(Aircraft.FUEL_PumpAftLeftSw, Aircraft.FUEL_PumpAftLeftSw.Value > 0, "left aft fuel pump", "on", "off");
+                    ReadToggle(Aircraft.FUEL_PumpCtrLeftSw, Aircraft.FUEL_PumpCtrLeftSw.Value > 0, "center left fuel pump");
+                    ReadToggle(Aircraft.FUEL_PumpCtrRightSw, Aircraft.FUEL_PumpCtrRightSw.Value > 0, "center right fuel pump");
+                    
+                    // fuel crossfeed valve
+                    if (Aircraft.FUEL_annunXFEED_VALVE_OPEN.ValueChanged)
+                    {
+                        switch (Aircraft.FUEL_annunXFEED_VALVE_OPEN.Value)
+                        {
+                            case 0:
+                                fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve closed");
+                                break;
+                            case 1:
+                                fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve open");
+                                break;
+                            case 2:
+                                fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve in transit");
+                                break;
+                        }
+                    }
                 }
             }
             else
@@ -1112,7 +1154,7 @@ namespace tfm
             }
         }
 
-        private void ReadToggle(Offset instrument, bool toggleStateOn, string name, string OnMsg, string OffMsg)
+        private void ReadToggle(Offset instrument, bool toggleStateOn, string name, string OnMsg = "on", string OffMsg = "off")
         {
             if (instrument.ValueChanged)
             {

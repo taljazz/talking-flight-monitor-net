@@ -196,7 +196,7 @@ namespace tfm
                 frm.Show();
 
             }
-            if ((e.Control && e.KeyCode == Keys.P))
+            if ((e.Control && e.Shift && e.KeyCode == Keys.P))
             {
                 frmCockpitPanels frm = new frmCockpitPanels();
                 frm.Show();

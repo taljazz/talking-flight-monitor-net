@@ -22,5 +22,108 @@ namespace tfm
         {
             
         }
+
+        private void btnElec1_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    if (Aircraft.HYD_PumpSw_elec1.Value != 1)
+                    {
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC1, Aircraft.ClkL);
+                    }
+                    break;
+                case Keys.Down:
+                    if (Aircraft.HYD_PumpSw_elec1.Value != 0)
+                    {
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC1, Aircraft.ClkR);
+                    }
+                    break;
+
+            }
+
+
+        }
+
+        private void btnElec2_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    if (Aircraft.HYD_PumpSw_elec2.Value != 1)
+                    {
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC2, Aircraft.ClkL);
+                    }
+                    break;
+                case Keys.Down:
+                    if (Aircraft.HYD_PumpSw_elec2.Value != 0)
+                    {
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC2, Aircraft.ClkR);
+                    }
+                    break;
+
+            }
+
+        }
+
+        private void btnEngine1_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    if (Aircraft.HYD_PumpSw_eng1.Value != 1)
+                    {
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG1, Aircraft.ClkL);
+                    }
+                    break;
+                case Keys.Down:
+                    if (Aircraft.HYD_PumpSw_eng1.Value != 0)
+                    {
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG1, Aircraft.ClkR);
+                    }
+                    break;
+
+            }
+
+
+        }
+
+        private void event_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Left:
+                case Keys.Right:
+                case Keys.Up:
+                case Keys.Down:
+                    e.IsInputKey = true;
+                    break;
+
+            }
+
+        }
+
+        private void btnEngine2_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    if (Aircraft.HYD_PumpSw_eng2.Value != 1)
+                    {
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG2, Aircraft.ClkL);
+                    }
+                    break;
+                case Keys.Down:
+                    if (Aircraft.HYD_PumpSw_eng2.Value != 0)
+                    {
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG2, Aircraft.ClkR);
+                    }
+                    break;
+
+            }
+
+        }
     }
 }

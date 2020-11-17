@@ -484,6 +484,9 @@
     <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlFuel.resx">
       <DependentUpon>ctlFuel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlHydraulics.resx">
+      <DependentUpon>ctlHydraulics.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlInertialReferenceUnit.resx">
       <DependentUpon>ctlInertialReferenceUnit.cs</DependentUpon>
     </EmbeddedResource>

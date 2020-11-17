@@ -460,9 +460,10 @@ namespace tfm
                     ReadToggle(Aircraft.FUEL_PumpAftLeftSw, Aircraft.FUEL_PumpAftLeftSw.Value > 0, "left aft fuel pump", "on", "off");
                     ReadToggle(Aircraft.FUEL_PumpCtrLeftSw, Aircraft.FUEL_PumpCtrLeftSw.Value > 0, "center left fuel pump");
                     ReadToggle(Aircraft.FUEL_PumpCtrRightSw, Aircraft.FUEL_PumpCtrRightSw.Value > 0, "center right fuel pump");
-                    
+
                     // fuel crossfeed valve
                     if (Aircraft.FUEL_annunXFEED_VALVE_OPEN.ValueChanged)
+                        
                     {
                         switch (Aircraft.FUEL_annunXFEED_VALVE_OPEN.Value)
                         {
@@ -478,6 +479,66 @@ namespace tfm
                         }
                     }
                 }
+                // hydraulics
+                ReadToggle(Aircraft.HYD_PumpSw_elec1, Aircraft.HYD_PumpSw_elec1.Value > 0, "electrical hydraulic pump 1", "on", "off");
+                ReadToggle(Aircraft.HYD_PumpSw_elec2, Aircraft.HYD_PumpSw_elec2.Value > 0, "electrical hydraulic pump 2", "on", "off");
+                if (Aircraft.AIR_PackSwitchLeft.ValueChanged)
+                {
+                    string pck = null;
+                    switch (Aircraft.AIR_PackSwitchLeft.Value)
+                    {
+                        case 0:
+                            pck = "off";
+                            break;
+                        case 1:
+                            pck = "auto";
+                            break;
+                        case 2:
+                            pck = "high";
+                            break;
+
+                    }
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"left pack {pck}");
+                }
+                if (Aircraft.AIR_IsolationValveSwitch.ValueChanged)
+                {
+                    string isol = null;
+                    switch (Aircraft.AIR_IsolationValveSwitch.Value)
+                    {
+                        case 0:
+                            isol = "off";
+                            break;
+                        case 1:
+                            isol = "auto";
+                            break;
+                        case 2:
+                            isol = "on";
+                            break;
+
+                    }
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"isolation valve {isol}");
+                }
+                if (Aircraft.AIR_PackSwitchRight.ValueChanged)
+                {
+                    string pck = null;
+                    switch (Aircraft.AIR_PackSwitchRight.Value)
+                    {
+                        case 0:
+                            pck = "off";
+                            break;
+                        case 1:
+                            pck = "auto";
+                            break;
+                        case 2:
+                            pck = "high";
+                            break;
+
+                    }
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"right pack {pck}");
+                }
+                ReadToggle(Aircraft.AIR_BleedAirSwitchRight, Aircraft.AIR_BleedAirSwitchRight.Value > 0, "engine 2 bleed", "on", "off");
+                ReadToggle(Aircraft.AIR_BleedAirSwitchLeft, Aircraft.AIR_BleedAirSwitchLeft.Value > 0, "engine 1 bleed", "on", "off");
+                ReadToggle(Aircraft.AIR_APUBleedAirSwitch, Aircraft.AIR_APUBleedAirSwitch.Value > 0, "APU bleed", "on", "off");
             }
             else
             {

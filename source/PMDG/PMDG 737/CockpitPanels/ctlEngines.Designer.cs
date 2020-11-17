@@ -31,10 +31,10 @@
             this.components = new System.ComponentModel.Container();
             this.tmrEngines = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnEng2Fuel = new System.Windows.Forms.Button();
+            this.btnEng2Start = new System.Windows.Forms.Button();
             this.btnEng1Start = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnEng1Fuel = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,10 +48,10 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.button4, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.button3, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.btnEng2Fuel, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.btnEng2Start, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnEng1Start, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.button2, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.btnEng1Fuel, 1, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -59,6 +59,28 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 100);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // btnEng2Fuel
+            // 
+            this.btnEng2Fuel.Location = new System.Drawing.Point(103, 53);
+            this.btnEng2Fuel.Name = "btnEng2Fuel";
+            this.btnEng2Fuel.Size = new System.Drawing.Size(75, 23);
+            this.btnEng2Fuel.TabIndex = 3;
+            this.btnEng2Fuel.Text = "Engine 2 fuel";
+            this.btnEng2Fuel.UseVisualStyleBackColor = true;
+            this.btnEng2Fuel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnEng2Fuel_KeyDown);
+            this.btnEng2Fuel.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
+            // 
+            // btnEng2Start
+            // 
+            this.btnEng2Start.Location = new System.Drawing.Point(3, 53);
+            this.btnEng2Start.Name = "btnEng2Start";
+            this.btnEng2Start.Size = new System.Drawing.Size(75, 23);
+            this.btnEng2Start.TabIndex = 2;
+            this.btnEng2Start.Text = "Engine 2 Start";
+            this.btnEng2Start.UseVisualStyleBackColor = true;
+            this.btnEng2Start.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnEng2Start_KeyDown);
+            this.btnEng2Start.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
             // 
             // btnEng1Start
             // 
@@ -71,32 +93,16 @@
             this.btnEng1Start.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnEng1Start_KeyDown);
             this.btnEng1Start.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
             // 
-            // button2
+            // btnEng1Fuel
             // 
-            this.button2.Location = new System.Drawing.Point(103, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(3, 53);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(103, 53);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnEng1Fuel.Location = new System.Drawing.Point(103, 3);
+            this.btnEng1Fuel.Name = "btnEng1Fuel";
+            this.btnEng1Fuel.Size = new System.Drawing.Size(75, 23);
+            this.btnEng1Fuel.TabIndex = 1;
+            this.btnEng1Fuel.Text = "Engine 1 fuel";
+            this.btnEng1Fuel.UseVisualStyleBackColor = true;
+            this.btnEng1Fuel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnEng1Fuel_KeyDown);
+            this.btnEng1Fuel.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
             // 
             // ctlEngines
             // 
@@ -117,9 +123,9 @@
 
         private System.Windows.Forms.Timer tmrEngines;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnEng2Fuel;
+        private System.Windows.Forms.Button btnEng2Start;
         private System.Windows.Forms.Button btnEng1Start;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnEng1Fuel;
     }
 }

@@ -29,7 +29,7 @@ namespace tfm
         }
         private void event_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            switch (e.KeyCode)
+                        switch (e.KeyCode)
             {
                 case Keys.Left:
                 case Keys.Right:
@@ -53,6 +53,35 @@ namespace tfm
             switch (e.KeyCode)
             {
                 case Keys.Left:
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_LIGHTS_L_ENGINE_START, Aircraft.ClkL);
+                    break;
+                case Keys.Right:
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_LIGHTS_L_ENGINE_START, Aircraft.ClkR);
+                    break;
+            }
+        }
+
+        private void btnEng1Fuel_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Left:
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CONTROL_STAND_ENG1_START_LEVER, Aircraft.ClkL);
+                    break;
+
+                case Keys.Right:
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CONTROL_STAND_ENG1_START_LEVER, Aircraft.ClkR);
+                    break;
+
+            }
+
+        }
+
+        private void btnEng2Start_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Left:
                     FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_LIGHTS_R_ENGINE_START, Aircraft.ClkL);
                     break;
                 case Keys.Right:
@@ -60,5 +89,23 @@ namespace tfm
                     break;
             }
         }
+
+    private void btnEng2Fuel_KeyDown(object sender, KeyEventArgs e)
+    {
+
+        switch (e.KeyCode)
+        {
+            case Keys.Left:
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CONTROL_STAND_ENG2_START_LEVER, Aircraft.ClkL);
+                break;
+
+            case Keys.Right:
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CONTROL_STAND_ENG2_START_LEVER, Aircraft.ClkR);
+                break;
+
+        }
+    }
+
+
     }
 }

@@ -186,6 +186,7 @@ namespace tfm
                         if ((0.0 <= thrPercent) && (thrPercent <= 100.0))
                         {
                             ap.Engine1ThrottlePercent = ap.Engine2ThrottlePercent = ap.Engine3ThrottlePercent = ap.Engine4ThrottlePercent = thrPercent;
+                            this.DialogResult = DialogResult.OK;
                         }
                         else
                         {

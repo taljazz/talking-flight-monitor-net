@@ -41,7 +41,7 @@ namespace tfm
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
         // get a logger object for this class
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
+        public PMDGPanelUpdateEvent pmdg;
         // The event that handles speech/braille output.
         public event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput;
 
@@ -277,7 +277,7 @@ namespace tfm
             {
                 altitudeCalloutFlags.Add(i, false);
             }
-
+            pmdg = new PMDGPanelUpdateEvent();
         }
 
         private void onWaypointTransitionTimerTick(object sender, ElapsedEventArgs e)
@@ -388,7 +388,7 @@ namespace tfm
                 if (Aircraft.AircraftName.Value.Contains("PMDG"))
                 {   
                     // electrical panel
-                            ReadToggle(Aircraft.ELEC_BatSelector, Aircraft.ELEC_BatSelector.Value > 0, "Battery", "active", "off");
+                    ReadPMDGToggle(Aircraft.ELEC_BatSelector, Aircraft.ELEC_BatSelector.Value > 0, "Battery", "active", "off");
                     ReadToggle(Aircraft.ELEC_annunBAT_DISCHARGE, Aircraft.ELEC_annunBAT_DISCHARGE.Value > 0, "bat discharge light", "on", "off");
                     ReadToggle(Aircraft.ELEC_annunGRD_POWER_AVAILABLE, Aircraft.ELEC_annunGRD_POWER_AVAILABLE.Value > 0, "ground power", "available", "not available");
                     ReadToggle(Aircraft.ELEC_CabUtilSw, Aircraft.ELEC_CabUtilSw.Value > 0, "cabin utility switch", "on", "off");
@@ -1229,6 +1229,22 @@ namespace tfm
                 }
             }
         }
+        private void ReadPMDGToggle(Offset instrument, bool toggleStateOn, string name, string OnMsg = "on", string OffMsg = "off")
+        {
+            if (instrument.ValueChanged)
+            {
+                if (toggleStateOn)
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {OnMsg}");
+                    pmdg.fireOnPMDGPanelUpdateEvent("on");
+                }
+                else
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {OffMsg}");
+                }
+            }
+        }
+        
         public static double mapOneRangeToAnother(double sourceNumber, double fromA, double fromB, double toA, double toB, int decimalPrecision)
         {
             double deltaA = fromB - fromA;

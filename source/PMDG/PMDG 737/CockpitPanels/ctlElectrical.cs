@@ -13,9 +13,17 @@ namespace tfm
 {
     public partial class ctlElectrical : UserControl, iPanelsPage
     {
+        
+
         public ctlElectrical()
         {
             InitializeComponent();
+            PMDGPanelUpdateEvent.PMDGPanelUpdate += onPMDGPanelUpdate;
+        }
+
+        private void onPMDGPanelUpdate(object sender, PMDGPanelUpdateEventArgs e)
+        {
+            
         }
 
         private void ctlElectrical_Load(object sender, EventArgs e)
@@ -201,15 +209,14 @@ namespace tfm
 
         private void tmrElectrical_Tick(object sender, EventArgs e)
         {
-            
-            if (Aircraft.ELEC_BatSelector.Value == 1)
-            {
-                btnBattery.AccessibleDescription = "on";
-            }
-            else
-            {
-                btnBattery.AccessibleDescription = "off";
-            }
+            //if (Aircraft.ELEC_BatSelector.Value == 0)
+            //{
+            //    btnBattery.AccessibleDescription = "off";
+            //}
+            //else
+            //{
+            //    btnBattery.AccessibleDescription = "on";
+            //}
             if (Aircraft.ELEC_CabUtilSw.Value == 1)
             {
                 btnCabUtil.AccessibleDescription = "on";

@@ -125,5 +125,42 @@ namespace tfm
             }
 
         }
+
+        private void tmrHydraulics_Tick(object sender, EventArgs e)
+        {
+            if (Aircraft.HYD_PumpSw_elec1.Value == 0)
+            {
+                btnElec1.AccessibleDescription = "off";
+            }
+            else
+            {
+                btnElec1.AccessibleDescription = "on";
+            }
+            if (Aircraft.HYD_PumpSw_elec2.Value == 0)
+            {
+                btnElec2.AccessibleDescription = "off";
+            }
+            else
+            {
+                btnElec2.AccessibleDescription = "on";
+            }
+            if (Aircraft.HYD_PumpSw_eng1.Value == 0)
+            {
+                btnEngine1.AccessibleDescription = "off";
+            }
+            else
+            {
+                btnEngine1.AccessibleDescription = "on";
+            }
+            if (Aircraft.HYD_PumpSw_eng2.Value == 0)
+            {
+                btnEngine2.AccessibleDescription = "off";
+            }
+            else
+            {
+                btnEngine2.AccessibleDescription = "on";
+            }
+
+        }
     }
 }

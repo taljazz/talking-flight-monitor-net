@@ -16,6 +16,7 @@ namespace tfm
         public ctlAirSystems()
         {
             InitializeComponent();
+            tmrAir.Start();
         }
 
         public void SetDocking()
@@ -25,7 +26,90 @@ namespace tfm
 
         private void tmrAir_Tick(object sender, EventArgs e)
         {
-
+            if (Aircraft.AIR_TrimAirSwitch.Value == 0)
+            {
+                btnTrimAir.AccessibleDescription = "off";
+            }
+            else
+            {
+                btnTrimAir.AccessibleDescription = "on";
+            }
+            if (Aircraft.AIR_RecircFanSwitchLeft.Value == 0)
+            {
+                btnRecircLeft.AccessibleDescription = "off";
+            }
+            else
+            {
+                btnRecircLeft.AccessibleDescription = "on";
+            }
+            if (Aircraft.AIR_RecircFanSwitchRight.Value == 0)
+            {
+                btnRecircRight.AccessibleDescription = "off";
+            }
+            else
+            {
+                btnRecircRight.AccessibleDescription = "on";
+            }
+            switch (Aircraft.AIR_PackSwitchLeft.Value)
+            {
+                case 0:
+                    btnPacLeft.AccessibleDescription = "off";
+                    break;
+                case 1:
+                    btnPacLeft.AccessibleDescription = "auto";
+                    break;
+                case 2:
+                    btnPacLeft.AccessibleDescription = "high";
+                    break;
+            }
+            switch (Aircraft.AIR_PackSwitchRight.Value)
+            {
+                case 0:
+                    btnPacRight.AccessibleDescription = "off";
+                    break;
+                case 1:
+                    btnPacRight.AccessibleDescription = "auto";
+                    break;
+                case 2:
+                    btnPacRight.AccessibleDescription = "high";
+                    break;
+            }
+switch (Aircraft.AIR_IsolationValveSwitch.Value)
+            {
+                case 0:
+                    btnIsolValve.AccessibleDescription = "off";
+                    break;
+                case 1:
+                    btnIsolValve.AccessibleDescription = "auto";
+                    break;
+                case 2:
+                    btnIsolValve.AccessibleDescription = "on";
+                    break;
+            }
+            if (Aircraft.AIR_BleedAirSwitchLeft.Value == 0)
+            {
+                btnBleed1.AccessibleDescription = "off";
+            }
+            else
+            {
+                btnBleed1.AccessibleDescription = "on";
+            }
+            if (Aircraft.AIR_BleedAirSwitchRight.Value == 0)
+            {
+                btnBleed2.AccessibleDescription = "off";
+            }
+            else
+            {
+                btnBleed2.AccessibleDescription = "on";
+            }
+            if (Aircraft.AIR_APUBleedAirSwitch.Value == 0)
+            {
+                btnAPUBleed.AccessibleDescription = "off";
+            }
+            else
+            {
+                btnAPUBleed.AccessibleDescription = "on";
+            }
         }
 
         private void btnTrimAir_KeyDown(object sender, KeyEventArgs e)

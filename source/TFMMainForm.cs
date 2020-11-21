@@ -34,6 +34,7 @@ namespace tfm
         private IOSubsystem inst = new IOSubsystem();
         private InstrumentPanel Autopilot = new InstrumentPanel();
         private OutputHistory history = new OutputHistory();
+        
         public TFMMainForm()
         {
             InitializeComponent();

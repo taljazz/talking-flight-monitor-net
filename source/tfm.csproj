@@ -227,6 +227,8 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="aircraft.cs" />
+    <Compile Include="Events\PMDGPanelUpdateEvent.cs" />
+    <Compile Include="Events\PMDGPanelUpdateEventArgs.cs" />
     <Compile Include="Flight planning\FlightPlan.cs" />
     <Compile Include="Flight planning\FlightPlanForm.cs">
       <SubType>Form</SubType>

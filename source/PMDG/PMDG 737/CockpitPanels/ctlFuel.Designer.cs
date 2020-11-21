@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btnCtrRight = new System.Windows.Forms.Button();
             this.btnCtrLeft = new System.Windows.Forms.Button();
@@ -35,6 +36,7 @@
             this.btnFwdRight = new System.Windows.Forms.Button();
             this.btnAftLeft = new System.Windows.Forms.Button();
             this.btnFwdLeft = new System.Windows.Forms.Button();
+            this.tmrFuel = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -124,6 +126,11 @@
             this.btnFwdLeft.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnFwdLeft_KeyDown);
             this.btnFwdLeft.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
             // 
+            // tmrFuel
+            // 
+            this.tmrFuel.Interval = 500;
+            this.tmrFuel.Tick += new System.EventHandler(this.tmrFuel_Tick);
+            // 
             // ctlFuel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -147,5 +154,6 @@
         private System.Windows.Forms.Button btnFwdRight;
         private System.Windows.Forms.Button btnAftLeft;
         private System.Windows.Forms.Button btnFwdLeft;
+        private System.Windows.Forms.Timer tmrFuel;
     }
 }

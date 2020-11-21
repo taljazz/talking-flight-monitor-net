@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnEngine2 = new System.Windows.Forms.Button();
             this.btnElec1 = new System.Windows.Forms.Button();
             this.btnElec2 = new System.Windows.Forms.Button();
             this.btnEngine1 = new System.Windows.Forms.Button();
-            this.btnEngine2 = new System.Windows.Forms.Button();
+            this.tmrHydraulics = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,6 +55,17 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 100);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // btnEngine2
+            // 
+            this.btnEngine2.Location = new System.Drawing.Point(103, 43);
+            this.btnEngine2.Name = "btnEngine2";
+            this.btnEngine2.Size = new System.Drawing.Size(75, 23);
+            this.btnEngine2.TabIndex = 3;
+            this.btnEngine2.Text = "Engine 2";
+            this.btnEngine2.UseVisualStyleBackColor = true;
+            this.btnEngine2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnEngine2_KeyDown);
+            this.btnEngine2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
             // 
             // btnElec1
             // 
@@ -87,16 +100,10 @@
             this.btnEngine1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnEngine1_KeyDown);
             this.btnEngine1.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
             // 
-            // btnEngine2
+            // tmrHydraulics
             // 
-            this.btnEngine2.Location = new System.Drawing.Point(103, 43);
-            this.btnEngine2.Name = "btnEngine2";
-            this.btnEngine2.Size = new System.Drawing.Size(75, 23);
-            this.btnEngine2.TabIndex = 3;
-            this.btnEngine2.Text = "Engine 2";
-            this.btnEngine2.UseVisualStyleBackColor = true;
-            this.btnEngine2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnEngine2_KeyDown);
-            this.btnEngine2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
+            this.tmrHydraulics.Interval = 500;
+            this.tmrHydraulics.Tick += new System.EventHandler(this.tmrHydraulics_Tick);
             // 
             // ctlHydraulics
             // 
@@ -116,5 +123,6 @@
         private System.Windows.Forms.Button btnElec1;
         private System.Windows.Forms.Button btnElec2;
         private System.Windows.Forms.Button btnEngine1;
+        private System.Windows.Forms.Timer tmrHydraulics;
     }
 }

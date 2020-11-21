@@ -21,6 +21,7 @@ namespace tfm
             loadPages();
         }
 
+        
         private void loadPages()
         {
             pages.Add("nodElectrical", new ctlElectrical());
@@ -28,7 +29,7 @@ namespace tfm
             pages.Add("nodMCP", new ctlMCP());
             pages.Add("nodIRU", new ctlInertialReferenceUnit());
             pages.Add("nodHydraulics", new ctlHydraulics());
-            pages.Add("nodEngines", new ctlEngines());  
+            pages.Add("nodEngines", new ctlEngines());      
             pages.Add("nodAirSystems", new ctlAirSystems());
             // set the parent and hide them all
             foreach (iPanelsPage page in this.pages.Values)

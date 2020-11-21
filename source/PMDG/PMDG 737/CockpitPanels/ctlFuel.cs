@@ -16,6 +16,7 @@ namespace tfm
         public ctlFuel()
         {
             InitializeComponent();
+            tmrFuel.Start();
         }
         private void event_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -158,6 +159,35 @@ namespace tfm
 
             }
 
+        }
+        private void UpdateToggleControl (bool toggleStateOn, Control ctrl, string OnMsg = "on", string OffMsg = "off")
+        {
+            if (toggleStateOn)
+            {
+                if (ctrl.AccessibleDescription != "on")
+                {
+                    ctrl.AccessibleDescription = "on";
+                }
+                
+            }
+            else
+            {
+                if (ctrl.AccessibleDescription != "off")
+                {
+                    ctrl.AccessibleDescription = "off";
+                }
+                    
+            }
+        }
+
+        private void tmrFuel_Tick(object sender, EventArgs e)
+        {
+            UpdateToggleControl(Aircraft.FUEL_PumpAftLeftSw.Value > 0, btnAftLeft);
+            UpdateToggleControl(Aircraft.FUEL_PumpFwdLeftSw.Value > 0, btnFwdLeft);
+            UpdateToggleControl(Aircraft.FUEL_PumpFwdRightSw.Value > 0, btnFwdRight);
+            UpdateToggleControl(Aircraft.FUEL_PumpAftRightSw.Value > 0, btnAftRight);
+            UpdateToggleControl(Aircraft.FUEL_PumpCtrLeftSw.Value > 0, btnCtrLeft);
+            UpdateToggleControl(Aircraft.FUEL_PumpCtrRightSw.Value > 0, btnCtrRight);
         }
     }
 }

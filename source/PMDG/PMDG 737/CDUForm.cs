@@ -225,6 +225,12 @@ namespace tfm
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L6, 0x20000000);
                 RefreshCDU();
                 e.SuppressKeyPress = true;
+            }   
+            if ((e.Alt && e.KeyCode == Keys.X))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_DEL, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
             }
 
             if (e.KeyCode == Keys.PageDown)

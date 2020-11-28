@@ -75,7 +75,7 @@ namespace tfm
 
         private void chkATArm_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkATArm.Checked)
+        if (chkATArm.Checked)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_AT_ARM_SWITCH, Aircraft.ClkL);
             }
@@ -392,6 +392,16 @@ namespace tfm
 
         }
 
+        private void txtCourseL_KeyDown(object sender, KeyEventArgs e)
+        {
+            
+            if (e.KeyCode == Keys.Enter)
+            {
+                int crs = int.Parse(txtCourseL.Text);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_CRS_L_SET, crs);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_CRS_R_SET, crs);
+            }
 
+        }
     }
 }

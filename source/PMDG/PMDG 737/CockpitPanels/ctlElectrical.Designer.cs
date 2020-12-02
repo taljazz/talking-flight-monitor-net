@@ -29,171 +29,116 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.btnGroundPower = new System.Windows.Forms.Button();
-            this.btnStandbyPower = new System.Windows.Forms.Button();
-            this.btnBattery = new System.Windows.Forms.Button();
-            this.btnCabUtil = new System.Windows.Forms.Button();
-            this.btnIFE = new System.Windows.Forms.Button();
-            this.btnApuGen1 = new System.Windows.Forms.Button();
-            this.btnApuGen2 = new System.Windows.Forms.Button();
-            this.btnGen1 = new System.Windows.Forms.Button();
-            this.btnGen2 = new System.Windows.Forms.Button();
-            this.btnBusTransfer = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tmrElectrical = new System.Windows.Forms.Timer(this.components);
-            this.tableLayoutPanel1.SuspendLayout();
+            this.chkBattery = new System.Windows.Forms.CheckBox();
+            this.chkCabUtil = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.radStandbyBat = new System.Windows.Forms.RadioButton();
+            this.radStandbyOff = new System.Windows.Forms.RadioButton();
+            this.radStandbyAuto = new System.Windows.Forms.RadioButton();
+            this.chkPassSeat = new System.Windows.Forms.CheckBox();
+            this.groupBox1.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // btnGroundPower
-            // 
-            this.btnGroundPower.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.btnGroundPower.Location = new System.Drawing.Point(121, 41);
-            this.btnGroundPower.Name = "btnGroundPower";
-            this.btnGroundPower.Size = new System.Drawing.Size(14, 23);
-            this.btnGroundPower.TabIndex = 10;
-            this.btnGroundPower.Text = "Ground Power";
-            this.btnGroundPower.UseVisualStyleBackColor = true;
-            this.btnGroundPower.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnGroundPower_KeyDown);
-            this.btnGroundPower.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
-            // 
-            // btnStandbyPower
-            // 
-            this.btnStandbyPower.Location = new System.Drawing.Point(3, 41);
-            this.btnStandbyPower.Name = "btnStandbyPower";
-            this.btnStandbyPower.Size = new System.Drawing.Size(29, 23);
-            this.btnStandbyPower.TabIndex = 6;
-            this.btnStandbyPower.Text = "standby Power";
-            this.btnStandbyPower.UseVisualStyleBackColor = true;
-            this.btnStandbyPower.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnStandbyPower_KeyDown);
-            this.btnStandbyPower.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
-            // 
-            // btnBattery
-            // 
-            this.btnBattery.AccessibleDescription = "";
-            this.btnBattery.AutoSize = true;
-            this.btnBattery.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnBattery.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBattery.Location = new System.Drawing.Point(3, 3);
-            this.btnBattery.Name = "btnBattery";
-            this.btnBattery.Size = new System.Drawing.Size(72, 32);
-            this.btnBattery.TabIndex = 0;
-            this.btnBattery.Text = "Battery";
-            this.btnBattery.UseVisualStyleBackColor = true;
-            this.btnBattery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnBattery_KeyDown);
-            this.btnBattery.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
-            // 
-            // btnCabUtil
-            // 
-            this.btnCabUtil.Location = new System.Drawing.Point(141, 3);
-            this.btnCabUtil.Name = "btnCabUtil";
-            this.btnCabUtil.Size = new System.Drawing.Size(14, 23);
-            this.btnCabUtil.TabIndex = 4;
-            this.btnCabUtil.Text = "Cabin Util";
-            this.btnCabUtil.UseVisualStyleBackColor = true;
-            this.btnCabUtil.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnCabUtil_KeyDown);
-            this.btnCabUtil.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
-            // 
-            // btnIFE
-            // 
-            this.btnIFE.Location = new System.Drawing.Point(161, 3);
-            this.btnIFE.Name = "btnIFE";
-            this.btnIFE.Size = new System.Drawing.Size(14, 23);
-            this.btnIFE.TabIndex = 5;
-            this.btnIFE.Text = "Inflight Entertainment";
-            this.btnIFE.UseVisualStyleBackColor = true;
-            this.btnIFE.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnIFE_KeyDown);
-            this.btnIFE.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
-            // 
-            // btnApuGen1
-            // 
-            this.btnApuGen1.Location = new System.Drawing.Point(141, 41);
-            this.btnApuGen1.Name = "btnApuGen1";
-            this.btnApuGen1.Size = new System.Drawing.Size(14, 23);
-            this.btnApuGen1.TabIndex = 11;
-            this.btnApuGen1.Text = "Apu Gen 1";
-            this.btnApuGen1.UseVisualStyleBackColor = true;
-            this.btnApuGen1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnApuGen1_KeyDown);
-            this.btnApuGen1.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
-            // 
-            // btnApuGen2
-            // 
-            this.btnApuGen2.Location = new System.Drawing.Point(161, 41);
-            this.btnApuGen2.Name = "btnApuGen2";
-            this.btnApuGen2.Size = new System.Drawing.Size(14, 23);
-            this.btnApuGen2.TabIndex = 12;
-            this.btnApuGen2.Text = "Apu Gen 2";
-            this.btnApuGen2.UseVisualStyleBackColor = true;
-            this.btnApuGen2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnApuGen2_KeyDown);
-            this.btnApuGen2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
-            // 
-            // btnGen1
-            // 
-            this.btnGen1.Location = new System.Drawing.Point(3, 70);
-            this.btnGen1.Name = "btnGen1";
-            this.btnGen1.Size = new System.Drawing.Size(14, 14);
-            this.btnGen1.TabIndex = 13;
-            this.btnGen1.Text = "Gen 1";
-            this.btnGen1.UseVisualStyleBackColor = true;
-            this.btnGen1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnGen1_KeyDown);
-            this.btnGen1.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
-            // 
-            // btnGen2
-            // 
-            this.btnGen2.Location = new System.Drawing.Point(81, 70);
-            this.btnGen2.Name = "btnGen2";
-            this.btnGen2.Size = new System.Drawing.Size(14, 14);
-            this.btnGen2.TabIndex = 14;
-            this.btnGen2.Text = "Gen 2";
-            this.btnGen2.UseVisualStyleBackColor = true;
-            this.btnGen2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnGen2_KeyDown);
-            this.btnGen2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
-            // 
-            // btnBusTransfer
-            // 
-            this.btnBusTransfer.Location = new System.Drawing.Point(101, 70);
-            this.btnBusTransfer.Name = "btnBusTransfer";
-            this.btnBusTransfer.Size = new System.Drawing.Size(14, 14);
-            this.btnBusTransfer.TabIndex = 15;
-            this.btnBusTransfer.Text = "Bus Transfer";
-            this.btnBusTransfer.UseVisualStyleBackColor = true;
-            this.btnBusTransfer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnBusTransfer_KeyDown);
-            this.btnBusTransfer.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.AutoSize = true;
-            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel1.ColumnCount = 6;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.btnBusTransfer, 2, 2);
-            this.tableLayoutPanel1.Controls.Add(this.btnGen2, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.btnGen1, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.btnApuGen2, 5, 1);
-            this.tableLayoutPanel1.Controls.Add(this.btnApuGen1, 4, 1);
-            this.tableLayoutPanel1.Controls.Add(this.btnIFE, 5, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnCabUtil, 4, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnBattery, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnStandbyPower, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.btnGroundPower, 3, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(10, 37);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 4;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(178, 87);
-            this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tmrElectrical
             // 
             this.tmrElectrical.Interval = 500;
             this.tmrElectrical.Tick += new System.EventHandler(this.tmrElectrical_Tick);
+            // 
+            // chkBattery
+            // 
+            this.chkBattery.AutoSize = true;
+            this.chkBattery.Location = new System.Drawing.Point(5, 5);
+            this.chkBattery.Name = "chkBattery";
+            this.chkBattery.Size = new System.Drawing.Size(86, 24);
+            this.chkBattery.TabIndex = 0;
+            this.chkBattery.Text = "Battery";
+            this.chkBattery.UseVisualStyleBackColor = true;
+            this.chkBattery.CheckedChanged += new System.EventHandler(this.chkBattery_CheckedChanged);
+            // 
+            // chkCabUtil
+            // 
+            this.chkCabUtil.AutoSize = true;
+            this.chkCabUtil.Location = new System.Drawing.Point(335, 5);
+            this.chkCabUtil.Name = "chkCabUtil";
+            this.chkCabUtil.Size = new System.Drawing.Size(118, 24);
+            this.chkCabUtil.TabIndex = 2;
+            this.chkCabUtil.Text = "Cabin Utility";
+            this.chkCabUtil.UseVisualStyleBackColor = true;
+            this.chkCabUtil.CheckedChanged += new System.EventHandler(this.chkCabUtil_CheckedChanged);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.AutoSize = true;
+            this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox1.Controls.Add(this.flowLayoutPanel1);
+            this.groupBox1.Location = new System.Drawing.Point(97, 5);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(234, 58);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Standby Power";
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoSize = true;
+            this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel1.Controls.Add(this.radStandbyBat);
+            this.flowLayoutPanel1.Controls.Add(this.radStandbyOff);
+            this.flowLayoutPanel1.Controls.Add(this.radStandbyAuto);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(225, 30);
+            this.flowLayoutPanel1.TabIndex = 0;
+            // 
+            // radStandbyBat
+            // 
+            this.radStandbyBat.AutoSize = true;
+            this.radStandbyBat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.radStandbyBat.Location = new System.Drawing.Point(3, 3);
+            this.radStandbyBat.Name = "radStandbyBat";
+            this.radStandbyBat.Size = new System.Drawing.Size(83, 24);
+            this.radStandbyBat.TabIndex = 0;
+            this.radStandbyBat.TabStop = true;
+            this.radStandbyBat.Text = "Battery";
+            this.radStandbyBat.UseVisualStyleBackColor = true;
+            this.radStandbyBat.CheckedChanged += new System.EventHandler(this.RadStandby_CheckChanged);
+            // 
+            // radStandbyOff
+            // 
+            this.radStandbyOff.AutoSize = true;
+            this.radStandbyOff.Location = new System.Drawing.Point(92, 3);
+            this.radStandbyOff.Name = "radStandbyOff";
+            this.radStandbyOff.Size = new System.Drawing.Size(56, 24);
+            this.radStandbyOff.TabIndex = 1;
+            this.radStandbyOff.TabStop = true;
+            this.radStandbyOff.Text = "Off";
+            this.radStandbyOff.UseVisualStyleBackColor = true;
+            this.radStandbyOff.CheckedChanged += new System.EventHandler(this.RadStandby_CheckChanged);
+            // 
+            // radStandbyAuto
+            // 
+            this.radStandbyAuto.AutoSize = true;
+            this.radStandbyAuto.Location = new System.Drawing.Point(154, 3);
+            this.radStandbyAuto.Name = "radStandbyAuto";
+            this.radStandbyAuto.Size = new System.Drawing.Size(68, 24);
+            this.radStandbyAuto.TabIndex = 2;
+            this.radStandbyAuto.TabStop = true;
+            this.radStandbyAuto.Text = "Auto";
+            this.radStandbyAuto.UseVisualStyleBackColor = true;
+            this.radStandbyAuto.CheckedChanged += new System.EventHandler(this.RadStandby_CheckChanged);
+            // 
+            // chkPassSeat
+            // 
+            this.chkPassSeat.AutoSize = true;
+            this.chkPassSeat.Location = new System.Drawing.Point(460, 5);
+            this.chkPassSeat.Name = "chkPassSeat";
+            this.chkPassSeat.Size = new System.Drawing.Size(197, 24);
+            this.chkPassSeat.TabIndex = 3;
+            this.chkPassSeat.Text = "Passenger Seat Power";
+            this.chkPassSeat.UseVisualStyleBackColor = true;
             // 
             // ctlElectrical
             // 
@@ -201,30 +146,31 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.chkPassSeat);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.chkCabUtil);
+            this.Controls.Add(this.chkBattery);
             this.Name = "ctlElectrical";
-            this.Size = new System.Drawing.Size(191, 127);
+            this.Size = new System.Drawing.Size(660, 66);
             this.Load += new System.EventHandler(this.ctlElectrical_Load);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnGroundPower;
-        private System.Windows.Forms.Button btnStandbyPower;
-        private System.Windows.Forms.Button btnBattery;
-        private System.Windows.Forms.Button btnCabUtil;
-        private System.Windows.Forms.Button btnIFE;
-        private System.Windows.Forms.Button btnApuGen1;
-        private System.Windows.Forms.Button btnApuGen2;
-        private System.Windows.Forms.Button btnGen1;
-        private System.Windows.Forms.Button btnGen2;
-        private System.Windows.Forms.Button btnBusTransfer;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Timer tmrElectrical;
+        private System.Windows.Forms.CheckBox chkBattery;
+        private System.Windows.Forms.CheckBox chkCabUtil;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.RadioButton radStandbyBat;
+        private System.Windows.Forms.RadioButton radStandbyOff;
+        private System.Windows.Forms.RadioButton radStandbyAuto;
+        private System.Windows.Forms.CheckBox chkPassSeat;
     }
 }

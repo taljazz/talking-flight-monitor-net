@@ -13,7 +13,7 @@ namespace tfm
 {
     public partial class ctlElectrical : UserControl, iPanelsPage
     {
-        
+        pmdg pmdg = new pmdg();        
 
         public ctlElectrical()
         {
@@ -67,256 +67,90 @@ namespace tfm
 
             
         
-        private void btnGroundPower_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_GRD_PWR_SWITCH, Aircraft.ClkL);
-                    break;
-                case Keys.Down:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_GRD_PWR_SWITCH, Aircraft.ClkR);
-                    break;
-
-            }
-            
-        }
-
-        private void event_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Left:
-                case Keys.Right:
-                case Keys.Up:
-                case Keys.Down:
-                    e.IsInputKey = true;
-                    break;
-
-            }
-
-        }
-
-        private void btnStandbyPower_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_STBY_PWR_SWITCH, Aircraft.ClkL);
-                    break;
-                case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_STBY_PWR_SWITCH, Aircraft.ClkR);
-                    break;
-
-            }
-        }
-
-        private void btnApuGen1_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_APU_GEN1_SWITCH, Aircraft.ClkL);
-                    break;
-                case Keys.Down:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_APU_GEN1_SWITCH, Aircraft.ClkR);
-                    break;
-
-            }
-
-        }
-
-        private void btnApuGen2_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_APU_GEN2_SWITCH, Aircraft.ClkL);
-                    break;
-                case Keys.Down:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_APU_GEN2_SWITCH, Aircraft.ClkR);
-                    break;
-
-            }
-
-        }
-
-        private void btnBattery_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.ELEC_BatSelector.Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_BATTERY_SWITCH, Aircraft.ClkL);
-                    }
-
-                    break;
-                case Keys.Down:
-                    if (Aircraft.ELEC_BatSelector.Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_BATTERY_SWITCH, Aircraft.ClkL);
-                    }
-
-                    break;
-
-            }
-        }
-
-        private void btnGen1_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_GEN1_SWITCH, Aircraft.ClkL);
-                    break;
-                case Keys.Down:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_GEN1_SWITCH, Aircraft.ClkR);
-                    break;
-
-            }
-
-        }
-
-        private void btnGen2_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_GEN2_SWITCH, Aircraft.ClkL);
-                    break;
-                case Keys.Down:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_GEN2_SWITCH, Aircraft.ClkR);
-                    break;
-
-            }
-
-        }
-
-        private void btnDCSource_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_DC_METER, Aircraft.ClkL);
-                    break;
-                case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_DC_METER, Aircraft.ClkR);
-                    break;
-
-            }
-        }
-
+        
         private void tmrElectrical_Tick(object sender, EventArgs e)
         {
-            //if (Aircraft.ELEC_BatSelector.Value == 0)
-            //{
-            //    btnBattery.AccessibleDescription = "off";
-            //}
-            //else
-            //{
-            //    btnBattery.AccessibleDescription = "on";
-            //}
+            chkBattery.CheckedChanged -= chkBattery_CheckedChanged;
+            if (Aircraft.ELEC_BatSelector.Value == 0 && chkBattery.Checked == true)
+            {
+            chkBattery.Checked = false;
+            }
+            if (Aircraft.ELEC_BatSelector.Value == 1 && chkBattery.Checked == false)
+            {
+            chkBattery.Checked = true;
+            }
+            chkBattery.CheckedChanged += chkBattery_CheckedChanged;
             if (Aircraft.ELEC_CabUtilSw.Value == 1)
             {
-                btnCabUtil.AccessibleDescription = "on";
+                chkCabUtil.Checked = true;
             }
             else
             {
-                btnCabUtil.AccessibleDescription = "off";
+                chkCabUtil.Checked = false;
             }
             if (Aircraft.ELEC_IFEPassSeatSw.Value == 1)
             {
-                btnIFE.AccessibleDescription = "on";
+                            chkPassSeat.Checked = true;
             }
             else
             {
-                btnIFE.AccessibleDescription = "off";
+                chkPassSeat.Checked = false;
             }
             switch (Aircraft.ELEC_StandbyPowerSelector.Value)
             {
                 case 0:
-                    btnStandbyPower.AccessibleDescription = "battery";
+                    radStandbyBat.Checked = true;
                     break;
                 case 1:
-                    btnStandbyPower.AccessibleDescription = "off";
+                    radStandbyOff.Checked = true;
                     break;
                 case 2:
-                    btnStandbyPower.AccessibleDescription = "auto";
+                    radStandbyAuto.Checked = true;
                     break;
 
             }
         }
 
-        private void btnACSource_KeyDown(object sender, KeyEventArgs e)
+        
+        private void chkBattery_CheckedChanged(object sender, EventArgs e)
         {
-            switch (e.KeyCode)
+            if (chkBattery.Checked)
             {
-                case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_AC_METER, Aircraft.ClkL);
-                    break;
-                case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_AC_METER, Aircraft.ClkR);
-                    break;
-
-            }       
-
-        }
-
-        private void btnCabUtil_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.ELEC_CabUtilSw.Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_CAB_UTIL, Aircraft.ClkL);
-                    }
-
-                    break;
-                case Keys.Down:
-                    if (Aircraft.ELEC_CabUtilSw.Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_CAB_UTIL, Aircraft.ClkR);
-                    }
-                    break;
+pmdg.ElecBatteryOn();
 
             }
-
-        }
-
-        private void btnIFE_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            switch (e.KeyCode)
+            else
             {
-                case Keys.Up:
-                    if (Aircraft.ELEC_IFEPassSeatSw.Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_IFE, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.ELEC_IFEPassSeatSw.Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_IFE, Aircraft.ClkR);
-                    }
-
-                    break;
+                pmdg.ElecBatteryOff();
             }
         }
 
-        private void btnBusTransfer_KeyDown(object sender, KeyEventArgs e)
+        private void chkCabUtil_CheckedChanged(object sender, EventArgs e)
         {
-
-            switch (e.KeyCode)
+            if (chkCabUtil.Checked)
             {
-                case Keys.Up:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_BUS_TRANSFER_SWITCH, Aircraft.ClkL);
-                    break;
-                case Keys.Down:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_BUS_TRANSFER_SWITCH, Aircraft.ClkR);
-                    break;
+
+            }
+        }
+
+        private void RadStandby_CheckChanged(object sender, EventArgs e)
+        {
+                    RadioButton rb = sender as RadioButton;
+if (rb.Checked)
+            {
+                switch (rb.Name)
+                {
+                    case "radStandbyBat":
+                        pmdg.ElecStandbyBattery();
+                        break;
+                    case "radStandbyOff":
+                        pmdg.ElecStandbyOff();
+                        break;
+                    case "radStandbyAuto":
+                        pmdg.ElecStandbyAuto();
+                        break;
+
+                }
             }
         }
     }

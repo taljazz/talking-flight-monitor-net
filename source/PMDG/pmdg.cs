@@ -99,7 +99,7 @@ namespace tfm
 
             }
         }
-        
+
         public void ElecStandbyOff()
         {
             if (FSUIPCConnection.ReadLVar("switch_10_73X") == 0)
@@ -139,6 +139,29 @@ namespace tfm
 
             }
         }
+        // Bus Transfer
+        public void ElecBusTransferOff()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_18_73X") != 0)
+            {
+                if (FSUIPCConnection.ReadLVar("switch_19_73X") != 100)
+                {
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_BUS_TRANSFER_GUARD, ClkR);
+                }
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_BUS_TRANSFER_SWITCH, ClkL);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_BUS_TRANSFER_SWITCH, ClkR);
+            }
+        }
 
+        public void ElecBusTransferAuto()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_18_73X") != 100)
+            {
+                if (FSUIPCConnection.ReadLVar("switch_19_73X") != 100)
+                {
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_BUS_TRANSFER_GUARD, ClkR);
+                }
+            }
+        }
     }
 }

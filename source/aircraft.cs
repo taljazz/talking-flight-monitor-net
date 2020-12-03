@@ -104,6 +104,8 @@ namespace tfm
         public static Offset<string> Vor1ID = new Offset<string>(0x3000, 6);
         public static Offset<string> Vor1Name = new Offset<string>(0x3006, 25);
         public static Offset<ushort> Nav1GSInclination = new Offset<ushort>(0x0872);
+        public static Offset<ushort> Nav1OBS = new Offset<ushort>(0x0C4E);
+        public static Offset<ushort> Nav1Radial = new Offset<ushort>(0x0C50);
 
         public static  Offset<FsBitArray> Nav1Flags = new Offset<FsBitArray>(0x0c4d, 1);
         public enum NavFlag
@@ -119,6 +121,8 @@ namespace tfm
         }
 
         public static  Offset<uint> Nav1Signal = new Offset<uint>(0x0c52);
+        public static  Offset<ushort> Nav2OBS = new Offset<ushort>(0x0C5E);
+        public static  Offset<ushort> Nav2Radial = new Offset<ushort>(0x0C60);
 
         /* Additional radio and autopilot status indicators (read only access). Allocation by bits which are set when true. Bit 0 = least significant (value 1):
 0  = reserved

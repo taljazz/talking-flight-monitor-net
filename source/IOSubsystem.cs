@@ -1147,6 +1147,7 @@ namespace tfm
         {
             frmAutopilot ap;
             frmComRadios com;
+            frmNavRadios nav;
             string gaugeName;
             string gaugeValue;
             bool isGauge = true;
@@ -1225,7 +1226,8 @@ namespace tfm
 
                 case "ap_Get_Nav_Radios":
                     string navInfo = null;
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"nav 1: {Autopilot.Nav1Freq.ToString()}. ");
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"nav 1: {Autopilot.Nav1Freq.ToString()}. Course: {Autopilot.Nav1Course.ToString()}. ");
+                    
                     if (Aircraft.AutopilotRadioStatus.Value[6])
                     {
                         // nav 1 has ILS
@@ -1239,11 +1241,19 @@ namespace tfm
                     }
                     else
                     {
-                        navInfo += $"VOR ID: {Aircraft.Vor1ID.Value}. ";
+                        if (Aircraft.Vor1ID.Value != "")
+                        {
+                            navInfo += $"VOR ID: {Aircraft.Vor1ID.Value}. ";
+                        }
 
                     }
                     fireOnScreenReaderOutputEvent(isGauge: false, output: navInfo);
                     break;
+                case "ap_Set_Nav_Radios":
+                    nav = new frmNavRadios();
+                    nav.ShowDialog();
+                    break;
+
 
                 case "ap_Get_Transponder":
                     gaugeName = "Transponder";

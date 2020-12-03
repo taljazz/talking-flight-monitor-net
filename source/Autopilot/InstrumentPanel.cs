@@ -497,6 +497,20 @@ namespace tfm
                     nav1Freq = value;
             }
         }
+        private ushort nav1Course;
+        public ushort Nav1Course
+        {
+            get
+            {
+                nav1Course = Aircraft.Nav1OBS.Value;
+                return nav1Course;
+            }
+            set
+            {
+                Aircraft.Nav1OBS.Value = value;
+                nav1Course = value;
+            }
+        }
         private decimal nav2Freq;
         [DisplayName("nav 2")]
         [Category("navigation")]
@@ -515,6 +529,20 @@ namespace tfm
                     // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
                     Aircraft.Nav2Freq.Value = nav2Helper.ToBCD();
                     nav2Freq = value;
+            }
+        }
+        private ushort nav2Course;
+        public ushort Nav2Course
+        {
+            get
+            {
+                nav2Course = Aircraft.Nav2OBS.Value;
+                return nav2Course;
+            }
+            set
+            {
+                Aircraft.Nav2OBS.Value = value;
+                nav2Course = value;
             }
         }
 

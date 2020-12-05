@@ -80,6 +80,7 @@ namespace tfm
         // timers
         private static System.Timers.Timer RunwayGuidanceTimer;
         private static System.Timers.Timer GroundSpeedTimer = new System.Timers.Timer(3000); // 3 seconds;
+        private static System.Timers.Timer WarningsTimer = new System.Timers.Timer(5000); // 5 seconds;
         private static System.Timers.Timer AttitudeTimer;
         private static System.Timers.Timer flightFollowingTimer;
         private static System.Timers.Timer ilsTimer = new System.Timers.Timer(TimeSpan.FromSeconds(double.Parse(Properties.Settings.Default.ILSAnnouncementTimeInterval)).TotalMilliseconds);
@@ -231,6 +232,8 @@ namespace tfm
 
             }
         }
+
+        public bool WarningFlag { get; private set; }
 
         public bool CommandKeyEnabled = true;
 
@@ -384,6 +387,8 @@ namespace tfm
                 ReadSimulationRate(TriggeredByKey: false);
                 readAPU();
                 readOnGround();
+                readWarnings();
+
                 // TODO: engine select
             }
             else
@@ -391,6 +396,39 @@ namespace tfm
                 fireOnScreenReaderOutputEvent(isGauge: false, output: "Current aircraft: " + Aircraft.AircraftName.Value);
                 DetectFuelTanks();
                 FirstRun = false;
+            }
+        }
+
+        private void readWarnings()
+        {
+            // if stall or overspeed warnings are active, read a SAPI message every 5 seconds
+            if (WarningFlag == false)
+            {
+                if (Aircraft.StallWarning.Value == 1 || Aircraft.OverSpeedWarning.Value == 1)
+                {
+                    WarningFlag = true;
+                    WarningsTimer.Elapsed += WarningsTimer_Tick;
+                    WarningsTimer.AutoReset = true;
+                    WarningsTimer.Enabled = true;
+                }
+            }
+
+        }
+
+        private void WarningsTimer_Tick(object sender, ElapsedEventArgs e)
+        {
+            if (Aircraft.StallWarning.Value == 1)
+            {
+                fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "stall warning! ");
+            }
+            if (Aircraft.OverSpeedWarning.Value == 1)
+            {
+                fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "over speed warning! ");
+            }
+            if (Aircraft.StallWarning.Value == 0 && Aircraft.OverSpeedWarning.Value == 0)
+            {
+                WarningFlag = false;
+                WarningsTimer.Stop();
             }
         }
 

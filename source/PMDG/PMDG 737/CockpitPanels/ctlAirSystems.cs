@@ -26,7 +26,7 @@ namespace tfm
 
         private void tmrAir_Tick(object sender, EventArgs e)
         {
-            if (Aircraft.AIR_TrimAirSwitch.Value == 0)
+            if (Aircraft.pmdg737.AIR_TrimAirSwitch.Value == 0)
             {
                 btnTrimAir.AccessibleDescription = "off";
             }
@@ -34,7 +34,7 @@ namespace tfm
             {
                 btnTrimAir.AccessibleDescription = "on";
             }
-            if (Aircraft.AIR_RecircFanSwitchLeft.Value == 0)
+            if (Aircraft.pmdg737.AIR_RecircFanSwitch[0].Value == 0)
             {
                 btnRecircLeft.AccessibleDescription = "off";
             }
@@ -42,7 +42,7 @@ namespace tfm
             {
                 btnRecircLeft.AccessibleDescription = "on";
             }
-            if (Aircraft.AIR_RecircFanSwitchRight.Value == 0)
+            if (Aircraft.pmdg737.AIR_RecircFanSwitch[1].Value == 0)
             {
                 btnRecircRight.AccessibleDescription = "off";
             }
@@ -50,7 +50,7 @@ namespace tfm
             {
                 btnRecircRight.AccessibleDescription = "on";
             }
-            switch (Aircraft.AIR_PackSwitchLeft.Value)
+            switch (Aircraft.pmdg737.AIR_PackSwitch[0].Value)
             {
                 case 0:
                     btnPacLeft.AccessibleDescription = "off";
@@ -62,7 +62,7 @@ namespace tfm
                     btnPacLeft.AccessibleDescription = "high";
                     break;
             }
-            switch (Aircraft.AIR_PackSwitchRight.Value)
+            switch (Aircraft.pmdg737.AIR_PackSwitch[1].Value)
             {
                 case 0:
                     btnPacRight.AccessibleDescription = "off";
@@ -74,7 +74,7 @@ namespace tfm
                     btnPacRight.AccessibleDescription = "high";
                     break;
             }
-switch (Aircraft.AIR_IsolationValveSwitch.Value)
+switch (Aircraft.pmdg737.AIR_IsolationValveSwitch.Value)
             {
                 case 0:
                     btnIsolValve.AccessibleDescription = "off";
@@ -86,7 +86,7 @@ switch (Aircraft.AIR_IsolationValveSwitch.Value)
                     btnIsolValve.AccessibleDescription = "on";
                     break;
             }
-            if (Aircraft.AIR_BleedAirSwitchLeft.Value == 0)
+            if (Aircraft.pmdg737.AIR_BleedAirSwitch[0].Value == 0)
             {
                 btnBleed1.AccessibleDescription = "off";
             }
@@ -94,7 +94,7 @@ switch (Aircraft.AIR_IsolationValveSwitch.Value)
             {
                 btnBleed1.AccessibleDescription = "on";
             }
-            if (Aircraft.AIR_BleedAirSwitchRight.Value == 0)
+            if (Aircraft.pmdg737.AIR_BleedAirSwitch[1].Value == 0)
             {
                 btnBleed2.AccessibleDescription = "off";
             }
@@ -102,7 +102,7 @@ switch (Aircraft.AIR_IsolationValveSwitch.Value)
             {
                 btnBleed2.AccessibleDescription = "on";
             }
-            if (Aircraft.AIR_APUBleedAirSwitch.Value == 0)
+            if (Aircraft.pmdg737.AIR_APUBleedAirSwitch.Value == 0)
             {
                 btnAPUBleed.AccessibleDescription = "off";
             }
@@ -118,13 +118,13 @@ switch (Aircraft.AIR_IsolationValveSwitch.Value)
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    if (Aircraft.AIR_TrimAirSwitch.Value != 1)
+                    if (Aircraft.pmdg737.AIR_TrimAirSwitch.Value != 1)
                     {
                         FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_AIRCOND_TRIM_AIR_SWITCH_800, Aircraft.ClkL);
                     }
                     break;
                 case Keys.Down:
-                    if (Aircraft.AIR_TrimAirSwitch.Value != 0)
+                    if (Aircraft.pmdg737.AIR_TrimAirSwitch.Value != 0)
                     {
                         FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_AIRCOND_TRIM_AIR_SWITCH_800, Aircraft.ClkR);
                     }
@@ -141,13 +141,13 @@ switch (Aircraft.AIR_IsolationValveSwitch.Value)
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    if (Aircraft.AIR_RecircFanSwitchLeft.Value != 1)
+                    if (Aircraft.pmdg737.AIR_RecircFanSwitch[0].Value != 1)
                     {
                         FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_RECIRC_FAN_L_SWITCH, Aircraft.ClkL);
                     }
                     break;
                 case Keys.Down:
-                    if (Aircraft.AIR_RecircFanSwitchLeft.Value != 0)
+                    if (Aircraft.pmdg737.AIR_RecircFanSwitch[0].Value != 0)
                     {
                         FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_RECIRC_FAN_L_SWITCH, Aircraft.ClkR);
                     }
@@ -192,13 +192,13 @@ switch (Aircraft.AIR_IsolationValveSwitch.Value)
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    if (Aircraft.AIR_BleedAirSwitchLeft.Value != 1)
+                    if (Aircraft.pmdg737.AIR_BleedAirSwitch[0].Value != 1)
                     {
                         FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ENG_1_SWITCH, Aircraft.ClkL);
                     }
                     break;
                 case Keys.Down:
-                    if (Aircraft.AIR_BleedAirSwitchLeft.Value != 0)
+                    if (Aircraft.pmdg737.AIR_BleedAirSwitch[0].Value != 0)
                     {
                         FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ENG_1_SWITCH, Aircraft.ClkR);
                     }
@@ -215,13 +215,13 @@ switch (Aircraft.AIR_IsolationValveSwitch.Value)
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    if (Aircraft.AIR_BleedAirSwitchRight.Value != 1)
+                    if (Aircraft.pmdg737.AIR_BleedAirSwitch[1].Value != 1)
                     {
                         FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ENG_2_SWITCH, Aircraft.ClkL);
                     }
                     break;
                 case Keys.Down:
-                    if (Aircraft.AIR_BleedAirSwitchRight.Value != 0)
+                    if (Aircraft.pmdg737.AIR_BleedAirSwitch[1].Value != 0)
                     {
                         FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ENG_2_SWITCH, Aircraft.ClkR);
                     }
@@ -238,13 +238,13 @@ switch (Aircraft.AIR_IsolationValveSwitch.Value)
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    if (Aircraft.AIR_APUBleedAirSwitch.Value != 1)
+                    if (Aircraft.pmdg737.AIR_APUBleedAirSwitch.Value != 1)
                     {
                         FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_APU_SWITCH, Aircraft.ClkL);
                     }
                     break;
                 case Keys.Down:
-                    if (Aircraft.AIR_APUBleedAirSwitch.Value != 0)
+                    if (Aircraft.pmdg737.AIR_APUBleedAirSwitch.Value != 0)
                     {
                                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_APU_SWITCH, Aircraft.ClkR);
                     }
@@ -261,13 +261,13 @@ switch (Aircraft.AIR_IsolationValveSwitch.Value)
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    if (Aircraft.AIR_RecircFanSwitchRight.Value != 1)
+                    if (Aircraft.pmdg737.AIR_RecircFanSwitch[1].Value != 1)
                     {
                         FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_RECIRC_FAN_R_SWITCH, Aircraft.ClkL);
                     }
                     break;
                 case Keys.Down:
-                    if (Aircraft.AIR_RecircFanSwitchRight.Value != 0)
+                    if (Aircraft.pmdg737.AIR_RecircFanSwitch[1].Value != 0)
                     {
                         FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_RECIRC_FAN_R_SWITCH, Aircraft.ClkR);
                     }

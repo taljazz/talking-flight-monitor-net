@@ -71,16 +71,16 @@ namespace tfm
         private void tmrElectrical_Tick(object sender, EventArgs e)
         {
             chkBattery.CheckedChanged -= chkBattery_CheckedChanged;
-            if (Aircraft.ELEC_BatSelector.Value == 0 && chkBattery.Checked == true)
+            if (Aircraft.pmdg737.ELEC_BatSelector.Value == 0 && chkBattery.Checked == true)
             {
             chkBattery.Checked = false;
             }
-            if (Aircraft.ELEC_BatSelector.Value == 1 && chkBattery.Checked == false)
+            if (Aircraft.pmdg737.ELEC_BatSelector.Value == 1 && chkBattery.Checked == false)
             {
             chkBattery.Checked = true;
             }
             chkBattery.CheckedChanged += chkBattery_CheckedChanged;
-            if (Aircraft.ELEC_CabUtilSw.Value == 1)
+            if (Aircraft.pmdg737.ELEC_CabUtilSw.Value == 1)
             {
                 chkCabUtil.Checked = true;
             }
@@ -88,7 +88,7 @@ namespace tfm
             {
                 chkCabUtil.Checked = false;
             }
-            if (Aircraft.ELEC_IFEPassSeatSw.Value == 1)
+            if (Aircraft.pmdg737.ELEC_IFEPassSeatSw.Value == 1)
             {
                             chkPassSeat.Checked = true;
             }
@@ -96,7 +96,7 @@ namespace tfm
             {
                 chkPassSeat.Checked = false;
             }
-            switch (Aircraft.ELEC_StandbyPowerSelector.Value)
+            switch (Aircraft.pmdg737.ELEC_StandbyPowerSelector.Value)
             {
                 case 0:
                     radStandbyBat.Checked = true;

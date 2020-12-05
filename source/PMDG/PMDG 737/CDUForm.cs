@@ -61,7 +61,7 @@ namespace tfm
         
         private void btnExec_Click(object sender, EventArgs e)
         {
-            if (Aircraft.CDU_annunEXEC.Value == 1)
+            if (Aircraft.pmdg737.CDU_annunEXEC[0].Value == 1)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_EXEC, Aircraft.ClkL);
                 RefreshCDU();

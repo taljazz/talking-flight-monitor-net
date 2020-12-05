@@ -20,9 +20,9 @@ namespace tfm
 
         private void tmrIRU_Tick(object sender, EventArgs e)
         {
-            txtIRULeft.Text = Aircraft.IRS_DisplayLeft.Value;
-            txtIRURight.Text = Aircraft.IRS_DisplayRight.Value;
-            switch (Aircraft.IRS_ModeSelectorLeft.Value)
+            txtIRULeft.Text = Aircraft.pmdg737.IRS_DisplayLeft.Value;
+            txtIRURight.Text = Aircraft.pmdg737.IRS_DisplayRight.Value;
+            switch (Aircraft.pmdg737.IRS_ModeSelectorLeft.Value)
             {
                 case 0:
                     btnIRULeftMode.AccessibleName = "Left IRS off";
@@ -38,7 +38,7 @@ namespace tfm
                     break;
 
             }
-            switch (Aircraft.IRS_ModeSelectorRight.Value)
+            switch (Aircraft.pmdg737.IRS_ModeSelectorRight.Value)
             {
                 case 0:
                     btnIRURightMode.AccessibleName = "Right IRS off";
@@ -86,10 +86,10 @@ namespace tfm
             switch (e.KeyCode)
             {
                 case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Aircraft.ClkL);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Aircraft.pmdg737.ClkL);
                     break;
                 case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Aircraft.ClkR);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Aircraft.pmdg737.ClkR);
                     break;
             }
 
@@ -101,10 +101,10 @@ namespace tfm
             switch (e.KeyCode)
             {
                 case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Aircraft.ClkL);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Aircraft.pmdg737.ClkL);
                     break;
                 case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Aircraft.ClkR);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Aircraft.pmdg737.ClkR);
                     break;
             }
 

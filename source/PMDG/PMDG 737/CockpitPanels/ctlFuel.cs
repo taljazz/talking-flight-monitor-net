@@ -56,125 +56,21 @@ namespace tfm
         {
         }
 
-        private void btnAftLeft_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.FUEL_PumpAftLeftSw.Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_1_AFT, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.FUEL_PumpAftLeftSw.Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_1_AFT, Aircraft.ClkR);
-                    }
-                    break;
-
-            }
-
-        }
-
-        private void btnFwdRight_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.FUEL_PumpFwdRightSw.Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_2_FORWARD, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.FUEL_PumpFwdRightSw.Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_2_FORWARD, Aircraft.ClkR);
-                    }
-                    break;
-
-            }
-
-        }
-
-        private void btnAftRight_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.FUEL_PumpAftRightSw.Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_2_AFT, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.FUEL_PumpAftRightSw.Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_2_AFT, Aircraft.ClkR);
-                    }
-                    break;
-
-            }
-
-        }
-
-        private void btnCtrLeft_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.FUEL_PumpCtrLeftSw.Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_L_CENTER, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.FUEL_PumpCtrLeftSw.Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_L_CENTER, Aircraft.ClkR);
-                    }
-                    break;
-
-            }
-
-        }
-
-        private void btnCtrRight_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.FUEL_PumpCtrRightSw.Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_R_CENTER, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.FUEL_PumpCtrRightSw.Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_R_CENTER, Aircraft.ClkR);
-                    }
-                    break;
-
-            }
-
-        }
-        private void UpdateToggleControl (bool toggleStateOn, Control ctrl, string OnMsg = "on", string OffMsg = "off")
+        private void UpdateToggleControl (bool toggleStateOn, CheckBox ctrl)
         {
             if (toggleStateOn)
             {
-                if (ctrl.AccessibleDescription != "on")
+                if (ctrl.Checked != true)
                 {
-                    ctrl.AccessibleDescription = "on";
+                    ctrl.Checked = true;
                 }
                 
             }
             else
             {
-                if (ctrl.AccessibleDescription != "off")
+                if (ctrl.Checked != false)
                 {
-                    ctrl.AccessibleDescription = "off";
+                    ctrl.Checked = false;
                 }
                     
             }
@@ -182,12 +78,12 @@ namespace tfm
 
         private void tmrFuel_Tick(object sender, EventArgs e)
         {
-            UpdateToggleControl(Aircraft.FUEL_PumpAftLeftSw.Value > 0, btnAftLeft);
-            UpdateToggleControl(Aircraft.FUEL_PumpFwdLeftSw.Value > 0, btnFwdLeft);
-            UpdateToggleControl(Aircraft.FUEL_PumpFwdRightSw.Value > 0, btnFwdRight);
-            UpdateToggleControl(Aircraft.FUEL_PumpAftRightSw.Value > 0, btnAftRight);
-            UpdateToggleControl(Aircraft.FUEL_PumpCtrLeftSw.Value > 0, btnCtrLeft);
-            UpdateToggleControl(Aircraft.FUEL_PumpCtrRightSw.Value > 0, btnCtrRight);
+            UpdateToggleControl(Aircraft.pmdg737.FUEL_PumpAftSw[0].Value > 0, chkAftLeft);
+            UpdateToggleControl(Aircraft.pmdg737.FUEL_PumpFwdSw[0].Value > 0, chkFwdLeft);
+            UpdateToggleControl(Aircraft.pmdg737.FUEL_PumpFwdSw[1].Value > 0, chkFwdRight);
+            UpdateToggleControl(Aircraft.pmdg737.FUEL_PumpAftSw[1].Value > 0, chkAftRight);
+            UpdateToggleControl(Aircraft.pmdg737.FUEL_PumpCtrSw[0].Value > 0, chkCtrLeft);
+            UpdateToggleControl(Aircraft.pmdg737.FUEL_PumpCtrSw[1].Value > 0, chkCtrRight);
         }
     }
 }

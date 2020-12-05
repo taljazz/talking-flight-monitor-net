@@ -519,7 +519,7 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                             Tolk.Output("Invalid transponder number.");
                         }
                         break;
-                    case "Altimeter[inches]":
+                    case "Altimeter [inches]":
                         if(Double.TryParse(GageValueTextBox.Text, out double altimeterInches))
                         {
                             Autopilot.AltimeterInches = altimeterInches;
@@ -530,7 +530,7 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
                             Tolk.Output("Invalid altimeter value.");
                         }
                         break;
-                    case "Altimeter[QNH]":
+                    case "Altimeter [QNH]":
                         if(double.TryParse(GageValueTextBox.Text, out double altimeterQNH))
                         {
                             Autopilot.AltimeterQNH = altimeterQNH;

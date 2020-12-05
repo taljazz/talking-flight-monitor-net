@@ -95,6 +95,9 @@ namespace tfm
         public static  Offset<double> AileronTrim = new Offset<double>(0x2eb0);
         public static  Offset<double> RudderTrim = new Offset<double>(0x2ec0);
         public static  Offset<short> VerticalSpeed = new Offset<short>(0x0842);
+        public static Offset<int> LandingRate = new Offset<int>(0x030C);
+        public static Offset<byte> StallWarning = new Offset<byte>(0x036C);
+        public static Offset<byte> OverSpeedWarning = new Offset<byte>(0x036D);
         public static  Offset<short> AirTemp = new Offset<short>(0x0e8c);
         public static  Offset<byte> Nav1GS = new Offset<byte>(0x0c4c);
         public static  Offset<short> Nav1LocaliserInverseRunwayHeading = new Offset<short>(0x0870);
@@ -104,6 +107,8 @@ namespace tfm
         public static Offset<string> Vor1ID = new Offset<string>(0x3000, 6);
         public static Offset<string> Vor1Name = new Offset<string>(0x3006, 25);
         public static Offset<ushort> Nav1GSInclination = new Offset<ushort>(0x0872);
+        public static Offset<ushort> Nav1OBS = new Offset<ushort>(0x0C4E);
+        public static Offset<ushort> Nav1Radial = new Offset<ushort>(0x0C50);
 
         public static  Offset<FsBitArray> Nav1Flags = new Offset<FsBitArray>(0x0c4d, 1);
         public enum NavFlag
@@ -119,6 +124,8 @@ namespace tfm
         }
 
         public static  Offset<uint> Nav1Signal = new Offset<uint>(0x0c52);
+        public static  Offset<ushort> Nav2OBS = new Offset<ushort>(0x0C5E);
+        public static  Offset<ushort> Nav2Radial = new Offset<ushort>(0x0C60);
 
         /* Additional radio and autopilot status indicators (read only access). Allocation by bits which are set when true. Bit 0 = least significant (value 1):
 0  = reserved
@@ -136,7 +143,7 @@ namespace tfm
 12=NAV2 is ILS
 13–15 reserved */
         public static Offset<FsBitArray> AutopilotRadioStatus = new Offset<FsBitArray>(0x3300, 2);
-        public static  Offset<ushort> Altimeter = new Offset<ushort>(0x0330);
+        public static Offset<ushort> Altimeter = new Offset<ushort>(0x0330);
         public static  Offset<FsBitArray> Doors = new Offset<FsBitArray>(0x3367, 1);
         public static  Offset<byte> APUGenerator = new Offset<byte>("LowPriority", 0x0b51);
         public static  Offset<byte> APUGeneratorActive = new Offset<byte>(0x0b52);

@@ -104,7 +104,7 @@ namespace tfm
                 FSUIPCConnection.Process();
                 if (Aircraft.AircraftName.Value.Contains("PMDG"))
                 {
-                    FSUIPCConnection.Process("pmdg");
+                    Aircraft.pmdg737.RefreshData();
                 }
                 inst.ReadAircraftState();
                 if(!inst.PostTakeOffChecklist())

@@ -35,27 +35,27 @@ namespace tfm
             // increment altitude by 100 feet
             if (e.KeyCode == Keys.Oemplus)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALTITUDE_SELECTOR, Aircraft.pmdg737.Inc);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALTITUDE_SELECTOR, Aircraft.Inc);
             }
             // increment altitude by 500 feet
             if ((e.Shift && e.KeyCode == Keys.Oemplus))
             {
                 for (int i = 0; i <5; i++)
                 {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALTITUDE_SELECTOR, Aircraft.pmdg737.Inc);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALTITUDE_SELECTOR, Aircraft.Inc);
                 }
             }
             // decrement altitude by 100 feet
             if (e.KeyCode == Keys.OemMinus)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALTITUDE_SELECTOR, Aircraft.pmdg737.Dec);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALTITUDE_SELECTOR, Aircraft.Dec);
             }
             // decrement altitude by 500 feet
             if ((e.Shift && e.KeyCode == Keys.OemMinus))
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALTITUDE_SELECTOR, Aircraft.pmdg737.Dec);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALTITUDE_SELECTOR, Aircraft.Dec);
                 }
             }
 
@@ -65,11 +65,11 @@ namespace tfm
         {
             if (chkFlightDirectorL.Checked)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_L, Aircraft.pmdg737.ClkL);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_L, Aircraft.ClkL);
             }
             else
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_L, Aircraft.pmdg737.ClkR);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_L, Aircraft.ClkR);
             }
         }
 
@@ -77,17 +77,17 @@ namespace tfm
         {
         if (chkATArm.Checked)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_AT_ARM_SWITCH, Aircraft.pmdg737.ClkL);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_AT_ARM_SWITCH, Aircraft.ClkL);
             }
             else
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_AT_ARM_SWITCH, Aircraft.pmdg737.ClkR);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_AT_ARM_SWITCH, Aircraft.ClkR);
             }
         }
 
         private void btnN1_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_N1_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_N1_SWITCH, Aircraft.ClkL);
         }
 
         
@@ -96,27 +96,27 @@ namespace tfm
             // increment speed
             if (e.KeyCode == Keys.Oemplus)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPEED_SELECTOR, Aircraft.pmdg737.Inc);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPEED_SELECTOR, Aircraft.Inc);
             }
             // increment altitude fast
             if ((e.Shift && e.KeyCode == Keys.Oemplus))
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPEED_SELECTOR, Aircraft.pmdg737.Inc);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPEED_SELECTOR, Aircraft.Inc);
                 }
             }
             // decrement altitude slowly
             if (e.KeyCode == Keys.OemMinus)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPEED_SELECTOR, Aircraft.pmdg737.Dec);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPEED_SELECTOR, Aircraft.Dec);
             }
             // decrement altitude fast
             if ((e.Shift && e.KeyCode == Keys.OemMinus))
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPEED_SELECTOR, Aircraft.pmdg737.Dec);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPEED_SELECTOR, Aircraft.Dec);
                 }
             }
 
@@ -124,27 +124,27 @@ namespace tfm
 
         private void btnSpeed_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPEED_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPEED_SWITCH, Aircraft.ClkL);
         }
 
         private void btnSpeedINTV_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPD_INTV_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPD_INTV_SWITCH, Aircraft.ClkL);
         }
 
         private void btnAltIntv_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALT_INTV_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALT_INTV_SWITCH, Aircraft.ClkL);
         }
 
         private void btnLvlChg_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_LVL_CHG_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_LVL_CHG_SWITCH, Aircraft.ClkL);
         }
 
         private void btnAltHold_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALT_HOLD_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALT_HOLD_SWITCH, Aircraft.ClkL);
         }
 
         private void txtVSpd_KeyDown(object sender, KeyEventArgs e)
@@ -152,27 +152,27 @@ namespace tfm
             // increment v-speed
             if (e.KeyCode == Keys.Oemplus)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SELECTOR, Aircraft.pmdg737.Inc);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SELECTOR, Aircraft.Inc);
             }
             // increment altitude fast
             if ((e.Shift && e.KeyCode == Keys.Oemplus))
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SELECTOR, Aircraft.pmdg737.Inc);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SELECTOR, Aircraft.Inc);
                 }
             }
             // decrement altitude slowly
             if (e.KeyCode == Keys.OemMinus)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SELECTOR, Aircraft.pmdg737.Dec);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SELECTOR, Aircraft.Dec);
             }
             // decrement altitude fast
             if ((e.Shift && e.KeyCode == Keys.OemMinus))
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SELECTOR, Aircraft.pmdg737.Dec);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SELECTOR, Aircraft.Dec);
                 }
             }
 
@@ -180,7 +180,7 @@ namespace tfm
 
         private void btnVNav_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VNAV_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VNAV_SWITCH, Aircraft.ClkL);
         }
 
         private void txtHeading_KeyDown(object sender, KeyEventArgs e)
@@ -188,27 +188,27 @@ namespace tfm
             // increment heading
             if (e.KeyCode == Keys.Oemplus)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HEADING_SELECTOR, Aircraft.pmdg737.Inc);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HEADING_SELECTOR, Aircraft.Inc);
             }
             // increment heading fast
             if ((e.Shift && e.KeyCode == Keys.Oemplus))
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HEADING_SELECTOR, Aircraft.pmdg737.Inc);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HEADING_SELECTOR, Aircraft.Inc);
                 }
             }
             // decrement heading slowly
             if (e.KeyCode == Keys.OemMinus)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HEADING_SELECTOR, Aircraft.pmdg737.Dec);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HEADING_SELECTOR, Aircraft.Dec);
             }
             // decrement heading fast
             if ((e.Shift && e.KeyCode == Keys.OemMinus))
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HEADING_SELECTOR, Aircraft.pmdg737.Dec);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HEADING_SELECTOR, Aircraft.Dec);
                 }
             }
 
@@ -217,60 +217,60 @@ namespace tfm
 
         private void btnHdgSel_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HDG_SEL_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HDG_SEL_SWITCH, Aircraft.ClkL);
         }
 
         private void btnLNav_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_LNAV_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_LNAV_SWITCH, Aircraft.ClkL);
         }
 
         private void btnVorLock_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VOR_LOC_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VOR_LOC_SWITCH, Aircraft.ClkL);
         }
 
         private void btnApproach_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_APP_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_APP_SWITCH, Aircraft.ClkL);
         }
 
         private void btnCmdA_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_CMD_A_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_CMD_A_SWITCH, Aircraft.ClkL);
         }
 
         private void btnCmdB_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_CMD_B_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_CMD_B_SWITCH, Aircraft.ClkL);
         }
 
         private void btnCWSA_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_CWS_A_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_CWS_A_SWITCH, Aircraft.ClkL);
         }
 
         private void btnCWSB_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_CWS_B_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_CWS_B_SWITCH, Aircraft.ClkL);
         }
 
         private void chkFlightDirectorRight_CheckedChanged(object sender, EventArgs e)
         {
             if (chkFlightDirectorRight.Checked)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_R, Aircraft.pmdg737.ClkL);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_R, Aircraft.ClkL);
             }
             else
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_R, Aircraft.pmdg737.ClkR);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_R, Aircraft.ClkR);
             }
 
         }
 
         private void btnVs_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SWITCH, Aircraft.pmdg737.ClkL);
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SWITCH, Aircraft.ClkL);
         }
 
         private void tmrMCP_Tick(object sender, EventArgs e)

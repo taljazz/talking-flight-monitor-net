@@ -109,6 +109,8 @@ namespace tfm
                     break;
 
             }
+            txtDCVolts.Text = Aircraft.pmdg737.ELEC_MeterDisplayTop.Value;
+            txtDCAmps.Text = Aircraft.pmdg737.ELEC_MeterDisplayBottom.Value;
         }
 
         
@@ -129,7 +131,11 @@ pmdg.ElecBatteryOn();
         {
             if (chkCabUtil.Checked)
             {
-
+                pmdg.ElecCabUtilOn();
+            }
+            else
+            {
+                pmdg.ElecCabUtilOff();
             }
         }
 
@@ -152,6 +158,92 @@ if (rb.Checked)
 
                 }
             }
+        }
+
+        private void btnGroundPowerOn_Click(object sender, EventArgs e)
+        {
+            pmdg.ElecGroundPowerOn();
+        }
+
+        private void btnGroundPowerOff_Click(object sender, EventArgs e)
+        {
+            pmdg.ElecGroundPowerOff();
+        }
+
+        private void btnAPU1On_Click(object sender, EventArgs e)
+        {
+            pmdg.ElecAPUGen1On();
+        }
+
+        private void btnAPU1Off_Click(object sender, EventArgs e)
+        {
+            pmdg.ElecAPUGen1Off();
+        }
+
+        private void btnAPU2On_Click(object sender, EventArgs e)
+        {
+            pmdg.ElecAPUGen2On();
+        }
+
+        private void btnAPU2Off_Click(object sender, EventArgs e)
+        {
+            pmdg.ElecAPUGen2Off();
+        }
+
+        private void btnGen1On_Click(object sender, EventArgs e)
+        {
+            pmdg.ElecGen1On();
+        }
+
+        private void btnGen1Off_Click(object sender, EventArgs e)
+        {
+            pmdg.ElecGen1Off();
+        }
+
+        private void btnGen2On_Click(object sender, EventArgs e)
+        {
+            pmdg.ElecGen2On();
+        }
+
+        private void btnGen2Off_Click(object sender, EventArgs e)
+        {
+            pmdg.ElecGen2Off();
+        }
+        
+        // DC Source
+        private void radDCSource_CheckChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb.Checked)
+            {
+                switch (rb.Name)
+                {
+                    case "radDCStandby":
+                        pmdg.ElecDCSource(0);
+                        break;
+                    case "radDCBatBus":
+                        pmdg.ElecDCSource(1);
+                        break;
+                    case "radDCBattery":
+                        pmdg.ElecDCSource(2);
+                        break;
+                    case "radDCAuxBat":
+                        pmdg.ElecDCSource(3);
+                        break;
+                    case "radDCTR1":
+                        pmdg.ElecDCSource(4);
+                        break;
+                        case "radDCTR2":
+                        pmdg.ElecDCSource(5);
+                        break;
+                        case "radDCTR3":
+                        pmdg.ElecDCSource(6);
+                        break;
+
+
+                }
+            }
+
         }
     }
 }

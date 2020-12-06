@@ -1,4 +1,5 @@
-﻿using FSUIPC;
+﻿using DavyKager;
+using FSUIPC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,6 +71,7 @@ namespace tfm
             if (s >= 0 && s <= 7)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_DC_METER, s);
+                
             }
 
         }
@@ -162,6 +164,82 @@ namespace tfm
                     FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_BUS_TRANSFER_GUARD, ClkR);
                 }
             }
+        }
+        // cabin utility switch
+        public void ElecCabUtilOn()
+        {
+            if (Aircraft.pmdg737.ELEC_CabUtilSw.Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_CAB_UTIL, Aircraft.ClkL);
+            }
+        }
+        
+        public void ElecCabUtilOff()
+        {
+            if (Aircraft.pmdg737.ELEC_CabUtilSw.Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_CAB_UTIL, Aircraft.ClkR);
+            }
+        }
+        // passenger seat power
+        public void ElecSeatPowerOn()
+        {
+            if (Aircraft.pmdg737.ELEC_IFEPassSeatSw.Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_IFE, Aircraft.ClkL);
+            }
+        }
+        
+        public void ElecSeatPowerOff()
+        {
+            if (Aircraft.pmdg737.ELEC_IFEPassSeatSw.Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_IFE, Aircraft.ClkR);
+            }
+        }
+        
+        // ground power switch
+        public void ElecGroundPowerOn()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_GRD_PWR_SWITCH, Aircraft.ClkL);
+        }
+        public void ElecGroundPowerOff()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_GRD_PWR_SWITCH, Aircraft.ClkR);
+        }
+
+        // APU generators
+        public void ElecAPUGen1On()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_APU_GEN1_SWITCH, Aircraft.ClkL);
+        }
+        public void ElecAPUGen1Off()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_APU_GEN1_SWITCH, Aircraft.ClkR);
+        }
+        public void ElecAPUGen2On()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_APU_GEN2_SWITCH, Aircraft.ClkL);
+        }
+        public void ElecAPUGen2Off()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_APU_GEN2_SWITCH, Aircraft.ClkR);
+        }
+        public void ElecGen1On()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_GEN1_SWITCH, Aircraft.ClkL);
+        }
+        public void ElecGen1Off()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_GEN1_SWITCH, Aircraft.ClkR);
+        }
+        public void ElecGen2On()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_GEN2_SWITCH, Aircraft.ClkL);
+        }
+        public void ElecGen2Off()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ELEC_GEN2_SWITCH, Aircraft.ClkR);
         }
 
     }

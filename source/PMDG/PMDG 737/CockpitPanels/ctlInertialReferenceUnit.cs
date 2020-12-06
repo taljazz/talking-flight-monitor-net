@@ -22,7 +22,7 @@ namespace tfm
         {
             txtIRULeft.Text = Aircraft.pmdg737.IRS_DisplayLeft.Value;
             txtIRURight.Text = Aircraft.pmdg737.IRS_DisplayRight.Value;
-            switch (Aircraft.pmdg737.IRS_ModeSelectorLeft.Value)
+            switch (Aircraft.pmdg737.IRS_ModeSelector[0].Value)
             {
                 case 0:
                     btnIRULeftMode.AccessibleName = "Left IRS off";
@@ -38,7 +38,7 @@ namespace tfm
                     break;
 
             }
-            switch (Aircraft.pmdg737.IRS_ModeSelectorRight.Value)
+            switch (Aircraft.pmdg737.IRS_ModeSelector[1].Value)
             {
                 case 0:
                     btnIRURightMode.AccessibleName = "Right IRS off";
@@ -86,10 +86,10 @@ namespace tfm
             switch (e.KeyCode)
             {
                 case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Aircraft.pmdg737.ClkL);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Aircraft.ClkL);
                     break;
                 case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Aircraft.pmdg737.ClkR);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Aircraft.ClkR);
                     break;
             }
 
@@ -101,10 +101,10 @@ namespace tfm
             switch (e.KeyCode)
             {
                 case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Aircraft.pmdg737.ClkL);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Aircraft.ClkL);
                     break;
                 case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Aircraft.pmdg737.ClkR);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Aircraft.ClkR);
                     break;
             }
 

@@ -29,15 +29,15 @@ namespace tfm
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    if (Aircraft.pmdg737.HYD_PumpSw_elec1.Value != 1)
+                    if (Aircraft.pmdg737.HYD_PumpSw_elec[0].Value != 1)
                     {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC1, Aircraft.pmdg737.ClkL);
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC1, Aircraft.ClkL);
                     }
                     break;
                 case Keys.Down:
-                    if (Aircraft.pmdg737.HYD_PumpSw_elec1.Value != 0)
+                    if (Aircraft.pmdg737.HYD_PumpSw_elec[0].Value != 0)
                     {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC1, Aircraft.pmdg737.ClkR);
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC1, Aircraft.ClkR);
                     }
                     break;
 
@@ -51,15 +51,15 @@ namespace tfm
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    if (Aircraft.pmdg737.HYD_PumpSw_elec2.Value != 1)
+                    if (Aircraft.pmdg737.HYD_PumpSw_elec[1].Value != 1)
                     {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC2, Aircraft.pmdg737.ClkL);
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC2, Aircraft.ClkL);
                     }
                     break;
                 case Keys.Down:
-                    if (Aircraft.pmdg737.HYD_PumpSw_elec2.Value != 0)
+                    if (Aircraft.pmdg737.HYD_PumpSw_elec[1].Value != 0)
                     {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC2, Aircraft.pmdg737.ClkR);
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC2, Aircraft.ClkR);
                     }
                     break;
 
@@ -73,15 +73,15 @@ namespace tfm
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    if (Aircraft.pmdg737.HYD_PumpSw_eng1.Value != 1)
+                    if (Aircraft.pmdg737.HYD_PumpSw_eng[0].Value != 1)
                     {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG1, Aircraft.pmdg737.ClkL);
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG1, Aircraft.ClkL);
                     }
                     break;
                 case Keys.Down:
-                    if (Aircraft.pmdg737.HYD_PumpSw_eng1.Value != 0)
+                    if (Aircraft.pmdg737.HYD_PumpSw_eng[0].Value != 0)
                     {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG1, Aircraft.pmdg737.ClkR);
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG1, Aircraft.ClkR);
                     }
                     break;
 
@@ -110,15 +110,15 @@ namespace tfm
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    if (Aircraft.pmdg737.HYD_PumpSw_eng2.Value != 1)
+                    if (Aircraft.pmdg737.HYD_PumpSw_eng[1].Value != 1)
                     {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG2, Aircraft.pmdg737.ClkL);
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG2, Aircraft.ClkL);
                     }
                     break;
                 case Keys.Down:
-                    if (Aircraft.pmdg737.HYD_PumpSw_eng2.Value != 0)
+                    if (Aircraft.pmdg737.HYD_PumpSw_eng[1].Value != 0)
                     {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG2, Aircraft.pmdg737.ClkR);
+                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG2, Aircraft.ClkR);
                     }
                     break;
 
@@ -128,7 +128,7 @@ namespace tfm
 
         private void tmrHydraulics_Tick(object sender, EventArgs e)
         {
-            if (Aircraft.pmdg737.HYD_PumpSw_elec1.Value == 0)
+            if (Aircraft.pmdg737.HYD_PumpSw_elec[0].Value == 0)
             {
                 btnElec1.AccessibleDescription = "off";
             }
@@ -136,7 +136,7 @@ namespace tfm
             {
                 btnElec1.AccessibleDescription = "on";
             }
-            if (Aircraft.pmdg737.HYD_PumpSw_elec2.Value == 0)
+            if (Aircraft.pmdg737.HYD_PumpSw_elec[1].Value == 0)
             {
                 btnElec2.AccessibleDescription = "off";
             }
@@ -144,7 +144,7 @@ namespace tfm
             {
                 btnElec2.AccessibleDescription = "on";
             }
-            if (Aircraft.pmdg737.HYD_PumpSw_eng1.Value == 0)
+            if (Aircraft.pmdg737.HYD_PumpSw_eng[0].Value == 0)
             {
                 btnEngine1.AccessibleDescription = "off";
             }
@@ -152,7 +152,7 @@ namespace tfm
             {
                 btnEngine1.AccessibleDescription = "on";
             }
-            if (Aircraft.pmdg737.HYD_PumpSw_eng2.Value == 0)
+            if (Aircraft.pmdg737.HYD_PumpSw_eng[1].Value == 0)
             {
                 btnEngine2.AccessibleDescription = "off";
             }

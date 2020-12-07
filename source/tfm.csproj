@@ -227,6 +227,7 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="aircraft.cs" />
+    <Compile Include="ExpressionBuilder.cs" />
     <Compile Include="Flight planning\FlightPlan.cs" />
     <Compile Include="Flight planning\FlightPlanForm.cs">
       <SubType>Form</SubType>

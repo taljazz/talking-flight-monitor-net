@@ -252,5 +252,55 @@ public void ElecAPUStart()
         {
             FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_LIGHTS_APU_START, Aircraft.ClkR);
         }
+
+        public void mcpFlightDirectorLeftOn()
+        {
+            if (Aircraft.pmdg737.MCP_FDSw[0].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_L, ClkL);
+            }
+
+        }
+        public void mcpFlightDirectorLeftOff()
+        {
+            if (Aircraft.pmdg737.MCP_FDSw[0].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_L, ClkR);
+            }
+
+        }
+        public void mcpFlightDirectorRightOn()
+        {
+            if (Aircraft.pmdg737.MCP_FDSw[1].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_R, ClkL);
+            }
+
+        }
+        public void mcpFlightDirectorRightOff()
+        {
+            if (Aircraft.pmdg737.MCP_FDSw[1].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_R, ClkR);
+            }
+
+        }
+        public void mcpAutoThrottleArmOn()
+        {
+            if (Aircraft.pmdg737.MCP_ATArmSw.Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_AT_ARM_SWITCH, ClkL);
+
+            }
+        }
+        public void mcpAutoThrottleArmOff()
+        {
+            if (Aircraft.pmdg737.MCP_ATArmSw.Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_AT_ARM_SWITCH, ClkR);
+
+            }
+        }
+
     }
 }

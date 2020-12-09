@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tmrMCP = new System.Windows.Forms.Timer(this.components);
-            this.chkFlightDirectorL = new System.Windows.Forms.CheckBox();
+            this.chkFlightDirectorLeft = new System.Windows.Forms.CheckBox();
             this.grpCourse = new System.Windows.Forms.GroupBox();
             this.txtCourseR = new System.Windows.Forms.TextBox();
             this.lblCourseR = new System.Windows.Forms.Label();
@@ -76,17 +76,17 @@
             this.tmrMCP.Interval = 300;
             this.tmrMCP.Tick += new System.EventHandler(this.tmrMCP_Tick);
             // 
-            // chkFlightDirectorL
+            // chkFlightDirectorLeft
             // 
-            this.chkFlightDirectorL.AutoSize = true;
-            this.chkFlightDirectorL.Location = new System.Drawing.Point(655, 8);
-            this.chkFlightDirectorL.Margin = new System.Windows.Forms.Padding(5);
-            this.chkFlightDirectorL.Name = "chkFlightDirectorL";
-            this.chkFlightDirectorL.Size = new System.Drawing.Size(129, 37);
-            this.chkFlightDirectorL.TabIndex = 4;
-            this.chkFlightDirectorL.Text = "Left FD";
-            this.chkFlightDirectorL.UseVisualStyleBackColor = true;
-            this.chkFlightDirectorL.CheckedChanged += new System.EventHandler(this.chkATArm_CheckedChanged);
+            this.chkFlightDirectorLeft.AutoSize = true;
+            this.chkFlightDirectorLeft.Location = new System.Drawing.Point(655, 8);
+            this.chkFlightDirectorLeft.Margin = new System.Windows.Forms.Padding(5);
+            this.chkFlightDirectorLeft.Name = "chkFlightDirectorLeft";
+            this.chkFlightDirectorLeft.Size = new System.Drawing.Size(129, 37);
+            this.chkFlightDirectorLeft.TabIndex = 4;
+            this.chkFlightDirectorLeft.Text = "Left FD";
+            this.chkFlightDirectorLeft.UseVisualStyleBackColor = true;
+            this.chkFlightDirectorLeft.CheckedChanged += new System.EventHandler(this.chkFlightDirectorLeft_CheckedChanged);
             // 
             // grpCourse
             // 
@@ -168,6 +168,7 @@
             this.btnSpeedINTV.TabIndex = 51;
             this.btnSpeedINTV.Text = "Speed INTV";
             this.btnSpeedINTV.UseVisualStyleBackColor = true;
+            this.btnSpeedINTV.Click += new System.EventHandler(this.btnSpeedINTV_Click);
             // 
             // btnSpeed
             // 
@@ -178,6 +179,7 @@
             this.btnSpeed.TabIndex = 50;
             this.btnSpeed.Text = "Spd";
             this.btnSpeed.UseVisualStyleBackColor = true;
+            this.btnSpeed.Click += new System.EventHandler(this.btnSpeed_Click);
             // 
             // txtSpeed
             // 
@@ -188,6 +190,7 @@
             this.txtSpeed.ReadOnly = true;
             this.txtSpeed.Size = new System.Drawing.Size(164, 40);
             this.txtSpeed.TabIndex = 31;
+            this.txtSpeed.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSpeed_KeyDown);
             // 
             // btnN1
             // 
@@ -199,6 +202,7 @@
             this.btnN1.TabIndex = 30;
             this.btnN1.Text = "N1 Switch";
             this.btnN1.UseVisualStyleBackColor = true;
+            this.btnN1.Click += new System.EventHandler(this.btnN1_Click);
             // 
             // chkATArm
             // 
@@ -210,6 +214,7 @@
             this.chkATArm.TabIndex = 9;
             this.chkATArm.Text = "AT Arm";
             this.chkATArm.UseVisualStyleBackColor = true;
+            this.chkATArm.CheckedChanged += new System.EventHandler(this.chkATArm_CheckedChanged);
             // 
             // chkFlightDirectorRight
             // 
@@ -221,6 +226,7 @@
             this.chkFlightDirectorRight.TabIndex = 5;
             this.chkFlightDirectorRight.Text = "Right FD";
             this.chkFlightDirectorRight.UseVisualStyleBackColor = true;
+            this.chkFlightDirectorRight.CheckedChanged += new System.EventHandler(this.chkFlightDirectorRight_CheckedChanged);
             // 
             // grpAltitude
             // 
@@ -253,6 +259,7 @@
             this.btnVspeed.TabIndex = 7;
             this.btnVspeed.Text = "VS";
             this.btnVspeed.UseVisualStyleBackColor = true;
+            this.btnVspeed.Click += new System.EventHandler(this.btnVs_Click);
             // 
             // btnVNav
             // 
@@ -264,6 +271,7 @@
             this.btnVNav.TabIndex = 8;
             this.btnVNav.Text = "V Nav";
             this.btnVNav.UseVisualStyleBackColor = true;
+            this.btnVNav.Click += new System.EventHandler(this.btnVNav_Click);
             // 
             // lblVspeed
             // 
@@ -294,6 +302,7 @@
             this.txtVSpd.ReadOnly = true;
             this.txtVSpd.Size = new System.Drawing.Size(164, 40);
             this.txtVSpd.TabIndex = 6;
+            this.txtVSpd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtVSpd_KeyDown);
             // 
             // btnAltHold
             // 
@@ -304,6 +313,7 @@
             this.btnAltHold.TabIndex = 4;
             this.btnAltHold.Text = "Alt Hold";
             this.btnAltHold.UseVisualStyleBackColor = true;
+            this.btnAltHold.Click += new System.EventHandler(this.btnAltHold_Click);
             // 
             // btnAltIntv
             // 
@@ -314,6 +324,7 @@
             this.btnAltIntv.TabIndex = 3;
             this.btnAltIntv.Text = "Alt INTV";
             this.btnAltIntv.UseVisualStyleBackColor = true;
+            this.btnAltIntv.Click += new System.EventHandler(this.btnAltIntv_Click);
             // 
             // btnLvlChg
             // 
@@ -324,6 +335,7 @@
             this.btnLvlChg.TabIndex = 2;
             this.btnLvlChg.Text = "Lvl Chg";
             this.btnLvlChg.UseVisualStyleBackColor = true;
+            this.btnLvlChg.Click += new System.EventHandler(this.btnLvlChg_Click);
             // 
             // txtAltitude
             // 
@@ -333,6 +345,7 @@
             this.txtAltitude.Name = "txtAltitude";
             this.txtAltitude.Size = new System.Drawing.Size(164, 40);
             this.txtAltitude.TabIndex = 1;
+            this.txtAltitude.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAltitude_KeyDown);
             // 
             // grpHeading
             // 
@@ -359,6 +372,7 @@
             this.btnLNav.TabIndex = 42;
             this.btnLNav.Text = "L-Nav";
             this.btnLNav.UseVisualStyleBackColor = true;
+            this.btnLNav.Click += new System.EventHandler(this.btnLNav_Click);
             // 
             // btnHdgSel
             // 
@@ -369,6 +383,7 @@
             this.btnHdgSel.TabIndex = 41;
             this.btnHdgSel.Text = "Heading select";
             this.btnHdgSel.UseVisualStyleBackColor = true;
+            this.btnHdgSel.Click += new System.EventHandler(this.btnHdgSel_Click);
             // 
             // txtHeading
             // 
@@ -379,6 +394,7 @@
             this.txtHeading.ReadOnly = true;
             this.txtHeading.Size = new System.Drawing.Size(164, 40);
             this.txtHeading.TabIndex = 40;
+            this.txtHeading.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtHeading_KeyDown);
             // 
             // grpModes
             // 
@@ -406,6 +422,7 @@
             this.btnCWSB.TabIndex = 48;
             this.btnCWSB.Text = "CWS B";
             this.btnCWSB.UseVisualStyleBackColor = true;
+            this.btnCWSB.Click += new System.EventHandler(this.btnCWSB_Click);
             // 
             // btnCWSA
             // 
@@ -416,16 +433,18 @@
             this.btnCWSA.TabIndex = 47;
             this.btnCWSA.Text = "CWS A";
             this.btnCWSA.UseVisualStyleBackColor = true;
+            this.btnCWSA.Click += new System.EventHandler(this.btnCWSA_Click);
             // 
             // btnCmdB
             // 
-            this.btnCmdB.Location = new System.Drawing.Point(400, 8);
+            this.btnCmdB.Location = new System.Drawing.Point(401, 8);
             this.btnCmdB.Margin = new System.Windows.Forms.Padding(5);
             this.btnCmdB.Name = "btnCmdB";
             this.btnCmdB.Size = new System.Drawing.Size(125, 38);
             this.btnCmdB.TabIndex = 46;
             this.btnCmdB.Text = "Cmd B";
             this.btnCmdB.UseVisualStyleBackColor = true;
+            this.btnCmdB.Click += new System.EventHandler(this.btnCmdB_Click);
             // 
             // btnCmdA
             // 
@@ -436,6 +455,7 @@
             this.btnCmdA.TabIndex = 45;
             this.btnCmdA.Text = "CMD A";
             this.btnCmdA.UseVisualStyleBackColor = true;
+            this.btnCmdA.Click += new System.EventHandler(this.btnCmdA_Click);
             // 
             // btnApproach
             // 
@@ -446,6 +466,7 @@
             this.btnApproach.TabIndex = 44;
             this.btnApproach.Text = "Approach";
             this.btnApproach.UseVisualStyleBackColor = true;
+            this.btnApproach.Click += new System.EventHandler(this.btnApproach_Click);
             // 
             // btnVorLock
             // 
@@ -456,6 +477,7 @@
             this.btnVorLock.TabIndex = 43;
             this.btnVorLock.Text = "VOR Lock";
             this.btnVorLock.UseVisualStyleBackColor = true;
+            this.btnVorLock.Click += new System.EventHandler(this.btnVorLock_Click);
             // 
             // ctlMCP
             // 
@@ -469,7 +491,7 @@
             this.Controls.Add(this.grpSpeed);
             this.Controls.Add(this.grpCourse);
             this.Controls.Add(this.chkFlightDirectorRight);
-            this.Controls.Add(this.chkFlightDirectorL);
+            this.Controls.Add(this.chkFlightDirectorLeft);
             this.Font = new System.Drawing.Font("Times New Roman", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "ctlMCP";
@@ -491,7 +513,7 @@
 
         #endregion
         private System.Windows.Forms.Timer tmrMCP;
-        private System.Windows.Forms.CheckBox chkFlightDirectorL;
+        private System.Windows.Forms.CheckBox chkFlightDirectorLeft;
         private System.Windows.Forms.GroupBox grpCourse;
         private System.Windows.Forms.TextBox txtCourseR;
         private System.Windows.Forms.Label lblCourseR;

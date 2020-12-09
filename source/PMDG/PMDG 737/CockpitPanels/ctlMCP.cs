@@ -14,7 +14,7 @@ namespace tfm
 {
     public partial class ctlMCP : UserControl, iPanelsPage
     {
-        
+        pmdg pmdg = new pmdg();        
             
         public ctlMCP()
         {
@@ -61,33 +61,9 @@ namespace tfm
 
         }
 
-        private void chkFlightDirectorL_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkFlightDirectorL.Checked)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_L, Aircraft.ClkL);
-            }
-            else
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_L, Aircraft.ClkR);
-            }
-        }
-
-        private void chkATArm_CheckedChanged(object sender, EventArgs e)
-        {
-        if (chkATArm.Checked)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_AT_ARM_SWITCH, Aircraft.ClkL);
-            }
-            else
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_AT_ARM_SWITCH, Aircraft.ClkR);
-            }
-        }
-
         private void btnN1_Click(object sender, EventArgs e)
         {
-            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_N1_SWITCH, Aircraft.ClkL);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_N1_SWITCH, Aircraft.ClkL);
         }
 
         
@@ -255,19 +231,6 @@ namespace tfm
             FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_CWS_B_SWITCH, Aircraft.ClkL);
         }
 
-        private void chkFlightDirectorRight_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkFlightDirectorRight.Checked)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_R, Aircraft.ClkL);
-            }
-            else
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_FD_SWITCH_R, Aircraft.ClkR);
-            }
-
-        }
-
         private void btnVs_Click(object sender, EventArgs e)
         {
             FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SWITCH, Aircraft.ClkL);
@@ -387,19 +350,86 @@ namespace tfm
             }
             else
             {
-                btnCWSB.AccessibleName = "CWS B off";
+                btnCWSA.AccessibleName = "CWS B off";
+            }
+            if (Aircraft.pmdg737.MCP_FDSw[0].Value == 1)
+            {
+                chkFlightDirectorLeft.Checked = true;
+
+            }
+            else
+            {
+                chkFlightDirectorLeft.Checked = false;
+
+            }
+            if (Aircraft.pmdg737.MCP_FDSw[1].Value == 1)
+            {
+                chkFlightDirectorRight.Checked = true;
+
+            }
+            else
+            {
+                chkFlightDirectorRight.Checked = false;
+
+            }
+            if (Aircraft.pmdg737.MCP_ATArmSw.Value == 1)
+            {
+                chkATArm.Checked = true;
+            }
+            else
+            {
+                chkATArm.Checked = false;
             }
 
         }
 
         private void txtCourseL_KeyDown(object sender, KeyEventArgs e)
-        {
+        {   
             
             if (e.KeyCode == Keys.Enter)
             {
                 int crs = int.Parse(txtCourseL.Text);
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_CRS_L_SET, crs);
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_CRS_R_SET, crs);
+            }
+
+        }
+
+        private void chkFlightDirectorLeft_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkFlightDirectorLeft.Checked)
+            {
+                pmdg.mcpFlightDirectorLeftOn();
+            }
+            else
+            {
+                pmdg.mcpFlightDirectorLeftOff();
+            }
+
+        }
+
+
+        private void chkFlightDirectorRight_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkFlightDirectorRight.Checked)
+            {
+                pmdg.mcpFlightDirectorRightOn();
+            }
+            else
+            {
+                pmdg.mcpFlightDirectorRightOff();
+            }
+        }
+
+        private void chkATArm_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkATArm.Checked)
+            {
+                pmdg.mcpAutoThrottleArmOn(); ;
+            }
+            else
+            {
+                pmdg.mcpAutoThrottleArmOff();
             }
 
         }

@@ -39,24 +39,19 @@
             this.radStandbyAuto = new System.Windows.Forms.RadioButton();
             this.chkPassSeat = new System.Windows.Forms.CheckBox();
             this.grpGroundPower = new System.Windows.Forms.GroupBox();
-            this.btnGroundPowerOn = new System.Windows.Forms.Button();
             this.btnGroundPowerOff = new System.Windows.Forms.Button();
+            this.btnGroundPowerOn = new System.Windows.Forms.Button();
             this.grpAPUGen = new System.Windows.Forms.GroupBox();
+            this.btnAPU2Off = new System.Windows.Forms.Button();
+            this.btnAPU2On = new System.Windows.Forms.Button();
             this.btnAPU1Off = new System.Windows.Forms.Button();
             this.btnAPU1On = new System.Windows.Forms.Button();
-            this.btnAPU2On = new System.Windows.Forms.Button();
-            this.btnAPU2Off = new System.Windows.Forms.Button();
             this.grpEngineGenerators = new System.Windows.Forms.GroupBox();
             this.btnGen2Off = new System.Windows.Forms.Button();
             this.btnGen2On = new System.Windows.Forms.Button();
             this.btnGen1Off = new System.Windows.Forms.Button();
             this.btnGen1On = new System.Windows.Forms.Button();
             this.grpMeter = new System.Windows.Forms.GroupBox();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblDCVolts = new System.Windows.Forms.Label();
-            this.txtDCVolts = new System.Windows.Forms.TextBox();
-            this.lblDCAmps = new System.Windows.Forms.Label();
-            this.txtDCAmps = new System.Windows.Forms.TextBox();
             this.grpDCSource = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.radDCStandby = new System.Windows.Forms.RadioButton();
@@ -66,15 +61,46 @@
             this.radDCTR1 = new System.Windows.Forms.RadioButton();
             this.radDCTR2 = new System.Windows.Forms.RadioButton();
             this.radDCTR3 = new System.Windows.Forms.RadioButton();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblDCVolts = new System.Windows.Forms.Label();
+            this.txtDCVolts = new System.Windows.Forms.TextBox();
+            this.lblDCAmps = new System.Windows.Forms.Label();
+            this.txtDCAmps = new System.Windows.Forms.TextBox();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtACVolts = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtACAmps = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtACFrequency = new System.Windows.Forms.TextBox();
+            this.grpACSource = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            this.radACStandby = new System.Windows.Forms.RadioButton();
+            this.radACGroundPower = new System.Windows.Forms.RadioButton();
+            this.radACGen1 = new System.Windows.Forms.RadioButton();
+            this.radACAPUGen = new System.Windows.Forms.RadioButton();
+            this.radACGen2 = new System.Windows.Forms.RadioButton();
+            this.radACInverter = new System.Windows.Forms.RadioButton();
+            this.grpAPU = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnAPUStart = new System.Windows.Forms.Button();
+            this.btnAPUShutdown = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtAPUEGT = new System.Windows.Forms.TextBox();
             this.grpStandby.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.grpGroundPower.SuspendLayout();
             this.grpAPUGen.SuspendLayout();
             this.grpEngineGenerators.SuspendLayout();
             this.grpMeter.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
             this.grpDCSource.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel4.SuspendLayout();
+            this.grpACSource.SuspendLayout();
+            this.flowLayoutPanel5.SuspendLayout();
+            this.grpAPU.SuspendLayout();
+            this.flowLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tmrElectrical
@@ -186,17 +212,7 @@
             this.grpGroundPower.Size = new System.Drawing.Size(164, 51);
             this.grpGroundPower.TabIndex = 4;
             this.grpGroundPower.TabStop = false;
-            this.grpGroundPower.Text = "groupBox1";
-            // 
-            // btnGroundPowerOn
-            // 
-            this.btnGroundPowerOn.Location = new System.Drawing.Point(3, 3);
-            this.btnGroundPowerOn.Name = "btnGroundPowerOn";
-            this.btnGroundPowerOn.Size = new System.Drawing.Size(75, 23);
-            this.btnGroundPowerOn.TabIndex = 0;
-            this.btnGroundPowerOn.Text = "On";
-            this.btnGroundPowerOn.UseVisualStyleBackColor = true;
-            this.btnGroundPowerOn.Click += new System.EventHandler(this.btnGroundPowerOn_Click);
+            this.grpGroundPower.Text = "ground power";
             // 
             // btnGroundPowerOff
             // 
@@ -207,6 +223,16 @@
             this.btnGroundPowerOff.Text = "Off";
             this.btnGroundPowerOff.UseVisualStyleBackColor = true;
             this.btnGroundPowerOff.Click += new System.EventHandler(this.btnGroundPowerOff_Click);
+            // 
+            // btnGroundPowerOn
+            // 
+            this.btnGroundPowerOn.Location = new System.Drawing.Point(3, 3);
+            this.btnGroundPowerOn.Name = "btnGroundPowerOn";
+            this.btnGroundPowerOn.Size = new System.Drawing.Size(75, 23);
+            this.btnGroundPowerOn.TabIndex = 0;
+            this.btnGroundPowerOn.Text = "On";
+            this.btnGroundPowerOn.UseVisualStyleBackColor = true;
+            this.btnGroundPowerOn.Click += new System.EventHandler(this.btnGroundPowerOn_Click);
             // 
             // grpAPUGen
             // 
@@ -223,13 +249,33 @@
             this.grpAPUGen.TabStop = false;
             this.grpAPUGen.Text = "APU Generators";
             // 
+            // btnAPU2Off
+            // 
+            this.btnAPU2Off.Location = new System.Drawing.Point(83, 30);
+            this.btnAPU2Off.Name = "btnAPU2Off";
+            this.btnAPU2Off.Size = new System.Drawing.Size(75, 23);
+            this.btnAPU2Off.TabIndex = 3;
+            this.btnAPU2Off.Text = "APU Generator 2 Off";
+            this.btnAPU2Off.UseVisualStyleBackColor = true;
+            this.btnAPU2Off.Click += new System.EventHandler(this.btnAPU2Off_Click);
+            // 
+            // btnAPU2On
+            // 
+            this.btnAPU2On.Location = new System.Drawing.Point(3, 30);
+            this.btnAPU2On.Name = "btnAPU2On";
+            this.btnAPU2On.Size = new System.Drawing.Size(75, 23);
+            this.btnAPU2On.TabIndex = 2;
+            this.btnAPU2On.Text = "APU Generator 2 On";
+            this.btnAPU2On.UseVisualStyleBackColor = true;
+            this.btnAPU2On.Click += new System.EventHandler(this.btnAPU2On_Click);
+            // 
             // btnAPU1Off
             // 
             this.btnAPU1Off.Location = new System.Drawing.Point(83, 3);
             this.btnAPU1Off.Name = "btnAPU1Off";
             this.btnAPU1Off.Size = new System.Drawing.Size(75, 23);
             this.btnAPU1Off.TabIndex = 1;
-            this.btnAPU1Off.Text = "Apu Gen 1 Off";
+            this.btnAPU1Off.Text = "Apu Generator 1 Off";
             this.btnAPU1Off.UseVisualStyleBackColor = true;
             this.btnAPU1Off.Click += new System.EventHandler(this.btnAPU1Off_Click);
             // 
@@ -239,29 +285,9 @@
             this.btnAPU1On.Name = "btnAPU1On";
             this.btnAPU1On.Size = new System.Drawing.Size(75, 23);
             this.btnAPU1On.TabIndex = 0;
-            this.btnAPU1On.Text = "APU Gen 1 On";
+            this.btnAPU1On.Text = "APU Generator 1 On";
             this.btnAPU1On.UseVisualStyleBackColor = true;
             this.btnAPU1On.Click += new System.EventHandler(this.btnAPU1On_Click);
-            // 
-            // btnAPU2On
-            // 
-            this.btnAPU2On.Location = new System.Drawing.Point(3, 30);
-            this.btnAPU2On.Name = "btnAPU2On";
-            this.btnAPU2On.Size = new System.Drawing.Size(75, 23);
-            this.btnAPU2On.TabIndex = 2;
-            this.btnAPU2On.Text = "APU Gen 2 Off";
-            this.btnAPU2On.UseVisualStyleBackColor = true;
-            this.btnAPU2On.Click += new System.EventHandler(this.btnAPU2On_Click);
-            // 
-            // btnAPU2Off
-            // 
-            this.btnAPU2Off.Location = new System.Drawing.Point(83, 30);
-            this.btnAPU2Off.Name = "btnAPU2Off";
-            this.btnAPU2Off.Size = new System.Drawing.Size(75, 23);
-            this.btnAPU2Off.TabIndex = 3;
-            this.btnAPU2Off.Text = "button2";
-            this.btnAPU2Off.UseVisualStyleBackColor = true;
-            this.btnAPU2Off.Click += new System.EventHandler(this.btnAPU2Off_Click);
             // 
             // grpEngineGenerators
             // 
@@ -322,59 +348,15 @@
             // 
             this.grpMeter.AutoSize = true;
             this.grpMeter.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.grpMeter.Controls.Add(this.flowLayoutPanel4);
             this.grpMeter.Controls.Add(this.grpDCSource);
             this.grpMeter.Controls.Add(this.flowLayoutPanel2);
             this.grpMeter.Location = new System.Drawing.Point(5, 515);
             this.grpMeter.Name = "grpMeter";
-            this.grpMeter.Size = new System.Drawing.Size(218, 282);
+            this.grpMeter.Size = new System.Drawing.Size(808, 282);
             this.grpMeter.TabIndex = 7;
             this.grpMeter.TabStop = false;
             this.grpMeter.Text = "Electrical Metering";
-            // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.Controls.Add(this.lblDCVolts);
-            this.flowLayoutPanel2.Controls.Add(this.txtDCVolts);
-            this.flowLayoutPanel2.Controls.Add(this.lblDCAmps);
-            this.flowLayoutPanel2.Controls.Add(this.txtDCAmps);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(200, 100);
-            this.flowLayoutPanel2.TabIndex = 0;
-            // 
-            // lblDCVolts
-            // 
-            this.lblDCVolts.AutoSize = true;
-            this.lblDCVolts.Location = new System.Drawing.Point(3, 0);
-            this.lblDCVolts.Name = "lblDCVolts";
-            this.lblDCVolts.Size = new System.Drawing.Size(72, 20);
-            this.lblDCVolts.TabIndex = 2;
-            this.lblDCVolts.Text = "DC Volts";
-            // 
-            // txtDCVolts
-            // 
-            this.txtDCVolts.Location = new System.Drawing.Point(81, 3);
-            this.txtDCVolts.Name = "txtDCVolts";
-            this.txtDCVolts.ReadOnly = true;
-            this.txtDCVolts.Size = new System.Drawing.Size(100, 26);
-            this.txtDCVolts.TabIndex = 3;
-            // 
-            // lblDCAmps
-            // 
-            this.lblDCAmps.AutoSize = true;
-            this.lblDCAmps.Location = new System.Drawing.Point(3, 32);
-            this.lblDCAmps.Name = "lblDCAmps";
-            this.lblDCAmps.Size = new System.Drawing.Size(77, 20);
-            this.lblDCAmps.TabIndex = 4;
-            this.lblDCAmps.Text = "DC Amps";
-            // 
-            // txtDCAmps
-            // 
-            this.txtDCAmps.Location = new System.Drawing.Point(86, 35);
-            this.txtDCAmps.Name = "txtDCAmps";
-            this.txtDCAmps.ReadOnly = true;
-            this.txtDCAmps.Size = new System.Drawing.Size(100, 26);
-            this.txtDCAmps.TabIndex = 5;
             // 
             // grpDCSource
             // 
@@ -386,7 +368,7 @@
             this.grpDCSource.Size = new System.Drawing.Size(209, 147);
             this.grpDCSource.TabIndex = 1;
             this.grpDCSource.TabStop = false;
-            this.grpDCSource.Text = "groupBox1";
+            this.grpDCSource.Text = "DC Source";
             // 
             // flowLayoutPanel3
             // 
@@ -486,12 +468,276 @@
             this.radDCTR3.UseVisualStyleBackColor = true;
             this.radDCTR3.CheckedChanged += new System.EventHandler(this.radDCSource_CheckChanged);
             // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.lblDCVolts);
+            this.flowLayoutPanel2.Controls.Add(this.txtDCVolts);
+            this.flowLayoutPanel2.Controls.Add(this.lblDCAmps);
+            this.flowLayoutPanel2.Controls.Add(this.txtDCAmps);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(200, 100);
+            this.flowLayoutPanel2.TabIndex = 0;
+            // 
+            // lblDCVolts
+            // 
+            this.lblDCVolts.AutoSize = true;
+            this.lblDCVolts.Location = new System.Drawing.Point(3, 0);
+            this.lblDCVolts.Name = "lblDCVolts";
+            this.lblDCVolts.Size = new System.Drawing.Size(72, 20);
+            this.lblDCVolts.TabIndex = 2;
+            this.lblDCVolts.Text = "DC Volts";
+            // 
+            // txtDCVolts
+            // 
+            this.txtDCVolts.Location = new System.Drawing.Point(81, 3);
+            this.txtDCVolts.Name = "txtDCVolts";
+            this.txtDCVolts.ReadOnly = true;
+            this.txtDCVolts.Size = new System.Drawing.Size(100, 26);
+            this.txtDCVolts.TabIndex = 3;
+            // 
+            // lblDCAmps
+            // 
+            this.lblDCAmps.AutoSize = true;
+            this.lblDCAmps.Location = new System.Drawing.Point(3, 32);
+            this.lblDCAmps.Name = "lblDCAmps";
+            this.lblDCAmps.Size = new System.Drawing.Size(77, 20);
+            this.lblDCAmps.TabIndex = 4;
+            this.lblDCAmps.Text = "DC Amps";
+            // 
+            // txtDCAmps
+            // 
+            this.txtDCAmps.Location = new System.Drawing.Point(86, 35);
+            this.txtDCAmps.Name = "txtDCAmps";
+            this.txtDCAmps.ReadOnly = true;
+            this.txtDCAmps.Size = new System.Drawing.Size(100, 26);
+            this.txtDCAmps.TabIndex = 5;
+            // 
+            // flowLayoutPanel4
+            // 
+            this.flowLayoutPanel4.AutoSize = true;
+            this.flowLayoutPanel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel4.Controls.Add(this.label1);
+            this.flowLayoutPanel4.Controls.Add(this.txtACVolts);
+            this.flowLayoutPanel4.Controls.Add(this.label2);
+            this.flowLayoutPanel4.Controls.Add(this.txtACAmps);
+            this.flowLayoutPanel4.Controls.Add(this.label3);
+            this.flowLayoutPanel4.Controls.Add(this.txtACFrequency);
+            this.flowLayoutPanel4.Controls.Add(this.grpACSource);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 110);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(799, 106);
+            this.flowLayoutPanel4.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(71, 20);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "AC Volts";
+            // 
+            // txtACVolts
+            // 
+            this.txtACVolts.Location = new System.Drawing.Point(80, 3);
+            this.txtACVolts.Name = "txtACVolts";
+            this.txtACVolts.Size = new System.Drawing.Size(100, 26);
+            this.txtACVolts.TabIndex = 1;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(186, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(76, 20);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "AC Amps";
+            // 
+            // txtACAmps
+            // 
+            this.txtACAmps.Location = new System.Drawing.Point(268, 3);
+            this.txtACAmps.Name = "txtACAmps";
+            this.txtACAmps.Size = new System.Drawing.Size(100, 26);
+            this.txtACAmps.TabIndex = 3;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(374, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(110, 20);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "AC Frequency";
+            // 
+            // txtACFrequency
+            // 
+            this.txtACFrequency.Location = new System.Drawing.Point(490, 3);
+            this.txtACFrequency.Name = "txtACFrequency";
+            this.txtACFrequency.Size = new System.Drawing.Size(100, 26);
+            this.txtACFrequency.TabIndex = 5;
+            // 
+            // grpACSource
+            // 
+            this.grpACSource.Controls.Add(this.flowLayoutPanel5);
+            this.grpACSource.Location = new System.Drawing.Point(596, 3);
+            this.grpACSource.Name = "grpACSource";
+            this.grpACSource.Size = new System.Drawing.Size(200, 100);
+            this.grpACSource.TabIndex = 6;
+            this.grpACSource.TabStop = false;
+            this.grpACSource.Text = "AC Source";
+            // 
+            // flowLayoutPanel5
+            // 
+            this.flowLayoutPanel5.Controls.Add(this.radACStandby);
+            this.flowLayoutPanel5.Controls.Add(this.radACGroundPower);
+            this.flowLayoutPanel5.Controls.Add(this.radACGen1);
+            this.flowLayoutPanel5.Controls.Add(this.radACAPUGen);
+            this.flowLayoutPanel5.Controls.Add(this.radACGen2);
+            this.flowLayoutPanel5.Controls.Add(this.radACInverter);
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 22);
+            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(200, 100);
+            this.flowLayoutPanel5.TabIndex = 0;
+            // 
+            // radACStandby
+            // 
+            this.radACStandby.AutoSize = true;
+            this.radACStandby.Location = new System.Drawing.Point(3, 3);
+            this.radACStandby.Name = "radACStandby";
+            this.radACStandby.Size = new System.Drawing.Size(93, 24);
+            this.radACStandby.TabIndex = 0;
+            this.radACStandby.TabStop = true;
+            this.radACStandby.Text = "Standby";
+            this.radACStandby.UseVisualStyleBackColor = true;
+            this.radACStandby.CheckedChanged += new System.EventHandler(this.radACSource_CheckChanged);
+            // 
+            // radACGroundPower
+            // 
+            this.radACGroundPower.AutoSize = true;
+            this.radACGroundPower.Location = new System.Drawing.Point(3, 33);
+            this.radACGroundPower.Name = "radACGroundPower";
+            this.radACGroundPower.Size = new System.Drawing.Size(136, 24);
+            this.radACGroundPower.TabIndex = 1;
+            this.radACGroundPower.TabStop = true;
+            this.radACGroundPower.Text = "Ground Power";
+            this.radACGroundPower.UseVisualStyleBackColor = true;
+            this.radACGroundPower.CheckedChanged += new System.EventHandler(this.radACSource_CheckChanged);
+            // 
+            // radACGen1
+            // 
+            this.radACGen1.AutoSize = true;
+            this.radACGen1.Location = new System.Drawing.Point(3, 63);
+            this.radACGen1.Name = "radACGen1";
+            this.radACGen1.Size = new System.Drawing.Size(78, 24);
+            this.radACGen1.TabIndex = 2;
+            this.radACGen1.TabStop = true;
+            this.radACGen1.Text = "Gen 1";
+            this.radACGen1.UseVisualStyleBackColor = true;
+            this.radACGen1.CheckedChanged += new System.EventHandler(this.radACSource_CheckChanged);
+            // 
+            // radACAPUGen
+            // 
+            this.radACAPUGen.AutoSize = true;
+            this.radACAPUGen.Location = new System.Drawing.Point(87, 63);
+            this.radACAPUGen.Name = "radACAPUGen";
+            this.radACAPUGen.Size = new System.Drawing.Size(102, 24);
+            this.radACAPUGen.TabIndex = 3;
+            this.radACAPUGen.TabStop = true;
+            this.radACAPUGen.Text = "APU Gen";
+            this.radACAPUGen.UseVisualStyleBackColor = true;
+            this.radACAPUGen.CheckedChanged += new System.EventHandler(this.radACSource_CheckChanged);
+            // 
+            // radACGen2
+            // 
+            this.radACGen2.AutoSize = true;
+            this.radACGen2.Location = new System.Drawing.Point(3, 93);
+            this.radACGen2.Name = "radACGen2";
+            this.radACGen2.Size = new System.Drawing.Size(126, 24);
+            this.radACGen2.TabIndex = 4;
+            this.radACGen2.TabStop = true;
+            this.radACGen2.Text = "radioButton5";
+            this.radACGen2.UseVisualStyleBackColor = true;
+            this.radACGen2.CheckedChanged += new System.EventHandler(this.radACSource_CheckChanged);
+            // 
+            // radACInverter
+            // 
+            this.radACInverter.AutoSize = true;
+            this.radACInverter.Location = new System.Drawing.Point(3, 123);
+            this.radACInverter.Name = "radACInverter";
+            this.radACInverter.Size = new System.Drawing.Size(88, 24);
+            this.radACInverter.TabIndex = 5;
+            this.radACInverter.TabStop = true;
+            this.radACInverter.Text = "Inverter";
+            this.radACInverter.UseVisualStyleBackColor = true;
+            this.radACInverter.CheckedChanged += new System.EventHandler(this.radACSource_CheckChanged);
+            // 
+            // grpAPU
+            // 
+            this.grpAPU.AutoSize = true;
+            this.grpAPU.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.grpAPU.Controls.Add(this.flowLayoutPanel6);
+            this.grpAPU.Location = new System.Drawing.Point(515, 100);
+            this.grpAPU.Name = "grpAPU";
+            this.grpAPU.Size = new System.Drawing.Size(209, 147);
+            this.grpAPU.TabIndex = 8;
+            this.grpAPU.TabStop = false;
+            this.grpAPU.Text = "APU";
+            // 
+            // flowLayoutPanel6
+            // 
+            this.flowLayoutPanel6.Controls.Add(this.btnAPUStart);
+            this.flowLayoutPanel6.Controls.Add(this.btnAPUShutdown);
+            this.flowLayoutPanel6.Controls.Add(this.label4);
+            this.flowLayoutPanel6.Controls.Add(this.txtAPUEGT);
+            this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 22);
+            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
+            this.flowLayoutPanel6.Size = new System.Drawing.Size(200, 100);
+            this.flowLayoutPanel6.TabIndex = 0;
+            // 
+            // btnAPUStart
+            // 
+            this.btnAPUStart.Location = new System.Drawing.Point(3, 3);
+            this.btnAPUStart.Name = "btnAPUStart";
+            this.btnAPUStart.Size = new System.Drawing.Size(75, 23);
+            this.btnAPUStart.TabIndex = 0;
+            this.btnAPUStart.Text = "Start APU";
+            this.btnAPUStart.UseVisualStyleBackColor = true;
+            this.btnAPUStart.Click += new System.EventHandler(this.btnAPUStart_Click);
+            // 
+            // btnAPUShutdown
+            // 
+            this.btnAPUShutdown.Location = new System.Drawing.Point(84, 3);
+            this.btnAPUShutdown.Name = "btnAPUShutdown";
+            this.btnAPUShutdown.Size = new System.Drawing.Size(75, 23);
+            this.btnAPUShutdown.TabIndex = 1;
+            this.btnAPUShutdown.Text = "Shut down APU";
+            this.btnAPUShutdown.UseVisualStyleBackColor = true;
+            this.btnAPUShutdown.Click += new System.EventHandler(this.btnAPUShutdown_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 29);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(79, 20);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "APU EGT";
+            // 
+            // txtAPUEGT
+            // 
+            this.txtAPUEGT.Location = new System.Drawing.Point(88, 32);
+            this.txtAPUEGT.Name = "txtAPUEGT";
+            this.txtAPUEGT.Size = new System.Drawing.Size(100, 26);
+            this.txtAPUEGT.TabIndex = 3;
+            // 
             // ctlElectrical
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.Controls.Add(this.grpAPU);
             this.Controls.Add(this.grpMeter);
             this.Controls.Add(this.grpEngineGenerators);
             this.Controls.Add(this.grpAPUGen);
@@ -501,7 +747,7 @@
             this.Controls.Add(this.chkCabUtil);
             this.Controls.Add(this.chkBattery);
             this.Name = "ctlElectrical";
-            this.Size = new System.Drawing.Size(660, 800);
+            this.Size = new System.Drawing.Size(816, 800);
             this.Load += new System.EventHandler(this.ctlElectrical_Load);
             this.grpStandby.ResumeLayout(false);
             this.grpStandby.PerformLayout();
@@ -512,11 +758,19 @@
             this.grpEngineGenerators.ResumeLayout(false);
             this.grpMeter.ResumeLayout(false);
             this.grpMeter.PerformLayout();
-            this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
             this.grpDCSource.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
+            this.flowLayoutPanel4.ResumeLayout(false);
+            this.flowLayoutPanel4.PerformLayout();
+            this.grpACSource.ResumeLayout(false);
+            this.flowLayoutPanel5.ResumeLayout(false);
+            this.flowLayoutPanel5.PerformLayout();
+            this.grpAPU.ResumeLayout(false);
+            this.flowLayoutPanel6.ResumeLayout(false);
+            this.flowLayoutPanel6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -560,5 +814,26 @@
         private System.Windows.Forms.Label lblDCAmps;
         private System.Windows.Forms.TextBox txtDCAmps;
         private System.Windows.Forms.RadioButton radDCTR3;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtACVolts;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtACAmps;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtACFrequency;
+        private System.Windows.Forms.GroupBox grpACSource;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
+        private System.Windows.Forms.RadioButton radACStandby;
+        private System.Windows.Forms.RadioButton radACGroundPower;
+        private System.Windows.Forms.RadioButton radACGen1;
+        private System.Windows.Forms.RadioButton radACAPUGen;
+        private System.Windows.Forms.RadioButton radACGen2;
+        private System.Windows.Forms.RadioButton radACInverter;
+        private System.Windows.Forms.GroupBox grpAPU;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
+        private System.Windows.Forms.Button btnAPUStart;
+        private System.Windows.Forms.Button btnAPUShutdown;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtAPUEGT;
     }
 }

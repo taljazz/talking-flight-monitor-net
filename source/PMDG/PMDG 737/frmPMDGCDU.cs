@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace tfm
 {
-    public partial class CDUForm : Form
+    public partial class frmPMDGCDU : Form
     {
         
         uint ClkL = 0x20000000;
@@ -21,7 +21,7 @@ namespace tfm
 
         PMDG_NGX_CDU_Screen cdu;
 
-        public CDUForm()
+        public frmPMDGCDU()
         {
             InitializeComponent();
             cdu = new PMDG_NGX_CDU_Screen(0x5400);

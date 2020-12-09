@@ -1381,6 +1381,7 @@ namespace tfm
             frmAutopilot ap;
             frmComRadios com;
             frmNavRadios nav;
+            frmPMDGCDU cdu;
             string gaugeName;
             string gaugeValue;
             bool isGauge = true;
@@ -1501,6 +1502,14 @@ namespace tfm
                 case "ap_Set_Throttle":
                     ap = new frmAutopilot("Throttle");
                     ap.ShowDialog();
+                    break;
+                case "ap_PMDG_CDU":
+                    cdu = new frmPMDGCDU();
+                    cdu.Show();
+                    break;
+                case "ap_PMDG_Panels":
+                    frmCockpitPanels pnl = new frmCockpitPanels();
+                    pnl.Show();
                     break;
 
                 default:

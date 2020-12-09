@@ -249,11 +249,11 @@
       <DependentUpon>frmOutputHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="OutputHistory\OutputHistory.cs" />
-    <Compile Include="PMDG\PMDG 737\CDUForm.cs">
+    <Compile Include="PMDG\PMDG 737\frmPMDGCDU.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PMDG\PMDG 737\CDUForm.Designer.cs">
-      <DependentUpon>CDUForm.cs</DependentUpon>
+    <Compile Include="PMDG\PMDG 737\frmPMDGCDU.Designer.cs">
+      <DependentUpon>frmPMDGCDU.cs</DependentUpon>
     </Compile>
     <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlAirSystems.cs">
       <SubType>UserControl</SubType>
@@ -472,8 +472,8 @@
     <EmbeddedResource Include="OutputHistory\frmOutputHistory.resx">
       <DependentUpon>frmOutputHistory.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\CDUForm.resx">
-      <DependentUpon>CDUForm.cs</DependentUpon>
+    <EmbeddedResource Include="PMDG\PMDG 737\frmPMDGCDU.resx">
+      <DependentUpon>frmPMDGCDU.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlAirSystems.resx">
       <DependentUpon>ctlAirSystems.cs</DependentUpon>

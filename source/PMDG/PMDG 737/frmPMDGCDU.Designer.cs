@@ -1,6 +1,6 @@
 ﻿namespace tfm
 {
-    partial class CDUForm
+    partial class frmPMDGCDU
     {
         /// <summary>
         /// Required designer variable.

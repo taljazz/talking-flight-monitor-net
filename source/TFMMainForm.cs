@@ -190,19 +190,6 @@ namespace tfm
         private void TFMMainForm_KeyDown(object sender, KeyEventArgs e)
         {
             // Manually define keyboard shortcuts for the Gages list and the gage value textbox.
-            // test code for PMDG
-            if ((e.Control && e.KeyCode == Keys.C))
-            {
-                CDUForm frm = new CDUForm();
-                frm.Show();
-
-            }
-            if ((e.Control && e.Shift && e.KeyCode == Keys.P))
-            {
-                frmCockpitPanels frm = new frmCockpitPanels();
-                frm.Show();
-
-            }
             if ((e.Control && e.KeyCode == Keys.E))
             {
                 GageValueTextBox.Focus();

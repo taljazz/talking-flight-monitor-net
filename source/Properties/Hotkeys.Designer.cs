@@ -919,5 +919,29 @@ namespace tfm.Properties {
                 this["flight_planner"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+P")]
+        public global::System.Windows.Forms.Keys ap_PMDG_Panels {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_PMDG_Panels"]));
+            }
+            set {
+                this["ap_PMDG_Panels"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+C")]
+        public global::System.Windows.Forms.Keys ap_PMDG_CDU {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_PMDG_CDU"]));
+            }
+            set {
+                this["ap_PMDG_CDU"] = value;
+            }
+        }
     }
 }

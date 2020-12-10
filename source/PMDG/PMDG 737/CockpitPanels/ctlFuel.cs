@@ -28,6 +28,7 @@ namespace tfm
 
         private void UpdateToggleControl (bool toggleStateOn, CheckBox ctrl)
         {
+            
             if (toggleStateOn)
             {
                 if (ctrl.Checked != true)
@@ -166,4 +167,4 @@ namespace tfm
             pmdg.FuelCtrRightOff();
         }
     }
-}
+}   

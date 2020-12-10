@@ -399,5 +399,73 @@ public void ElecAPUStart()
 
         }
 
+        // hydraulic pumps
+        public void HydElec1On()
+        {
+            if (Aircraft.pmdg737.HYD_PumpSw_elec[1].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC1, ClkL);
+            }
+
+        }
+        public void HydElec1Off()
+        {
+            if (Aircraft.pmdg737.HYD_PumpSw_elec[1].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC1, ClkR);
+            }
+
+        }
+        public void HydElec2On()
+        {
+            if (Aircraft.pmdg737.HYD_PumpSw_elec[0].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC2, ClkL);
+            }
+
+        }
+        public void HydElec2Off()
+        {
+            if (Aircraft.pmdg737.HYD_PumpSw_elec[0].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC2, ClkR);
+            }
+
+        }
+        public void HydEng2On()
+        {
+            if (Aircraft.pmdg737.HYD_PumpSw_eng[0].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG2, ClkL);
+            }
+
+        }
+        public void HydEng2Off()
+        {
+            if (Aircraft.pmdg737.HYD_PumpSw_eng[0].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG2, ClkR);
+            }
+
+        }
+
+
+        public void HydEng1On()
+        {
+            if (Aircraft.pmdg737.HYD_PumpSw_eng[1].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG1, ClkL);
+            }
+
+        }
+        public void HydEng1Off()
+        {
+            if (Aircraft.pmdg737.HYD_PumpSw_eng[1].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG1, ClkR);
+            }
+
+        }
+
     }
 }

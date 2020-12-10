@@ -485,8 +485,8 @@ namespace tfm
                     }
                 }
                 // hydraulics
-                ReadToggle(Aircraft.pmdg737.HYD_PumpSw_elec[0], Aircraft.pmdg737.HYD_PumpSw_elec[0].Value > 0, "electrical hydraulic pump 1", "on", "off");
-                ReadToggle(Aircraft.pmdg737.HYD_PumpSw_elec[1], Aircraft.pmdg737.HYD_PumpSw_elec[1].Value > 0, "electrical hydraulic pump 2", "on", "off");
+                ReadToggle(Aircraft.pmdg737.HYD_PumpSw_elec[1], Aircraft.pmdg737.HYD_PumpSw_elec[1].Value > 0, "electrical hydraulic pump 1", "on", "off");
+                ReadToggle(Aircraft.pmdg737.HYD_PumpSw_elec[0], Aircraft.pmdg737.HYD_PumpSw_elec[0].Value > 0, "electrical hydraulic pump 2", "on", "off");
                 if (Aircraft.pmdg737.AIR_PackSwitch[0].ValueChanged)
                 {
                     string pck = null;

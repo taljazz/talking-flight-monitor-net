@@ -13,6 +13,7 @@ namespace tfm
 {
     public partial class ctlHydraulics : UserControl, iPanelsPage
     {
+        pmdg pmdg = new pmdg();
         public ctlHydraulics()
         {
             InitializeComponent();
@@ -22,145 +23,98 @@ namespace tfm
         {
             
         }
-
-        private void btnElec1_KeyDown(object sender, KeyEventArgs e)
+        
+        private void ctlHydraulics_Load(object sender, EventArgs e)
         {
-
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.pmdg737.HYD_PumpSw_elec[0].Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC1, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.pmdg737.HYD_PumpSw_elec[0].Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC1, Aircraft.ClkR);
-                    }
-                    break;
-
-            }
-
-
+            tmrHydraulics.Start();
         }
 
-        private void btnElec2_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.pmdg737.HYD_PumpSw_elec[1].Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC2, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.pmdg737.HYD_PumpSw_elec[1].Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ELEC2, Aircraft.ClkR);
-                    }
-                    break;
-
-            }
-
-        }
-
-        private void btnEngine1_KeyDown(object sender, KeyEventArgs e)
+        private void UpdateToggleControl(bool toggleStateOn, CheckBox ctrl)
         {
 
-            switch (e.KeyCode)
+            if (toggleStateOn)
             {
-                case Keys.Up:
-                    if (Aircraft.pmdg737.HYD_PumpSw_eng[0].Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG1, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.pmdg737.HYD_PumpSw_eng[0].Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG1, Aircraft.ClkR);
-                    }
-                    break;
+                if (ctrl.Checked != true)
+                {
+                    ctrl.Checked = true;
+                }
 
             }
-
-
-        }
-
-        private void event_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            switch (e.KeyCode)
+            else
             {
-                case Keys.Left:
-                case Keys.Right:
-                case Keys.Up:
-                case Keys.Down:
-                    e.IsInputKey = true;
-                    break;
+                if (ctrl.Checked != false)
+                {
+                    ctrl.Checked = false;
+                }
 
             }
-
         }
 
-        private void btnEngine2_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.pmdg737.HYD_PumpSw_eng[1].Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG2, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.pmdg737.HYD_PumpSw_eng[1].Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_HYD_ENG2, Aircraft.ClkR);
-                    }
-                    break;
-
-            }
-
-        }
 
         private void tmrHydraulics_Tick(object sender, EventArgs e)
         {
-            if (Aircraft.pmdg737.HYD_PumpSw_elec[0].Value == 0)
+            UpdateToggleControl(Aircraft.pmdg737.HYD_PumpSw_elec[1].Value > 0, chkElec1);
+            UpdateToggleControl(Aircraft.pmdg737.HYD_PumpSw_elec[0].Value > 0, chkElec2);
+            UpdateToggleControl(Aircraft.pmdg737.HYD_PumpSw_eng[0].Value > 0, chkEng1);
+            UpdateToggleControl(Aircraft.pmdg737.HYD_PumpSw_eng[1].Value > 0, chkEng2);
+
+        }
+
+        private void chkElec1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkElec1.Checked)
             {
-                btnElec1.AccessibleDescription = "off";
+                pmdg.HydElec1On();
+
             }
             else
             {
-                btnElec1.AccessibleDescription = "on";
+                pmdg.HydElec1Off();
             }
-            if (Aircraft.pmdg737.HYD_PumpSw_elec[1].Value == 0)
+        }
+
+        private void chkElec2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkElec2.Checked)
             {
-                btnElec2.AccessibleDescription = "off";
-            }
-            else
-            {
-                btnElec2.AccessibleDescription = "on";
-            }
-            if (Aircraft.pmdg737.HYD_PumpSw_eng[0].Value == 0)
-            {
-                btnEngine1.AccessibleDescription = "off";
+                pmdg.HydElec2On();
+
             }
             else
             {
-                btnEngine1.AccessibleDescription = "on";
-            }
-            if (Aircraft.pmdg737.HYD_PumpSw_eng[1].Value == 0)
-            {
-                btnEngine2.AccessibleDescription = "off";
-            }
-            else
-            {
-                btnEngine2.AccessibleDescription = "on";
+                pmdg.HydElec2Off();
             }
 
         }
+
+        private void chkEng1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEng1.Checked)
+            {
+                pmdg.HydEng1On();
+
+            }
+            else
+            {
+                pmdg.HydEng1Off();
+            }
+
+        }
+
+        private void chkEng2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEng2.Checked)
+            {
+                pmdg.HydEng2On();
+
+            }
+            else
+            {
+                pmdg.HydEng2Off();
+            }
+
+        }
+
+
     }
 }

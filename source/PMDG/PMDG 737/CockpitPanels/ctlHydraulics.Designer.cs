@@ -29,100 +29,99 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnEngine2 = new System.Windows.Forms.Button();
-            this.btnElec1 = new System.Windows.Forms.Button();
-            this.btnElec2 = new System.Windows.Forms.Button();
-            this.btnEngine1 = new System.Windows.Forms.Button();
             this.tmrHydraulics = new System.Windows.Forms.Timer(this.components);
-            this.tableLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.chkElec1 = new System.Windows.Forms.CheckBox();
+            this.chkElec2 = new System.Windows.Forms.CheckBox();
+            this.chkEng1 = new System.Windows.Forms.CheckBox();
+            this.chkEng2 = new System.Windows.Forms.CheckBox();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.btnEngine2, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.btnElec1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnElec2, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnEngine1, 0, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 100);
-            this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // btnEngine2
-            // 
-            this.btnEngine2.Location = new System.Drawing.Point(103, 43);
-            this.btnEngine2.Name = "btnEngine2";
-            this.btnEngine2.Size = new System.Drawing.Size(75, 23);
-            this.btnEngine2.TabIndex = 3;
-            this.btnEngine2.Text = "Engine 2";
-            this.btnEngine2.UseVisualStyleBackColor = true;
-            this.btnEngine2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnEngine2_KeyDown);
-            this.btnEngine2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
-            // 
-            // btnElec1
-            // 
-            this.btnElec1.Location = new System.Drawing.Point(3, 3);
-            this.btnElec1.Name = "btnElec1";
-            this.btnElec1.Size = new System.Drawing.Size(75, 23);
-            this.btnElec1.TabIndex = 0;
-            this.btnElec1.Text = "Electric1";
-            this.btnElec1.UseVisualStyleBackColor = true;
-            this.btnElec1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnElec1_KeyDown);
-            this.btnElec1.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
-            // 
-            // btnElec2
-            // 
-            this.btnElec2.Location = new System.Drawing.Point(103, 3);
-            this.btnElec2.Name = "btnElec2";
-            this.btnElec2.Size = new System.Drawing.Size(75, 23);
-            this.btnElec2.TabIndex = 1;
-            this.btnElec2.Text = "Electric 2";
-            this.btnElec2.UseVisualStyleBackColor = true;
-            this.btnElec2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnElec2_KeyDown);
-            this.btnElec2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
-            // 
-            // btnEngine1
-            // 
-            this.btnEngine1.Location = new System.Drawing.Point(3, 43);
-            this.btnEngine1.Name = "btnEngine1";
-            this.btnEngine1.Size = new System.Drawing.Size(75, 23);
-            this.btnEngine1.TabIndex = 2;
-            this.btnEngine1.Text = "Engine 1";
-            this.btnEngine1.UseVisualStyleBackColor = true;
-            this.btnEngine1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnEngine1_KeyDown);
-            this.btnEngine1.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.event_PreviewKeyDown);
             // 
             // tmrHydraulics
             // 
             this.tmrHydraulics.Interval = 500;
             this.tmrHydraulics.Tick += new System.EventHandler(this.tmrHydraulics_Tick);
             // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoSize = true;
+            this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel1.Controls.Add(this.chkElec1);
+            this.flowLayoutPanel1.Controls.Add(this.chkElec2);
+            this.flowLayoutPanel1.Controls.Add(this.chkEng1);
+            this.flowLayoutPanel1.Controls.Add(this.chkEng2);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(344, 27);
+            this.flowLayoutPanel1.TabIndex = 0;
+            // 
+            // chkElec1
+            // 
+            this.chkElec1.AutoSize = true;
+            this.chkElec1.Location = new System.Drawing.Point(3, 3);
+            this.chkElec1.Name = "chkElec1";
+            this.chkElec1.Size = new System.Drawing.Size(85, 21);
+            this.chkElec1.TabIndex = 0;
+            this.chkElec1.Text = "Electrical 1";
+            this.chkElec1.UseVisualStyleBackColor = true;
+            this.chkElec1.CheckedChanged += new System.EventHandler(this.chkElec1_CheckedChanged);
+            // 
+            // chkElec2
+            // 
+            this.chkElec2.AutoSize = true;
+            this.chkElec2.Location = new System.Drawing.Point(94, 3);
+            this.chkElec2.Name = "chkElec2";
+            this.chkElec2.Size = new System.Drawing.Size(85, 21);
+            this.chkElec2.TabIndex = 1;
+            this.chkElec2.Text = "Electrical 2";
+            this.chkElec2.UseVisualStyleBackColor = true;
+            this.chkElec2.CheckedChanged += new System.EventHandler(this.chkElec2_CheckedChanged);
+            // 
+            // chkEng1
+            // 
+            this.chkEng1.AutoSize = true;
+            this.chkEng1.Location = new System.Drawing.Point(185, 3);
+            this.chkEng1.Name = "chkEng1";
+            this.chkEng1.Size = new System.Drawing.Size(75, 21);
+            this.chkEng1.TabIndex = 2;
+            this.chkEng1.Text = "Engine 1";
+            this.chkEng1.UseVisualStyleBackColor = true;
+            this.chkEng1.CheckedChanged += new System.EventHandler(this.chkEng1_CheckedChanged);
+            // 
+            // chkEng2
+            // 
+            this.chkEng2.AutoSize = true;
+            this.chkEng2.Location = new System.Drawing.Point(266, 3);
+            this.chkEng2.Name = "chkEng2";
+            this.chkEng2.Size = new System.Drawing.Size(75, 21);
+            this.chkEng2.TabIndex = 3;
+            this.chkEng2.Text = "Engine 2";
+            this.chkEng2.UseVisualStyleBackColor = true;
+            this.chkEng2.CheckedChanged += new System.EventHandler(this.chkEng2_CheckedChanged);
+            // 
             // ctlHydraulics
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.flowLayoutPanel1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "ctlHydraulics";
-            this.tableLayoutPanel1.ResumeLayout(false);
+            this.Size = new System.Drawing.Size(100, 97);
+            this.Load += new System.EventHandler(this.ctlHydraulics_Load);
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Button btnEngine2;
-        private System.Windows.Forms.Button btnElec1;
-        private System.Windows.Forms.Button btnElec2;
-        private System.Windows.Forms.Button btnEngine1;
         private System.Windows.Forms.Timer tmrHydraulics;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.CheckBox chkElec1;
+        private System.Windows.Forms.CheckBox chkElec2;
+        private System.Windows.Forms.CheckBox chkEng1;
+        private System.Windows.Forms.CheckBox chkEng2;
     }
 }

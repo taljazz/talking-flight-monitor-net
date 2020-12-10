@@ -301,6 +301,103 @@ public void ElecAPUStart()
 
             }
         }
+        // fuel
+        public void FuelFwdLeftOn()
+        {
+            if (Aircraft.pmdg737.FUEL_PumpFwdSw[0].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_1_FORWARD, ClkL);
+            }
+
+        }
+        public void FuelFwdLeftOff()
+        {
+            if (Aircraft.pmdg737.FUEL_PumpFwdSw[0].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_1_FORWARD, ClkR);
+            }
+
+        }
+        public void FuelFwdRightOn()
+        {
+            if (Aircraft.pmdg737.FUEL_PumpFwdSw[1].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_2_FORWARD, ClkL);
+            }
+
+        }
+        public void FuelFwdRightOff()
+        {
+            if (Aircraft.pmdg737.FUEL_PumpFwdSw[1].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_2_FORWARD, ClkR);
+            }
+
+        }
+        public void FuelAftLeftOn()
+        {
+            if (Aircraft.pmdg737.FUEL_PumpAftSw[0].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_1_AFT, ClkL);
+            }
+
+        }
+        public void FuelAftLeftOff()
+        {
+            if (Aircraft.pmdg737.FUEL_PumpAftSw[0].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_1_AFT, ClkR);
+            }
+
+        }
+        public void FuelAftRightOn()
+        {
+            if (Aircraft.pmdg737.FUEL_PumpAftSw[1].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_2_AFT, ClkL);
+            }
+
+        }
+        public void FuelAftRightOff()
+        {
+            if (Aircraft.pmdg737.FUEL_PumpAftSw[1].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_2_AFT, ClkR);
+            }
+
+        }
+        public void FuelCtrLeftOn()
+        {
+            if (Aircraft.pmdg737.FUEL_PumpCtrSw[0].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_L_CENTER, ClkL);
+            }
+
+        }
+        public void FuelCtrLeftOff()
+        {
+            if (Aircraft.pmdg737.FUEL_PumpCtrSw[0].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_L_CENTER, ClkR);
+            }
+
+        }
+        public void FuelCtrRightOn()
+        {
+            if (Aircraft.pmdg737.FUEL_PumpCtrSw[1].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_R_CENTER, ClkL);
+            }
+
+        }
+        public void FuelCtrRightOff()
+        {
+            if (Aircraft.pmdg737.FUEL_PumpCtrSw[1].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_FUEL_PUMP_R_CENTER, ClkR);
+            }
+
+        }
 
     }
 }

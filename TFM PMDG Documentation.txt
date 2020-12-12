@@ -1,0 +1,28 @@
+** Intro
+	This is a documentation of all the keystrokes for the PMDG 737 NGX CDU within Talking Flight Monitor. This list will be expanded as more code is put into the project.
+
+**Documentation Format
+	To help those understand the key combonation presses for the CDU, I will be formatting them like so. DescriptionOfKeyStroke .. KeyStroke. Furthermore, the documentation will be split into sections marked by a double asterisk, and subsections marked by a tripple asterisk.  So without further ado lets get started!
+
+** Keystrokes
+	*** Line Select Keys
+		LeftSoftKeys .. CTRL+1Through6
+		RightSoftKeys .. Alt1Through6
+	*** Miscellaneous Keystrokes
+		MenuPage .. Alt+M
+		NextPage .. PageDown
+		PreviousPage .. PageUp
+		ExecuteKey .. Alt+E
+		DelKey .. Alt+X
+	*** FMC Pages
+		DepartureAndArrivalPage .. Alt+D
+		InitRefPage .. Alt+I
+		ProgressPage .. Alt+P
+		RoutePage .. Alt+R
+		ClimbPage .. Alt+C
+		CruisePage .. Alt+Z
+		LandingPage .. Alt+L
+		LegsPage .. Alt+G
+		HoldPage .. Alt+H
+		N1LimitPage .. Alt+N
+		FixPage .. Alt+F
